@@ -4,11 +4,14 @@ class HelpCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(15.0),
-        childAspectRatio: 6.0 / 9.0,
-        children: _buildGridCards(5),
+      child: IgnorePointer(
+        child: GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          padding: EdgeInsets.all(15.0),
+          childAspectRatio: 6.0 / 9.0,
+          children: _buildGridCards(5),
+        ),
       ),
     );
   }

@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 
+import './notificationCircle.dart';
+
 class ScheduledRequests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
+      color: Colors.lightBlueAccent,
       width: double.infinity,
       height: 50,
-      margin: EdgeInsets.fromLTRB(20, 50, 10, 10),
+      margin: EdgeInsets.fromLTRB(0, 50, 0, 10),
       child: Row(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
             child: Text(
               'Scheduled Requests',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
+          NotificationCircle(2),
           Container(
-            width: 25,
-            height: 25,
-            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-            decoration: new BoxDecoration(
-              color: Colors.orange,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Text('2',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white)),
+            margin: EdgeInsets.fromLTRB(100, 0, 0, 0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.amber)),
+              onPressed: () {},
+              color: Colors.amber,
+              textColor: Colors.white,
+              child: Text("View".toUpperCase(), style: TextStyle(fontSize: 14)),
             ),
           ),
         ],
