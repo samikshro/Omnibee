@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import './explore.dart';
+import 'explore.dart';
+
 void main() {
   runApp(HenfamBasic());
 }
@@ -26,14 +29,7 @@ class HenfamBasic extends StatelessWidget {
               ]),
           body: TabBarView(
             children: [
-              //Icon(Icons.explore),
-
-              GridView.count(
-                crossAxisCount: 3,
-                padding: EdgeInsets.all(10.0),
-                childAspectRatio: 6.0 / 9.0,
-                children: _buildGridCards(5),
-              ),
+              Explore(),
               Icon(Icons.chat),
               Icon(Icons.local_offer),
               Icon(Icons.account_circle),
@@ -43,37 +39,6 @@ class HenfamBasic extends StatelessWidget {
       ),
     );
   }
-}
-
-List<Card> _buildGridCards(int count) {
-  List<Card> cards = List.generate(
-    count,
-    (int index) => Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 18.0 / 11.0,
-            child: Icon(Icons.local_pizza),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Title'),
-                SizedBox(height: 8.0),
-                Text('Secondary Text'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-
-  return cards;
 }
 
 /* //////////////////////////////////////////////////////////////////////////
