@@ -7,7 +7,7 @@ class HelpCard extends StatelessWidget {
       child: GridView.count(
         crossAxisCount: 2,
         padding: EdgeInsets.all(15.0),
-        childAspectRatio: 7.0 / 9.0,
+        childAspectRatio: 6.0 / 9.0,
         children: _buildGridCards(5),
       ),
     );

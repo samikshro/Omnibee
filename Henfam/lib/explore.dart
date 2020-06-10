@@ -8,6 +8,7 @@ class Explore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        AppBar(title: Text('Explore'), backgroundColor: Colors.amber),
         ScheduledRequests(),
         Container(
           width: double.infinity,

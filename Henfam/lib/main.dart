@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './explore.dart';
 import 'explore.dart';
+import 'chat.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -30,7 +30,7 @@ class HenfamBasic extends StatelessWidget {
           body: TabBarView(
             children: [
               Explore(),
-              Icon(Icons.chat),
+              Chat(),
               Icon(Icons.local_offer),
               Icon(Icons.account_circle),
             ],
