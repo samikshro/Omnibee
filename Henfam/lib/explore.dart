@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:slider_button/slider_button.dart';
 
 import './helpcard.dart';
 import './scheduledRequests.dart';
 import './notificationCircle.dart';
+import './currentOrder.dart';
 
 class Explore extends StatelessWidget {
   @override
@@ -14,6 +16,7 @@ class Explore extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             AppBar(title: Text('Explore'), backgroundColor: Colors.amber),
+            CurrentOrder("Jessie", "7:30", "on the way"),
             ScheduledRequests(),
             Container(
               width: double.infinity,

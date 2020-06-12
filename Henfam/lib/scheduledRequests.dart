@@ -9,7 +9,7 @@ class ScheduledRequests extends StatelessWidget {
       color: Colors.lightBlueAccent,
       width: double.infinity,
       height: 50,
-      margin: EdgeInsets.fromLTRB(0, 50, 0, 10),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: Row(
         children: <Widget>[
           Container(
