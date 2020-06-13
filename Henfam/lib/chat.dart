@@ -16,6 +16,7 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Data args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       // appBar: AppBar(
       //   title: Text('ChatList'),
@@ -35,8 +36,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = [];
   final TextEditingController _tc = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  String nam;
 
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(String text){//, String name) {
     _tc.clear();
     ChatMessage message = ChatMessage(
       text: text,
@@ -44,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 220),
         vsync: this,
       ),
+      name: nam,
     );
     setState(() {
       _messages.insert(0, message);
@@ -52,7 +55,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     message.animationController.forward();
   }
 
-  Widget _buildTextComposer() {
+  Widget _buildTextComposer(String name) {
+    nam = name;
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
@@ -117,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               color: Colors.white,
             ),
-            child: _buildTextComposer(),
+            child: _buildTextComposer(args.name),
           ),
         ],
       ),

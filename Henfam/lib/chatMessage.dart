@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 String _name = 'John';
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animationController});
+  ChatMessage({this.text, this.animationController, this.name});
   final String text;
   final AnimationController animationController;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +22,19 @@ class ChatMessage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(child: Text(_name[0])),
+              child: CircleAvatar(child: Text(name[0])),
             ),
             Flexible(
                 child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(_name),
-                  Container(
-                    margin: EdgeInsets.only(top: 5.0),
-                    child: Text(text),
-                  ),
-                ],
-              )
-            ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name),
+                Container(
+                  margin: EdgeInsets.only(top: 5.0),
+                  child: Text(text),
+                ),
+              ],
+            )),
           ],
         ),
       ),
