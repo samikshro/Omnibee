@@ -11,6 +11,7 @@ class Location extends StatelessWidget {
       Image(
         image: AssetImage('assets/location_pin.png'),
       ),
+      Padding(padding: EdgeInsets.only(left: 5)),
       Text(
         location,
         style: TextStyle(fontSize: 12),

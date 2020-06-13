@@ -34,7 +34,7 @@ class ScheduledRequests extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18.0),
                     side: BorderSide(color: Colors.amber)),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/ctowndelivery');
+                  print("Hello!");
                 },
                 color: Colors.amber,
                 textColor: Colors.white,

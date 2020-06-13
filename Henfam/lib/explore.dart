@@ -57,18 +57,20 @@ class _ExploreState extends State<Explore> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: ListView(
-          children: <Widget>[
-            Column(children: <Widget>[
-              LocationEggScore(score: _score, location: _location),
-              LilBigSwitch(_switchMode, _isLil),
-            ]),
-            (_isLil) ? LilMode(_activities) : BigMode(),
-          ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: ListView(
+            children: <Widget>[
+              Column(children: <Widget>[
+                LocationEggScore(score: _score, location: _location),
+                LilBigSwitch(_switchMode, _isLil),
+              ]),
+              (_isLil) ? LilMode(_activities) : BigMode(),
+            ],
+          ),
         ),
       ),
     );

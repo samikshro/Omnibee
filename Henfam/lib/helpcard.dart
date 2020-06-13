@@ -1,28 +1,30 @@
-import 'package:Henfam/ctownDelivery.dart';
 import 'package:flutter/material.dart';
 
 class HelpCard extends StatelessWidget {
+  final List<Map<String, Object>> activities;
+
+  HelpCard(this.activities);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: IgnorePointer(
-        child: GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 2,
-          padding: EdgeInsets.all(15.0),
-          childAspectRatio: 6.0 / 9.0,
-          children: _buildGridCards(5, context),
-        ),
+      child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(15.0),
+        childAspectRatio: 6.0 / 9.0,
+        children: _buildGridCards(5, context),
       ),
     );
   }
 
   // method to generate help with cards
-  List<FlatButton> _buildGridCards(int count, BuildContext context) {
-    List<FlatButton> cards = List.generate(
+  List<GestureDetector> _buildGridCards(int count, BuildContext context) {
+    List<GestureDetector> cards = List.generate(
       count,
-      (int index) => FlatButton(
-        onPressed: () {
+      (int index) => GestureDetector(
+        onTap: () {
           Navigator.pushNamed(context, '/ctowndelivery');
         },
         child: Card(
@@ -33,9 +35,7 @@ class HelpCard extends StatelessWidget {
             children: <Widget>[
               AspectRatio(
                 aspectRatio: 12.0 / 11.0,
-                child: Image.network(
-                  'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2018/01/burrito-bowl_1.jpg',
-                ),
+                child: activities[index]['picture'],
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
@@ -43,7 +43,7 @@ class HelpCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Getting food from x',
+                      activities[index]['caption'],
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
