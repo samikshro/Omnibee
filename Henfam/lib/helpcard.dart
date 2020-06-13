@@ -27,7 +27,7 @@ class HelpCard extends StatelessWidget {
         onTap: () {
           Navigator.pushNamed(context, '/ctowndelivery');
         },
-        child: Card(
+        child: Card (
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(6),
           child: Column(
