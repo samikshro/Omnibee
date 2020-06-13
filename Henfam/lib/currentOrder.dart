@@ -13,7 +13,7 @@ class CurrentOrder extends StatelessWidget {
       color: Colors.black12,
       width: double.infinity,
       height: 80,
-      margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
         children: <Widget>[
           Column(

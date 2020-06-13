@@ -1,12 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:slider_button/slider_button.dart';
+import 'package:custom_switch/custom_switch.dart';
 
-import './helpcard.dart';
-import './scheduledRequests.dart';
-import './notificationCircle.dart';
-import './currentOrder.dart';
+import './lilBigSwitch.dart';
+import './lilMode.dart';
+import './bigMode.dart';
+import './locationEggScore.dart';
 
-class Explore extends StatelessWidget {
+class Explore extends StatefulWidget {
+  @override
+  _ExploreState createState() => _ExploreState();
+}
+
+class _ExploreState extends State<Explore> {
+  var _isLil = true;
+  var _location = "Olin Library";
+  var _score = 500;
+
+  void _switchMode(bool newVal) {
+    setState(() {
+      _isLil = newVal;
+    });
+  }
+
+  final _activities = const [
+    {
+      'picture': Image(
+        image: AssetImage('assets/activity1.png'),
+      ),
+      'caption': 'Getting Food from Collegetown',
+    },
+    {
+      'picture': Image(
+        image: AssetImage('assets/activity2.png'),
+      ),
+      'caption': 'Getting Food from Campus',
+    },
+    {
+      'picture': Image(
+        image: AssetImage('assets/activity3.png'),
+      ),
+      'caption': 'Shopping for Groceries',
+    },
+    {
+      'picture': Image(
+        image: AssetImage('assets/activity4.png'),
+      ),
+      'caption': 'Shopping for General Items',
+    },
+    {
+      'picture': Image(
+        image: AssetImage('assets/activity5.png'),
+      ),
+      'caption': 'Other Errands',
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -15,47 +63,11 @@ class Explore extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         child: ListView(
           children: <Widget>[
-            AppBar(title: Text('Explore'), backgroundColor: Colors.amber),
-            CurrentOrder("Jessie", "7:30", "on the way"),
-            ScheduledRequests(),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(20, 10, 10, 10),
-              child: Text(
-                'What would you like help with, John?',
-                style: TextStyle(fontSize: 28),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              child: HelpCard(),
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(20, 10, 10, 10),
-              child: Text(
-                'Or choose from other errands nearby!',
-                style: TextStyle(fontSize: 28),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 60),
-              child: ExpansionTile(
-                title: Row(
-                  children: <Widget>[
-                    Text('Other Errands'),
-                    NotificationCircle(1),
-                  ],
-                ),
-                children: <Widget>[
-                  Text(
-                    'Test',
-                    textAlign: TextAlign.right,
-                  ),
-                ],
-              ),
-            ),
+            Column(children: <Widget>[
+              LocationEggScore(score: _score, location: _location),
+              LilBigSwitch(_switchMode, _isLil),
+            ]),
+            (_isLil) ? LilMode(_activities) : BigMode(),
           ],
         ),
       ),
