@@ -1,3 +1,4 @@
+import 'package:Henfam/ctownDelivery.dart';
 import 'package:flutter/material.dart';
 
 import './notificationCircle.dart';
@@ -32,7 +33,9 @@ class ScheduledRequests extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
                     side: BorderSide(color: Colors.amber)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/ctowndelivery');
+                },
                 color: Colors.amber,
                 textColor: Colors.white,
                 child:
