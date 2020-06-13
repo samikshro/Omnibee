@@ -11,6 +11,10 @@ class HenfamBasic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Explore(),
+      },
       home: DefaultTabController(
         length: 4,
         child: Scaffold(
