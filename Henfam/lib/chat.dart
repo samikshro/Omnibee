@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'chatMessage.dart';
+import 'chatModel.dart';
+
+String _name = 'John';
+
+class Data {
+  final String name;
+  Data({this.name});
+}
 
 class Chat extends StatelessWidget {
   const Chat({
@@ -9,9 +17,9 @@ class Chat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ChatList'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('ChatList'),
+      // ),
       body: ChatScreen(),
     );
   }
@@ -23,6 +31,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+  // ChatModel currentChat = ChatModel.list.elementAt(0);
   final List<ChatMessage> _messages = [];
   final TextEditingController _tc = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -78,9 +87,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final Data args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
+        title: Text(args.name),
         backgroundColor: Colors.amber,
         leading: IconButton(
           icon: Icon(
