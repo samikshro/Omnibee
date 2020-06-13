@@ -15,12 +15,13 @@ class CurrentOrder extends StatelessWidget {
       height: 80,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.fromLTRB(15, 15, 90, 0),
+                  margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
                   child: Text(
                     this.name + " is delivering your order!",
                     style: TextStyle(
@@ -30,7 +31,7 @@ class CurrentOrder extends StatelessWidget {
                 ),
                 Row(children: <Widget>[
                   Container(
-                    margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    margin: EdgeInsets.only(left: 10),
                     child: Text(
                       this.time,
                       style: TextStyle(
@@ -70,7 +71,6 @@ class CurrentOrder extends StatelessWidget {
                 ]),
               ]),
           Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: RaisedButton(
               shape: CircleBorder(
                 side: BorderSide(color: Colors.amber),

@@ -14,15 +14,17 @@ class LocationEggScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: <Widget>[
-      Padding(
-        padding: EdgeInsets.only(right: 15),
-      ),
-      Location(location),
-      Padding(
-        padding: EdgeInsets.only(right: 225),
-      ),
-      EggScore(score),
-    ]);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Location(location),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: EggScore(score),
+          ),
+        ]);
   }
 }

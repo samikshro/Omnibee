@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'explore.dart';
 import 'chat.dart';
+import 'ctownDelivery.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -13,7 +14,8 @@ class HenfamBasic extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Explore(),
+        '/explore': (context) => Explore(),
+        '/ctowndelivery': (context) => CtownDelivery(),
       },
       home: DefaultTabController(
         length: 4,
