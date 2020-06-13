@@ -10,17 +10,29 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        children: <Widget>[
-          photo,
-          Column(
-            children: <Widget>[
-              Text(name),
-              Text(category[0]),
-            ],
-          )
-        ],
+    return SizedBox(
+      width: 200,
+      height: 200,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            photo,
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Padding(padding: EdgeInsets.only(bottom: 7)),
+                  Text(category.join(', ')),
+                  Padding(padding: EdgeInsets.only(bottom: 7)),
+                  Text("Open until " + closes,
+                      style: TextStyle(color: Colors.green)),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

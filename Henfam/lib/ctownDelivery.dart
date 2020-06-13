@@ -48,11 +48,20 @@ class _CtownDeliveryState extends State<CtownDelivery> {
             },
           ),
           LargeTextSection("My Favorites"),
-          RestaurantCard(
-            _myFavorites[1]['photo'],
-            _myFavorites[1]['name'],
-            _myFavorites[1]['category'],
-            _myFavorites[1]['closes'],
+          Flexible(
+            child: GridView.count(
+              // crossAxisCount is the number of columns
+              crossAxisCount: 1,
+              // This creates two columns with two items in each column
+              children: List.generate(_myFavorites.length, (index) {
+                return RestaurantCard(
+                  _myFavorites[index]['photo'],
+                  _myFavorites[index]['name'],
+                  _myFavorites[index]['category'],
+                  _myFavorites[index]['closes'],
+                );
+              }),
+            ),
           ),
         ],
       ),
