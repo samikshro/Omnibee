@@ -34,7 +34,6 @@ class _ChatListState extends State<ChatList> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(100),
                       ),
-                      
                     ),
                   ),
                 );

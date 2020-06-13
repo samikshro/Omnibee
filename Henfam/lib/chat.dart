@@ -8,9 +8,11 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chat',
-      home: ChatScreen(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ChatList'),
+      ),
+      body: ChatScreen(),
     );
   }
 }
@@ -86,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
       ),
