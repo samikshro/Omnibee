@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'largeTextSection.dart';
-import 'restaurantCard.dart';
+import './largeTextSection.dart';
+import './ctownMenuModel.dart';
+import './errandFee.dart';
+import './ctownDeliveryHeader.dart';
 
 class CtownDelivery extends StatefulWidget {
   @override
@@ -9,61 +11,75 @@ class CtownDelivery extends StatefulWidget {
 }
 
 class _CtownDeliveryState extends State<CtownDelivery> {
-  var _myFavorites = [
-    {
-      'photo': Image(
+  var _location = "Olin Library";
+
+  final favorites = [
+    MenuModel(
+      restName: 'Oishii Bowl',
+      typeFood: ['Asian', 'Japanese'],
+      hours: '9PM',
+      photo: Image(
         image: AssetImage('assets/oishiibowl.png'),
       ),
-      'name': 'Oishii Bowl',
-      'category': ['Asian', 'Japanese'],
-      'closes': '9PM'
-    },
-    {
-      'photo': Image(
+    ),
+    MenuModel(
+      restName: 'Kung Fu Tea',
+      typeFood: ['Beverages'],
+      hours: '9PM',
+      photo: Image(
         image: AssetImage('assets/kungfutea.png'),
       ),
-      'name': 'Kung Fu Tea',
-      'category': ['Beverages'],
-      'closes': '9PM'
-    },
-    {
-      'photo': Image(
+    ),
+  ];
+
+  final moreRestaurants = [
+    MenuModel(
+      restName: 'Insomnia Cookies',
+      typeFood: ['Cookies', 'Desserts'],
+      hours: '1AM',
+      photo: Image(
         image: AssetImage('assets/insomnia.png'),
       ),
-      'name': 'Insomnia Cookies',
-      'category': ['Cookies', 'Desserts'],
-      'closes': '1AM'
-    },
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          LargeTextSection("My Favorites"),
-          Flexible(
-            child: GridView.count(
-              // crossAxisCount is the number of columns
-              crossAxisCount: 1,
-              // This creates two columns with two items in each column
-              children: List.generate(_myFavorites.length, (index) {
-                return RestaurantCard(
-                  _myFavorites[index]['photo'],
-                  _myFavorites[index]['name'],
-                  _myFavorites[index]['category'],
-                  _myFavorites[index]['closes'],
-                );
-              }),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CtownDeliveryHeader(_location),
+                ],
+              ),
             ),
-          ),
-        ],
+            ErrandFee(),
+            LargeTextSection("My Favorites"),
+            Column(
+              children: favorites
+                  .map((menu) => menu.displayRestaurantCard())
+                  .toList(),
+            ),
+            LargeTextSection("More Restaurants"),
+            Column(
+              children: moreRestaurants
+                  .map((menu) => menu.displayRestaurantCard())
+                  .toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
