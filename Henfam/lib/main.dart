@@ -4,6 +4,7 @@ import 'explore.dart';
 import 'chatList.dart';
 import 'ctownDelivery.dart';
 import 'chat.dart';
+import 'ctownMenu.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -17,8 +18,9 @@ class HenfamBasic extends StatelessWidget {
       routes: {
         '/explore': (context) => Explore(),
         '/ctowndelivery': (context) => CtownDelivery(),
-        '/chatlist' : (context) => ChatList(),
-        '/chat' : (context) => Chat(),
+        '/chatlist': (context) => ChatList(),
+        '/chat': (context) => Chat(),
+        '/ctownmenu': (context) => CtownMenu(),
       },
       home: DefaultTabController(
         length: 4,
@@ -41,7 +43,8 @@ class HenfamBasic extends StatelessWidget {
               Explore(),
               ChatList(),
               Icon(Icons.local_offer),
-              Icon(Icons.account_circle),
+              CtownMenu(),
+              //Icon(Icons.account_circle),
             ],
           ),
         ),
@@ -49,5 +52,3 @@ class HenfamBasic extends StatelessWidget {
     );
   }
 }
-
-
