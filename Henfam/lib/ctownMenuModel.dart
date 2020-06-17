@@ -28,4 +28,31 @@ class MenuModel {
       hours,
     );
   }
+
+  static List<MenuModel> list = [
+    MenuModel(
+      restName: 'Oishii Bowl',
+      typeFood: ['Asian', 'Japanese'],
+      hours: '9PM',
+      photo: Image(
+        image: AssetImage('assets/oishiibowl.png'),
+      ),
+    ),
+    MenuModel(
+      restName: 'Kung Fu Tea',
+      typeFood: ['Beverages'],
+      hours: '9PM',
+      photo: Image(
+        image: AssetImage('assets/kungfutea.png'),
+      ),
+    ),
+    MenuModel(
+      restName: 'Insomnia Cookies',
+      typeFood: ['Cookies', 'Desserts'],
+      hours: '1AM',
+      photo: Image(
+        image: AssetImage('assets/insomnia.png'),
+      ),
+    ),
+  ];
 }
