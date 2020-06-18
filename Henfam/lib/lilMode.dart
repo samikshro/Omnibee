@@ -20,9 +20,7 @@ class LilMode extends StatelessWidget {
         CurrentOrder("Jessie", "7:30", "on the way"),
         ScheduledRequests(),
         LargeTextSection("What would you like help with, John?"),
-        Container(
-          child: HelpCard(activities),
-        ),
+        HelpCard(activities),
         LargeTextSection("Or choose from other errands nearby!"),
         Padding(
           padding: EdgeInsets.only(bottom: 60),

@@ -47,30 +47,28 @@ class _MenuState extends State<CtownMenu> {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              Expanded(
-                child: Container(
-                  height: 400.0,
-                  child: ListView.builder(
-                    itemCount: list[0].food.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        // onTap: () {
-                        //   Navigator.pushNamed(
-                        //     context,
-                        //     '/chat',
-                        //     arguments: Data(name: list[index].contact.name),
-                        //   );
-                        // },
-                        title: Text(list[0].food[index].name),
-                        subtitle: Wrap(direction: Axis.vertical, children: [
-                          Text(list[0].food[index].desc),
-                          // SizedBox(width: 25),
-                          Text("\$" + list[0].food[index].price)
-                        ]),
-                        isThreeLine: true,
-                      );
-                    },
-                  ),
+              Container(
+                height: 400.0,
+                child: ListView.builder(
+                  itemCount: list[0].food.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      // onTap: () {
+                      //   Navigator.pushNamed(
+                      //     context,
+                      //     '/chat',
+                      //     arguments: Data(name: list[index].contact.name),
+                      //   );
+                      // },
+                      title: Text(list[0].food[index].name),
+                      subtitle: Wrap(direction: Axis.vertical, children: [
+                        Text(list[0].food[index].desc),
+                        // SizedBox(width: 25),
+                        Text("\$" + list[0].food[index].price)
+                      ]),
+                      isThreeLine: true,
+                    );
+                  },
                 ),
               ),
             ]),
