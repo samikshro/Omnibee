@@ -16,9 +16,15 @@ class _ExploreState extends State<Explore> {
   var _location = "Olin Library";
   var _score = 500;
 
-  void _switchMode(bool newVal) {
+  void _switchToLil() {
     setState(() {
-      _isLil = newVal;
+      _isLil = true;
+    });
+  }
+
+  void _switchToBig() {
+    setState(() {
+      _isLil = false;
     });
   }
 
@@ -66,7 +72,7 @@ class _ExploreState extends State<Explore> {
             children: <Widget>[
               Column(children: <Widget>[
                 LocationEggScore(score: _score, location: _location),
-                LilBigSwitch(_switchMode, _isLil),
+                LilBigSwitch(_switchToLil, _switchToBig),
               ]),
               (_isLil) ? LilMode(_activities) : BigMode(),
             ],

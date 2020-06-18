@@ -2,32 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
 
 class LilBigSwitch extends StatelessWidget {
-  final Function switchMode;
-  final bool isLil;
+  final Function switchToLil;
+  final Function switchToBig;
 
-  LilBigSwitch(this.switchMode, this.isLil);
+  LilBigSwitch(this.switchToLil, this.switchToBig);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 5),
-          height: 50,
-          width: 150,
-          child: CustomSwitch(
-            activeColor: Colors.amber,
-            value: isLil,
-            onChanged: switchMode,
+          width: 130,
+          child: RaisedButton(
+            color: Colors.amber[700],
+            child: Text(
+              "LIL",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: switchToLil,
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
         ),
         Image(
           image: AssetImage('assets/hen.png'),
-        )
+        ),
+        Container(
+          width: 130,
+          child: RaisedButton(
+            color: Colors.cyanAccent[100],
+            child: Text(
+              "BIG",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: switchToBig,
+          ),
+        ),
       ],
     );
   }
