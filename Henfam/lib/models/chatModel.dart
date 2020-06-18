@@ -1,4 +1,4 @@
-import 'package:Henfam/contactModel.dart';
+import 'package:Henfam/models/contactModel.dart';
 
 class ChatModel {
   final String lastMsg;

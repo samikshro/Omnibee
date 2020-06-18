@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:Henfam/FoodModel.dart';
-import './restaurantCard.dart';
+import 'package:Henfam/models/FoodModel.dart';
+import 'package:Henfam/pages/explore/restaurantCard.dart';
 
 class MenuModel {
   final String restName;

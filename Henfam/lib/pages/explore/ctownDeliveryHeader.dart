@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './location.dart';
-import './clockicon.dart';
+import 'package:Henfam/widgets/location.dart';
+import 'package:Henfam/widgets/clockicon.dart';
 
 class CtownDeliveryHeader extends StatelessWidget {
   final String location;

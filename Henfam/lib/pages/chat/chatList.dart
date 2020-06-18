@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Henfam/chat.dart';
-import 'package:Henfam/chatModel.dart';
+import 'package:Henfam/pages/chat/chat.dart';
+import 'package:Henfam/models/chatModel.dart';
 
 class ChatList extends StatefulWidget {
   @override

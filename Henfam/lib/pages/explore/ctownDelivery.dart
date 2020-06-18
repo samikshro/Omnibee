@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import './largeTextSection.dart';
-import './ctownMenuModel.dart';
-import './errandFee.dart';
-import './ctownDeliveryHeader.dart';
+import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:Henfam/models/ctownMenuModel.dart';
+import 'package:Henfam/pages/explore/errandFee.dart';
+import 'package:Henfam/pages/explore/ctownDeliveryHeader.dart';
 
 class CtownDelivery extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './eggScore.dart';
-import './location.dart';
+import 'package:Henfam/widgets/eggScore.dart';
+import 'package:Henfam/widgets/location.dart';
 
 class LocationEggScore extends StatelessWidget {
   final int score;

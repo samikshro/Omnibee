@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ctownMenuModel.dart';
+import 'package:Henfam/models/ctownMenuModel.dart';
 
 class CtownMenu extends StatefulWidget {
   @override

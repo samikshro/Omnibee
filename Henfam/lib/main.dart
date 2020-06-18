@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'explore.dart';
-import 'chatList.dart';
-import 'ctownDelivery.dart';
-import 'chat.dart';
-import 'ctownMenu.dart';
+import 'package:Henfam/pages/explore/explore.dart';
+import 'package:Henfam/pages/chat/chatList.dart';
+import 'package:Henfam/pages/explore/ctownDelivery.dart';
+import 'package:Henfam/pages/chat/chat.dart';
+import 'package:Henfam/pages/explore/ctownMenu.dart';
 
 void main() {
   runApp(HenfamBasic());

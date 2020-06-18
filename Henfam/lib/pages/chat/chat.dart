@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'chatMessage.dart';
-import 'chatModel.dart';
 
 String _name = 'John';
 
@@ -38,7 +37,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final FocusNode _focusNode = FocusNode();
   String nam;
 
-  void _handleSubmitted(String text){//, String name) {
+  void _handleSubmitted(String text) {
+    //, String name) {
     _tc.clear();
     ChatMessage message = ChatMessage(
       text: text,
