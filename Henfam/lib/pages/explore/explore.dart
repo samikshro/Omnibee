@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
 
-import './lilBigSwitch.dart';
+import './lilBigButtons.dart';
 import './lilMode.dart';
 import './bigMode.dart';
 import './locationEggScore.dart';

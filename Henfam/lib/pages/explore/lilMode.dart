@@ -1,3 +1,5 @@
+import 'package:Henfam/models/errandModel.dart';
+import 'package:Henfam/pages/explore/errandDropDown.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/helpcard.dart';
@@ -26,19 +28,9 @@ class LilMode extends StatelessWidget {
         LargeTextSection("Or choose from other errands nearby!"),
         Padding(
           padding: EdgeInsets.only(bottom: 60),
-          child: ExpansionTile(
-            title: Row(
-              children: <Widget>[
-                Text('Other Errands'),
-                NotificationCircle(1),
-              ],
-            ),
-            children: <Widget>[
-              Text(
-                'Test',
-                textAlign: TextAlign.right,
-              ),
-            ],
+          child: ErrandDropDown(
+            "Other Errands",
+            ErrandModel.list,
           ),
         ),
       ],
