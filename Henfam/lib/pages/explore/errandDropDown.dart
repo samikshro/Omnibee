@@ -20,6 +20,7 @@ class ErrandDropDown extends StatelessWidget {
       ),
       children: <Widget>[
         ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: errands.length,
             itemBuilder: (BuildContext ctxt, int index) {

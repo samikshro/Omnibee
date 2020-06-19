@@ -6,6 +6,7 @@ class ErrandsNearby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: ErrandModel.list.length,
         itemBuilder: (BuildContext ctxt, int index) {
