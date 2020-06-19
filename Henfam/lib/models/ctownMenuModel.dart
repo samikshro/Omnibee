@@ -56,7 +56,7 @@ class MenuModel {
       typeFood: ['Asian', 'Japanese'],
       hours: '9PM',
       photo: Image(
-        image: AssetImage('assets/oishiibowl.png'),
+        image: AssetImage('assets/oishii_bowl_pic1.png'),
         fit: BoxFit.cover,
       ),
       food: oiishi_food,
