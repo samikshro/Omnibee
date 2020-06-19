@@ -1,10 +1,10 @@
 import 'package:Henfam/models/errandModel.dart';
 import 'package:Henfam/pages/explore/errandDropDown.dart';
+import 'package:Henfam/pages/explore/errandsNearby.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/helpcard.dart';
 import './scheduledRequests.dart';
-import 'package:Henfam/widgets/notificationCircle.dart';
 import './currentOrder.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 
@@ -28,10 +28,7 @@ class LilMode extends StatelessWidget {
         LargeTextSection("Or choose from other errands nearby!"),
         Padding(
           padding: EdgeInsets.only(bottom: 60),
-          child: ErrandDropDown(
-            "Other Errands",
-            ErrandModel.list,
-          ),
+          child: ErrandsNearby(),
         ),
       ],
     );

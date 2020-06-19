@@ -25,7 +25,7 @@ class ErrandModel {
     this.requestLimit,
   });
 
-  static List<ErrandModel> list = [
+  static final gettingFoodFromCtown = [
     ErrandModel(
       bigHenName: "Jessie",
       bigHenImage: "assets/henProfileIcon.png",
@@ -35,5 +35,36 @@ class ErrandModel {
       type: ErrandType.ctownFood,
       requestLimit: 2,
     ),
+    ErrandModel(
+      bigHenName: "Jessie",
+      bigHenImage: "assets/henProfileIcon.png",
+      timeFrame: "8pm-9pm",
+      location: "Luna Street Food",
+      destination: "Olin Library",
+      type: ErrandType.ctownFood,
+      requestLimit: 2,
+    ),
+  ];
+  static final otherErrands = [
+    ErrandModel(
+      bigHenName: "Jessie",
+      bigHenImage: "assets/henProfileIcon.png",
+      timeFrame: "8pm-9pm",
+      location: "Luna Street Food",
+      destination: "Olin Library",
+      type: ErrandType.ctownFood,
+      requestLimit: 2,
+    ),
+  ];
+
+  static List<Map<String, Object>> list = [
+    {
+      "caption": "Getting Food from Collegetown",
+      "errands": gettingFoodFromCtown,
+    },
+    {
+      "caption": "Other Errands",
+      "errands": otherErrands,
+    },
   ];
 }
