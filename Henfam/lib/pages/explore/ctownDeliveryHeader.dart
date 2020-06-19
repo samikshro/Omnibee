@@ -23,7 +23,7 @@ class CtownDeliveryHeader extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -32,6 +32,15 @@ class CtownDeliveryHeader extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Search Restaurants/Cuisines',
+              ),
+              style: TextStyle(fontSize: 12),
+            ),
+          )
         ],
       ),
     );
