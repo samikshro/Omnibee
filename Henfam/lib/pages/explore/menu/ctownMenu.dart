@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/ctownMenuModel.dart';
 import 'ctownMenuPageHeader.dart';
+import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 
 class CtownMenu extends StatefulWidget {
   @override
@@ -38,8 +39,14 @@ class _MenuState extends State<CtownMenu> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        '/ctown',
-                        arguments: Data(name: list[index].contact.name),
+                        '/menu_order_form',
+                        arguments: FoodInfo(
+                          name: list[0].food[index].name,
+                          desc: list[0].food[index].desc,
+                          price: list[0].food[index].price,
+                          addOns: list[0].food[index].addOns,
+                          quantity: 1,
+                        )
                       );
                     },
                     title: Text(list[0].food[index].name),
