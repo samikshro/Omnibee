@@ -24,12 +24,7 @@ class MenuModel {
   });
 
   RestaurantCard displayRestaurantCard() {
-    return RestaurantCard(
-      smallPhoto,
-      restName,
-      typeFood,
-      hours,
-    );
+    return RestaurantCard(this);
   }
 
   static List<AddOns> katsu_don_addons = [
@@ -86,10 +81,14 @@ class MenuModel {
       food: oiishi_food,
     ),
     MenuModel(
-      restName: 'Kung Fu Tear',
+      restName: 'Kung Fu Tea',
       typeFood: ['Beverages'],
       hours: '9PM',
       smallPhoto: Image(
+        image: AssetImage('assets/kungfutea.png'),
+        fit: BoxFit.cover,
+      ),
+      bigPhoto: Image(
         image: AssetImage('assets/kungfutea.png'),
         fit: BoxFit.cover,
       ),
@@ -100,6 +99,10 @@ class MenuModel {
       typeFood: ['Cookies', 'Desserts'],
       hours: '1AM',
       smallPhoto: Image(
+        image: AssetImage('assets/insomnia.png'),
+        fit: BoxFit.cover,
+      ),
+      bigPhoto: Image(
         image: AssetImage('assets/insomnia.png'),
         fit: BoxFit.cover,
       ),
@@ -127,6 +130,10 @@ class MenuModel {
       typeFood: ['Beverages'],
       hours: '9PM',
       smallPhoto: Image(
+        image: AssetImage('assets/kungfutea.png'),
+        fit: BoxFit.cover,
+      ),
+      bigPhoto: Image(
         image: AssetImage('assets/kungfutea.png'),
         fit: BoxFit.cover,
       ),

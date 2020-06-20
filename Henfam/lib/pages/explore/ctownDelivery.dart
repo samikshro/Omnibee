@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/helpcard.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/widgets/largeTextSection.dart';
@@ -7,7 +8,8 @@ import 'package:Henfam/pages/explore/ctownDeliveryHeader.dart';
 
 class CtownDelivery extends StatefulWidget {
   List<MenuModel> list;
-  CtownDelivery({this.list});
+  String headerCaption;
+  CtownDelivery({this.list, this.headerCaption});
 
   @override
   _CtownDeliveryState createState() => _CtownDeliveryState();
@@ -18,7 +20,10 @@ class _CtownDeliveryState extends State<CtownDelivery> {
 
   @override
   Widget build(BuildContext context) {
-    final List<MenuModel> args = ModalRoute.of(context).settings.arguments;
+    final DeliveryArguments args = ModalRoute.of(context).settings.arguments;
+    final menuList = args.menus;
+    final String headerCaption = args.headerCaption;
+
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -35,7 +40,10 @@ class _CtownDeliveryState extends State<CtownDelivery> {
                       Navigator.pop(context);
                     },
                   ),
-                  CtownDeliveryHeader(_location),
+                  CtownDeliveryHeader(
+                    _location,
+                    headerCaption,
+                  ),
                 ],
               ),
             ),
@@ -43,7 +51,7 @@ class _CtownDeliveryState extends State<CtownDelivery> {
             LargeTextSection("Choose a restaurant"),
             Column(
               children:
-                  args.map((menu) => menu.displayRestaurantCard()).toList(),
+                  menuList.map((menu) => menu.displayRestaurantCard()).toList(),
             ),
           ],
         ),

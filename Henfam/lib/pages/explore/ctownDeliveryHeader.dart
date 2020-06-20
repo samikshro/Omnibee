@@ -5,8 +5,9 @@ import 'package:Henfam/widgets/clockicon.dart';
 
 class CtownDeliveryHeader extends StatelessWidget {
   final String location;
+  final String caption;
 
-  CtownDeliveryHeader(this.location);
+  CtownDeliveryHeader(this.location, this.caption);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CtownDeliveryHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Collegetown Food Delivery',
+            caption,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

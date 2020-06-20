@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:Henfam/models/ctownMenuModel.dart';
 
 class RestaurantCard extends StatelessWidget {
-  final Image photo;
-  final String name;
-  final List<String> category;
-  final String closes;
+  final MenuModel restaurant;
 
-  RestaurantCard(this.photo, this.name, this.category, this.closes);
+  RestaurantCard(this.restaurant);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/ctownmenu');
+        Navigator.pushNamed(context, '/ctownmenu', arguments: restaurant);
       },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: Row(
           children: <Widget>[
-            photo,
+            restaurant.smallPhoto,
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(restaurant.restName,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   Padding(padding: EdgeInsets.only(bottom: 7)),
-                  Text(category.join(', ')),
+                  Text(restaurant.typeFood.join(', ')),
                   Padding(padding: EdgeInsets.only(bottom: 7)),
-                  Text("Open until " + closes,
+                  Text("Open until " + restaurant.hours,
                       style: TextStyle(color: Colors.green)),
                 ],
               ),

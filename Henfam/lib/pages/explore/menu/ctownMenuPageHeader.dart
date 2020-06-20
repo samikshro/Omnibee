@@ -1,3 +1,4 @@
+import 'package:Henfam/models/ctownMenuModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math';
@@ -6,18 +7,17 @@ class CtownMenuPageHeader extends SliverPersistentHeaderDelegate {
   CtownMenuPageHeader({
     this.minExtent,
     @required this.maxExtent,
+    @required this.restaurant,
   });
   final double minExtent;
   final double maxExtent;
+  final MenuModel restaurant;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(fit: StackFit.expand, children: [
-      Image.asset(
-        'assets/oishii_bowl_pic1.png',
-        fit: BoxFit.cover,
-      ),
+      restaurant.bigPhoto,
       Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -31,7 +31,7 @@ class CtownMenuPageHeader extends SliverPersistentHeaderDelegate {
         left: 16.0,
         right: 16.0,
         bottom: 16.0,
-        child: Text('Oishii Bowl',
+        child: Text(restaurant.restName,
             style: TextStyle(
               fontSize: 32.0,
               color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),
