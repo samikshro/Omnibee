@@ -11,6 +11,25 @@ class CtownMenu extends StatefulWidget {
 class _MenuState extends State<CtownMenu> {
   List<MenuModel> list = MenuModel.ctownList;
 
+  _navigateAndGetOrderInfo(BuildContext context, int index) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.pushNamed(context, '/menu_order_form',
+        arguments: FoodInfo(
+          name: list[0].food[index].name,
+          desc: list[0].food[index].desc,
+          price: list[0].food[index].price,
+          addOns: list[0].food[index].addOns,
+          quantity: 1,
+        ));
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +56,15 @@ class _MenuState extends State<CtownMenu> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, '/menu_order_form',
-                          arguments: FoodInfo(
-                            name: list[0].food[index].name,
-                            desc: list[0].food[index].desc,
-                            price: list[0].food[index].price,
-                            addOns: list[0].food[index].addOns,
-                            quantity: 1,
-                          ));
+                      _navigateAndGetOrderInfo(context, index);
+                      // Navigator.pushNamed(context, '/menu_order_form',
+                      //     arguments: FoodInfo(
+                      //       name: list[0].food[index].name,
+                      //       desc: list[0].food[index].desc,
+                      //       price: list[0].food[index].price,
+                      //       addOns: list[0].food[index].addOns,
+                      //       quantity: 1,
+                      //     ));
                     },
                     title: Text(list[0].food[index].name),
                     subtitle: Wrap(direction: Axis.vertical, children: [

@@ -6,6 +6,7 @@ import 'package:Henfam/pages/explore/ctownDelivery.dart';
 import 'package:Henfam/pages/chat/chat.dart';
 import 'package:Henfam/pages/explore/menu/ctownMenu.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
+import 'package:Henfam/pages/explore/menu/basketForm.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -28,6 +29,7 @@ class HenfamBasic extends StatelessWidget {
         '/chat': (context) => Chat(),
         '/ctownmenu': (context) => CtownMenu(),
         '/menu_order_form': (context) => MenuOrderForm(),
+        '/basket_form': (context) => Basket(),
       },
       home: DefaultTabController(
         length: 4,
