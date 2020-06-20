@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 
 // class BasketData {
-//   final 
+//   final
 // }
 
 class Basket extends StatefulWidget {
@@ -37,9 +37,7 @@ class _BasketState extends State<Basket> {
             ),
             SliverList(
               delegate: SliverChildListDelegate(
-                [
-
-                ],
+                [],
               ),
             ),
             SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
@@ -66,7 +64,9 @@ class _BasketState extends State<Basket> {
                     child: Text('Proceed to Request',
                         style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/request');
+                    },
                   ),
                 ),
               ),

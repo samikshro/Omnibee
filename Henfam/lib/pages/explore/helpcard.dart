@@ -22,7 +22,7 @@ class HelpCard extends StatelessWidget {
         crossAxisCount: 2,
         padding: EdgeInsets.all(15.0),
         childAspectRatio: 6.0 / 9.0,
-        children: _buildGridCards(5, context),
+        children: _buildGridCards(activities.length, context),
       ),
     );
   }

@@ -41,24 +41,6 @@ class _ExploreState extends State<Explore> {
       ),
       'caption': 'Getting Food from Campus',
     },
-    {
-      'picture': Image(
-        image: AssetImage('assets/activity3.png'),
-      ),
-      'caption': 'Shopping for Groceries',
-    },
-    {
-      'picture': Image(
-        image: AssetImage('assets/activity4.png'),
-      ),
-      'caption': 'Shopping for General Items',
-    },
-    {
-      'picture': Image(
-        image: AssetImage('assets/activity5.png'),
-      ),
-      'caption': 'Other Errands',
-    }
   ];
 
   @override
