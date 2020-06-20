@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 
+// class BasketData {
+//   final 
+// }
 
 class Basket extends StatefulWidget {
   @override
@@ -11,15 +14,14 @@ class _BasketState extends State<Basket> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.grey,
-          title: Text(
-            'My Basket',
-            // style: TextStyle(color: Colors.black),
-          )
-      ),
-      body: SafeArea(
-        child: CustomScrollView(
+        appBar: AppBar(
+            backgroundColor: Colors.grey,
+            title: Text(
+              'My Basket',
+              // style: TextStyle(color: Colors.black),
+            )),
+        body: SafeArea(
+            child: CustomScrollView(
           slivers: <Widget>[
             // SliverToBoxAdapter(
             //   child: Padding(
@@ -36,7 +38,7 @@ class _BasketState extends State<Basket> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  
+
                 ],
               ),
             ),
@@ -61,21 +63,15 @@ class _BasketState extends State<Basket> {
                   width: double.infinity,
                   height: 60,
                   child: RaisedButton(
-                    child:
-                        Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
+                    child: Text('Proceed to Request',
+                        style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ),
             )
           ],
-
-        )
-      )
-    );
-
+        )));
   }
 }
