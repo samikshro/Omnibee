@@ -107,16 +107,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                       List<String> list = new List<String>();
                       list.add(args.name);
                       list.add(args.price);
-                      Navigator.pop(context, args
-                          //'/basket_form',
-                          //   arguments: FoodInfo(
-                          //   name: list[0].food[index].name,
-                          //   desc: list[0].food[index].desc,
-                          //   price: list[0].food[index].price,
-                          //   addOns: list[0].food[index].addOns,
-                          //   quantity: 1,
-                          // )
-                          );
+                      Navigator.pop(context, args);
                     },
                   ),
                 ),

@@ -21,15 +21,14 @@ class _MenuState extends State<Menu> {
       BuildContext context, int index, MenuModel restaurant) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final FoodInfo result =
-        await Navigator.pushNamed(context, '/menu_order_form',
-            arguments: FoodInfo(
-              name: restaurant.food[index].name,
-              desc: restaurant.food[index].desc,
-              price: restaurant.food[index].price,
-              addOns: restaurant.food[index].addOns,
-              quantity: 1,
-            ));
+    final result = await Navigator.pushNamed(context, '/menu_order_form',
+        arguments: FoodInfo(
+          name: restaurant.food[index].name,
+          desc: restaurant.food[index].desc,
+          price: restaurant.food[index].price,
+          addOns: restaurant.food[index].addOns,
+          quantity: 1,
+        )) as FoodInfo;
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
