@@ -50,7 +50,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
               delegate: SliverChildListDelegate(
                 [
                   Container(
-                    height: 100.0 * args.addOns.length,
+                    height: 90.0 * args.addOns.length,
                     child: ListView.separated(
                       separatorBuilder: (context, index) {
                         return Divider();
@@ -81,6 +81,16 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
               ),
             ),
             SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
+            SliverToBoxAdapter(
+              child: Container(
+                  child: TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Requests',
+                ),
+              )),
+            ),
             SliverFillRemaining(
               hasScrollBody: false,
               fillOverscroll:
