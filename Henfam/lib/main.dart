@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/explore.dart';
 import 'package:Henfam/pages/chat/chatList.dart';
-import 'package:Henfam/pages/explore/ctownDelivery.dart';
+import 'package:Henfam/pages/explore/delivery.dart';
 import 'package:Henfam/pages/chat/chat.dart';
-import 'package:Henfam/pages/explore/menu/ctownMenu.dart';
+import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 
@@ -24,10 +24,10 @@ class HenfamBasic extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/explore': (context) => Explore(),
-        '/ctowndelivery': (context) => CtownDelivery(),
+        '/Delivery': (context) => Delivery(),
         '/chatlist': (context) => ChatList(),
         '/chat': (context) => Chat(),
-        '/ctownmenu': (context) => CtownMenu(),
+        '/Menu': (context) => Menu(),
         '/menu_order_form': (context) => MenuOrderForm(),
         '/basket_form': (context) => Basket(),
       },
@@ -52,7 +52,7 @@ class HenfamBasic extends StatelessWidget {
               Explore(),
               ChatList(),
               Icon(Icons.local_offer),
-              CtownMenu(),
+              Menu(),
               //Icon(Icons.account_circle),
             ],
           ),

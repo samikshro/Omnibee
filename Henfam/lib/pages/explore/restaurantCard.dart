@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Henfam/models/ctownMenuModel.dart';
+import 'package:Henfam/models/menuModel.dart';
 
 class RestaurantCard extends StatelessWidget {
   final MenuModel restaurant;
@@ -10,7 +10,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/ctownmenu', arguments: restaurant);
+        Navigator.pushNamed(context, '/Menu', arguments: restaurant);
       },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),

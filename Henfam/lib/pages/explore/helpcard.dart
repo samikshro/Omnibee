@@ -1,4 +1,4 @@
-import 'package:Henfam/models/ctownMenuModel.dart';
+import 'package:Henfam/models/menuModel.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryArguments {
@@ -43,7 +43,7 @@ class HelpCard extends StatelessWidget {
         onTap: () {
           Navigator.pushNamed(
             context,
-            '/ctowndelivery',
+            '/Delivery',
             arguments: DeliveryArguments(
               _getCategoryCaption(index),
               _getMenu(index),

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/location.dart';
 import 'package:Henfam/widgets/clockicon.dart';
 
-class CtownDeliveryHeader extends StatelessWidget {
+class DeliveryHeader extends StatelessWidget {
   final String location;
   final String caption;
 
-  CtownDeliveryHeader(this.location, this.caption);
+  DeliveryHeader(this.location, this.caption);
 
   @override
   Widget build(BuildContext context) {

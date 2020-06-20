@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:Henfam/models/ctownMenuModel.dart';
-import 'ctownMenuPageHeader.dart';
+import 'package:Henfam/models/menuModel.dart';
+import 'menuPageHeader.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 
-class CtownMenu extends StatefulWidget {
+class Menu extends StatefulWidget {
   final MenuModel restaurant;
 
-  CtownMenu({this.restaurant});
+  Menu({this.restaurant});
 
   @override
   _MenuState createState() => _MenuState();
@@ -14,7 +14,7 @@ class CtownMenu extends StatefulWidget {
 
 bool viewbasket_enabled = false;
 
-class _MenuState extends State<CtownMenu> {
+class _MenuState extends State<Menu> {
   //List<MenuModel> list = MenuModel.ctownList;
 
   Future _navigateAndGetOrderInfo(
@@ -60,7 +60,7 @@ class _MenuState extends State<CtownMenu> {
         SliverPersistentHeader(
           pinned: false,
           floating: true,
-          delegate: CtownMenuPageHeader(
+          delegate: MenuPageHeader(
             restaurant: restaurant,
             minExtent: 150.0,
             maxExtent: 250.0,

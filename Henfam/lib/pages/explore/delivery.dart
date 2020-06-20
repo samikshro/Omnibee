@@ -2,20 +2,20 @@ import 'package:Henfam/pages/explore/helpcard.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/widgets/largeTextSection.dart';
-import 'package:Henfam/models/ctownMenuModel.dart';
+import 'package:Henfam/models/menuModel.dart';
 import 'package:Henfam/pages/explore/errandFee.dart';
-import 'package:Henfam/pages/explore/ctownDeliveryHeader.dart';
+import 'package:Henfam/pages/explore/deliveryHeader.dart';
 
-class CtownDelivery extends StatefulWidget {
+class Delivery extends StatefulWidget {
   List<MenuModel> list;
   String headerCaption;
-  CtownDelivery({this.list, this.headerCaption});
+  Delivery({this.list, this.headerCaption});
 
   @override
-  _CtownDeliveryState createState() => _CtownDeliveryState();
+  _DeliveryState createState() => _DeliveryState();
 }
 
-class _CtownDeliveryState extends State<CtownDelivery> {
+class _DeliveryState extends State<Delivery> {
   var _location = "Olin Library";
 
   @override
@@ -40,7 +40,7 @@ class _CtownDeliveryState extends State<CtownDelivery> {
                       Navigator.pop(context);
                     },
                   ),
-                  CtownDeliveryHeader(
+                  DeliveryHeader(
                     _location,
                     headerCaption,
                   ),

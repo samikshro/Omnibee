@@ -1,10 +1,10 @@
-import 'package:Henfam/models/ctownMenuModel.dart';
+import 'package:Henfam/models/menuModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math';
 
-class CtownMenuPageHeader extends SliverPersistentHeaderDelegate {
-  CtownMenuPageHeader({
+class MenuPageHeader extends SliverPersistentHeaderDelegate {
+  MenuPageHeader({
     this.minExtent,
     @required this.maxExtent,
     @required this.restaurant,
