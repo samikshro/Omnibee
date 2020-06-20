@@ -10,7 +10,8 @@ class MenuModel {
   final String hours;
   final String distance;
   final List<FoodModel> food;
-  final Image photo;
+  final Image smallPhoto;
+  final Image bigPhoto;
 
   MenuModel({
     this.restName,
@@ -18,12 +19,13 @@ class MenuModel {
     this.hours,
     this.distance,
     this.food,
-    this.photo,
+    this.smallPhoto,
+    this.bigPhoto,
   });
 
   RestaurantCard displayRestaurantCard() {
     return RestaurantCard(
-      photo,
+      smallPhoto,
       restName,
       typeFood,
       hours,
@@ -68,22 +70,26 @@ class MenuModel {
     ),
   ];
 
-  static List<MenuModel> list = [
+  static List<MenuModel> ctownList = [
     MenuModel(
       restName: 'Oishii Bowl',
       typeFood: ['Asian', 'Japanese'],
       hours: '9PM',
-      photo: Image(
+      smallPhoto: Image(
+        image: AssetImage('assets/oishiibowl.png'),
+        fit: BoxFit.cover,
+      ),
+      bigPhoto: Image(
         image: AssetImage('assets/oishii_bowl_pic1.png'),
         fit: BoxFit.cover,
       ),
       food: oiishi_food,
     ),
     MenuModel(
-      restName: 'Kung Fu Tea',
+      restName: 'Kung Fu Tear',
       typeFood: ['Beverages'],
       hours: '9PM',
-      photo: Image(
+      smallPhoto: Image(
         image: AssetImage('assets/kungfutea.png'),
         fit: BoxFit.cover,
       ),
@@ -93,8 +99,35 @@ class MenuModel {
       restName: 'Insomnia Cookies',
       typeFood: ['Cookies', 'Desserts'],
       hours: '1AM',
-      photo: Image(
+      smallPhoto: Image(
         image: AssetImage('assets/insomnia.png'),
+        fit: BoxFit.cover,
+      ),
+      food: oiishi_food,
+    ),
+  ];
+
+  static List<MenuModel> campusList = [
+    MenuModel(
+      restName: 'Libe Cafe',
+      typeFood: ['Asian', 'Japanese'],
+      hours: '9PM',
+      smallPhoto: Image(
+        image: AssetImage('assets/oishiibowl.png'),
+        fit: BoxFit.cover,
+      ),
+      bigPhoto: Image(
+        image: AssetImage('assets/oishii_bowl_pic1.png'),
+        fit: BoxFit.cover,
+      ),
+      food: oiishi_food,
+    ),
+    MenuModel(
+      restName: 'Rusty\'s',
+      typeFood: ['Beverages'],
+      hours: '9PM',
+      smallPhoto: Image(
+        image: AssetImage('assets/kungfutea.png'),
         fit: BoxFit.cover,
       ),
       food: oiishi_food,

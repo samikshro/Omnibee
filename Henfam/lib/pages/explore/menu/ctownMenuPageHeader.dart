@@ -15,7 +15,7 @@ class CtownMenuPageHeader extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(fit: StackFit.expand, children: [
       Image.asset(
-        'assets/oiishi_bowl_pic1.png',
+        'assets/oishii_bowl_pic1.png',
         fit: BoxFit.cover,
       ),
       Container(

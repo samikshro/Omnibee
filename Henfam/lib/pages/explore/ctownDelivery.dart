@@ -6,6 +6,9 @@ import 'package:Henfam/pages/explore/errandFee.dart';
 import 'package:Henfam/pages/explore/ctownDeliveryHeader.dart';
 
 class CtownDelivery extends StatefulWidget {
+  List<MenuModel> list;
+  CtownDelivery({this.list});
+
   @override
   _CtownDeliveryState createState() => _CtownDeliveryState();
 }
@@ -13,38 +16,9 @@ class CtownDelivery extends StatefulWidget {
 class _CtownDeliveryState extends State<CtownDelivery> {
   var _location = "Olin Library";
 
-  final favorites = [
-    MenuModel(
-      restName: 'Oishii Bowl',
-      typeFood: ['Asian', 'Japanese'],
-      hours: '9PM',
-      photo: Image(
-        image: AssetImage('assets/oishiibowl.png'),
-      ),
-    ),
-    MenuModel(
-      restName: 'Kung Fu Tea',
-      typeFood: ['Beverages'],
-      hours: '9PM',
-      photo: Image(
-        image: AssetImage('assets/kungfutea.png'),
-      ),
-    ),
-  ];
-
-  final moreRestaurants = [
-    MenuModel(
-      restName: 'Insomnia Cookies',
-      typeFood: ['Cookies', 'Desserts'],
-      hours: '1AM',
-      photo: Image(
-        image: AssetImage('assets/insomnia.png'),
-      ),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<MenuModel> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -66,17 +40,10 @@ class _CtownDeliveryState extends State<CtownDelivery> {
               ),
             ),
             ErrandFee(),
-            LargeTextSection("My Favorites"),
+            LargeTextSection("Choose a restaurant"),
             Column(
-              children: favorites
-                  .map((menu) => menu.displayRestaurantCard())
-                  .toList(),
-            ),
-            LargeTextSection("More Restaurants"),
-            Column(
-              children: moreRestaurants
-                  .map((menu) => menu.displayRestaurantCard())
-                  .toList(),
+              children:
+                  args.map((menu) => menu.displayRestaurantCard()).toList(),
             ),
           ],
         ),

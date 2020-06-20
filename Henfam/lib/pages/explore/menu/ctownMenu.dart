@@ -9,7 +9,7 @@ class CtownMenu extends StatefulWidget {
 }
 
 class _MenuState extends State<CtownMenu> {
-  List<MenuModel> list = MenuModel.list;
+  List<MenuModel> list = MenuModel.ctownList;
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +37,14 @@ class _MenuState extends State<CtownMenu> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/menu_order_form',
-                        arguments: FoodInfo(
-                          name: list[0].food[index].name,
-                          desc: list[0].food[index].desc,
-                          price: list[0].food[index].price,
-                          addOns: list[0].food[index].addOns,
-                          quantity: 1,
-                        )
-                      );
+                      Navigator.pushNamed(context, '/menu_order_form',
+                          arguments: FoodInfo(
+                            name: list[0].food[index].name,
+                            desc: list[0].food[index].desc,
+                            price: list[0].food[index].price,
+                            addOns: list[0].food[index].addOns,
+                            quantity: 1,
+                          ));
                     },
                     title: Text(list[0].food[index].name),
                     subtitle: Wrap(direction: Axis.vertical, children: [

@@ -1,3 +1,4 @@
+import 'package:Henfam/models/ctownMenuModel.dart';
 import 'package:flutter/material.dart';
 
 class HelpCard extends StatelessWidget {
@@ -19,15 +20,20 @@ class HelpCard extends StatelessWidget {
     );
   }
 
+  List<MenuModel> _getMenu(int index) {
+    return (index == 0) ? MenuModel.ctownList : MenuModel.campusList;
+  }
+
   // method to generate help with cards
   List<GestureDetector> _buildGridCards(int count, BuildContext context) {
     List<GestureDetector> cards = List.generate(
       count,
       (int index) => GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/ctowndelivery');
+          Navigator.pushNamed(context, '/ctowndelivery',
+              arguments: _getMenu(index));
         },
-        child: Card (
+        child: Card(
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(6),
           child: Column(
