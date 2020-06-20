@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:Henfam/pages/explore/request/customSlider.dart';
 
 class Request extends StatefulWidget {
   @override
@@ -6,8 +8,15 @@ class Request extends StatefulWidget {
 }
 
 class _RequestState extends State<Request> {
-  DateTime _date = DateTime.now();
-  TimeOfDay _time = TimeOfDay.now();
+  var _date = DateTime.now();
+  var _time = TimeOfDay.now();
+  var _timeWindow = 0.0;
+
+  void _setTimeWindow(value) {
+    setState(() {
+      _timeWindow = value;
+    });
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -37,6 +46,25 @@ class _RequestState extends State<Request> {
     }
   }
 
+  String _formatTime(DateTime date, TimeOfDay time) {
+    final timeFormatter = DateFormat('jm');
+
+    final minutesBefore = -(_timeWindow * 50 + 10).round();
+    final range = Duration(minutes: minutesBefore);
+    final lowerBound = date.add(range);
+
+    String formattedUpperBound = timeFormatter.format(date);
+    String formattedLowerBound = timeFormatter.format(lowerBound);
+
+    return "$formattedLowerBound-$formattedUpperBound";
+  }
+
+  String _formatDate(DateTime date, TimeOfDay time) {
+    final dateFormatter = DateFormat('EEEE, MMMM d');
+    String formattedDate = dateFormatter.format(date);
+    return "$formattedDate";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,28 +80,62 @@ class _RequestState extends State<Request> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              "Delivery Options",
-              style: TextStyle(fontSize: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                "Delivery Options",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                RaisedButton(
-                  child: Text('Select Date'),
-                  onPressed: () {
-                    _selectDate(context);
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Select Time'),
-                  onPressed: () {
-                    _selectTime(context);
-                  },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                "When do you want it by?",
+                style: TextStyle(fontSize: 18),
+              ),
             ),
-            Text('Delivery for ${_date.toString()} at ${_time.toString()}')
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 40),
+                    child: RaisedButton(
+                      child: Text('Select Date'),
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                    ),
+                  ),
+                  RaisedButton(
+                    child: Text('Select Time'),
+                    onPressed: () {
+                      _selectTime(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                "How many minutes sooner can it arrive?",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: CustomSlider(
+                timeWindow: _timeWindow,
+                setTimeWindow: _setTimeWindow,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(_formatDateAndTime(_date, _time),
+                  style: TextStyle(fontSize: 12)),
+            ),
           ],
         ),
       ),
