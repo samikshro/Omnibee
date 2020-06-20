@@ -18,6 +18,7 @@ class MenuOrderForm extends StatefulWidget {
   _MenuOrderFormState createState() => _MenuOrderFormState();
 }
 
+List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
   @override
@@ -57,27 +58,19 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                       itemCount: args.addOns.length,
                       itemBuilder: (context, index) {
                         return CheckboxListTile(
-                          // onTap: () {
-                          //   Navigator.pushNamed(
-                          //     context,
-                          //     '/menu_order_form',
-                          //     arguments: FoodInfo(
-                          //       name: list[0].food[index].name,
-                          //       desc: list[0].food[index].desc,
-                          //       price: list[0].food[index].price,
-                          //       addOns: list[0].food[index].addOns,
-                          //       quantity: 1,
-                          //     )
-                          //   );
-                          // },
                           title: Text(args.addOns[index].name),
                           subtitle: Wrap(direction: Axis.vertical, children: [
                             Text("\$" + args.addOns[index].price.toString()),
                           ]),
-                          value: timeDilation != 1.0,
+                          value:
+                              selectedAddons.contains(args.addOns[index].name),
                           onChanged: (bool value) {
                             setState(() {
-                              timeDilation = value ? 1.0 : 2.0;
+                              if (value) {
+                                selectedAddons.add(args.addOns[index].name);
+                              } else {
+                                selectedAddons.remove(args.addOns[index].name);
+                              }
                             });
                           },
                         );
