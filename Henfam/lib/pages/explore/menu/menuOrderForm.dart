@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class FoodInfo {
   final String name;
@@ -42,6 +43,48 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
             ),
             SliverToBoxAdapter(
               child: LargeTextSection("Add-ons"),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    height: 100.0 * args.addOns.length,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                      itemCount: args.addOns.length,
+                      itemBuilder: (context, index) {
+                        return CheckboxListTile(
+                          // onTap: () {
+                          //   Navigator.pushNamed(
+                          //     context,
+                          //     '/menu_order_form',
+                          //     arguments: FoodInfo(
+                          //       name: list[0].food[index].name,
+                          //       desc: list[0].food[index].desc,
+                          //       price: list[0].food[index].price,
+                          //       addOns: list[0].food[index].addOns,
+                          //       quantity: 1,
+                          //     )
+                          //   );
+                          // },
+                          title: Text(args.addOns[index].name),
+                          subtitle: Wrap(direction: Axis.vertical, children: [
+                            Text("\$" + args.addOns[index].price.toString()),
+                          ]),
+                          value: timeDilation != 1.0,
+                          onChanged: (bool value) {
+                            setState(() {
+                              timeDilation = value ? 1.0 : 2.0;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
             SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
             SliverFillRemaining(
