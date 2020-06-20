@@ -34,8 +34,9 @@ class MenuModel {
     AddOns(
       name: 'Brown Rice',
       price: 1.50,
+      chosen: false,
     ),
-    AddOns(name: 'Red Pepper Flakes', price: 0.0),
+    AddOns(name: 'Red Pepper Flakes', price: 0.00, chosen: false),
   ];
 
   static List<FoodModel> oiishi_food = [
