@@ -12,32 +12,47 @@ class CtownMenu extends StatefulWidget {
   _MenuState createState() => _MenuState();
 }
 
+bool viewbasket_enabled = false;
+
 class _MenuState extends State<CtownMenu> {
   //List<MenuModel> list = MenuModel.ctownList;
 
-  _navigateAndGetOrderInfo(
+  Future _navigateAndGetOrderInfo(
       BuildContext context, int index, MenuModel restaurant) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final result = await Navigator.pushNamed(context, '/menu_order_form',
-        arguments: FoodInfo(
-          name: restaurant.food[index].name,
-          desc: restaurant.food[index].desc,
-          price: restaurant.food[index].price,
-          addOns: restaurant.food[index].addOns,
-          quantity: 1,
-        ));
+    final FoodInfo result =
+        await Navigator.pushNamed(context, '/menu_order_form',
+            arguments: FoodInfo(
+              name: restaurant.food[index].name,
+              desc: restaurant.food[index].desc,
+              price: restaurant.food[index].price,
+              addOns: restaurant.food[index].addOns,
+              quantity: 1,
+            ));
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
     Scaffold.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("$result")));
+      ..showSnackBar(SnackBar(content: Text("Added " + result.name + "!")
+          // Text("$result")
+          ));
+
+    setState(() {
+      viewbasket_enabled = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final MenuModel restaurant = ModalRoute.of(context).settings.arguments;
+    var _onPressed;
+    if (viewbasket_enabled) {
+      _onPressed = () {
+        Navigator.pushNamed(context, '/basket_form');
+      };
+    }
 
     return Scaffold(
         body: CustomScrollView(
@@ -89,6 +104,23 @@ class _MenuState extends State<CtownMenu> {
             )
           ]),
         ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll:
+              true, // Set true to change overscroll behavior. Purely preference.
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: RaisedButton(
+                child: Text('View Basket', style: TextStyle(fontSize: 20.0)),
+                color: Colors.amberAccent,
+                onPressed: _onPressed,
+              ),
+            ),
+          ),
+        )
       ],
     ));
   }
