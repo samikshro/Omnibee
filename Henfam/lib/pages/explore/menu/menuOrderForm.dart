@@ -104,7 +104,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      Navigator.pop(context, 'Added ' + args.name + '!'
+                      List<String> list = new List<String>();
+                      list.add(args.name);
+                      list.add(args.price);
+                      Navigator.pop(context, args
                           //'/basket_form',
                           //   arguments: FoodInfo(
                           //   name: list[0].food[index].name,

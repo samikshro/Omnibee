@@ -8,13 +8,15 @@ class CtownMenu extends StatefulWidget {
   _MenuState createState() => _MenuState();
 }
 
+bool viewbasket_enabled = false;
+
 class _MenuState extends State<CtownMenu> {
   List<MenuModel> list = MenuModel.ctownList;
 
-  _navigateAndGetOrderInfo(BuildContext context, int index) async {
+  Future _navigateAndGetOrderInfo(BuildContext context, int index) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final result = await Navigator.pushNamed(context, '/menu_order_form',
+    final FoodInfo result = await Navigator.pushNamed(context, '/menu_order_form',
         arguments: FoodInfo(
           name: list[0].food[index].name,
           desc: list[0].food[index].desc,
@@ -27,11 +29,24 @@ class _MenuState extends State<CtownMenu> {
     // and show the new result.
     Scaffold.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("$result")));
+      ..showSnackBar(SnackBar(content: Text("Added " + result.name + "!")
+          // Text("$result")
+          ));
+
+    setState(() {
+      viewbasket_enabled = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var _onPressed;
+    if (viewbasket_enabled) {
+      _onPressed = () {
+        Navigator.pushNamed(context, '/basket_form');
+      };
+    }
+
     return Scaffold(
         body: CustomScrollView(
       slivers: <Widget>[
@@ -57,14 +72,6 @@ class _MenuState extends State<CtownMenu> {
                   return ListTile(
                     onTap: () {
                       _navigateAndGetOrderInfo(context, index);
-                      // Navigator.pushNamed(context, '/menu_order_form',
-                      //     arguments: FoodInfo(
-                      //       name: list[0].food[index].name,
-                      //       desc: list[0].food[index].desc,
-                      //       price: list[0].food[index].price,
-                      //       addOns: list[0].food[index].addOns,
-                      //       quantity: 1,
-                      //     ));
                     },
                     title: Text(list[0].food[index].name),
                     subtitle: Wrap(direction: Axis.vertical, children: [
@@ -81,6 +88,23 @@ class _MenuState extends State<CtownMenu> {
             )
           ]),
         ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll:
+              true, // Set true to change overscroll behavior. Purely preference.
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: RaisedButton(
+                child: Text('View Basket', style: TextStyle(fontSize: 20.0)),
+                color: Colors.amberAccent,
+                onPressed: _onPressed,
+              ),
+            ),
+          ),
+        )
       ],
     ));
   }
