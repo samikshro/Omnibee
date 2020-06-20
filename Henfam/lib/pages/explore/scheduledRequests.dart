@@ -30,12 +30,11 @@ class ScheduledRequests extends StatelessWidget {
             child: Container(
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.amber)),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
                 onPressed: () {
                   print("Hello!");
                 },
-                color: Colors.amber,
                 textColor: Colors.white,
                 child:
                     Text("View".toUpperCase(), style: TextStyle(fontSize: 14)),

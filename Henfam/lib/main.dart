@@ -14,7 +14,12 @@ void main() {
 class HenfamBasic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeData baseTheme = ThemeData.light();
     return MaterialApp(
+      theme: ThemeData(
+          textTheme: TextTheme(bodyText2: TextStyle(color: Colors.black)),
+          buttonTheme:
+              baseTheme.buttonTheme.copyWith(buttonColor: Colors.amber)),
       initialRoute: '/',
       routes: {
         '/explore': (context) => Explore(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:custom_switch/custom_switch.dart';
 
 class LilBigSwitch extends StatelessWidget {
   final Function switchToLil;
@@ -32,7 +31,6 @@ class LilBigSwitch extends StatelessWidget {
         Container(
           width: 130,
           child: RaisedButton(
-            color: Colors.cyanAccent[100],
             child: Text(
               "BIG",
               style: TextStyle(
