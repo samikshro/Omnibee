@@ -21,9 +21,9 @@ class Basket extends StatefulWidget {
 
 class _BasketState extends State<Basket> {
   String _ordersToAddons(List<AddOns> list) {
-    String s;
+    String s = '';
     for (int i = 0; i < list.length; i++) {
-      s += list[i].name + "; ";
+      s = s + list[i].name + "; ";
     }
     return s;
   }
