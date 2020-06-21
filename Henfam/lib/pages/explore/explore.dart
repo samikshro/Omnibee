@@ -3,7 +3,7 @@ import 'package:custom_switch/custom_switch.dart';
 
 import './lilBigButtons.dart';
 import './lilMode.dart';
-import './bigMode.dart';
+import 'package:Henfam/pages/explore/big_explore/bigMode.dart';
 import './locationEggScore.dart';
 
 class Explore extends StatefulWidget {
