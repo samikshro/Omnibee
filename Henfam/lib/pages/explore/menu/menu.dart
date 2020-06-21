@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/models/menuModel.dart';
 import 'menuPageHeader.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
+import 'package:Henfam/pages/explore/menu/basketForm.dart';
 
 class Menu extends StatefulWidget {
   final MenuModel restaurant;
 
+  //static bool viewbasket_enabled = false;
   Menu({this.restaurant});
 
   @override
   _MenuState createState() => _MenuState();
 }
 
-bool viewbasket_enabled = false;
+bool _viewbasket_enabled = false;
+var _onPressed;
+//List<FoodInfo> order;
 
 class _MenuState extends State<Menu> {
-  //List<MenuModel> list = MenuModel.ctownList;
-
-  Future _navigateAndGetOrderInfo(
+  static List<FoodInfo> order;
+  Future<FoodInfo> _navigateAndGetOrderInfo(
       BuildContext context, int index, MenuModel restaurant) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
@@ -39,19 +42,36 @@ class _MenuState extends State<Menu> {
           ));
 
     setState(() {
-      viewbasket_enabled = true;
+      _viewbasket_enabled = true;
     });
+
+    print(result.name);
+    // order = result;
+    // .add(result);
+    //_MenuState.order.add(result);
+    //print(order[0].name);
+    //print(result.name);
+    // print(order.length);
+    return result;
   }
 
   @override
   Widget build(BuildContext context) {
     final MenuModel restaurant = ModalRoute.of(context).settings.arguments;
-    var _onPressed;
-    if (viewbasket_enabled) {
-      _onPressed = () {
-        Navigator.pushNamed(context, '/basket_form');
-      };
-    }
+    Future<FoodInfo> res;
+    
+
+    // if (_viewbasket_enabled) {
+    //   res.then((FoodInfo ord) {
+    //     if (ord != null) {
+    //       _onPressed = () {
+    //         Navigator.pushNamed(context, '/basket_form', arguments: [ord]);
+    //       };
+    //     } else {
+    //       _onPressed = () {};
+    //     }
+    //   });
+    // }
 
     return Scaffold(
         body: CustomScrollView(
@@ -78,15 +98,24 @@ class _MenuState extends State<Menu> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      _navigateAndGetOrderInfo(context, index, restaurant);
-                      // Navigator.pushNamed(context, '/menu_order_form',
-                      //     arguments: FoodInfo(
-                      //       name: list[0].food[index].name,
-                      //       desc: list[0].food[index].desc,
-                      //       price: list[0].food[index].price,
-                      //       addOns: list[0].food[index].addOns,
-                      //       quantity: 1,
-                      //     ));
+                      _navigateAndGetOrderInfo(context, index, restaurant)
+                          .then((FoodInfo ord) {
+                        print(_viewbasket_enabled);
+
+                        if (ord != null) {
+                          print(ord.name);
+                          setState(() {
+                            _onPressed = () {
+                              Navigator.pushNamed(context, '/basket_form',
+                                  arguments: BasketData(orders: [ord].toList()));
+                            };
+                          });
+
+                          print(_onPressed);
+                        } else {
+                          _onPressed = () {};
+                        }
+                      });
                     },
                     title: Text(restaurant.food[index].name),
                     subtitle: Wrap(direction: Axis.vertical, children: [

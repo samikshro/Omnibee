@@ -104,9 +104,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      List<String> list = new List<String>();
-                      list.add(args.name);
-                      list.add(args.price);
                       Navigator.pop(context, args);
                     },
                   ),
