@@ -65,85 +65,6 @@
 //     return "$formattedDate";
 //   }
 
-<<<<<<< HEAD
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey,
-        title: Text(
-          'Your Request',
-          // style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                "Delivery Options",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                "When do you want it by?",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 40),
-                    child: RaisedButton(
-                      child: Text('Select Date'),
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text('Select Time'),
-                    onPressed: () {
-                      _selectTime(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                "How many minutes sooner can it arrive?",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CustomSlider(
-                timeWindow: _timeWindow,
-                setTimeWindow: _setTimeWindow,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(_formatTime(_date, _time),
-                  style: TextStyle(fontSize: 12)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-=======
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -222,4 +143,3 @@
 //     );
 //   }
 // }
->>>>>>> 3cb5cec940c7c6543c1d4079f42f1e8c16fa164b

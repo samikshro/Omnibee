@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 class BigMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: Center(
-        child: Text("Big mode!"),
-      ),
-    );
+    return Column(children: <Widget>[
+      Text("Big mode!"),
+      Text("Big mode p2"),
+    ]);
   }
 }

@@ -7,7 +7,7 @@ import 'package:Henfam/pages/chat/chat.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
-import 'package:Henfam/pages/explore/request/request.dart';
+import 'package:Henfam/pages/account/profile.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -54,8 +54,7 @@ class HenfamBasic extends StatelessWidget {
               Explore(),
               ChatList(),
               Icon(Icons.local_offer),
-              Menu(),
-              //Icon(Icons.account_circle),
+              Profile(),
             ],
           ),
         ),
