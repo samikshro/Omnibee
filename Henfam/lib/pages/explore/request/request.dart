@@ -133,7 +133,7 @@ class _RequestState extends State<Request> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(_formatDateAndTime(_date, _time),
+              child: Text(_formatTime(_date, _time),
                   style: TextStyle(fontSize: 12)),
             ),
           ],
