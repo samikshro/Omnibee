@@ -7,6 +7,7 @@ import 'package:Henfam/pages/chat/chat.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
+import 'package:Henfam/pages/explore/request/request.dart';
 import 'package:Henfam/pages/account/profile.dart';
 
 void main() {
@@ -31,7 +32,7 @@ class HenfamBasic extends StatelessWidget {
         '/Menu': (context) => Menu(),
         '/menu_order_form': (context) => MenuOrderForm(),
         '/basket_form': (context) => Basket(),
-        // '/request': (context) => Request(),
+        '/request': (context) => Request(),
         // '/bigmode': (context) => BigMode()
       },
       home: DefaultTabController(
