@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/account/widgets/profileNew.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/explore.dart';
