@@ -8,6 +8,7 @@ import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/pages/account/profile.dart';
+import 'package:Henfam/pages/explore/big_explore/bigMode.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -32,7 +33,7 @@ class HenfamBasic extends StatelessWidget {
         '/menu_order_form': (context) => MenuOrderForm(),
         '/basket_form': (context) => Basket(),
         // '/request': (context) => Request(),
-        // '/bigmode': (context) => BigMode()
+        '/bigmode': (context) => BigMode()
       },
       home: DefaultTabController(
         length: 4,
@@ -54,7 +55,8 @@ class HenfamBasic extends StatelessWidget {
             children: [
               Explore(),
               ChatList(),
-              Icon(Icons.local_offer),
+              //Icon(Icons.local_offer),
+              BigMode(),
               Profile(),
             ],
           ),
