@@ -2,6 +2,7 @@ import 'package:Henfam/models/errandModel.dart';
 import 'package:Henfam/pages/explore/errandCard.dart';
 import 'package:Henfam/widgets/notificationCircle.dart';
 import 'package:flutter/material.dart';
+import 'package:Henfam/pages/explore/lilCard.dart';
 
 class ErrandDropDown extends StatelessWidget {
   final String caption;
@@ -24,7 +25,7 @@ class ErrandDropDown extends StatelessWidget {
             shrinkWrap: true,
             itemCount: errands.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              return ErrandCard(
+              return LilCard(
                 bigHenImage: errands[index].bigHenImage,
                 bigHenName: errands[index].bigHenName,
                 location: errands[index].location,
