@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:Henfam/pages/explore/request/widgets/deliveryOptions.dart';
 import 'package:Henfam/pages/explore/request/widgets/locationDetails.dart';
 import 'package:Henfam/pages/explore/request/widgets/paymentSection.dart';
@@ -63,7 +64,13 @@ class _RequestState extends State<Request> {
                     child:
                         Text('Submit Order', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/matching',
+                        arguments: DateAndRange(_deliveryDate, _deliveryRange),
+                      );
+                    },
                   ),
                 ),
               ),

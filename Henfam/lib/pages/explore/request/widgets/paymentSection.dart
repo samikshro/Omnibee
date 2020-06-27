@@ -1,4 +1,4 @@
-import 'package:Henfam/pages/explore/request/widgets/miniHeader.dart';
+import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/material.dart';
 

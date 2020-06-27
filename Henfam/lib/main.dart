@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/explore.dart';
@@ -34,7 +35,8 @@ class HenfamBasic extends StatelessWidget {
         '/menu_order_form': (context) => MenuOrderForm(),
         '/basket_form': (context) => Basket(),
         '/request': (context) => Request(),
-         '/bigmode': (context) => BigMode()
+        '/bigmode': (context) => BigMode(),
+        '/matching': (context) => MatchingProgress(),
       },
       home: DefaultTabController(
         length: 4,

@@ -96,7 +96,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
               minuteInterval: 10,
               mode: CupertinoDatePickerMode.time,
               use24hFormat: true,
-              minimumDate: DateTime(_date.year, _date.month, _date.day),
+              minimumDate: DateTime(_date.year, _date.month, _date.day, 0, 30),
               maximumDate: DateTime(_date.year, _date.month, _date.day)
                   .add(Duration(hours: 4)),
               initialDateTime: DateTime(_date.year, _date.month, _date.day),
