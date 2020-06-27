@@ -23,9 +23,10 @@ class _ExploreState extends State<Explore> {
   }
 
   void _switchToBig() {
-    setState(() {
-      _isLil = false;
-    });
+    // setState(() {
+    //   _isLil = false;
+    // });
+    Navigator.pushNamed(context, '/bigmode');
   }
 
   final _activities = const [
