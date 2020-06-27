@@ -42,15 +42,6 @@ class _BasketState extends State<Basket> {
         body: SafeArea(
             child: CustomScrollView(
           slivers: <Widget>[
-            // SliverToBoxAdapter(
-            //   child: Padding(
-            //     padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
-            //     child: Text(
-            //       args.desc,
-            //       style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-            //     ),
-            //   ),
-            // ),
             SliverToBoxAdapter(
               child: LargeTextSection("Items"),
             ),
@@ -86,17 +77,6 @@ class _BasketState extends State<Basket> {
                 ],
               ),
             ),
-            // SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
-            // SliverToBoxAdapter(
-            //   child: Container(
-            //       child: TextField(
-            //     obscureText: false,
-            //     decoration: InputDecoration(
-            //       border: OutlineInputBorder(),
-            //       labelText: 'Requests',
-            //     ),
-            //   )),
-            // ),
             SliverFillRemaining(
               hasScrollBody: false,
               fillOverscroll:
