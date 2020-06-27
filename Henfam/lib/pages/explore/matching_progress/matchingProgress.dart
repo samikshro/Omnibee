@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/matching_progress/widgets/requestDetails.dart';
 import 'package:Henfam/pages/explore/matching_progress/widgets/requestWindow.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,7 @@ class MatchingProgress extends StatelessWidget {
               ),
             ),
             RequestWindow(args.date, args.range),
+            RequestDetails(),
           ],
         ));
   }
