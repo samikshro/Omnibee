@@ -3,12 +3,14 @@ import 'package:Henfam/models/menuModel.dart';
 import 'menuPageHeader.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Menu extends StatefulWidget {
-  final MenuModel restaurant;
+  // final MenuModel restaurant;
+  final DocumentSnapshot document;
 
   //static bool viewbasket_enabled = false;
-  Menu({this.restaurant});
+  Menu({this.document});
 
   @override
   _MenuState createState() => _MenuState();
@@ -33,25 +35,19 @@ class _MenuState extends State<Menu> {
           quantity: 1,
         )) as FoodInfo;
 
+
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
     Scaffold.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("Added " + result.name + "!")
-          // Text("$result")
-          ));
+      ..showSnackBar(SnackBar(content: Text("Added " + result.name + "!")));
 
     setState(() {
       _viewbasket_enabled = true;
     });
 
     print(result.name);
-    // order = result;
-    // .add(result);
-    //_MenuState.order.add(result);
-    //print(order[0].name);
-    //print(result.name);
-    // print(order.length);
+
     return result;
   }
 
@@ -59,19 +55,6 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     final MenuModel restaurant = ModalRoute.of(context).settings.arguments;
     Future<FoodInfo> res;
-    
-
-    // if (_viewbasket_enabled) {
-    //   res.then((FoodInfo ord) {
-    //     if (ord != null) {
-    //       _onPressed = () {
-    //         Navigator.pushNamed(context, '/basket_form', arguments: [ord]);
-    //       };
-    //     } else {
-    //       _onPressed = () {};
-    //     }
-    //   });
-    // }
 
     return Scaffold(
         body: CustomScrollView(
@@ -107,7 +90,8 @@ class _MenuState extends State<Menu> {
                           setState(() {
                             _onPressed = () {
                               Navigator.pushNamed(context, '/basket_form',
-                                  arguments: BasketData(orders: [ord].toList()));
+                                  arguments:
+                                      BasketData(orders: [ord].toList()));
                             };
                           });
 

@@ -23,9 +23,9 @@ class MenuModel {
     this.bigPhoto,
   });
 
-  RestaurantCard displayRestaurantCard() {
-    return RestaurantCard(this);
-  }
+  // RestaurantCard displayRestaurantCard() {
+  //   return RestaurantCard(this);
+  // }
 
   static List<AddOns> katsu_don_addons = [
     AddOns(
