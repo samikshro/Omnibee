@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomTile extends StatelessWidget {
   final String label;
+  final Function onTap;
 
-  CustomTile(this.label);
+  CustomTile({this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (onTap != null) {
+          onTap();
+        }
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

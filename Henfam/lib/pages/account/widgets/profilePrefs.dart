@@ -11,8 +11,8 @@ class ProfilePrefs extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SectionHeader('Preferences'),
-          CustomTile('Notification Settings'),
-          CustomTile('Location Settings'),
+          CustomTile(label: 'Notification Settings'),
+          CustomTile(label: 'Location Settings'),
         ],
       ),
     );

@@ -15,7 +15,7 @@ class ProfilePointsBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SectionHeader('Your Points'),
-          CustomTile('350'),
+          CustomTile(label: '350'),
         ],
       ),
     );

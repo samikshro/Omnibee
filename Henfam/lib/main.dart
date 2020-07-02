@@ -1,3 +1,5 @@
+import 'package:Henfam/auth/authentication.dart';
+import 'package:Henfam/auth/root_page.dart';
 import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:flutter/material.dart';
 
@@ -38,32 +40,8 @@ class HenfamBasic extends StatelessWidget {
         '/bigmode': (context) => BigMode(),
         '/matching': (context) => MatchingProgress(),
       },
-      home: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          // appBar: AppBar(
-          //   title: Text('Henfam'),
-          //   backgroundColor: Colors.amber,
-          // ),
-          bottomNavigationBar: TabBar(
-              indicatorColor: Colors.amber,
-              labelColor: Colors.amber,
-              tabs: [
-                Tab(icon: Icon(Icons.explore)),
-                Tab(icon: Icon(Icons.chat)),
-                Tab(icon: Icon(Icons.local_offer)),
-                Tab(icon: Icon(Icons.account_circle)),
-              ]),
-          body: TabBarView(
-            children: [
-              Explore(),
-              ChatList(),
-              //Icon(Icons.local_offer),
-              BigMode(),
-              Profile(),
-            ],
-          ),
-        ),
+      home: new RootPage(
+        auth: new Auth(),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileEarnings.dart';
 import 'package:Henfam/pages/account/widgets/profileErrandSnapshot.dart';
@@ -7,6 +8,21 @@ import 'package:Henfam/pages/account/widgets/profilePrefs.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+  final String userId;
+
+  Profile(this.auth, this.logoutCallback, this.userId);
+
+  signOut() async {
+    try {
+      await auth.signOut();
+      logoutCallback();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +49,7 @@ class Profile extends StatelessWidget {
             Divider(
               color: Colors.black,
             ),
-            ProfileContact(),
+            ProfileContact(signOut),
           ],
         ));
   }
