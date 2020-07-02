@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FoodInfo {
   final String name;
@@ -10,6 +11,12 @@ class FoodInfo {
   int quantity;
 
   FoodInfo({this.name, this.desc, this.price, this.quantity, this.addOns});
+}
+
+class FoodDocument {
+  final DocumentSnapshot document;
+  final int index;
+  FoodDocument({this.document, this.index});
 }
 
 class MenuOrderForm extends StatefulWidget {
@@ -22,14 +29,15 @@ List<String> selectedAddons = [];
 class _MenuOrderFormState extends State<MenuOrderForm> {
   @override
   Widget build(BuildContext context) {
-    final FoodInfo args = ModalRoute.of(context).settings.arguments;
+    // final FoodInfo args = ModalRoute.of(context).settings.arguments;
+    final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.grey,
-          title: Text(
-            args.name,
-            // style: TextStyle(color: Colors.black),
-          )),
+          title: Text(foodDoc.document['food'][foodDoc.index]['name'],
+              // args.name,
+              // style: TextStyle(color: Colors.black),
+              )),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -37,7 +45,8 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
                 child: Text(
-                  args.desc,
+                  foodDoc.document['food'][foodDoc.index]['desc'],
+                  //args.desc,
                   style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
                 ),
               ),
@@ -45,40 +54,40 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
             SliverToBoxAdapter(
               child: LargeTextSection("Add-ons"),
             ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    height: 90.0 * args.addOns.length,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return Divider();
-                      },
-                      itemCount: args.addOns.length,
-                      itemBuilder: (context, index) {
-                        return CheckboxListTile(
-                          title: Text(args.addOns[index].name),
-                          subtitle: Wrap(direction: Axis.vertical, children: [
-                            Text("\$" + args.addOns[index].price.toString()),
-                          ]),
-                          value:
-                              selectedAddons.contains(args.addOns[index].name),
-                          onChanged: (bool value) {
-                            setState(() {
-                              if (value) {
-                                selectedAddons.add(args.addOns[index].name);
-                              } else {
-                                selectedAddons.remove(args.addOns[index].name);
-                              }
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // SliverList(
+            //   delegate: SliverChildListDelegate(
+            //     [
+            //       Container(
+            //         height: 90.0 * args.addOns.length,
+            //         child: ListView.separated(
+            //           separatorBuilder: (context, index) {
+            //             return Divider();
+            //           },
+            //           itemCount: args.addOns.length,
+            //           itemBuilder: (context, index) {
+            //             return CheckboxListTile(
+            //               title: Text(args.addOns[index].name),
+            //               subtitle: Wrap(direction: Axis.vertical, children: [
+            //                 Text("\$" + args.addOns[index].price.toString()),
+            //               ]),
+            //               value:
+            //                   selectedAddons.contains(args.addOns[index].name),
+            //               onChanged: (bool value) {
+            //                 setState(() {
+            //                   if (value) {
+            //                     selectedAddons.add(args.addOns[index].name);
+            //                   } else {
+            //                     selectedAddons.remove(args.addOns[index].name);
+            //                   }
+            //                 });
+            //               },
+            //             );
+            //           },
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
             SliverToBoxAdapter(
               child: Container(
@@ -104,7 +113,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      Navigator.pop(context, args);
+                      Navigator.pop(context, foodDoc); //, args);
                     },
                   ),
                 ),
