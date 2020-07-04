@@ -3,16 +3,6 @@ import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FoodInfo {
-  final String name;
-  final String desc;
-  final String price;
-  final List<AddOns> addOns;
-  int quantity;
-
-  FoodInfo({this.name, this.desc, this.price, this.quantity, this.addOns});
-}
-
 class FoodDocument {
   final DocumentSnapshot document;
   final int index;
@@ -27,17 +17,17 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
+  final firestoreInstance = Firestore.instance;
   @override
   Widget build(BuildContext context) {
-    // final FoodInfo args = ModalRoute.of(context).settings.arguments;
     final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.grey,
-          title: Text(foodDoc.document['food'][foodDoc.index]['name'],
-              // args.name,
-              // style: TextStyle(color: Colors.black),
-              )),
+          title: Text(
+            foodDoc.document['food'][foodDoc.index]['name'],
+            // style: TextStyle(color: Colors.black),
+          )),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -113,6 +103,28 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
+                      firestoreInstance.collection("orders").add({
+                        "user_id": {
+                          "name": "Ada Lovelace",
+                          // Index Ada's groups in her profile
+                          "rest_name_used": "Oishii Bowl",
+                          "basket": [
+                            {
+                              "name": foodDoc.document['food'][foodDoc.index]
+                                  ['name'],
+                              "price": foodDoc.document['food'][foodDoc.index]
+                                  ['price'],
+                            },
+                          ],
+                          //"delivery_date": "",
+                          //"delivery_range": "",
+                          //"total_fee": "", //don't know if we need this
+                          //"order_expiration_time": "",
+                          //"deliver_to_location": "",
+                        }
+                      }).then((value) {
+                        print(value.documentID);
+                      });
                       Navigator.pop(context, foodDoc); //, args);
                     },
                   ),

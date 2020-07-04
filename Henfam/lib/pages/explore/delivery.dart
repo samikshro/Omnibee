@@ -65,7 +65,7 @@ class _DeliveryState extends State<Delivery> {
                               document: snapshot.data.documents[index]);
                         });
                   }),
-            ] // menuList.map((menu) => menu.displayRestaurantCard()).toList(),
+            ] 
                 ),
           ],
         ),

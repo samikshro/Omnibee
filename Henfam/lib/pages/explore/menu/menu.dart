@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:Henfam/models/menuModel.dart';
 import 'menuPageHeader.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
@@ -21,7 +20,6 @@ var _onPressed;
 //List<FoodInfo> order;
 
 class _MenuState extends State<Menu> {
-  static List<FoodInfo> order;
   Future<FoodDocument> _navigateAndGetOrderInfo(
       BuildContext context, int index, DocumentSnapshot document) async {
     //MenuModel restaurant) async {
@@ -32,14 +30,6 @@ class _MenuState extends State<Menu> {
           document: document,
           index: index,
         )) as FoodDocument;
-
-    // arguments: FoodInfo(
-    //   name: restaurant.food[index].name,
-    //   desc: restaurant.food[index].desc,
-    //   price: restaurant.food[index].price,
-    //   addOns: restaurant.food[index].addOns,
-    //   quantity: 1,
-    // )) as FoodInfo;
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
@@ -62,7 +52,6 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
-    Future<FoodInfo> res;
 
     return Scaffold(
         body: CustomScrollView(
@@ -71,7 +60,6 @@ class _MenuState extends State<Menu> {
           pinned: false,
           floating: true,
           delegate: MenuPageHeader(
-            // restaurant: restaurant,
             document: document,
             minExtent: 150.0,
             maxExtent: 250.0,
@@ -81,19 +69,17 @@ class _MenuState extends State<Menu> {
           delegate: SliverChildListDelegate([
             ExpansionTile(
                 title: Text('Open until ' + document['hours']['end_time'])),
-            // ExpansionTile(title: Text('Open until ' + restaurant.hours)),
             Container(
-              height: 100.0 * document['food'].length, //restaurant.food.length,
+              height: 100.0 * document['food'].length,
               child: ListView.separated(
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: document['food'].length, //restaurant.food.length,
+                itemCount: document['food'].length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      _navigateAndGetOrderInfo(
-                          context, index, document); //restaurant)
+                      _navigateAndGetOrderInfo(context, index, document);
                       //     .then((FoodInfo ord) {
                       //   print(_viewbasket_enabled);
 
@@ -113,16 +99,11 @@ class _MenuState extends State<Menu> {
                       //   }
                       // });
                     },
-                    title: //Text(restaurant.food[index].name),
-                        Text(document['food'][index]['name']),
+                    title: Text(document['food'][index]['name']),
                     subtitle: Wrap(direction: Axis.vertical, children: [
-                      Text(
-                          // restaurant.food[index].desc,
-                          document['food'][index]['desc']),
+                      Text(document['food'][index]['desc']),
                       // SizedBox(width: 25),
-                      Text("\$" +
-                          document['food'][index]['price']
-                              .toString()), //restaurant.food[index].price),
+                      Text("\$" + document['food'][index]['price'].toString()),
                     ]),
                     isThreeLine: true,
                   );
