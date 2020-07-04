@@ -25,8 +25,12 @@ class ShowEmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = (isLoginForm)
+        ? const EdgeInsets.fromLTRB(0.0, 158.0, 0.0, 0.0)
+        : const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0);
+
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: topPadding,
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,

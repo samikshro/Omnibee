@@ -2,6 +2,7 @@ import 'package:Henfam/auth/widgets/circularProgress.dart';
 import 'package:Henfam/auth/widgets/emailInput.dart';
 import 'package:Henfam/auth/widgets/errorMessage.dart';
 import 'package:Henfam/auth/widgets/logo.dart';
+import 'package:Henfam/auth/widgets/nameInput.dart';
 import 'package:Henfam/auth/widgets/passwordInput.dart';
 import 'package:Henfam/auth/widgets/primaryButton.dart';
 import 'package:Henfam/auth/widgets/secondaryButton.dart';
@@ -21,6 +22,7 @@ class LoginSignupPage extends StatefulWidget {
 class _LoginSignupPageState extends State<LoginSignupPage> {
   final _formKey = new GlobalKey<FormState>();
 
+  String _name;
   String _email;
   String _password;
   String _errorMessage = '';
@@ -38,6 +40,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
     _isLoading = false;
     return false;
+  }
+
+  void saveName(String value) {
+    _name = value.trim();
   }
 
   void saveEmail(String value) {
@@ -72,7 +78,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
         } else {
-          userId = await widget.auth.signUp(_email, _password);
+          userId = await widget.auth.signUp(_name, _email, _password);
         }
         setState(() {
           _isLoading = false;
@@ -101,6 +107,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           shrinkWrap: true,
           children: <Widget>[
             ShowLogo(_isLoading),
+            ShowNameInput(_isLoginForm, saveName),
             ShowEmailInput(_isLoginForm, saveEmail),
             ShowPasswordInput(savePassword),
             ShowPrimaryButton(_isLoginForm, validateAndSubmit),
