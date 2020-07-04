@@ -17,11 +17,11 @@ class Menu extends StatefulWidget {
 
 bool _viewbasket_enabled = false;
 var _onPressed;
-//List<FoodInfo> order;
+List<FoodInfo> order;
 
 class _MenuState extends State<Menu> {
-  Future<FoodDocument> _navigateAndGetOrderInfo(
-      BuildContext context, int index, DocumentSnapshot document) async {
+  Future<FoodDocument> _navigateAndGetOrderInfo(BuildContext context, int index,
+      DocumentSnapshot document, List<FoodInfo> order) async {
     //MenuModel restaurant) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
@@ -29,6 +29,7 @@ class _MenuState extends State<Menu> {
         arguments: FoodDocument(
           document: document,
           index: index,
+          order: order,
         )) as FoodDocument;
 
     // After the Selection Screen returns a result, hide any previous snackbars
@@ -41,6 +42,10 @@ class _MenuState extends State<Menu> {
 
     setState(() {
       _viewbasket_enabled = true;
+    });
+
+    setState(() {
+      order = result.order;
     });
 
     // print(result.name);
@@ -79,25 +84,24 @@ class _MenuState extends State<Menu> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      _navigateAndGetOrderInfo(context, index, document);
-                      //     .then((FoodInfo ord) {
-                      //   print(_viewbasket_enabled);
+                      _navigateAndGetOrderInfo(context, index, document, order)
+                          .then((FoodDocument ord) {
+                        print(_viewbasket_enabled);
 
-                      //   if (ord != null) {
-                      //     print(ord.name);
-                      //     setState(() {
-                      //       _onPressed = () {
-                      //         Navigator.pushNamed(context, '/basket_form',
-                      //             arguments:
-                      //                 BasketData(orders: [ord].toList()));
-                      //       };
-                      //     });
+                        if (ord != null) {
+                          // print(ord.document);
+                          setState(() {
+                            _onPressed = () {
+                              Navigator.pushNamed(context, '/basket_form',
+                                  arguments: BasketData(orders: ord.order));
+                            };
+                          });
 
-                      //     print(_onPressed);
-                      //   } else {
-                      //     _onPressed = () {};
-                      //   }
-                      // });
+                          print(_onPressed);
+                        } else {
+                          _onPressed = () {};
+                        }
+                      });
                     },
                     title: Text(document['food'][index]['name']),
                     subtitle: Wrap(direction: Axis.vertical, children: [

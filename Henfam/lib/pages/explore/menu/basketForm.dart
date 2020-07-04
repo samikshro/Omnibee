@@ -10,8 +10,8 @@ class BasketData {
   // final List<String> requests;
   // final List<String> addons;
   // BasketData({this.names, this.prices, this.requests, this.addons});
-  // final List<FoodInfo> orders;
-  // BasketData({this.orders});
+  final List<FoodInfo> orders;
+  BasketData({this.orders});
 }
 
 class Basket extends StatefulWidget {
@@ -35,7 +35,7 @@ class _BasketState extends State<Basket> {
         appBar: AppBar(
             backgroundColor: Colors.grey,
             title: Text(
-              //_ordersToAddons(args.orders[0].addOns)
+              // _ordersToAddons(args.orders[0].addOns)
               'My Basket',
               // style: TextStyle(color: Colors.black),
             )),

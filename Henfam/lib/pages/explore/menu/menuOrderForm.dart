@@ -5,10 +5,17 @@ import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class FoodInfo {
+  String name;
+  double price;
+  FoodInfo({this.name, this.price});
+}
+
 class FoodDocument {
   final DocumentSnapshot document;
   final int index;
-  FoodDocument({this.document, this.index});
+  List<FoodInfo> order;
+  FoodDocument({this.document, this.index, this.order});
 }
 
 class MenuOrderForm extends StatefulWidget {
@@ -24,8 +31,8 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
   final firestoreInstance = Firestore.instance;
 
   Future<String> _getUserID() async {
-    final result = await widget.auth.getCurrentUserId();
-    return result;
+    final result = await widget.auth.getCurrentUser();
+    return result.uid;
   }
 
   @override
@@ -113,31 +120,31 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      _getUserID().then((String s) {
-                        firestoreInstance.collection("orders").add({
-                          "user_id": {
-                            "name": s,
-                            // Index Ada's groups in her profile
-                            "rest_name_used": "Oishii Bowl",
-                            "basket": [
-                              {
-                                "name": foodDoc.document['food'][foodDoc.index]
-                                    ['name'],
-                                "price": foodDoc.document['food'][foodDoc.index]
-                                    ['price'],
-                              },
-                            ],
-                            //"delivery_date": "",
-                            //"delivery_range": "",
-                            //"total_fee": "", //don't know if we need this
-                            //"order_expiration_time": "",
-                            //"deliver_to_location": "",
-                          }
-                        }).then((value) {
-                          print(value.documentID);
-                        });
-                        Navigator.pop(context, foodDoc); //, args);
-                      });
+                      print("got here");
+                      if (foodDoc.order != null) {
+                        foodDoc.order.add(FoodInfo(
+                          name: foodDoc.document['food'][foodDoc.index]['name'],
+                          price: foodDoc.document['food'][foodDoc.index]
+                              ['price'],
+                        ));
+                      } else {
+                        foodDoc.order = [
+                          FoodInfo(
+                            name: foodDoc.document['food'][foodDoc.index]
+                                ['name'],
+                            price: foodDoc.document['food'][foodDoc.index]
+                                ['price'],
+                          )
+                        ];
+                      }
+
+                      Navigator.pop(
+                          context,
+                          FoodDocument(
+                            document: foodDoc.document,
+                            index: foodDoc.index,
+                            order: foodDoc.order,
+                          ));
                     },
                   ),
                 ),
