@@ -74,17 +74,19 @@ class _MenuState extends State<Menu> {
           delegate: SliverChildListDelegate([
             ExpansionTile(
                 title: Text('Open until ' + document['hours']['end_time'])),
-            Container(
-              height: 100.0 * document['food'].length,
+            Expanded(
               child: ListView.separated(
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
                 itemCount: document['food'].length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      _navigateAndGetOrderInfo(context, index, document, order)
+                      _navigateAndGetOrderInfo(
+                              context, index, document, order)
                           .then((FoodDocument ord) {
                         print(_viewbasket_enabled);
 
@@ -107,7 +109,8 @@ class _MenuState extends State<Menu> {
                     subtitle: Wrap(direction: Axis.vertical, children: [
                       Text(document['food'][index]['desc']),
                       // SizedBox(width: 25),
-                      Text("\$" + document['food'][index]['price'].toString()),
+                      Text(
+                          "\$" + document['food'][index]['price'].toString()),
                     ]),
                     isThreeLine: true,
                   );
