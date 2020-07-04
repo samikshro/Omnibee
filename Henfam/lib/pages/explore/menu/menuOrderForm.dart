@@ -1,3 +1,5 @@
+import 'package:Henfam/auth/authentication.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
@@ -10,6 +12,8 @@ class FoodDocument {
 }
 
 class MenuOrderForm extends StatefulWidget {
+  BaseAuth auth = new Auth();
+
   @override
   _MenuOrderFormState createState() => _MenuOrderFormState();
 }
@@ -18,6 +22,12 @@ List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
   final firestoreInstance = Firestore.instance;
+
+  Future<String> _getUserID() async {
+    final result = await widget.auth.getCurrentUserId();
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
@@ -103,29 +113,31 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      firestoreInstance.collection("orders").add({
-                        "user_id": {
-                          "name": "Ada Lovelace",
-                          // Index Ada's groups in her profile
-                          "rest_name_used": "Oishii Bowl",
-                          "basket": [
-                            {
-                              "name": foodDoc.document['food'][foodDoc.index]
-                                  ['name'],
-                              "price": foodDoc.document['food'][foodDoc.index]
-                                  ['price'],
-                            },
-                          ],
-                          //"delivery_date": "",
-                          //"delivery_range": "",
-                          //"total_fee": "", //don't know if we need this
-                          //"order_expiration_time": "",
-                          //"deliver_to_location": "",
-                        }
-                      }).then((value) {
-                        print(value.documentID);
+                      _getUserID().then((String s) {
+                        firestoreInstance.collection("orders").add({
+                          "user_id": {
+                            "name": s,
+                            // Index Ada's groups in her profile
+                            "rest_name_used": "Oishii Bowl",
+                            "basket": [
+                              {
+                                "name": foodDoc.document['food'][foodDoc.index]
+                                    ['name'],
+                                "price": foodDoc.document['food'][foodDoc.index]
+                                    ['price'],
+                              },
+                            ],
+                            //"delivery_date": "",
+                            //"delivery_range": "",
+                            //"total_fee": "", //don't know if we need this
+                            //"order_expiration_time": "",
+                            //"deliver_to_location": "",
+                          }
+                        }).then((value) {
+                          print(value.documentID);
+                        });
+                        Navigator.pop(context, foodDoc); //, args);
                       });
-                      Navigator.pop(context, foodDoc); //, args);
                     },
                   ),
                 ),
