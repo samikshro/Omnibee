@@ -1,7 +1,9 @@
+import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'menu.dart';
 
 class MenuPageHeader extends SliverPersistentHeaderDelegate {
   MenuPageHeader({
@@ -39,7 +41,19 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
               fontSize: 32.0,
               color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),
             )),
-      )
+      ),
+      Positioned(
+        // rht: 0.0,
+        top: 30.0,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            Menu.order = [];
+            Navigator.pop(context);
+          },
+        ),
+      ),
     ]);
   }
 
