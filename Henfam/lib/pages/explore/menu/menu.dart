@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Menu extends StatefulWidget {
   // final MenuModel restaurant;
   final DocumentSnapshot document;
+  static List<FoodInfo> order;
 
   //static bool viewbasket_enabled = false;
   Menu({this.document});
@@ -17,7 +18,6 @@ class Menu extends StatefulWidget {
 
 bool _viewbasket_enabled = false;
 var _onPressed;
-List<FoodInfo> order;
 
 class _MenuState extends State<Menu> {
   Future<FoodDocument> _navigateAndGetOrderInfo(BuildContext context, int index,
@@ -43,10 +43,13 @@ class _MenuState extends State<Menu> {
     setState(() {
       _viewbasket_enabled = true;
     });
+    print("here is length of result order in menu:" +
+        result.order.length.toString());
 
     setState(() {
-      order = result.order;
+      Menu.order = result.order;
     });
+    print("here is length of order in menu:" + Menu.order.length.toString());
 
     // print(result.name);
     print(result.document['food'][result.index]['name']);
@@ -86,7 +89,7 @@ class _MenuState extends State<Menu> {
                   return ListTile(
                     onTap: () {
                       _navigateAndGetOrderInfo(
-                              context, index, document, order)
+                              context, index, document, Menu.order)
                           .then((FoodDocument ord) {
                         print(_viewbasket_enabled);
 
@@ -109,8 +112,7 @@ class _MenuState extends State<Menu> {
                     subtitle: Wrap(direction: Axis.vertical, children: [
                       Text(document['food'][index]['desc']),
                       // SizedBox(width: 25),
-                      Text(
-                          "\$" + document['food'][index]['price'].toString()),
+                      Text("\$" + document['food'][index]['price'].toString()),
                     ]),
                     isThreeLine: true,
                   );

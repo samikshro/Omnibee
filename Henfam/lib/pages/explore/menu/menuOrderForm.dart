@@ -137,7 +137,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                           )
                         ];
                       }
-
+                      print(foodDoc.order.length);
                       Navigator.pop(
                           context,
                           FoodDocument(

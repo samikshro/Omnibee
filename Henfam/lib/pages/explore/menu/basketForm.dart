@@ -48,32 +48,32 @@ class _BasketState extends State<Basket> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  // Container(
-                  //   height: 100.0 * args.orders.length, //args.names.length,
-                  //   child: ListView.separated(
-                  //     separatorBuilder: (context, index) {
-                  //       return Divider();
-                  //     },
-                  //     itemCount: args.orders.length, //args.names.length,//
-                  //     itemBuilder: (context, index) {
-                  //       return ListTile(
-                  //         onTap: () {},
-                  //         trailing: Text("\$" +
-                  //             args.orders[index]
-                  //                 .price), //args.prices[index]),//
-                  //         title: Text(
-                  //             args.orders[index].name), //args.names[index]),
-                  //         subtitle: Wrap(direction: Axis.vertical, children: [
-                  //           Text(
-                  //             // args.addons[index],
-                  //             _ordersToAddons(args.orders[index].addOns),
-                  //           ),
-                  //         ]),
-                  //         isThreeLine: true,
-                  //       );
-                  //     },
-                  //   ),
-                  // )
+                  Container(
+                    height: 100.0 * args.orders.length, //args.names.length,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                      itemCount: args.orders.length, //args.names.length,//
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {},
+                          trailing: Text("\$" +
+                              args.orders[index].price
+                                  .toString()), //args.prices[index]),//
+                          title: Text(
+                              args.orders[index].name), //args.names[index]),
+                          subtitle: Wrap(direction: Axis.vertical, children: [
+                            // Text(
+                            //   // args.addons[index],
+                            //   _ordersToAddons(args.orders[index].addOns),
+                            // ),
+                          ]),
+                          isThreeLine: true,
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
