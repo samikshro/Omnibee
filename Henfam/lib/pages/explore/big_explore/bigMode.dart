@@ -41,7 +41,8 @@ class _BigModeState extends State<BigMode> {
                   ),
                   tooltip: 'Filter',
                   onPressed: () {
-                    print('hit filter');
+                    Navigator.pushNamed(context, '/big_filter');
+                    //,arguments: BasketData(orders: ord.order));
                   },
                 )),
           ),

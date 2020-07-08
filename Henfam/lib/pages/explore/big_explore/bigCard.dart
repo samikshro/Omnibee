@@ -9,7 +9,7 @@ class BigCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: 10.0,
+      elevation: 7.0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
