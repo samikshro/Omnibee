@@ -18,14 +18,15 @@ class BigCard extends StatelessWidget {
             title: Text('Oiishi Bowl'),
             subtitle: Text('Olin Library: Deliver food to Sandra'),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image(
-              image: AssetImage(
-                  "assets/oishii_bowl_pic1.png"), //document['small_photo']),
-              fit: BoxFit.cover,
-            ),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(15),
+          // child:
+          Image(
+            image: AssetImage(
+                "assets/oishii_bowl_pic1.png"), //document['small_photo']),
+            fit: BoxFit.cover,
           ),
+          // ),
           // Container(
           //   decoration: BoxDecoration(
           //     color: const Color(0xff7c94b6),
