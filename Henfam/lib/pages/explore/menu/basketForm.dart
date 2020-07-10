@@ -91,7 +91,7 @@ class _BasketState extends State<Basket> {
                         style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/request');
+                      Navigator.pushNamed(context, '/request', arguments: args);
                     },
                   ),
                 ),

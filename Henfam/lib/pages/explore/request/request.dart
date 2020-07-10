@@ -2,7 +2,10 @@ import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:Henfam/pages/explore/request/widgets/deliveryOptions.dart';
 import 'package:Henfam/pages/explore/request/widgets/locationDetails.dart';
 import 'package:Henfam/pages/explore/request/widgets/paymentSection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:Henfam/pages/explore/request/requestConfirm.dart';
+import 'package:Henfam/pages/explore/menu/basketForm.dart';
 
 class Request extends StatefulWidget {
   @override
@@ -28,6 +31,10 @@ class _RequestState extends State<Request> {
 
   @override
   Widget build(BuildContext context) {
+    final BasketData args = ModalRoute.of(context).settings.arguments;
+    if (args == null) {
+      print("args is null st request.dart");
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
@@ -65,11 +72,15 @@ class _RequestState extends State<Request> {
                         Text('Submit Order', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/matching',
-                        arguments: DateAndRange(_deliveryDate, _deliveryRange),
-                      );
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => RequestConfirm(
+                              _deliveryDate, _deliveryRange, args));
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   '/matching',
+                      //   arguments: DateAndRange(_deliveryDate, _deliveryRange),
+                      // );
                     },
                   ),
                 ),

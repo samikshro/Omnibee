@@ -28,8 +28,6 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
-  final firestoreInstance = Firestore.instance;
-
   Future<String> _getUserID() async {
     final result = await widget.auth.getCurrentUser();
     return result.uid;
