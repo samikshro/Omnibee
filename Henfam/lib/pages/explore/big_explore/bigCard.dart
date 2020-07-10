@@ -9,7 +9,8 @@ class BigCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: 7.0,
+      elevation: 2.0,
+      shadowColor: Colors.amberAccent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -47,14 +48,20 @@ class BigCard extends StatelessWidget {
               FlatButton(
                 child: const Text('SHARE'),
                 onPressed: () {/* ... */},
+                highlightColor: Colors.amberAccent,
+                textColor: Colors.amber,
               ),
               FlatButton(
                 child: const Text('CHAT'),
                 onPressed: () {/* ... */},
+                highlightColor: Colors.amberAccent,
+                textColor: Colors.amber,
               ),
               FlatButton(
                 child: const Text('EDIT'),
                 onPressed: () {/* ... */},
+                highlightColor: Colors.amberAccent,
+                textColor: Colors.amber,
               ),
             ],
           ),
