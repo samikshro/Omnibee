@@ -28,6 +28,21 @@ class _BasketState extends State<Basket> {
     return s;
   }
 
+  Widget _buildTile(BuildContext context, BasketData args, int index) {
+    return ListTile(
+      onTap: () {},
+      trailing: Text("\$" + args.orders[index].price.toString()),
+      title: Text(args.orders[index].name),
+      subtitle: Wrap(direction: Axis.vertical, children: [
+        // Text(
+        //   // args.addons[index],
+        //   _ordersToAddons(args.orders[index].addOns),
+        // ),
+      ]),
+      isThreeLine: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final BasketData args = ModalRoute.of(context).settings.arguments;
@@ -46,41 +61,15 @@ class _BasketState extends State<Basket> {
               child: LargeTextSection("Items"),
             ),
             SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    height: 100.0 * args.orders.length, //args.names.length,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return Divider();
-                      },
-                      itemCount: args.orders.length, //args.names.length,//
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          onTap: () {},
-                          trailing: Text("\$" +
-                              args.orders[index].price
-                                  .toString()), //args.prices[index]),//
-                          title: Text(
-                              args.orders[index].name), //args.names[index]),
-                          subtitle: Wrap(direction: Axis.vertical, children: [
-                            // Text(
-                            //   // args.addons[index],
-                            //   _ordersToAddons(args.orders[index].addOns),
-                            // ),
-                          ]),
-                          isThreeLine: true,
-                        );
-                      },
-                    ),
-                  )
-                ],
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => _buildTile(context, args, index),
+                childCount: args.orders.length,
               ),
             ),
             SliverFillRemaining(
               hasScrollBody: false,
               fillOverscroll:
-                  true, // Set true to change overscroll behavior. Purely preference.
+                  false, // Set true to change overscroll behavior. Purely preference.
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
