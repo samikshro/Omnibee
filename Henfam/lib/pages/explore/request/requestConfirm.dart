@@ -30,12 +30,13 @@ class RequestConfirm extends StatelessWidget {
     return '$startTime - $endTime';
   }
 
-  _create_map_from_lst(List<FoodInfo> ords) {
-    var lst = [];
-    for (int i = 0; i < ords.length; i++) {
-      lst.add({"name": ords[i].name, "price": ords[i].price});
-    }
-    return lst;
+  List<Map> convertOrdersToMap(List<FoodInfo> ords) {
+    List<Map> orders = [];
+    ords.forEach((FoodInfo ord) {
+      Map order = ord.toJson();
+      orders.add(order);
+    });
+    return orders;
   }
 
   @override
@@ -55,17 +56,15 @@ class RequestConfirm extends StatelessWidget {
                 "name": "Ada Lovelace",
                 // Index Ada's groups in her profile
                 "rest_name_used": "Oishii Bowl",
-                "basket": [
-                  args.orders
-                  // {
-                  //   "name": args.orders[0].name,
-                  //   "price": args.orders[0].price,
-                  // }
-                  // {
-                  //   "name": foodDoc.document['food'][foodDoc.index]['name'],
-                  //   "price": foodDoc.document['food'][foodDoc.index]['price'],
-                  // },
-                ],
+                "basket": convertOrdersToMap(args.orders)
+                //_create_map_from_lst(args.orders)
+
+                //
+                // {
+                //   "name": foodDoc.document['food'][foodDoc.index]['name'],
+                //   "price": foodDoc.document['food'][foodDoc.index]['price'],
+                // },
+                //],
               }
             });
             Navigator.popUntil(

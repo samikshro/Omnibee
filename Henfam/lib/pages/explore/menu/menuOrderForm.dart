@@ -9,6 +9,11 @@ class FoodInfo {
   String name;
   double price;
   FoodInfo({this.name, this.price});
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'price': price,
+      };
 }
 
 class FoodDocument {
