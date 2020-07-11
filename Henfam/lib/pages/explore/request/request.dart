@@ -6,8 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/request/requestConfirm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
+import 'package:Henfam/auth/authentication.dart';
 
 class Request extends StatefulWidget {
+  BaseAuth auth = new Auth();
   @override
   _RequestState createState() => _RequestState();
 }
@@ -27,6 +29,11 @@ class _RequestState extends State<Request> {
     setState(() {
       _deliveryRange = _newRange;
     });
+  }
+
+  Future<String> _getUserID() async {
+    final result = await widget.auth.getCurrentUser();
+    return result.uid;
   }
 
   @override
@@ -72,10 +79,13 @@ class _RequestState extends State<Request> {
                         Text('Submit Order', style: TextStyle(fontSize: 20.0)),
                     color: Colors.amberAccent,
                     onPressed: () {
-                      showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) => RequestConfirm(
-                              _deliveryDate, _deliveryRange, args));
+                      _getUserID().then((String s) {
+                        showCupertinoModalPopup(
+                            context: context,
+                            builder: (context) => RequestConfirm(
+                                _deliveryDate, _deliveryRange, args, s));
+                      });
+
                       // Navigator.pushNamed(
                       //   context,
                       //   '/matching',

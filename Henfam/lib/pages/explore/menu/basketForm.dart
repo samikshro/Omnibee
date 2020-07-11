@@ -67,7 +67,7 @@ class _BasketState extends State<Basket> {
               ),
             ),
             SliverFillRemaining(
-              hasScrollBody: false,
+              hasScrollBody: true,
               fillOverscroll:
                   false, // Set true to change overscroll behavior. Purely preference.
               child: Align(

@@ -5,13 +5,17 @@ import 'package:intl/intl.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/auth/authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RequestConfirm extends StatelessWidget {
   final date;
   final range;
   final BasketData args;
+  final uid;
 
-  RequestConfirm(this.date, this.range, this.args);
+  RequestConfirm(this.date, this.range, this.args, this.uid);
 
   final firestoreInstance = Firestore.instance;
 
@@ -55,6 +59,7 @@ class RequestConfirm extends StatelessWidget {
             firestoreInstance.collection("orders").add({
               "user_id": {
                 "name": "Ada Lovelace",
+                "uid": uid,
                 "rest_name_used": "Oishii Bowl",
                 "basket": convertOrdersToMap(args.orders)
               }
