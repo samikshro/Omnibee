@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BigCard extends StatelessWidget {
+  final DocumentSnapshot document;
+
+  BigCard(BuildContext context, {this.document});
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -18,10 +22,12 @@ class BigCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const ListTile(
+            ListTile(
               leading: Icon(Icons.fastfood),
-              title: Text('Oiishi Bowl'),
-              subtitle: Text('Olin Library: Deliver food to Sandra'),
+              title: Text(document['user_id']['name'] +
+                  ": " +
+                  document['user_id']['rest_name_used']),
+              subtitle: Text('Olin Library: 12PM-1PM'),
             ),
             Image(
               image: AssetImage(
@@ -31,19 +37,13 @@ class BigCard extends StatelessWidget {
             ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  child: const Text('SHARE'),
+                  child: const Text('ACCEPT'),
                   onPressed: () {/* ... */},
                   highlightColor: Colors.amberAccent,
                   textColor: Colors.amber,
                 ),
                 FlatButton(
-                  child: const Text('CHAT'),
-                  onPressed: () {/* ... */},
-                  highlightColor: Colors.amberAccent,
-                  textColor: Colors.amber,
-                ),
-                FlatButton(
-                  child: const Text('EDIT'),
+                  child: const Text('EXPAND'),
                   onPressed: () {/* ... */},
                   highlightColor: Colors.amberAccent,
                   textColor: Colors.amber,
