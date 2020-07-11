@@ -29,8 +29,8 @@ class LandingPage extends StatelessWidget {
         length: 4,
         child: Scaffold(
           bottomNavigationBar: TabBar(
-              indicatorColor: Colors.amber,
-              labelColor: Colors.amber,
+              indicatorColor: Theme.of(context).primaryColor,
+              labelColor: Theme.of(context).primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.explore)),
                 Tab(icon: Icon(Icons.chat)),
