@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -54,19 +55,11 @@ class RequestConfirm extends StatelessWidget {
             firestoreInstance.collection("orders").add({
               "user_id": {
                 "name": "Ada Lovelace",
-                // Index Ada's groups in her profile
                 "rest_name_used": "Oishii Bowl",
                 "basket": convertOrdersToMap(args.orders)
-                //_create_map_from_lst(args.orders)
-
-                //
-                // {
-                //   "name": foodDoc.document['food'][foodDoc.index]['name'],
-                //   "price": foodDoc.document['food'][foodDoc.index]['price'],
-                // },
-                //],
               }
             });
+            Menu.order = []; //clears order after submitting
             Navigator.popUntil(
                 context, ModalRoute.withName(Navigator.defaultRouteName));
           },
