@@ -11,7 +11,8 @@ class BasketData {
   // final List<String> addons;
   // BasketData({this.names, this.prices, this.requests, this.addons});
   final List<FoodInfo> orders;
-  BasketData({this.orders});
+  final String restaurant_name;
+  BasketData({this.orders, this.restaurant_name});
 }
 
 class Basket extends StatefulWidget {

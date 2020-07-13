@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/request/requestConfirm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/auth/authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Request extends StatefulWidget {
   BaseAuth auth = new Auth();
@@ -17,7 +18,7 @@ class Request extends StatefulWidget {
 class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _deliveryRange = DateTime(0, 0, 0, 0, 0);
-  final _location = "Olin Library";
+  String _location = "Olin Library";
 
   void _setDeliveryDate(DateTime _newDate) {
     setState(() {
@@ -31,9 +32,36 @@ class _RequestState extends State<Request> {
     });
   }
 
+  void _setLocation(String loc) {
+    setState(() {
+      _location = loc;
+    });
+  }
+
   Future<String> _getUserID() async {
     final result = await widget.auth.getCurrentUser();
     return result.uid;
+  }
+
+  Future<String> _getUserName(String uid) async {
+    Future<String> s = Firestore.instance
+        .collection('users')
+        .document("iyxy7uAUOCPThj3J2HV4C0ZpLok2")
+        .get()
+        .then((DocumentSnapshot document) {
+      print("test name: " + document['name']);
+      print('here');
+      return document['name'];
+    });
+
+    // final DocumentReference document =
+    //     Firestore.instance.collection("users").document(uid);
+
+    // await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
+    //   return snapshot['name'];
+    // });
+
+    return s;
   }
 
   @override
@@ -58,7 +86,7 @@ class _RequestState extends State<Request> {
                   Column(
                     children: <Widget>[
                       DeliveryOptions(_setDeliveryDate, _setDeliveryRange),
-                      LocationDetails(_location),
+                      LocationDetails(_setLocation),
                       PaymentSection(),
                     ],
                   ),
@@ -75,24 +103,25 @@ class _RequestState extends State<Request> {
                   width: double.infinity,
                   height: 60,
                   child: RaisedButton(
-                    child:
-                        Text('Submit Order', style: TextStyle(fontSize: 20.0)),
-                    color: Colors.amberAccent,
-                    onPressed: () {
-                      _getUserID().then((String s) {
-                        showCupertinoModalPopup(
-                            context: context,
-                            builder: (context) => RequestConfirm(
-                                _deliveryDate, _deliveryRange, args, s));
-                      });
-
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   '/matching',
-                      //   arguments: DateAndRange(_deliveryDate, _deliveryRange),
-                      // );
-                    },
-                  ),
+                      child: Text('Submit Order',
+                          style: TextStyle(fontSize: 20.0)),
+                      color: Colors.amberAccent,
+                      onPressed: () {
+                        _getUserID().then((String s) {
+                          _getUserName(s).then((String name) {
+                            print("name:" + name);
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) => RequestConfirm(
+                                    _deliveryDate,
+                                    _deliveryRange,
+                                    args,
+                                    s,
+                                    _location,
+                                    name));
+                          });
+                        });
+                      }),
                 ),
               ),
             )
