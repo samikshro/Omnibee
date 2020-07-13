@@ -11,7 +11,10 @@ class IconNameRow extends StatelessWidget {
       height: 40,
       child: Row(
         children: requesters.map((requester) {
-          return TinyIconAndName(requester);
+          if (requester['selected'] == true) {
+            return TinyIconAndName(requester);
+          }
+          return Container();
         }).toList(),
       ),
     );

@@ -6,6 +6,11 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class CustomMap extends StatefulWidget {
+  List<Map<String, Object>> requesters;
+  Map<String, Object> restaurant;
+
+  CustomMap(this.requesters, this.restaurant);
+
   @override
   _CustomMapState createState() => _CustomMapState();
 }
@@ -39,7 +44,12 @@ class _CustomMapState extends State<CustomMap> {
             onTap: () {
               Navigator.pushNamed(context, '/expanded_map',
                   arguments: MapArgs(
-                      _createMarkers(snapshot.data), getRestaurantPosition()));
+                      _createMarkers(
+                        snapshot.data,
+                        widget.requesters,
+                        widget.restaurant,
+                      ),
+                      getRestaurantPosition()));
             },
             child: Hero(
               tag: 'map',
@@ -50,7 +60,11 @@ class _CustomMapState extends State<CustomMap> {
                   child: GoogleMap(
                     myLocationButtonEnabled: false,
                     onMapCreated: _onMapCreated,
-                    markers: _createMarkers(snapshot.data),
+                    markers: _createMarkers(
+                      snapshot.data,
+                      widget.requesters,
+                      widget.restaurant,
+                    ),
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
                         getRestaurantPosition().latitude,
@@ -91,25 +105,43 @@ class _CustomMapState extends State<CustomMap> {
   }
 }
 
-Set<Marker> _createMarkers(user_position) {
+Set<Marker> _createMarkers(user_position, requesters, restaurant) {
   final positions = PositionModel.mockPositionData;
-  var markers = <Marker>[];
 
-  for (var i = 0; i < positions.length; i++) {
-    final newMarker = Marker(
-      markerId: MarkerId(positions[i].name),
+  List<Marker> requesterMarkers = _createRequesterMarkers(requesters);
+  List<Marker> userMarker = _createUserMarker(user_position);
+  List<Marker> restaurantMarker = _createRestaurantMarker(restaurant);
+
+  List<Marker> markers = [];
+  markers.addAll(requesterMarkers);
+  markers.addAll(userMarker);
+  markers.addAll(restaurantMarker);
+
+  return markers.toSet();
+}
+
+List<Marker> _createRestaurantMarker(restaurant) {
+  var markers = <Marker>[];
+  List<double> location = restaurant['location'];
+
+  markers.add(
+    Marker(
+      markerId: MarkerId(restaurant['name']),
       position: LatLng(
-        positions[i].latitude,
-        positions[i].longitude,
+        location[0],
+        location[1],
       ),
-      infoWindow: InfoWindow(title: positions[i].name),
+      infoWindow: InfoWindow(title: restaurant['name']),
       icon: BitmapDescriptor.defaultMarkerWithHue(
         BitmapDescriptor.hueOrange,
       ),
-    );
+    ),
+  );
+  return markers;
+}
 
-    markers.add(newMarker);
-  }
+List<Marker> _createUserMarker(user_position) {
+  var markers = <Marker>[];
 
   markers.add(
     Marker(
@@ -125,5 +157,29 @@ Set<Marker> _createMarkers(user_position) {
     ),
   );
 
-  return markers.toSet();
+  return markers;
+}
+
+List<Marker> _createRequesterMarkers(List<Map<String, Object>> requesters) {
+  var markers = <Marker>[];
+
+  for (var i = 0; i < requesters.length; i++) {
+    List<double> location = requesters[i]['location'];
+    if (requesters[i]['selected'] == true) {
+      final newMarker = Marker(
+        markerId: MarkerId(requesters[i]['name']),
+        position: LatLng(
+          location[0],
+          location[1],
+        ),
+        infoWindow: InfoWindow(title: requesters[i]['name']),
+        icon: BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueOrange,
+        ),
+      );
+
+      markers.add(newMarker);
+    }
+  }
+  return markers;
 }

@@ -1,6 +1,25 @@
+import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder.dart';
 import 'package:flutter/material.dart';
 
 class AcceptOrderInfo extends StatelessWidget {
+  List<Map<String, Object>> requesters;
+
+  AcceptOrderInfo(this.requesters);
+
+  Widget _getSubtotal() {
+    int numItems = requesters.length;
+    double subtotal = 0;
+    for (int i = 0; i < numItems; i++) {
+      if (requesters[i]['selected'] == true) {
+        subtotal += requesters[i]['item_cost'];
+      }
+    }
+
+    return Text(
+      '${numItems.toString()} items, \$${subtotal.toString()} subtotal',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +37,7 @@ class AcceptOrderInfo extends StatelessWidget {
         ListTile(
           dense: true,
           leading: FlutterLogo(),
-          title: Text('3 items, \$42.10 subtotal'),
+          title: _getSubtotal(),
         ),
       ],
     );

@@ -10,6 +10,11 @@ class AcceptOrder extends StatefulWidget {
 }
 
 class _AcceptOrderState extends State<AcceptOrder> {
+  final restaurant = {
+    'name': 'Oishii Bowl',
+    'location': [42.441947, -76.485066]
+  };
+
   final requesters = [
     {
       'name': 'John',
@@ -17,6 +22,19 @@ class _AcceptOrderState extends State<AcceptOrder> {
         image: AssetImage('assets/beeperson@2x.png'),
       ),
       'selected': true,
+      'item_cost': 11.23,
+      'min_earnings': 2.50,
+      'location': [42.447866, -76.484200],
+    },
+    {
+      'name': 'Kristen',
+      'image': Image(
+        image: AssetImage('assets/beeperson@2x.png'),
+      ),
+      'selected': true,
+      'item_cost': 15.23,
+      'min_earnings': 3.20,
+      'location': [42.444806, -76.482617],
     },
     {
       'name': 'Lisa',
@@ -24,6 +42,9 @@ class _AcceptOrderState extends State<AcceptOrder> {
         image: AssetImage('assets/beeperson@2x.png'),
       ),
       'selected': true,
+      'item_cost': 9.23,
+      'min_earnings': 2.59,
+      'location': [42.444054, -76.485805],
     },
   ];
   var displayBigUsers = false;
@@ -45,7 +66,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          CustomMap(),
+          CustomMap(requesters, restaurant),
           ExpansionTile(
             title: Text('3 requests'),
             onExpansionChanged: _onExpand,
@@ -58,7 +79,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
             ],
           ),
           DisplaySmallUsers(displayBigUsers, requesters),
-          AcceptOrderInfo(),
+          AcceptOrderInfo(requesters),
         ],
       ),
     );
