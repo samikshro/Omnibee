@@ -102,7 +102,10 @@ class _MenuState extends State<Menu> {
                             setState(() {
                               _onPressed = () {
                                 Navigator.pushNamed(context, '/basket_form',
-                                    arguments: BasketData(orders: ord.order));
+                                    arguments: BasketData(
+                                        orders: ord.order,
+                                        restaurant_name:
+                                            document['rest_name']));
                               };
                             });
 

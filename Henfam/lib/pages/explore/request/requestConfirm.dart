@@ -14,8 +14,11 @@ class RequestConfirm extends StatelessWidget {
   final range;
   final BasketData args;
   final uid;
+  final String loc;
+  final String name;
 
-  RequestConfirm(this.date, this.range, this.args, this.uid);
+  RequestConfirm(
+      this.date, this.range, this.args, this.uid, this.loc, this.name);
 
   final firestoreInstance = Firestore.instance;
 
@@ -58,10 +61,11 @@ class RequestConfirm extends StatelessWidget {
           onPressed: () {
             firestoreInstance.collection("orders").add({
               "user_id": {
-                "name": "Ada Lovelace",
+                "name": name,
                 "uid": uid,
-                "rest_name_used": "Oishii Bowl",
-                "basket": convertOrdersToMap(args.orders)
+                "rest_name_used": args.restaurant_name,
+                "basket": convertOrdersToMap(args.orders),
+                "location": loc,
               }
             });
             Menu.order = []; //clears order after submitting
