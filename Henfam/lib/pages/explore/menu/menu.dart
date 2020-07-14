@@ -140,7 +140,6 @@ class _MenuState extends State<Menu> {
                 height: 60,
                 child: RaisedButton(
                   child: Text('View Basket', style: TextStyle(fontSize: 20.0)),
-                  color: Colors.amberAccent,
                   onPressed: _onPressed,
                 ),
               ),
