@@ -15,7 +15,6 @@ class _ChatListState extends State<ChatList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Chat"),
-        //backgroundColor: Colors.amber,
       ),
       body: Column(
         children: [
@@ -36,8 +35,6 @@ class _ChatListState extends State<ChatList> {
                     height: 50,
                     child: CircleAvatar(
                       child: Text(list[index].contact.name[0]),
-                      //backgroundColor: Colors.amberAccent,
-                      //foregroundColor: Colors.white,
                     ),
                   ),
                   title: Text(list[index].contact.name),

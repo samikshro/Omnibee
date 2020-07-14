@@ -70,7 +70,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: const Icon(Icons.send),
-                //color: Colors.amber,
                 onPressed: () => _handleSubmitted(_tc.text),
               ),
             ),
@@ -91,11 +90,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(args.name),
-        //backgroundColor: Colors.amber,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            //color: Colors.white,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -114,9 +111,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           ),
           Divider(height: 1.0),
           Container(
-            decoration: BoxDecoration(
-                //color: Colors.white,
-                ),
+            decoration: BoxDecoration(),
             child: _buildTextComposer(args.name),
           ),
         ],
