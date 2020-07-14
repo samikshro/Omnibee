@@ -17,9 +17,7 @@ class CustomTile extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
-          side: BorderSide(
-            color: Colors.black45,
-          ),
+          side: BorderSide(),
         ),
         child: ListTile(
           title: Text(

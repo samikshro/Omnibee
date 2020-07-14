@@ -89,7 +89,6 @@ class ProfileErrandSnapshot extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(15, 8, 0, 0),
         child: RaisedButton(
           child: Text("View Errand History"),
-          color: Colors.amber,
           onPressed: () {},
         ),
       )

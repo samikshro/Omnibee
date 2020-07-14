@@ -27,7 +27,6 @@ class ProfileHeader extends StatelessWidget {
                 Text(
                   netId,
                   style: TextStyle(
-                    color: Colors.black45,
                     fontSize: 16,
                   ),
                 ),

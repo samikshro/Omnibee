@@ -18,9 +18,7 @@ class ProfileEarnings extends StatelessWidget {
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(
-                color: Colors.black45,
-              ),
+              side: BorderSide(),
             ),
             child: Column(
               children: <Widget>[
@@ -50,7 +48,6 @@ class ProfileEarnings extends StatelessWidget {
                   ],
                 ),
                 Divider(
-                  color: Colors.grey[400],
                   height: 20,
                   thickness: 1,
                 ),
