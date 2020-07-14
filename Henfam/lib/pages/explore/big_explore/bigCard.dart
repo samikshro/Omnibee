@@ -31,7 +31,6 @@ class BigCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         elevation: 2.0,
-        shadowColor: Colors.amberAccent,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -61,15 +60,7 @@ class BigCard extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/accept_order');
                   },
-                  highlightColor: Colors.amberAccent,
-                  textColor: Colors.amber,
                 ),
-                // FlatButton(
-                //   child: const Text('EXPAND'),
-                //   onPressed: () {/* ... */},
-                //   highlightColor: Colors.amberAccent,
-                //   textColor: Colors.amber,
-                // ),
               ],
             ),
           ],
