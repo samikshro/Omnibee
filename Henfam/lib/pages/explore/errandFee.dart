@@ -4,7 +4,6 @@ class ErrandFee extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue[100],
       child: ExpansionTile(
         title: Text(
           "Errand Fees",
@@ -14,7 +13,6 @@ class ErrandFee extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(left: 15),
             width: double.infinity,
-            color: Colors.blue[50],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -47,22 +45,18 @@ class ErrandFee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
+                        border: Border.all(),
                       ),
                       child: Row(
                         children: <Widget>[
                           Container(
                             width: 75,
                             padding: EdgeInsets.all(8),
-                            color: Colors.amber,
                             child: Text('Distance'),
                           ),
                           Container(
                             width: 155,
                             padding: EdgeInsets.all(8),
-                            color: Colors.white,
                             child: Text("\$50 per 3-min walk*"),
                           ),
                         ],
@@ -78,22 +72,18 @@ class ErrandFee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
+                        border: Border.all(),
                       ),
                       child: Row(
                         children: <Widget>[
                           Container(
                             width: 75,
                             padding: EdgeInsets.all(8),
-                            color: Colors.blue[300],
                             child: Text('Effort'),
                           ),
                           Container(
                             width: 155,
                             padding: EdgeInsets.all(8),
-                            color: Colors.white,
                             child: Text("15% price of food"),
                           ),
                         ],
