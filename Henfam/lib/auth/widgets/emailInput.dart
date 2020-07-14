@@ -39,7 +39,6 @@ class ShowEmailInput extends StatelessWidget {
           hintText: 'Email',
           icon: new Icon(
             Icons.mail,
-            color: Colors.grey,
           ),
         ),
         validator: (value) {
