@@ -28,27 +28,18 @@ class Profile extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Your Profile'),
-          backgroundColor: Colors.amber[700],
         ),
         body: ListView(
           children: <Widget>[
             ProfileHeader('Gracie Matthews', 'gmm322'),
             ProfileErrandSnapshot(),
-            Divider(
-              color: Colors.black,
-            ),
+            Divider(),
             ProfileEarnings(14.69, 3.65),
-            Divider(
-              color: Colors.black,
-            ),
+            Divider(),
             ProfilePointsBar(350),
-            Divider(
-              color: Colors.black,
-            ),
+            Divider(),
             ProfilePrefs(),
-            Divider(
-              color: Colors.black,
-            ),
+            Divider(),
             ProfileContact(signOut),
           ],
         ));
