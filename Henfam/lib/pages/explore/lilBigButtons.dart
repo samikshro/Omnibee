@@ -14,7 +14,6 @@ class LilBigSwitch extends StatelessWidget {
         Container(
           width: 130,
           child: RaisedButton(
-            color: Colors.amber[700],
             child: Text(
               "LIL",
               style: TextStyle(
