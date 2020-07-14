@@ -25,16 +25,17 @@ class HenfamBasic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.amber,
-        primaryColorDark: Color(0xff222831),
-        accentColor: Colors.blue,
-        backgroundColor: Colors.white,
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.amber,
-          textTheme: ButtonTextTheme.primary,
-        ),
-      ),
+      theme: _appTheme,
+      // theme: ThemeData(
+      //   primaryColor: Color(0xfd9827), //Colors.amber,
+      //   primaryColorDark: Color(0xff222831),
+      //   accentColor: Colors.blue,
+      //   backgroundColor: Colors.white,
+      //   buttonTheme: ButtonThemeData(
+      //     buttonColor: Colors.amber,
+      //     textTheme: ButtonTextTheme.primary,
+      //   ),
+      // ),
       initialRoute: '/',
       routes: {
         '/explore': (context) => Explore(),
@@ -49,7 +50,6 @@ class HenfamBasic extends StatelessWidget {
         '/matching': (context) => MatchingProgress(),
         '/accept_order': (context) => AcceptOrder(),
         '/expanded_map': (context) => ExpandedMap(),
-        //'/big_filter': (context) => BigFilter(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/big_filter") {
@@ -61,10 +61,7 @@ class HenfamBasic extends StatelessWidget {
               var curve = Curves.ease;
               var tween =
                   Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-              return //FadeTransition(opacity: anim, child: child);
-                  // ScaleTransition(scale: anim, child: child);
-                  SlideTransition(position: anim.drive(tween), child: child);
+              return SlideTransition(position: anim.drive(tween), child: child);
             },
           );
         }
@@ -74,4 +71,64 @@ class HenfamBasic extends StatelessWidget {
       ),
     );
   }
+}
+
+final ThemeData _appTheme = _buildTheme();
+
+ThemeData _buildTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+    accentColor: Color(0xff009DFF),
+    primaryColor: Color(0xfffd9827),
+    buttonColor: Color(0xffFD9827),
+    scaffoldBackgroundColor: Colors.white,
+    cardColor: Colors.white,
+    textSelectionColor: Color(0xfffdbf2d),
+    errorColor: Color(0xFFC5032B),
+    buttonTheme: base.buttonTheme.copyWith(
+      buttonColor: Color(0xffFD9827),
+      colorScheme: base.colorScheme.copyWith(
+        secondary: Color(0xfffdbf2d),
+      ),
+    ),
+    buttonBarTheme: base.buttonBarTheme.copyWith(
+      buttonTextTheme: ButtonTextTheme.accent,
+    ),
+    primaryIconTheme: base.iconTheme.copyWith(color: Color(0xff008ae0)),
+    // inputDecorationTheme: InputDecorationTheme(
+    //   focusedBorder: CutCornersBorder(
+    //     borderSide: BorderSide(
+    //       width: 2.0,
+    //       color: kShrineBrown900,
+    //     ),
+    //   ),
+    //   border: CutCornersBorder(),
+    // ),
+    textTheme: _buildShrineTextTheme(base.textTheme),
+    primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
+    accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
+  );
+}
+
+TextTheme _buildShrineTextTheme(TextTheme base) {
+  return base
+      .copyWith(
+        headline5: base.headline5.copyWith(
+          fontWeight: FontWeight.w500,
+        ),
+        headline6: base.headline6.copyWith(fontSize: 18.0),
+        caption: base.caption.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 14.0,
+        ),
+        bodyText1: base.bodyText1.copyWith(
+          fontWeight: FontWeight.w500,
+          fontSize: 16.0,
+        ),
+      )
+      .apply(
+        fontFamily: 'Rubik',
+        displayColor: Color(0xFF442B2D),
+        bodyColor: Color(0xFF442B2D),
+      );
 }
