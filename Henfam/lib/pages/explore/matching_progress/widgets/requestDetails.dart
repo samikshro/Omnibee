@@ -8,13 +8,9 @@ class RequestDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Divider(
-            color: Colors.grey,
-          ),
+          Divider(),
           MiniHeader('Details of Request'),
-          Divider(
-            color: Colors.grey,
-          ),
+          Divider(),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Text(

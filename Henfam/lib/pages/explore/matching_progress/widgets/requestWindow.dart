@@ -30,13 +30,9 @@ class RequestWindow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(
-          color: Colors.grey,
-        ),
+        Divider(),
         MiniHeader('Request Window'),
-        Divider(
-          color: Colors.grey,
-        ),
+        Divider(),
         Padding(
           padding: const EdgeInsets.only(left: 15.0),
           child: Text(
@@ -52,12 +48,7 @@ class RequestWindow extends StatelessWidget {
               RaisedGradientButton(
                 child: Text(
                   'Edit Window',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                gradient: LinearGradient(
-                  colors: [Colors.orange, Colors.amber],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  style: TextStyle(fontSize: 16),
                 ),
                 width: 160,
                 onPressed: () {},
@@ -65,12 +56,6 @@ class RequestWindow extends StatelessWidget {
               RaisedGradientButton(
                 child: Text(
                   'Cancel Request',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                gradient: LinearGradient(
-                  colors: [Colors.red, Colors.pink],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
                 ),
                 width: 160,
                 onPressed: () {},

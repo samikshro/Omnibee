@@ -44,7 +44,6 @@ class BigCard extends StatelessWidget {
                     document['user_id']['delivery_window']['start_time'] +
                     "-" +
                     document['user_id']['delivery_window']['end_time']),
-                //Text('Olin Library: 12PM-1PM'),
                 children: _itemsToOrder(document)),
             Image(
               image: AssetImage("assets/oishii_bowl_pic1.png"),

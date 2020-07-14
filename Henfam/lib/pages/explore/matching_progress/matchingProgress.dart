@@ -16,7 +16,6 @@ class MatchingProgress extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Errand Request'),
-          backgroundColor: Colors.grey,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +26,6 @@ class MatchingProgress extends StatelessWidget {
                 'Matching in Progress...',
                 style: TextStyle(
                   fontSize: 28,
-                  color: Colors.orange,
                 ),
               ),
             ),
@@ -37,7 +35,6 @@ class MatchingProgress extends StatelessWidget {
                 'We will notify you once a runner is found!',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey[600],
                 ),
               ),
             ),
