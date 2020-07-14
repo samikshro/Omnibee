@@ -42,7 +42,6 @@ class ErrandCard extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     width: 210,
-                    color: Colors.grey[700],
                     child: Padding(
                       padding: const EdgeInsets.all(7.0),
                       child: Column(
@@ -50,19 +49,16 @@ class ErrandCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               "$bigHenName is getting food from",
-                              style: TextStyle(color: Colors.white),
                             ),
                             Text(
                               "$location",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                              style: TextStyle(fontSize: 18),
                             ),
                           ]),
                     ),
                   ),
                   Container(
                     width: 210,
-                    color: Colors.grey[200],
                     child: Padding(
                       padding: const EdgeInsets.all(7.0),
                       child: Column(
@@ -85,13 +81,10 @@ class ErrandCard extends StatelessWidget {
                     width: double.infinity,
                     height: 30,
                     child: RaisedButton(
-                      color: Colors.amber,
                       onPressed: () {},
                       child: Text(
                         "Count Me In",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: TextStyle(),
                       ),
                     ),
                   )
