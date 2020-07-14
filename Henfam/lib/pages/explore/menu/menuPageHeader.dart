@@ -47,7 +47,6 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
         top: 30.0,
         child: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.white,
           onPressed: () {
             Menu.order = [];
             Navigator.pop(context);

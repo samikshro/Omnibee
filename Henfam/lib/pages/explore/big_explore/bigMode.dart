@@ -25,19 +25,16 @@ class _BigModeState extends State<BigMode> {
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
-                  color: Colors.black26,
                   borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  )),
+                Radius.circular(10),
+              )),
               child: TextField(
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
                     ),
                     hintText: "Search",
-                    hintStyle: TextStyle(
-                      color: Colors.white54,
-                    ),
+                    hintStyle: TextStyle(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         Icons.tune,
