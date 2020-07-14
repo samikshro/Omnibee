@@ -33,7 +33,6 @@ class _BigModeState extends State<BigMode> {
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.white54,
                     ),
                     hintText: "Search",
                     hintStyle: TextStyle(
@@ -42,7 +41,6 @@ class _BigModeState extends State<BigMode> {
                     suffixIcon: IconButton(
                       icon: Icon(
                         Icons.tune,
-                        color: Colors.white54,
                       ),
                       tooltip: 'Filter',
                       onPressed: () {

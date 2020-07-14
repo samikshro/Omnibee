@@ -26,16 +26,6 @@ class HenfamBasic extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: _appTheme,
-      // theme: ThemeData(
-      //   primaryColor: Color(0xfd9827), //Colors.amber,
-      //   primaryColorDark: Color(0xff222831),
-      //   accentColor: Colors.blue,
-      //   backgroundColor: Colors.white,
-      //   buttonTheme: ButtonThemeData(
-      //     buttonColor: Colors.amber,
-      //     textTheme: ButtonTextTheme.primary,
-      //   ),
-      // ),
       initialRoute: '/',
       routes: {
         '/explore': (context) => Explore(),
