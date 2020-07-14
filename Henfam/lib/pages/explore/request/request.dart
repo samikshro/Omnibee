@@ -49,18 +49,8 @@ class _RequestState extends State<Request> {
         .document("iyxy7uAUOCPThj3J2HV4C0ZpLok2")
         .get()
         .then((DocumentSnapshot document) {
-      print("test name: " + document['name']);
-      print('here');
       return document['name'];
     });
-
-    // final DocumentReference document =
-    //     Firestore.instance.collection("users").document(uid);
-
-    // await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
-    //   return snapshot['name'];
-    // });
-
     return s;
   }
 

@@ -27,15 +27,18 @@ class RequestConfirm extends StatelessWidget {
     return (today.day == date.day) ? "Today" : "Tomorrow";
   }
 
-  String getTimes(DateTime date, DateTime range) {
+  List<String> getTimes(DateTime date, DateTime range) {
     final interval = Duration(hours: range.hour, minutes: range.minute);
     final endDate = date.add(interval);
 
     final formatter = DateFormat.jm();
     final startTime = formatter.format(date);
     final endTime = formatter.format(endDate);
-
-    return '$startTime - $endTime';
+    List<String> lst = [];
+    lst.add(startTime);
+    lst.add(endTime);
+    return lst;
+    //return '$startTime - $endTime';
   }
 
   List<Map> convertOrdersToMap(List<FoodInfo> ords) {
@@ -52,7 +55,11 @@ class RequestConfirm extends StatelessWidget {
     return CupertinoActionSheet(
       title: Text("Do you want to submit this order?",
           style: TextStyle(fontSize: 22.0)),
-      message: Text("Delivery Window: " + getTimes(date, range),
+      message: Text(
+          "Delivery Window: " +
+              getTimes(date, range)[0] +
+              " - " +
+              getTimes(date, range)[1],
           style: TextStyle(fontSize: 20.0)),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -66,6 +73,10 @@ class RequestConfirm extends StatelessWidget {
                 "rest_name_used": args.restaurant_name,
                 "basket": convertOrdersToMap(args.orders),
                 "location": loc,
+                "delivery_window": {
+                  "start_time": getTimes(date, range)[0],
+                  "end_time": getTimes(date, range)[1]
+                }
               }
             });
             Menu.order = []; //clears order after submitting
