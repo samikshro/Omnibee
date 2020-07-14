@@ -12,8 +12,7 @@ class _BigFilterState extends State<BigFilter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text('Filter Results'), backgroundColor: Colors.amber),
+      appBar: AppBar(title: Text('Filter Results')),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -44,7 +43,6 @@ class _BigFilterState extends State<BigFilter> {
               ),
             ),
             Divider(
-              color: Colors.blueGrey,
               height: 10.0,
             ),
             Align(
@@ -78,7 +76,6 @@ class _BigFilterState extends State<BigFilter> {
               ),
             ),
             Divider(
-              color: Colors.blueGrey,
               height: 10.0,
             ),
             Align(
@@ -111,7 +108,6 @@ class _BigFilterState extends State<BigFilter> {
               ),
             ),
             Divider(
-              color: Colors.blueGrey,
               height: 10.0,
             ),
             Align(
@@ -134,14 +130,11 @@ class _BigFilterState extends State<BigFilter> {
                       },
                       min: 0.0,
                       max: 12.0,
-                      activeColor: Colors.amberAccent,
-                      inactiveColor: Color(0xffededed),
                       divisions: 12,
                       labels:
                           RangeLabels('${_values.start}', '${_values.end}'))),
             ),
             Divider(
-              color: Colors.blueGrey,
               height: 10.0,
             ),
           ],
@@ -154,8 +147,7 @@ class _BigFilterState extends State<BigFilter> {
 Widget _titleContainer(String myTitle) {
   return Text(
     myTitle,
-    style: TextStyle(
-        color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
   );
 }
 
@@ -175,21 +167,15 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   Widget build(BuildContext context) {
     return FilterChip(
       label: Text(widget.chipName),
-      // labelStyle: TextStyle(
-      //     color: Color(0xff6200ee),
-      //     fontSize: 16.0,
-      //     fontWeight: FontWeight.bold),
       selected: _isSelected,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      backgroundColor: Color(0xffededed),
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
         });
       },
-      selectedColor: Colors.amberAccent, //Color(0xffeadffd),
     );
   }
 }
