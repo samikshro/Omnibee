@@ -49,12 +49,10 @@ class _BasketState extends State<Basket> {
     final BasketData args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.grey,
             title: Text(
-              // _ordersToAddons(args.orders[0].addOns)
-              'My Basket',
-              // style: TextStyle(color: Colors.black),
-            )),
+          // _ordersToAddons(args.orders[0].addOns)
+          'My Basket',
+        )),
         body: SafeArea(
             child: CustomScrollView(
           slivers: <Widget>[
@@ -79,7 +77,6 @@ class _BasketState extends State<Basket> {
                   child: RaisedButton(
                     child: Text('Proceed to Request',
                         style: TextStyle(fontSize: 20.0)),
-                    color: Colors.amberAccent,
                     onPressed: () {
                       Navigator.pushNamed(context, '/request', arguments: args);
                     },
