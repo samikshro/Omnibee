@@ -10,7 +10,6 @@ class CurrentOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
       width: double.infinity,
       height: 80,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -37,7 +36,6 @@ class CurrentOrder extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
                       ),
                     ),
                   ),
@@ -47,7 +45,6 @@ class CurrentOrder extends StatelessWidget {
                       "pm ARRIVAL",
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.green,
                       ),
                     ),
                   ),
@@ -56,7 +53,6 @@ class CurrentOrder extends StatelessWidget {
                     height: 20,
                     margin: EdgeInsets.fromLTRB(6, 10, 0, 0),
                     decoration: new BoxDecoration(
-                      color: Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -73,12 +69,10 @@ class CurrentOrder extends StatelessWidget {
           Container(
             child: RaisedButton(
               shape: CircleBorder(
-                side: BorderSide(color: Colors.amber),
+                side: BorderSide(),
               ),
               onPressed: () {},
               padding: EdgeInsets.all(13),
-              color: Colors.amber,
-              textColor: Colors.white,
               child: Icon(Icons.chat_bubble, size: 40),
             ),
           ),
