@@ -27,9 +27,7 @@ class _LocationDetailsState extends State<LocationDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         MediumTextSection('Location Details'),
-        Divider(
-          color: Colors.grey,
-        ),
+        Divider(),
         MiniHeader('Building / Place Name'),
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 8, 0, 8),
@@ -38,7 +36,6 @@ class _LocationDetailsState extends State<LocationDetails> {
               style: TextStyle(
                 fontSize: 22,
               ),
-              //onEditingComplete: () => widget.setLocation(myController.text),
               onChanged: (String s) => widget.setLocation(myController.text)),
         ),
         MiniHeader('Instructions for delivery'),
@@ -51,7 +48,6 @@ class _LocationDetailsState extends State<LocationDetails> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
                 borderSide: BorderSide(
-                  color: Colors.amber,
                   style: BorderStyle.solid,
                 ),
               ),

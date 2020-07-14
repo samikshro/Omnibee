@@ -33,7 +33,6 @@ class CancelRangeDropDown extends StatelessWidget {
                   elevation: 16,
                   underline: Container(
                     height: 2,
-                    color: Colors.black,
                   ),
                   onChanged: (String newValue) {
                     setCancelRange(newValue);
