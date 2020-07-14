@@ -12,12 +12,13 @@ class NotificationCircle extends StatelessWidget {
       height: 25,
       margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
       decoration: new BoxDecoration(
-        color: Colors.orange,
         shape: BoxShape.circle,
       ),
       child: Center(
-        child: Text(numNotifications.toString(),
-            textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+        child: Text(
+          numNotifications.toString(),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
