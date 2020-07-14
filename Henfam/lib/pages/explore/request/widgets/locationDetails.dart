@@ -38,7 +38,8 @@ class _LocationDetailsState extends State<LocationDetails> {
               style: TextStyle(
                 fontSize: 22,
               ),
-              onEditingComplete: () => widget.setLocation(myController.text)),
+              //onEditingComplete: () => widget.setLocation(myController.text),
+              onChanged: (String s) => widget.setLocation(myController.text)),
         ),
         MiniHeader('Instructions for delivery'),
         Container(
