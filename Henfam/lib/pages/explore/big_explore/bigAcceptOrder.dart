@@ -82,7 +82,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
                 [
                   SizedBox(
                     width: double.infinity,
-                    height: 650,
+                    height: 750,
                     child: Column(
                       children: <Widget>[
                         CustomMap(requesters, restaurant),
