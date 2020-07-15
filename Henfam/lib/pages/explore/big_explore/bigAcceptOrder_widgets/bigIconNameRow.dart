@@ -30,7 +30,7 @@ class TinyIconAndName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        requester['image'],
+        requester['small_image'],
         Padding(
           padding: EdgeInsets.only(right: 5),
         ),

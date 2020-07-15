@@ -26,17 +26,23 @@ class AcceptOrderInfo extends StatelessWidget {
       children: <Widget>[
         ListTile(
           dense: true,
-          leading: FlutterLogo(),
-          title: Text('Oishii Bowl --> Olin Library'),
+          leading: Icon(
+            Icons.location_on,
+          ),
+          title: Text('Oishii Bowl -> Olin Library'),
         ),
         ListTile(
           dense: true,
-          leading: FlutterLogo(),
+          leading: Icon(
+            Icons.alarm,
+          ),
           title: Text('Deliver between 7.30pm - 8.30pm'),
         ),
         ListTile(
           dense: true,
-          leading: FlutterLogo(),
+          leading: Icon(
+            Icons.shopping_basket,
+          ),
           title: _getSubtotal(),
         ),
       ],

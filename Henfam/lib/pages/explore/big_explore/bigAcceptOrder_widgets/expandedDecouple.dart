@@ -15,7 +15,7 @@ class _ExpandedDecoupleState extends State<ExpandedDecouple> {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: SizedBox(
-        height: 160,
+        height: 140,
         child: Row(
           children: widget.requesters.map((requester) {
             return ProfileCheckBoxColumn(requester, widget.changeCheckBox);
@@ -38,8 +38,10 @@ class ProfileCheckBoxColumn extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20.0),
       child: Column(
         children: <Widget>[
-          Image(
-            image: AssetImage('assets/beeperson@2x.png'),
+          SizedBox(
+            height: 65,
+            width: 65,
+            child: requester['big_image'],
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 10),

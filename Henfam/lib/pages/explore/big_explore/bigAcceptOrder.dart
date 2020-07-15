@@ -1,6 +1,7 @@
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigAcceptOrderInfo.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
+import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
 import 'package:Henfam/pages/map/map.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +19,11 @@ class _AcceptOrderState extends State<AcceptOrder> {
   final requesters = [
     {
       'name': 'John',
-      'image': Image(
-        image: AssetImage('assets/beeperson@2x.png'),
+      'small_image': Image(
+        image: AssetImage('assets/man1.png'),
+      ),
+      'big_image': Image(
+        image: AssetImage('assets/man1@2x.png'),
       ),
       'selected': true,
       'item_cost': 11.23,
@@ -28,8 +32,11 @@ class _AcceptOrderState extends State<AcceptOrder> {
     },
     {
       'name': 'Kristen',
-      'image': Image(
-        image: AssetImage('assets/beeperson@2x.png'),
+      'small_image': Image(
+        image: AssetImage('assets/woman1.png'),
+      ),
+      'big_image': Image(
+        image: AssetImage('assets/woman1@2x.png'),
       ),
       'selected': true,
       'item_cost': 15.23,
@@ -37,9 +44,12 @@ class _AcceptOrderState extends State<AcceptOrder> {
       'location': [42.444806, -76.482617],
     },
     {
-      'name': 'Lisa',
-      'image': Image(
-        image: AssetImage('assets/beeperson@2x.png'),
+      'name': 'Cooper',
+      'small_image': Image(
+        image: AssetImage('assets/man2.png'),
+      ),
+      'big_image': Image(
+        image: AssetImage('assets/man2@2x.png'),
       ),
       'selected': true,
       'item_cost': 9.23,
@@ -64,23 +74,54 @@ class _AcceptOrderState extends State<AcceptOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          CustomMap(requesters, restaurant),
-          ExpansionTile(
-            title: Text('3 requests'),
-            onExpansionChanged: _onExpand,
-            trailing: Text(
-              'DECOUPLE',
-              style: TextStyle(color: Colors.cyan),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 650,
+                    child: Column(
+                      children: <Widget>[
+                        CustomMap(requesters, restaurant),
+                        ExpansionTile(
+                          title: Text('3 requests'),
+                          onExpansionChanged: _onExpand,
+                          trailing: Text(
+                            'DECOUPLE',
+                            style: TextStyle(color: Colors.cyan),
+                          ),
+                          children: <Widget>[
+                            ExpandedDecouple(requesters, _changeCheckBox),
+                          ],
+                        ),
+                        DisplaySmallUsers(displayBigUsers, requesters),
+                        MinEarnings(requesters),
+                        AcceptOrderInfo(requesters),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            children: <Widget>[
-              ExpandedDecouple(requesters, _changeCheckBox),
-            ],
-          ),
-          DisplaySmallUsers(displayBigUsers, requesters),
-          AcceptOrderInfo(requesters),
-        ],
+            SliverFillRemaining(
+              hasScrollBody: true,
+              fillOverscroll: true,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: RaisedButton(
+                      child: Text('Confirm', style: TextStyle(fontSize: 20.0)),
+                      onPressed: () {}),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

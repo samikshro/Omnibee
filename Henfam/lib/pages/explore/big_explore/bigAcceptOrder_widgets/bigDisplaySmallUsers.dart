@@ -10,11 +10,10 @@ class DisplaySmallUsers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!isExpanded) {
-      return (ListTile(
-        dense: true,
-        leading: FlutterLogo(),
-        title: IconNameRow(requesters),
-      ));
+      return Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: (IconNameRow(requesters)),
+      );
     } else {
       return Container();
     }
