@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedDecouple extends StatefulWidget {
-  List<Map<String, Object>> requesters;
+  List<DocumentSnapshot> requests;
+  List<bool> selectedList;
   Function changeCheckBox;
 
-  ExpandedDecouple(this.requesters, this.changeCheckBox);
+  ExpandedDecouple(this.requests, this.selectedList, this.changeCheckBox);
   @override
   _ExpandedDecoupleState createState() => _ExpandedDecoupleState();
 }
@@ -17,8 +19,13 @@ class _ExpandedDecoupleState extends State<ExpandedDecouple> {
       child: SizedBox(
         height: 140,
         child: Row(
-          children: widget.requesters.map((requester) {
-            return ProfileCheckBoxColumn(requester, widget.changeCheckBox);
+          children: widget.requests.map((request) {
+            int requestIndex = widget.requests.indexOf(request);
+            return ProfileCheckBoxColumn(
+                request,
+                widget.selectedList[requestIndex],
+                requestIndex,
+                widget.changeCheckBox);
           }).toList(),
         ),
       ),
@@ -27,10 +34,17 @@ class _ExpandedDecoupleState extends State<ExpandedDecouple> {
 }
 
 class ProfileCheckBoxColumn extends StatelessWidget {
-  Map<String, Object> requester;
+  DocumentSnapshot request;
+  bool isSelected;
+  int requestIndex;
   Function changeCheckBox;
 
-  ProfileCheckBoxColumn(this.requester, this.changeCheckBox);
+  ProfileCheckBoxColumn(
+    this.request,
+    this.isSelected,
+    this.requestIndex,
+    this.changeCheckBox,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +55,16 @@ class ProfileCheckBoxColumn extends StatelessWidget {
           SizedBox(
             height: 65,
             width: 65,
-            child: requester['big_image'],
+            child: Image.asset('assets/beeperson@2x.png'),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 10),
           ),
-          Text(requester['name']),
+          Text(request['user_id']['name']),
           Checkbox(
-              value: requester['selected'],
+              value: isSelected,
               onChanged: (val) {
-                changeCheckBox(requester, val);
+                changeCheckBox(requestIndex, val);
               })
         ],
       ),

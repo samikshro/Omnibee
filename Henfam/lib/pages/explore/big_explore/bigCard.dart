@@ -23,7 +23,7 @@ class BigCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/accept_order');
+        Navigator.pushNamed(context, '/accept_order', arguments: document);
       },
       child: Card(
         margin: EdgeInsets.all(10.0),
@@ -57,7 +57,8 @@ class BigCard extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/accept_order');
+                    Navigator.pushNamed(context, '/accept_order',
+                        arguments: document);
                   },
                 ),
               ],

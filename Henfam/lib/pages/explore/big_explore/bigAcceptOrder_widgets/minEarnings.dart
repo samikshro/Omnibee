@@ -1,15 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MinEarnings extends StatelessWidget {
-  List<Map<String, Object>> requesters;
+  List<DocumentSnapshot> requests;
+  List<bool> selectedList;
 
-  MinEarnings(this.requesters);
+  MinEarnings(this.requests, this.selectedList);
 
   String _getMinEarnings() {
     double minEarnings = 0;
-    for (int i = 0; i < requesters.length; i++) {
-      if (requesters[i]['selected'] == true) {
-        minEarnings += requesters[i]['min_earnings'];
+    for (int i = 0; i < requests.length; i++) {
+      if (selectedList[i] == true) {
+        for (int j = 0; j < requests[i]['user_id']['basket'].length; j++) {
+          minEarnings += requests[i]['user_id']['basket'][j]['price'] * .33;
+        }
       }
     }
 

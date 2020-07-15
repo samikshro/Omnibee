@@ -1,15 +1,16 @@
 import 'package:Henfam/pages/map/mapArgs.dart';
 import 'package:Henfam/pages/map/positionModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class CustomMap extends StatefulWidget {
-  List<Map<String, Object>> requesters;
-  Map<String, Object> restaurant;
+  List<DocumentSnapshot> requests;
+  List<bool> selectedList;
 
-  CustomMap(this.requesters, this.restaurant);
+  CustomMap(this.requests, this.selectedList);
 
   @override
   _CustomMapState createState() => _CustomMapState();
@@ -18,15 +19,51 @@ class CustomMap extends StatefulWidget {
 class _CustomMapState extends State<CustomMap> {
   GoogleMapController mapController;
 
-  Future<Position> getPosition() async {
+  Future<List<Position>> getPositions() async {
+    List<Position> positions = [];
+    print('this is before the function calls');
+    positions.add(await getUserPosition());
+    print('this is after one function calls');
+    positions.add(getRestaurantPosition());
+    print('this is after two function calls');
+    positions.addAll(await getRequestPositions());
+    print('this is after three function calls');
+    print(positions);
+    return positions;
+  }
+
+  Future<Position> getUserPosition() async {
     final geolocator = Geolocator()..forceAndroidLocationManager = true;
     final position = await geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
-  PositionModel getRestaurantPosition() {
-    return PositionModel.restaurantPosition;
+  Position getRestaurantPosition() {
+    GeoPoint coordinates =
+        widget.requests[0]["user_id"]["restaurant_coordinates"];
+    return Position(
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+    );
+  }
+
+  List<Position> getRequestPositions() {
+    List<Position> requestPositions = [];
+
+    for (int i = 0; i < widget.requests.length; i++) {
+      if (widget.selectedList[i] == true) {
+        GeoPoint coordinates =
+            widget.requests[0]["user_id"]["user_coordinates"];
+        Position pos = Position(
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        );
+        requestPositions.add(pos);
+      }
+    }
+
+    return requestPositions;
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -35,21 +72,19 @@ class _CustomMapState extends State<CustomMap> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Position>(
-      future: getPosition(),
-      builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+    return FutureBuilder<List<Position>>(
+      future: getPositions(),
+      builder: (BuildContext context, AsyncSnapshot<List<Position>> snapshot) {
         if (snapshot.hasData) {
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               Navigator.pushNamed(context, '/expanded_map',
                   arguments: MapArgs(
-                      _createMarkers(
+                      _createMarkers2(
                         snapshot.data,
-                        widget.requesters,
-                        widget.restaurant,
                       ),
-                      getRestaurantPosition()));
+                      snapshot.data[1]));
             },
             child: Hero(
               tag: 'map',
@@ -60,15 +95,13 @@ class _CustomMapState extends State<CustomMap> {
                   child: GoogleMap(
                     myLocationButtonEnabled: false,
                     onMapCreated: _onMapCreated,
-                    markers: _createMarkers(
+                    markers: _createMarkers2(
                       snapshot.data,
-                      widget.requesters,
-                      widget.restaurant,
                     ),
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
-                        getRestaurantPosition().latitude,
-                        getRestaurantPosition().longitude,
+                        snapshot.data[1].latitude,
+                        snapshot.data[1].longitude,
                       ),
                       zoom: 14,
                     ),
@@ -103,6 +136,26 @@ class _CustomMapState extends State<CustomMap> {
       },
     );
   }
+}
+
+Set<Marker> _createMarkers2(List<Position> positions) {
+  var markers = <Marker>[];
+
+  for (var i = 0; i < positions.length; i++) {
+    final newMarker = Marker(
+      markerId: MarkerId(i.toString()),
+      position: LatLng(
+        positions[i].latitude,
+        positions[i].longitude,
+      ),
+      icon: BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueOrange,
+      ),
+    );
+    markers.add(newMarker);
+  }
+
+  return markers.toSet();
 }
 
 Set<Marker> _createMarkers(user_position, requesters, restaurant) {
