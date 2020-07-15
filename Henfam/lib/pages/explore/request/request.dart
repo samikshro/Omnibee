@@ -62,7 +62,6 @@ class _RequestState extends State<Request> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey,
         title: Text(
           'Your Order',
         ),
@@ -95,7 +94,6 @@ class _RequestState extends State<Request> {
                   child: RaisedButton(
                       child: Text('Submit Order',
                           style: TextStyle(fontSize: 20.0)),
-                      color: Colors.amberAccent,
                       onPressed: () {
                         _getUserID().then((String s) {
                           _getUserName(s).then((String name) {

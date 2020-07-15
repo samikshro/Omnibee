@@ -37,9 +37,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
     return Column(
       children: <Widget>[
         MediumTextSection('Delivery Options'),
-        Divider(
-          color: Colors.grey,
-        ),
+        Divider(),
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Text(
@@ -52,7 +50,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 2),
+            border: Border.all(width: 2),
             borderRadius: BorderRadius.all(
               const Radius.circular(20.0),
             ),
@@ -84,7 +82,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 2),
+            border: Border.all(width: 2),
             borderRadius: BorderRadius.all(
               const Radius.circular(20.0),
             ),

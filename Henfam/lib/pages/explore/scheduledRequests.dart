@@ -6,7 +6,6 @@ class ScheduledRequests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.lightBlueAccent,
       width: double.infinity,
       height: 50,
       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -35,7 +34,6 @@ class ScheduledRequests extends StatelessWidget {
                 onPressed: () {
                   print("Hello!");
                 },
-                textColor: Colors.white,
                 child:
                     Text("View".toUpperCase(), style: TextStyle(fontSize: 14)),
               ),

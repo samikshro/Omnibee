@@ -26,7 +26,6 @@ class ShowNameInput extends StatelessWidget {
             hintText: 'First name',
             icon: new Icon(
               Icons.mail,
-              color: Colors.grey,
             ),
           ),
           validator: (value) {

@@ -17,7 +17,6 @@ class ShowPasswordInput extends StatelessWidget {
           hintText: 'Password',
           icon: new Icon(
             Icons.lock,
-            color: Colors.grey,
           ),
         ),
         validator: (value) {

@@ -43,11 +43,9 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
     final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.grey,
           title: Text(
-            foodDoc.document['food'][foodDoc.index]['name'],
-            // style: TextStyle(color: Colors.black),
-          )),
+        foodDoc.document['food'][foodDoc.index]['name'],
+      )),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -121,7 +119,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                   child: RaisedButton(
                     child:
                         Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
-                    color: Colors.amberAccent,
                     onPressed: () {
                       print("got here");
                       if (foodDoc.order != null) {

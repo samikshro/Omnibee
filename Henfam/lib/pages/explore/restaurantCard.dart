@@ -33,8 +33,9 @@ class RestaurantCard extends StatelessWidget {
                   Padding(padding: EdgeInsets.only(bottom: 7)),
                   Text(document['type_food'].join(', ')),
                   Padding(padding: EdgeInsets.only(bottom: 7)),
-                  Text("Open until " + document['hours']['end_time'],
-                      style: TextStyle(color: Colors.green)),
+                  Text(
+                    "Open until " + document['hours']['end_time'],
+                  ),
                 ],
               ),
             )
