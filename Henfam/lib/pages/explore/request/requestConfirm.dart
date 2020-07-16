@@ -1,6 +1,7 @@
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
@@ -15,10 +16,18 @@ class RequestConfirm extends StatelessWidget {
   final BasketData args;
   final uid;
   final String loc;
+  final Position locCoords;
   final String name;
 
   RequestConfirm(
-      this.date, this.range, this.args, this.uid, this.loc, this.name);
+    this.date,
+    this.range,
+    this.args,
+    this.uid,
+    this.loc,
+    this.locCoords,
+    this.name,
+  );
 
   final firestoreInstance = Firestore.instance;
 
@@ -38,7 +47,6 @@ class RequestConfirm extends StatelessWidget {
     lst.add(startTime);
     lst.add(endTime);
     return lst;
-    //return '$startTime - $endTime';
   }
 
   List<Map> convertOrdersToMap(List<FoodInfo> ords) {
@@ -66,11 +74,18 @@ class RequestConfirm extends StatelessWidget {
           child: Text("Confirm"),
           isDefaultAction: true,
           onPressed: () {
+            print('name: ' + args.restaurant_name);
             firestoreInstance.collection("orders").add({
               "user_id": {
                 "name": name,
                 "uid": uid,
+                "user_coordinates":
+                    GeoPoint(locCoords.latitude, locCoords.longitude),
                 "rest_name_used": args.restaurant_name,
+                "restaurant_coordinates": GeoPoint(
+                  args.restaurant_loc.latitude,
+                  args.restaurant_loc.longitude,
+                ),
                 "basket": convertOrdersToMap(args.orders),
                 "location": loc,
                 "delivery_window": {

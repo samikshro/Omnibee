@@ -21,14 +21,10 @@ class _CustomMapState extends State<CustomMap> {
 
   Future<List<Position>> getPositions() async {
     List<Position> positions = [];
-    print('this is before the function calls');
     positions.add(await getUserPosition());
-    print('this is after one function calls');
     positions.add(getRestaurantPosition());
-    print('this is after two function calls');
-    positions.addAll(await getRequestPositions());
-    print('this is after three function calls');
-    print(positions);
+    positions.addAll(getRequestPositions());
+
     return positions;
   }
 

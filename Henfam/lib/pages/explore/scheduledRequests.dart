@@ -31,9 +31,7 @@ class ScheduledRequests extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ),
-                onPressed: () {
-                  print("Hello!");
-                },
+                onPressed: () {},
                 child:
                     Text("View".toUpperCase(), style: TextStyle(fontSize: 14)),
               ),

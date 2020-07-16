@@ -8,6 +8,7 @@ import 'package:Henfam/pages/explore/request/requestConfirm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Request extends StatefulWidget {
   BaseAuth auth = new Auth();
@@ -18,7 +19,8 @@ class Request extends StatefulWidget {
 class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _deliveryRange = DateTime(0, 0, 0, 0, 0);
-  String _location = "Olin Library";
+  String _location = '';
+  Position _locationCoordinates = Position();
 
   void _setDeliveryDate(DateTime _newDate) {
     setState(() {
@@ -32,9 +34,10 @@ class _RequestState extends State<Request> {
     });
   }
 
-  void _setLocation(String loc) {
+  void _setLocation(String loc, Position locationCoords) {
     setState(() {
       _location = loc;
+      _locationCoordinates = locationCoords;
     });
   }
 
@@ -97,16 +100,18 @@ class _RequestState extends State<Request> {
                       onPressed: () {
                         _getUserID().then((String s) {
                           _getUserName(s).then((String name) {
-                            print("name:" + name);
                             showCupertinoModalPopup(
-                                context: context,
-                                builder: (context) => RequestConfirm(
-                                    _deliveryDate,
-                                    _deliveryRange,
-                                    args,
-                                    s,
-                                    _location,
-                                    name));
+                              context: context,
+                              builder: (context) => RequestConfirm(
+                                _deliveryDate,
+                                _deliveryRange,
+                                args,
+                                s,
+                                _location,
+                                _locationCoordinates,
+                                name,
+                              ),
+                            );
                           });
                         });
                       }),

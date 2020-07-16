@@ -39,7 +39,7 @@ class BigCard extends StatelessWidget {
                 title: Text(document['user_id']['name'] +
                     ": " +
                     document['user_id']['rest_name_used']),
-                subtitle: Text(document['user_id']['location'] +
+                subtitle: Text(document['user_id']['rest_name_used'] +
                     ": " +
                     document['user_id']['delivery_window']['start_time'] +
                     "-" +

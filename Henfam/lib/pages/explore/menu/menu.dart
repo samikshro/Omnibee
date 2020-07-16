@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'menuPageHeader.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
@@ -101,11 +102,18 @@ class _MenuState extends State<Menu> {
                             // print(ord.document);
                             setState(() {
                               _onPressed = () {
-                                Navigator.pushNamed(context, '/basket_form',
-                                    arguments: BasketData(
-                                        orders: ord.order,
-                                        restaurant_name:
-                                            document['rest_name']));
+                                GeoPoint point = document['location'];
+                                Navigator.pushNamed(
+                                  context,
+                                  '/basket_form',
+                                  arguments: BasketData(
+                                      orders: ord.order,
+                                      restaurant_name: document['rest_name'],
+                                      restaurant_loc: Position(
+                                        latitude: point.latitude,
+                                        longitude: point.longitude,
+                                      )),
+                                );
                               };
                             });
 

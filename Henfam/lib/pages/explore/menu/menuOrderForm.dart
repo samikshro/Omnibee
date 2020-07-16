@@ -62,40 +62,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
             SliverToBoxAdapter(
               child: LargeTextSection("Add-ons"),
             ),
-            // SliverList(
-            //   delegate: SliverChildListDelegate(
-            //     [
-            //       Container(
-            //         height: 90.0 * args.addOns.length,
-            //         child: ListView.separated(
-            //           separatorBuilder: (context, index) {
-            //             return Divider();
-            //           },
-            //           itemCount: args.addOns.length,
-            //           itemBuilder: (context, index) {
-            //             return CheckboxListTile(
-            //               title: Text(args.addOns[index].name),
-            //               subtitle: Wrap(direction: Axis.vertical, children: [
-            //                 Text("\$" + args.addOns[index].price.toString()),
-            //               ]),
-            //               value:
-            //                   selectedAddons.contains(args.addOns[index].name),
-            //               onChanged: (bool value) {
-            //                 setState(() {
-            //                   if (value) {
-            //                     selectedAddons.add(args.addOns[index].name);
-            //                   } else {
-            //                     selectedAddons.remove(args.addOns[index].name);
-            //                   }
-            //                 });
-            //               },
-            //             );
-            //           },
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
             SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
             SliverToBoxAdapter(
               child: Container(

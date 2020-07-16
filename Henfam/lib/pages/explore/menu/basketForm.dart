@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:Henfam/models/FoodModel.dart';
 import 'package:Henfam/models/AddOnModel.dart';
+import 'package:geolocator/geolocator.dart';
 import 'menuOrderForm.dart';
 
 class BasketData {
@@ -12,7 +13,8 @@ class BasketData {
   // BasketData({this.names, this.prices, this.requests, this.addons});
   final List<FoodInfo> orders;
   final String restaurant_name;
-  BasketData({this.orders, this.restaurant_name});
+  final Position restaurant_loc;
+  BasketData({this.orders, this.restaurant_name, this.restaurant_loc});
 }
 
 class Basket extends StatefulWidget {

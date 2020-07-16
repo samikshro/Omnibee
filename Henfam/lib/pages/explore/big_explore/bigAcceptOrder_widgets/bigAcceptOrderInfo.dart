@@ -30,7 +30,9 @@ class AcceptOrderInfo extends StatelessWidget {
     List<String> endLocations = [];
     for (int i = 0; i < requests.length; i++) {
       if (selectedList[i] == true) {
-        endLocations.add(requests[i]['user_id']['location']);
+        String location = requests[i]['user_id']['location'];
+        List<String> locList = location.split(',');
+        endLocations.add(locList[0]);
       }
     }
 
