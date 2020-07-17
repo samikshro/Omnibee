@@ -49,6 +49,12 @@ class RequestConfirm extends StatelessWidget {
     return lst;
   }
 
+  Timestamp get_expiration_date(DateTime date, DateTime range) {
+    final interval = Duration(hours: range.hour, minutes: range.minute - 20);
+    final endDate = date.add(interval);
+    return Timestamp.fromMillisecondsSinceEpoch(endDate.millisecondsSinceEpoch);
+  }
+
   List<Map> convertOrdersToMap(List<FoodInfo> ords) {
     List<Map> orders = [];
     ords.forEach((FoodInfo ord) {
@@ -91,7 +97,8 @@ class RequestConfirm extends StatelessWidget {
                 "delivery_window": {
                   "start_time": getTimes(date, range)[0],
                   "end_time": getTimes(date, range)[1]
-                }
+                },
+                "expiration_time": get_expiration_date(date, range),
               }
             });
             Menu.order = []; //clears order after submitting
