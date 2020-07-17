@@ -21,6 +21,10 @@ class BigCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (document['user_id']['is_accepted'] == true) {
+      return Container();
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/accept_order', arguments: document);

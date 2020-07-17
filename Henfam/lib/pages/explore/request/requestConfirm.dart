@@ -80,7 +80,6 @@ class RequestConfirm extends StatelessWidget {
           child: Text("Confirm"),
           isDefaultAction: true,
           onPressed: () {
-            print('name: ' + args.restaurant_name);
             firestoreInstance.collection("orders").add({
               "user_id": {
                 "name": name,
@@ -99,6 +98,8 @@ class RequestConfirm extends StatelessWidget {
                   "end_time": getTimes(date, range)[1]
                 },
                 "expiration_time": get_expiration_date(date, range),
+                "is_accepted": false,
+                "runner": null,
               }
             });
             Menu.order = []; //clears order after submitting
