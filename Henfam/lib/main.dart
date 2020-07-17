@@ -71,6 +71,9 @@ ThemeData _buildTheme() {
     accentColor: Color(0xff009DFF),
     primaryColor: Color(0xfffd9827),
     buttonColor: Color(0xffFD9827),
+    appBarTheme: base.appBarTheme.copyWith(
+      color: Colors.white,
+    ),
     scaffoldBackgroundColor: Colors.white,
     cardColor: Colors.white,
     textSelectionColor: Color(0xfffdbf2d),
@@ -85,22 +88,13 @@ ThemeData _buildTheme() {
       buttonTextTheme: ButtonTextTheme.accent,
     ),
     primaryIconTheme: base.iconTheme.copyWith(color: Color(0xff008ae0)),
-    // inputDecorationTheme: InputDecorationTheme(
-    //   focusedBorder: CutCornersBorder(
-    //     borderSide: BorderSide(
-    //       width: 2.0,
-    //       color: kShrineBrown900,
-    //     ),
-    //   ),
-    //   border: CutCornersBorder(),
-    // ),
-    textTheme: _buildShrineTextTheme(base.textTheme),
-    primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
-    accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
+    textTheme: _buildTextTheme(base.textTheme),
+    primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
+    accentTextTheme: _buildTextTheme(base.accentTextTheme),
   );
 }
 
-TextTheme _buildShrineTextTheme(TextTheme base) {
+TextTheme _buildTextTheme(TextTheme base) {
   return base
       .copyWith(
         headline5: base.headline5.copyWith(
