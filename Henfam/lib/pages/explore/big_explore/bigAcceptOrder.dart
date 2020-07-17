@@ -3,6 +3,7 @@ import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDispl
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
 import 'package:Henfam/pages/map/map.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AcceptOrder extends StatefulWidget {
@@ -57,22 +58,40 @@ class _AcceptOrderState extends State<AcceptOrder> {
       'location': [42.444054, -76.485805],
     },
   ];
-  var displayBigUsers = false;
+  var isExpanded = false;
+  var selectedList = [
+    true,
+  ];
 
-  void _changeCheckBox(Map<String, Object> requester, bool modifiedVal) {
+  void _changeCheckBox(int index, bool modifiedVal) {
     setState(() {
-      requester['selected'] = modifiedVal;
+      selectedList[index] = modifiedVal;
     });
   }
 
   void _onExpand(bool is_expanded) {
     setState(() {
-      displayBigUsers = is_expanded;
+      isExpanded = is_expanded;
     });
+  }
+
+  String _getNumRequests(List<DocumentSnapshot> docList) {
+    int numRequests = 0;
+    for (int i = 0; i < docList.length; i++) {
+      if (selectedList[i] == true) {
+        numRequests += docList[i]['user_id']['basket'].length;
+      }
+    }
+
+    return "${numRequests.toString()} items";
   }
 
   @override
   Widget build(BuildContext context) {
+    final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
+    final docList = [
+      document,
+    ];
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -85,21 +104,22 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     height: 750,
                     child: Column(
                       children: <Widget>[
-                        CustomMap(requesters, restaurant),
+                        CustomMap(docList, selectedList),
                         ExpansionTile(
-                          title: Text('3 requests'),
+                          title: Text(_getNumRequests(docList)),
                           onExpansionChanged: _onExpand,
                           trailing: Text(
                             'DECOUPLE',
                             style: TextStyle(color: Colors.cyan),
                           ),
                           children: <Widget>[
-                            ExpandedDecouple(requesters, _changeCheckBox),
+                            ExpandedDecouple(
+                                docList, selectedList, _changeCheckBox),
                           ],
                         ),
-                        DisplaySmallUsers(displayBigUsers, requesters),
-                        MinEarnings(requesters),
-                        AcceptOrderInfo(requesters),
+                        DisplaySmallUsers(isExpanded, docList, selectedList),
+                        MinEarnings(docList, selectedList),
+                        AcceptOrderInfo(docList, selectedList),
                       ],
                     ),
                   )
