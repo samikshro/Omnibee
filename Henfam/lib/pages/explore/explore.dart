@@ -16,11 +16,11 @@ class _ExploreState extends State<Explore> {
   var _location = "Olin Library";
   var _score = 500;
 
-  void _switchToLil() {
-    setState(() {
-      _isLil = true;
-    });
-  }
+  // void _switchToLil() {
+  //   setState(() {
+  //     _isLil = true;
+  //   });
+  // }
 
   void _switchToBig() {
     // setState(() {
@@ -47,6 +47,9 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Explore'),
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -54,10 +57,21 @@ class _ExploreState extends State<Explore> {
           child: ListView(
             children: <Widget>[
               Column(children: <Widget>[
-                LocationEggScore(score: _score, location: _location),
-                LilBigSwitch(_switchToLil, _switchToBig),
+                // LocationEggScore(score: _score, location: _location),
+                // LilBigSwitch(_switchToLil, _switchToBig),
+                RaisedButton(
+                  child: Text(
+                    "Run an Errand",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: _switchToBig,
+                ),
               ]),
-              (_isLil) ? LilMode(_activities) : BigMode(),
+              // (_isLil) ? LilMode(_activities) : BigMode(),
+              LilMode(_activities)
             ],
           ),
         ),

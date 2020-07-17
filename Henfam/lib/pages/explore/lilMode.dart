@@ -19,17 +19,17 @@ class LilMode extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-        CurrentOrder("Jessie", "7:30", "on the way"),
-        ScheduledRequests(),
-        LargeTextSection("What would you like help with, John?"),
+        // CurrentOrder("Jessie", "7:30", "on the way"),
+        // ScheduledRequests(),
+        LargeTextSection("What would you like help with?"),
         Container(
           child: HelpCard(activities),
         ),
-        LargeTextSection("Or choose from other errands nearby!"),
-        Padding(
-          padding: EdgeInsets.only(bottom: 60),
-          child: ErrandsNearby(),
-        ),
+        // LargeTextSection("Or choose from other errands nearby!"),
+        // Padding(
+        //   padding: EdgeInsets.only(bottom: 60),
+        //   child: ErrandsNearby(),
+        // ),
       ],
     );
   }
