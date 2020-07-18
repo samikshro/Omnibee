@@ -18,7 +18,7 @@ class Request extends StatefulWidget {
 
 class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
-  var _deliveryRange = DateTime(0, 0, 0, 0, 0);
+  var _deliveryRange = DateTime(0, 0, 0, 0, 30);
   String _location = '';
   Position _locationCoordinates = Position();
 
