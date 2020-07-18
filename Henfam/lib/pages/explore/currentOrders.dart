@@ -53,7 +53,7 @@ class CurrentOrders extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Text('Loading...');
                     return ExpansionTile(
-                      title: Text('Your Orders'),
+                      title: Text('Your Deliveries'),
                       children: snapshot.data.documents
                           .map<Widget>((doc) => DeliveryCard(
                                 context,
