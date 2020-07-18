@@ -6,11 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'menuOrderForm.dart';
 
 class BasketData {
-  // final List<String> names;
-  // final List<String> prices;
-  // final List<String> requests;
-  // final List<String> addons;
-  // BasketData({this.names, this.prices, this.requests, this.addons});
   final List<FoodInfo> orders;
   final String restaurant_name;
   final Position restaurant_loc;

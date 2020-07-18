@@ -114,7 +114,8 @@ class _AcceptOrderState extends State<AcceptOrder> {
                       child: Text('Confirm', style: TextStyle(fontSize: 20.0)),
                       onPressed: () {
                         _markOrdersAccepted(docList);
-                        Navigator.pushNamed(context, '/explore');
+                        Navigator.popUntil(context,
+                            ModalRoute.withName(Navigator.defaultRouteName));
                       }),
                 ),
               ),
