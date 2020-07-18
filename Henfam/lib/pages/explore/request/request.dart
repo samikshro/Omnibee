@@ -50,7 +50,7 @@ class _RequestState extends State<Request> {
   Future<String> _getUserName(String uid) async {
     Future<String> s = Firestore.instance
         .collection('users')
-        .document("iyxy7uAUOCPThj3J2HV4C0ZpLok2")
+        .document(uid)
         .get()
         .then((DocumentSnapshot document) {
       return document['name'];
