@@ -6,26 +6,18 @@ import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Menu extends StatefulWidget {
-  // final MenuModel restaurant;
   final DocumentSnapshot document;
   static List<FoodInfo> order;
-
-  //static bool viewbasket_enabled = false;
   Menu({this.document});
-
   @override
   _MenuState createState() => _MenuState();
 }
 
-bool _viewbasket_enabled = false;
 var _onPressed;
 
 class _MenuState extends State<Menu> {
   Future<FoodDocument> _navigateAndGetOrderInfo(BuildContext context, int index,
       DocumentSnapshot document, List<FoodInfo> order) async {
-    //MenuModel restaurant) async {
-    // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
     final result = await Navigator.pushNamed(context, '/menu_order_form',
         arguments: FoodDocument(
           document: document,
@@ -42,18 +34,8 @@ class _MenuState extends State<Menu> {
               "Added " + result.document['food'][result.index]['name'] + "!")));
 
     setState(() {
-      _viewbasket_enabled = true;
-    });
-    print("here is length of result order in menu:" +
-        result.order.length.toString());
-
-    setState(() {
       Menu.order = result.order;
     });
-    print("here is length of order in menu:" + Menu.order.length.toString());
-
-    // print(result.name);
-    print(result.document['food'][result.index]['name']);
 
     return result;
   }
@@ -96,10 +78,7 @@ class _MenuState extends State<Menu> {
                         _navigateAndGetOrderInfo(
                                 context, index, document, Menu.order)
                             .then((FoodDocument ord) {
-                          print(_viewbasket_enabled);
-
                           if (ord != null) {
-                            // print(ord.document);
                             setState(() {
                               _onPressed = () {
                                 GeoPoint point = document['location'];
@@ -116,8 +95,6 @@ class _MenuState extends State<Menu> {
                                 );
                               };
                             });
-
-                            print(_onPressed);
                           } else {
                             _onPressed = () {};
                           }
@@ -126,7 +103,6 @@ class _MenuState extends State<Menu> {
                       title: Text(document['food'][index]['name']),
                       subtitle: Wrap(direction: Axis.vertical, children: [
                         Text(document['food'][index]['desc']),
-                        // SizedBox(width: 25),
                         Text(
                             "\$" + document['food'][index]['price'].toString()),
                       ]),

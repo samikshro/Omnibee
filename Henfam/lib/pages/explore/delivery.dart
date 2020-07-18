@@ -18,7 +18,7 @@ class Delivery extends StatefulWidget {
 }
 
 class _DeliveryState extends State<Delivery> {
-  var _location = "Olin Library";
+  // var _location = "Olin Library";
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +27,14 @@ class _DeliveryState extends State<Delivery> {
     final String headerCaption = args.headerCaption;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(args.headerCaption),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  DeliveryHeader(
-                    _location,
-                    headerCaption,
-                  ),
-                ],
-              ),
-            ),
             ErrandFee(),
             LargeTextSection("Choose a restaurant"),
             Column(children: [
@@ -65,8 +51,7 @@ class _DeliveryState extends State<Delivery> {
                               document: snapshot.data.documents[index]);
                         });
                   }),
-            ] 
-                ),
+            ]),
           ],
         ),
       ),
