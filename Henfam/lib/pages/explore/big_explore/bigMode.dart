@@ -9,6 +9,7 @@ class BigMode extends StatefulWidget {
 }
 
 class _BigModeState extends State<BigMode> {
+  Timestamp tiempo = Timestamp.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +50,11 @@ class _BigModeState extends State<BigMode> {
             ),
             Flexible(
               child: StreamBuilder(
-                  stream: Firestore.instance.collection('orders').snapshots(),
+                  stream: Firestore.instance
+                      .collection('orders')
+                      .where("user_id.expiration_time",
+                          isGreaterThanOrEqualTo: new DateTime.now())
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return const Text('Loading....');
                     print("length of snapshot: " +
