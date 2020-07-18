@@ -80,7 +80,7 @@ class _RequestState extends State<Request> {
                     children: <Widget>[
                       DeliveryOptions(_setDeliveryDate, _setDeliveryRange),
                       LocationDetails(_setLocation),
-                      PaymentSection(),
+                      // PaymentSection(),
                     ],
                   ),
                 ],
@@ -96,8 +96,12 @@ class _RequestState extends State<Request> {
                   width: double.infinity,
                   height: 60,
                   child: RaisedButton(
-                      child: Text('Submit Order',
-                          style: TextStyle(fontSize: 20.0)),
+                      child: Text(
+                        'Submit Order',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Theme.of(context).scaffoldBackgroundColor),
+                      ),
                       onPressed: () {
                         _getUserID().then((String s) {
                           _getUserName(s).then((String name) {

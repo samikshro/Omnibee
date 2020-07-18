@@ -83,8 +83,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                   width: double.infinity,
                   height: 60,
                   child: RaisedButton(
-                    child:
-                        Text('Add to Cart', style: TextStyle(fontSize: 20.0)),
+                    child: Text('Add to Cart',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Theme.of(context).scaffoldBackgroundColor)),
                     onPressed: () {
                       print("got here");
                       if (foodDoc.order != null) {

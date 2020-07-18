@@ -50,7 +50,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(width: 2),
+            // border: Border.all(width: 2),
             borderRadius: BorderRadius.all(
               const Radius.circular(20.0),
             ),
@@ -71,9 +71,9 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
-            "Range",
+            "Order should arrive in (h:m)",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(width: 2),
+            // border: Border.all(width: 2),
             borderRadius: BorderRadius.all(
               const Radius.circular(20.0),
             ),
@@ -104,7 +104,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             ),
           ),
         ),
-        CancelRangeDropDown(_dropdownValue, _setCancelRange),
+        // CancelRangeDropDown(_dropdownValue, _setCancelRange),
       ],
     );
     ;
