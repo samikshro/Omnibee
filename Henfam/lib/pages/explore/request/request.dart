@@ -46,6 +46,7 @@ class _RequestState extends State<Request> {
     return result.uid;
   }
 
+  // why is this hardcoded...?
   Future<String> _getUserName(String uid) async {
     Future<String> s = Firestore.instance
         .collection('users')

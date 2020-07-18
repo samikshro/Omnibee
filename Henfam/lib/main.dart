@@ -1,6 +1,7 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder.dart';
+import 'package:Henfam/pages/explore/explore_card/orderCardPage.dart';
 import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:Henfam/pages/map/expandedMap.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class HenfamBasic extends StatelessWidget {
         '/matching': (context) => MatchingProgress(),
         '/accept_order': (context) => AcceptOrder(),
         '/expanded_map': (context) => ExpandedMap(),
+        '/order_card_page': (context) => OrderCardPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/big_filter") {

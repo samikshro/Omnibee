@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/helpcard.dart';
 import './scheduledRequests.dart';
-import './currentOrder.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 
 class LilMode extends StatelessWidget {

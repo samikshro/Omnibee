@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/currentOrders.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
 
@@ -56,21 +57,23 @@ class _ExploreState extends State<Explore> {
           height: MediaQuery.of(context).size.height,
           child: ListView(
             children: <Widget>[
-              Column(children: <Widget>[
-                // LocationEggScore(score: _score, location: _location),
-                // LilBigSwitch(_switchToLil, _switchToBig),
-                RaisedButton(
-                  child: Text(
-                    "Run an Errand",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              Column(
+                children: <Widget>[
+                  // LocationEggScore(score: _score, location: _location),
+                  // LilBigSwitch(_switchToLil, _switchToBig),
+                  RaisedButton(
+                    child: Text(
+                      "Run an Errand",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    onPressed: _switchToBig,
                   ),
-                  onPressed: _switchToBig,
-                ),
-              ]),
-              // (_isLil) ? LilMode(_activities) : BigMode(),
+                  CurrentOrders(),
+                ],
+              ),
               LilMode(_activities)
             ],
           ),
