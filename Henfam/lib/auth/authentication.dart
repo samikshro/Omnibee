@@ -32,7 +32,7 @@ class Auth implements BaseAuth {
         email: email, password: password);
     FirebaseUser user = result.user;
 
-    firestoreInstance.collection("users").add({
+    firestoreInstance.collection("users").document(user.uid).setData({
       'name': name,
       'email': email,
       'runs': 0,
