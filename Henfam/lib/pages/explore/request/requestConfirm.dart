@@ -40,12 +40,18 @@ class RequestConfirm extends StatelessWidget {
     final interval = Duration(hours: range.hour, minutes: range.minute);
     final endDate = date.add(interval);
 
+    final expirationInterval =
+        Duration(hours: range.hour, minutes: range.minute - 20);
+    final expirationDate = date.add(expirationInterval);
+
     final formatter = DateFormat.jm();
     final startTime = formatter.format(date);
     final endTime = formatter.format(endDate);
+    final expirationTime = formatter.format(expirationDate);
     List<String> lst = [];
     lst.add(startTime);
     lst.add(endTime);
+    lst.add(expirationTime);
     return lst;
   }
 
@@ -73,7 +79,9 @@ class RequestConfirm extends StatelessWidget {
           "Delivery Window: " +
               getTimes(date, range)[0] +
               " - " +
-              getTimes(date, range)[1],
+              getTimes(date, range)[1] +
+              ". Your order will EXPIRE at " +
+              getTimes(date, range)[2],
           style: TextStyle(fontSize: 20.0)),
       actions: <Widget>[
         CupertinoActionSheetAction(
