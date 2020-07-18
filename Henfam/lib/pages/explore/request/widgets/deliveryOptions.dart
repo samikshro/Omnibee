@@ -97,7 +97,8 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
               minimumDate: DateTime(_date.year, _date.month, _date.day, 0, 30),
               maximumDate: DateTime(_date.year, _date.month, _date.day)
                   .add(Duration(hours: 4)),
-              initialDateTime: DateTime(_date.year, _date.month, _date.day),
+              initialDateTime:
+                  DateTime(_date.year, _date.month, _date.day, 0, 30),
               onDateTimeChanged: (newRange) {
                 setGlobalRange(newRange);
               },
