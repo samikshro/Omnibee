@@ -1,4 +1,5 @@
 import 'package:Henfam/pages/explore/currentOrders.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
 
@@ -61,7 +62,11 @@ class _ExploreState extends State<Explore> {
                 children: <Widget>[
                   // LocationEggScore(score: _score, location: _location),
                   // LilBigSwitch(_switchToLil, _switchToBig),
-                  RaisedButton(
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                  ),
+                  CupertinoButton(
+                    color: Theme.of(context).primaryColor,
                     child: Text(
                       "Run an Errand",
                       style: TextStyle(

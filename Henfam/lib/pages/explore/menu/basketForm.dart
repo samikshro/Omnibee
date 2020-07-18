@@ -78,7 +78,9 @@ class _BasketState extends State<Basket> {
                   height: 60,
                   child: RaisedButton(
                     child: Text('Proceed to Request',
-                        style: TextStyle(fontSize: 20.0)),
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Theme.of(context).scaffoldBackgroundColor)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/request', arguments: args);
                     },

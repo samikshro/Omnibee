@@ -123,7 +123,10 @@ class _MenuState extends State<Menu> {
                 width: double.infinity,
                 height: 60,
                 child: RaisedButton(
-                  child: Text('View Basket', style: TextStyle(fontSize: 20.0)),
+                  child: Text('View Basket',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).scaffoldBackgroundColor)),
                   onPressed: _onPressed,
                 ),
               ),

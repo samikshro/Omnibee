@@ -1,5 +1,6 @@
 import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,6 +19,7 @@ class LocationDetails extends StatefulWidget {
 
 class _LocationDetailsState extends State<LocationDetails> {
   final kGoogleApiKey = "AIzaSyDt39wypJeJDVQ82elS6Em94rJvR8Km58c";
+  String findAddressText = "Find address";
 
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: LocationDetails.kGoogleApiKey);
@@ -37,6 +39,10 @@ class _LocationDetailsState extends State<LocationDetails> {
     }
   }
 
+  _updateButtonText(String loc) {
+    findAddressText = "Found location: " + loc;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,16 +52,18 @@ class _LocationDetailsState extends State<LocationDetails> {
         Divider(),
         MiniHeader('Building / Place Name'),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15, 8, 0, 8),
-          child: RaisedButton(
+          padding: const EdgeInsets.fromLTRB(26, 8, 10, 8),
+          child: CupertinoButton(
+            color: Theme.of(context).primaryColor,
             onPressed: () async {
               Prediction p = await PlacesAutocomplete.show(
                 context: context,
                 apiKey: kGoogleApiKey,
               );
               updateLocation(p);
+              _updateButtonText(p.description);
             },
-            child: Text('Find address'),
+            child: Text(findAddressText),
           ),
         ),
         MiniHeader('Instructions for delivery'),
