@@ -26,22 +26,22 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: DefaultTabController(
-        length: 4,
+        length: 2, //4,
         child: Scaffold(
           bottomNavigationBar: TabBar(
               indicatorColor: Theme.of(context).primaryColor,
               labelColor: Theme.of(context).primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.explore)),
-                Tab(icon: Icon(Icons.chat)),
-                Tab(icon: Icon(Icons.local_offer)),
+                // Tab(icon: Icon(Icons.chat)),
+                // Tab(icon: Icon(Icons.local_offer)),
                 Tab(icon: Icon(Icons.account_circle)),
               ]),
           body: TabBarView(
             children: [
               Explore(),
-              ChatList(),
-              BigMode(),
+              // ChatList(),
+              // BigMode(),
               Profile(auth, logoutCallback, userId),
             ],
           ),
