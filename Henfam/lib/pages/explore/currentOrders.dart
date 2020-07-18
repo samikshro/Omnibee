@@ -13,56 +13,56 @@ class CurrentOrders extends StatelessWidget {
     return user.uid;
   }
 
-  Future<QuerySnapshot> _getUserOrders(String uid) {
+  Stream<QuerySnapshot> _getUserOrders(String uid) {
     final ordersRef = _firestore.collection('orders');
-    return ordersRef.where('user_id.uid', isEqualTo: uid).getDocuments();
+    return ordersRef.where('user_id.uid', isEqualTo: uid).snapshots();
   }
 
-  Future<QuerySnapshot> _getUserDeliveries(String uid) {
+  Stream<QuerySnapshot> _getUserDeliveries(String uid) {
     final ordersRef = _firestore.collection('orders');
-    return ordersRef.where('user_id.runner', isEqualTo: uid).getDocuments();
-  }
-
-  Future<List<QuerySnapshot>> _getOrdersAndDeliveries() async {
-    final uid = await _getUserId();
-    final orders = await _getUserOrders(uid);
-    final deliveries = await _getUserDeliveries(uid);
-    return [orders, deliveries];
+    return ordersRef.where('user_id.runner', isEqualTo: uid).snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<QuerySnapshot>>(
-        future: _getOrdersAndDeliveries(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<QuerySnapshot>> queries) {
-          if (queries.hasData) {
-            final orders = queries.data[0];
-            final deliveries = queries.data[1];
-            print(orders.documents.length);
-            print(deliveries.documents.length);
+    return FutureBuilder<String>(
+        future: _getUserId(),
+        builder: (BuildContext context, AsyncSnapshot<String> uid) {
+          if (uid.hasData) {
             return ListView(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: <Widget>[
-                ExpansionTile(
-                  title: Text('Your Orders'),
-                  children: orders.documents
-                      .map((doc) => OrderCard(
-                            context,
-                            document: doc,
-                          ))
-                      .toList(),
+                StreamBuilder(
+                  stream: _getUserOrders(uid.data),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Text('Loading...');
+                    return ExpansionTile(
+                      title: Text('Your Orders'),
+                      children: snapshot.data.documents
+                          .map<Widget>((doc) => OrderCard(
+                                context,
+                                document: doc,
+                              ))
+                          .toList(),
+                    );
+                  },
                 ),
-                ExpansionTile(
-                  title: Text('Your Deliveries'),
-                  children: deliveries.documents
-                      .map((doc) => DeliveryCard(
-                            context,
-                            document: doc,
-                          ))
-                      .toList(),
-                )
+                StreamBuilder(
+                  stream: _getUserDeliveries(uid.data),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Text('Loading...');
+                    return ExpansionTile(
+                      title: Text('Your Orders'),
+                      children: snapshot.data.documents
+                          .map<Widget>((doc) => DeliveryCard(
+                                context,
+                                document: doc,
+                              ))
+                          .toList(),
+                    );
+                  },
+                ),
               ],
             );
           } else {
