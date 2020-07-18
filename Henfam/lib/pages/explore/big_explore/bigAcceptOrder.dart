@@ -5,6 +5,7 @@ import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expanded
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
 import 'package:Henfam/pages/map/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AcceptOrder extends StatefulWidget {
@@ -69,60 +70,39 @@ class _AcceptOrderState extends State<AcceptOrder> {
       document,
     ];
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 750,
-                    child: Column(
-                      children: <Widget>[
-                        CustomMap(docList, selectedList),
-                        ExpansionTile(
-                          title: Text(_getNumRequests(docList)),
-                          onExpansionChanged: _onExpand,
-                          trailing: Text(
-                            'DECOUPLE',
-                            style: TextStyle(color: Colors.cyan),
-                          ),
-                          children: <Widget>[
-                            ExpandedDecouple(
-                                docList, selectedList, _changeCheckBox),
-                          ],
-                        ),
-                        DisplaySmallUsers(isExpanded, docList, selectedList),
-                        MinEarnings(docList, selectedList),
-                        AcceptOrderInfo(docList, selectedList),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: true,
-              fillOverscroll: true,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: RaisedButton(
-                      child: Text('Confirm', style: TextStyle(fontSize: 20.0)),
-                      onPressed: () {
-                        _markOrdersAccepted(docList);
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                      }),
-                ),
-              ),
-            )
+        body: SingleChildScrollView(
+            child: Column(
+      children: <Widget>[
+        CustomMap(docList, selectedList),
+        ExpansionTile(
+          title: Text(_getNumRequests(docList)),
+          onExpansionChanged: _onExpand,
+          trailing: Text(
+            'DECOUPLE',
+            style: TextStyle(color: Colors.cyan),
+          ),
+          children: <Widget>[
+            ExpandedDecouple(docList, selectedList, _changeCheckBox),
           ],
         ),
-      ),
-    );
+        DisplaySmallUsers(isExpanded, docList, selectedList),
+        MinEarnings(docList, selectedList),
+        AcceptOrderInfo(docList, selectedList),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: CupertinoButton(
+            color: Theme.of(context).primaryColor,
+            child: Text('Confirm', style: TextStyle(fontSize: 20.0)),
+            onPressed: () {
+              _markOrdersAccepted(docList);
+              Navigator.popUntil(
+                  context, ModalRoute.withName(Navigator.defaultRouteName));
+            },
+          ),
+        )
+      ],
+    )));
   }
 }
