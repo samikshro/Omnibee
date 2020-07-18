@@ -5,6 +5,7 @@ import 'package:Henfam/pages/account/widgets/profileErrandSnapshot.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
 import 'package:Henfam/pages/account/widgets/profilePointsBar.dart';
 import 'package:Henfam/pages/account/widgets/profilePrefs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
@@ -23,25 +24,39 @@ class Profile extends StatelessWidget {
     }
   }
 
+  Future<String> _getName() async {
+    final _firestore = Firestore.instance;
+    final docSnapShot =
+        await _firestore.collection('users').document(userId).get();
+    return docSnapShot['name'];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _firestore = Firestore.instance;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Profile'),
-        ),
-        body: ListView(
-          children: <Widget>[
-            ProfileHeader('Gracie Matthews', 'gmm322'),
-            ProfileErrandSnapshot(),
+      appBar: AppBar(
+        title: Text('Your Profile'),
+      ),
+      body: FutureBuilder<String>(
+          future: _getName(), // a previously-obtained Future<String> or null
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (!snapshot.hasData) return Center(child: Text('Loading...'));
+            return ListView(
+              children: <Widget>[
+                ProfileHeader(snapshot.data, 'gmm22'),
+                /* ProfileErrandSnapshot(),
             Divider(),
             ProfileEarnings(14.69, 3.65),
             Divider(),
             ProfilePointsBar(350),
             Divider(),
             ProfilePrefs(),
-            Divider(),
-            ProfileContact(signOut),
-          ],
-        ));
+            Divider(), */
+                ProfileContact(signOut),
+              ],
+            );
+          }),
+    );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:Henfam/pages/account/widgets/customTile.dart';
-import 'package:Henfam/pages/account/widgets/sectionHeader.dart';
 import 'package:flutter/material.dart';
 
 class ProfileContact extends StatelessWidget {
@@ -14,7 +13,7 @@ class ProfileContact extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SectionHeader('Contact'),
+          /* SectionHeader('Contact'),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
             child: Text(
@@ -31,7 +30,7 @@ class ProfileContact extends StatelessWidget {
             ),
           ),
           CustomTile(label: 'Help'),
-          CustomTile(label: 'Feedback'),
+          CustomTile(label: 'Feedback'), */
           CustomTile(label: 'Log out', onTap: signOut),
         ],
       ),

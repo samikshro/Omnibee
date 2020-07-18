@@ -11,9 +11,10 @@ class ShowLogo extends StatelessWidget {
       tag: 'hero',
       child: Padding(
         padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-        child: CircleAvatar(
-          radius: 48.0,
-          child: Image.asset('assets/hen.png'),
+        child: SizedBox(
+          width: double.infinity,
+          height: 200,
+          child: Image.asset('assets/beelogo.png', fit: BoxFit.contain),
         ),
       ),
     );

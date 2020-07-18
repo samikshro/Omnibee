@@ -11,12 +11,12 @@ class ProfileHeader extends StatelessWidget {
     return Container(
       child: Row(
         children: <Widget>[
-          Image(
+          /* Image(
             image: AssetImage('assets/profilePic.png'),
             height: 150,
-          ),
+          ), */
           Container(
-            padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+            padding: EdgeInsets.fromLTRB(25, 20, 0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -24,12 +24,12 @@ class ProfileHeader extends StatelessWidget {
                   name,
                   style: TextStyle(fontSize: 22),
                 ),
-                Text(
+                /* Text(
                   netId,
                   style: TextStyle(
                     fontSize: 16,
                   ),
-                ),
+                ), */
               ],
             ),
           )
