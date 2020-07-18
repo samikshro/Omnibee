@@ -60,7 +60,13 @@ class DeliveryCard extends StatelessWidget {
                     'VIEW DETAILS',
                     style: TextStyle(fontSize: 18),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/delivery_card_page',
+                      arguments: document,
+                    );
+                  },
                 ),
               ],
             ),

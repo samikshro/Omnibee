@@ -1,6 +1,8 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder.dart';
+import 'package:Henfam/pages/explore/deliveryCard.dart';
+import 'package:Henfam/pages/explore/explore_card/deliveryCardPage.dart';
 import 'package:Henfam/pages/explore/explore_card/orderCardPage.dart';
 import 'package:Henfam/pages/explore/matching_progress/matchingProgress.dart';
 import 'package:Henfam/pages/map/expandedMap.dart';
@@ -42,6 +44,7 @@ class HenfamBasic extends StatelessWidget {
         '/accept_order': (context) => AcceptOrder(),
         '/expanded_map': (context) => ExpandedMap(),
         '/order_card_page': (context) => OrderCardPage(),
+        '/delivery_card_page': (context) => DeliveryCardPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/big_filter") {
