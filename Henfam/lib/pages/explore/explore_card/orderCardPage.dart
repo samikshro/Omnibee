@@ -37,7 +37,7 @@ class OrderCardPage extends StatelessWidget {
   }
 
   Widget _stillWaitingForMatch(DocumentSnapshot doc) {
-    if (doc['user_id']['is_accepted'] == false) {
+    if (doc['user_id']['is_accepted'] == true) {
       return Container(child: Text('You have been paired with a big bee!'));
     } else {
       return Column(
