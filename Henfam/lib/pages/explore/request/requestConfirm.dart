@@ -108,6 +108,7 @@ class RequestConfirm extends StatelessWidget {
                 "expiration_time": get_expiration_date(date, range),
                 "is_accepted": false,
                 "runner": null,
+                "restaurant_pic": args.restaurant_pic,
               }
             });
             Menu.order = []; //clears order after submitting

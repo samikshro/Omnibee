@@ -89,12 +89,14 @@ class _MenuState extends State<Menu> {
                                   context,
                                   '/basket_form',
                                   arguments: BasketData(
-                                      orders: ord.order,
-                                      restaurant_name: document['rest_name'],
-                                      restaurant_loc: Position(
-                                        latitude: point.latitude,
-                                        longitude: point.longitude,
-                                      )),
+                                    orders: ord.order,
+                                    restaurant_name: document['rest_name'],
+                                    restaurant_loc: Position(
+                                      latitude: point.latitude,
+                                      longitude: point.longitude,
+                                    ),
+                                    restaurant_pic: document['big_photo'],
+                                  ),
                                 );
                               };
                             });

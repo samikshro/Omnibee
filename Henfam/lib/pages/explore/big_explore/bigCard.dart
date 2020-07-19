@@ -50,7 +50,7 @@ class BigCard extends StatelessWidget {
                     document['user_id']['delivery_window']['end_time']),
                 children: _itemsToOrder(document)),
             Image(
-              image: AssetImage("assets/oishii_bowl_pic1.png"),
+              image: AssetImage(document['user_id']['restaurant_pic']),
               fit: BoxFit.cover,
             ),
             ButtonBar(

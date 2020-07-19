@@ -9,7 +9,13 @@ class BasketData {
   final List<FoodInfo> orders;
   final String restaurant_name;
   final Position restaurant_loc;
-  BasketData({this.orders, this.restaurant_name, this.restaurant_loc});
+  final String restaurant_pic;
+  BasketData({
+    this.orders,
+    this.restaurant_name,
+    this.restaurant_loc,
+    this.restaurant_pic,
+  });
 }
 
 class Basket extends StatefulWidget {
