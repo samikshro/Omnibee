@@ -1,12 +1,7 @@
 import 'package:Henfam/pages/explore/currentOrders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:custom_switch/custom_switch.dart';
-
-import './lilBigButtons.dart';
 import './lilMode.dart';
-import 'package:Henfam/pages/explore/big_explore/bigMode.dart';
-import './locationEggScore.dart';
 
 class Explore extends StatefulWidget {
   @override

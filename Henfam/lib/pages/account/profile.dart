@@ -1,10 +1,6 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
-import 'package:Henfam/pages/account/widgets/profileEarnings.dart';
-import 'package:Henfam/pages/account/widgets/profileErrandSnapshot.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
-import 'package:Henfam/pages/account/widgets/profilePointsBar.dart';
-import 'package:Henfam/pages/account/widgets/profilePrefs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

@@ -6,9 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Henfam/auth/authentication.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RequestConfirm extends StatelessWidget {
   final date;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/models/FoodModel.dart';
-import 'package:Henfam/pages/explore/restaurantCard.dart';
 import 'AddOnModel.dart';
 
 class MenuModel {

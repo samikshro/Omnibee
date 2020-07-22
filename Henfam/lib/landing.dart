@@ -1,9 +1,7 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/explore.dart';
-import 'package:Henfam/pages/chat/chatList.dart';
 import 'package:Henfam/pages/account/profile.dart';
-import 'package:Henfam/pages/explore/big_explore/bigMode.dart';
 
 class LandingPage extends StatelessWidget {
   LandingPage({Key key, this.auth, this.userId, this.logoutCallback})

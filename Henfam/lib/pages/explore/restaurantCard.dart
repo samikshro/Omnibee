@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:Henfam/models/menuModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RestaurantCard extends StatelessWidget {
