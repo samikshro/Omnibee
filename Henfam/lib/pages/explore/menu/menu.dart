@@ -67,54 +67,51 @@ class _MenuState extends State<Menu> {
             delegate: SliverChildListDelegate([
               ExpansionTile(
                   title: Text('Open until ' + document['hours']['end_time'])),
-              Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                  itemCount: document['food'].length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        _navigateAndGetOrderInfo(
-                                context, index, document, Menu.order)
-                            .then((FoodDocument ord) {
-                          if (ord != null) {
-                            setState(() {
-                              _onPressed = () {
-                                GeoPoint point = document['location'];
-                                Navigator.pushNamed(
-                                  context,
-                                  '/basket_form',
-                                  arguments: BasketData(
-                                    orders: ord.order,
-                                    restaurant_name: document['rest_name'],
-                                    restaurant_loc: Position(
-                                      latitude: point.latitude,
-                                      longitude: point.longitude,
-                                    ),
-                                    restaurant_pic: document['big_photo'],
+              ListView.separated(
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+                itemCount: document['food'].length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      _navigateAndGetOrderInfo(
+                              context, index, document, Menu.order)
+                          .then((FoodDocument ord) {
+                        if (ord != null) {
+                          setState(() {
+                            _onPressed = () {
+                              GeoPoint point = document['location'];
+                              Navigator.pushNamed(
+                                context,
+                                '/basket_form',
+                                arguments: BasketData(
+                                  orders: ord.order,
+                                  restaurant_name: document['rest_name'],
+                                  restaurant_loc: Position(
+                                    latitude: point.latitude,
+                                    longitude: point.longitude,
                                   ),
-                                );
-                              };
-                            });
-                          } else {
-                            _onPressed = () {};
-                          }
-                        });
-                      },
-                      title: Text(document['food'][index]['name']),
-                      subtitle: Wrap(direction: Axis.vertical, children: [
-                        Text(document['food'][index]['desc']),
-                        Text(
-                            "\$" + document['food'][index]['price'].toString()),
-                      ]),
-                      isThreeLine: true,
-                    );
-                  },
-                ),
+                                  restaurant_pic: document['big_photo'],
+                                ),
+                              );
+                            };
+                          });
+                        } else {
+                          _onPressed = () {};
+                        }
+                      });
+                    },
+                    title: Text(document['food'][index]['name']),
+                    subtitle: Wrap(direction: Axis.vertical, children: [
+                      Text(document['food'][index]['desc']),
+                      Text("\$" + document['food'][index]['price'].toString()),
+                    ]),
+                    isThreeLine: true,
+                  );
+                },
               )
             ]),
           ),
