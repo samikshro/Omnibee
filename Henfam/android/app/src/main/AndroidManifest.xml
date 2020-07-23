@@ -10,7 +10,7 @@
         android:label="Henfam"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyDt39wypJeJDVQ82elS6Em94rJvR8Km58c"/>
+               android:value="AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

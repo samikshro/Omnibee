@@ -81,7 +81,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                             fontSize: 20.0,
                             color: Theme.of(context).scaffoldBackgroundColor)),
                     onPressed: () {
-                      print("got here");
                       if (foodDoc.order != null) {
                         foodDoc.order.add(FoodInfo(
                           name: foodDoc.document['food'][foodDoc.index]['name'],
@@ -98,7 +97,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                           )
                         ];
                       }
-                      print(foodDoc.order.length);
                       Navigator.pop(
                           context,
                           FoodDocument(

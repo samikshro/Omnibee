@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,14 +13,14 @@ class LocationDetails extends StatefulWidget {
 
   LocationDetails(this.setLocation);
 
-  static final kGoogleApiKey = "AIzaSyDt39wypJeJDVQ82elS6Em94rJvR8Km58c";
+  static final kGoogleApiKey = "AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o";
 
   @override
   _LocationDetailsState createState() => _LocationDetailsState();
 }
 
 class _LocationDetailsState extends State<LocationDetails> {
-  final kGoogleApiKey = "AIzaSyDt39wypJeJDVQ82elS6Em94rJvR8Km58c";
+  final kGoogleApiKey = "AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o";
   String findAddressText = "Find address";
 
   GoogleMapsPlaces _places =
