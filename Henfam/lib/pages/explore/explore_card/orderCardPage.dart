@@ -1,17 +1,10 @@
 import 'package:Henfam/widgets/mediumTextSection.dart';
-import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrderCardPage extends StatelessWidget {
   final db = Firestore.instance;
-
-  Future<String> _getRunnerName(DocumentSnapshot doc) async {
-    final runnerId = doc['user_id']['runner'];
-    final runner = await db.collection('users').document(runnerId).get();
-    return runner['name'];
-  }
 
   String _getExpirationTime(DocumentSnapshot doc) {
     DateTime time = doc['user_id']['expiration_time'].toDate();

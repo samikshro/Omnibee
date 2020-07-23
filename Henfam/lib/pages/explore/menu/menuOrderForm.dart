@@ -1,7 +1,5 @@
 import 'package:Henfam/auth/authentication.dart';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:Henfam/models/AddOnModel.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -33,11 +31,6 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
-  Future<String> _getUserID() async {
-    final result = await widget.auth.getCurrentUser();
-    return result.uid;
-  }
-
   @override
   Widget build(BuildContext context) {
     final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;

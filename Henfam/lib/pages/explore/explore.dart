@@ -9,20 +9,7 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  var _isLil = true;
-  var _location = "Olin Library";
-  var _score = 500;
-
-  // void _switchToLil() {
-  //   setState(() {
-  //     _isLil = true;
-  //   });
-  // }
-
   void _switchToBig() {
-    // setState(() {
-    //   _isLil = false;
-    // });
     Navigator.pushNamed(context, '/bigmode');
   }
 

@@ -59,6 +59,8 @@ class HenfamBasic extends StatelessWidget {
               return SlideTransition(position: anim.drive(tween), child: child);
             },
           );
+        } else {
+          return null;
         }
       },
       home: new RootPage(

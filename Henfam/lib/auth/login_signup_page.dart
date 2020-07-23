@@ -30,7 +30,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLoginForm = true;
   bool _isLoading = false;
 
-  // Check if form is valid before perform login or signup
   bool validateAndSave() {
     final form = _formKey.currentState;
 
@@ -66,7 +65,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     });
   }
 
-  // Perform login or signup
   void validateAndSubmit() async {
     setState(() {
       _errorMessage = "";

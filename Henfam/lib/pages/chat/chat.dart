@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'chatMessage.dart';
 
-String _name = 'John';
-
 class Data {
   final String name;
   Data({this.name});

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-String _name = 'John';
-
 class ChatMessage extends StatelessWidget {
   ChatMessage({this.text, this.animationController, this.name});
   final String text;

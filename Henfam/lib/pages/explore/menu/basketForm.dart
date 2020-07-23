@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
-import 'package:Henfam/models/FoodModel.dart';
-import 'package:Henfam/models/AddOnModel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'menuOrderForm.dart';
 
@@ -24,14 +22,6 @@ class Basket extends StatefulWidget {
 }
 
 class _BasketState extends State<Basket> {
-  String _ordersToAddons(List<AddOns> list) {
-    String s = '';
-    for (int i = 0; i < list.length; i++) {
-      s = s + list[i].name + "; ";
-    }
-    return s;
-  }
-
   Widget _buildTile(BuildContext context, BasketData args, int index) {
     return ListTile(
       onTap: () {},

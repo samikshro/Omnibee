@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:Henfam/models/menuModel.dart';
 import 'package:Henfam/pages/explore/errandFee.dart';
-import 'package:Henfam/pages/explore/deliveryHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Delivery extends StatefulWidget {
@@ -23,8 +22,6 @@ class _DeliveryState extends State<Delivery> {
   @override
   Widget build(BuildContext context) {
     final DeliveryArguments args = ModalRoute.of(context).settings.arguments;
-    final menuList = args.menus;
-    final String headerCaption = args.headerCaption;
 
     return Scaffold(
       appBar: AppBar(

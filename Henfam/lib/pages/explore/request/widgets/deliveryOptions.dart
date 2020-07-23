@@ -21,15 +21,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
 
   _DeliveryOptionsState(this.setGlobalDate, this.setGlobalRange);
 
-  String _dropdownValue = '15';
-
   final _date = DateTime.now();
-
-  Future<Null> _setCancelRange(String newVal) {
-    setState(() {
-      _dropdownValue = newVal;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
