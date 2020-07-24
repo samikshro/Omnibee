@@ -41,6 +41,19 @@ class _BasketState extends State<Basket> {
   Widget build(BuildContext context) {
     final BasketData args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: RaisedButton(
+            child: Text('Proceed to Request',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).scaffoldBackgroundColor)),
+            onPressed: () {
+              Navigator.pushNamed(context, '/request', arguments: args);
+            },
+          ),
+        ),
         appBar: AppBar(
             title: Text(
           // _ordersToAddons(args.orders[0].addOns)
@@ -58,27 +71,6 @@ class _BasketState extends State<Basket> {
                 childCount: args.orders.length,
               ),
             ),
-            SliverFillRemaining(
-              hasScrollBody: true,
-              fillOverscroll:
-                  false, // Set true to change overscroll behavior. Purely preference.
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: RaisedButton(
-                    child: Text('Proceed to Request',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Theme.of(context).scaffoldBackgroundColor)),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/request', arguments: args);
-                    },
-                  ),
-                ),
-              ),
-            )
           ],
         )));
   }

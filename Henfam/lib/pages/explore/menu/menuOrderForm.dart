@@ -35,6 +35,38 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
   Widget build(BuildContext context) {
     final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      bottomNavigationBar: SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: RaisedButton(
+          child: Text('Add to Cart',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Theme.of(context).scaffoldBackgroundColor)),
+          onPressed: () {
+            if (foodDoc.order != null) {
+              foodDoc.order.add(FoodInfo(
+                name: foodDoc.document['food'][foodDoc.index]['name'],
+                price: foodDoc.document['food'][foodDoc.index]['price'],
+              ));
+            } else {
+              foodDoc.order = [
+                FoodInfo(
+                  name: foodDoc.document['food'][foodDoc.index]['name'],
+                  price: foodDoc.document['food'][foodDoc.index]['price'],
+                )
+              ];
+            }
+            Navigator.pop(
+                context,
+                FoodDocument(
+                  document: foodDoc.document,
+                  index: foodDoc.index,
+                  order: foodDoc.order,
+                ));
+          },
+        ),
+      ),
       appBar: AppBar(
           title: Text(
         foodDoc.document['food'][foodDoc.index]['name'],
@@ -66,49 +98,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                 ),
               )),
             ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              fillOverscroll:
-                  true, // Set true to change overscroll behavior. Purely preference.
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: RaisedButton(
-                    child: Text('Add to Cart',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Theme.of(context).scaffoldBackgroundColor)),
-                    onPressed: () {
-                      if (foodDoc.order != null) {
-                        foodDoc.order.add(FoodInfo(
-                          name: foodDoc.document['food'][foodDoc.index]['name'],
-                          price: foodDoc.document['food'][foodDoc.index]
-                              ['price'],
-                        ));
-                      } else {
-                        foodDoc.order = [
-                          FoodInfo(
-                            name: foodDoc.document['food'][foodDoc.index]
-                                ['name'],
-                            price: foodDoc.document['food'][foodDoc.index]
-                                ['price'],
-                          )
-                        ];
-                      }
-                      Navigator.pop(
-                          context,
-                          FoodDocument(
-                            document: foodDoc.document,
-                            index: foodDoc.index,
-                            order: foodDoc.order,
-                          ));
-                    },
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
