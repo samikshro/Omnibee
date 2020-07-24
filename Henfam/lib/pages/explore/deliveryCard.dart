@@ -6,6 +6,10 @@ class DeliveryCard extends StatelessWidget {
 
   DeliveryCard(BuildContext context, {this.document});
 
+  bool _isOrderComplete(DocumentSnapshot doc) {
+    return doc['is_delivered'] != null && doc['is_received'] != null;
+  }
+
   String _getEarnings() {
     double minEarnings = 0.0;
     for (int j = 0; j < document['user_id']['basket'].length; j++) {
@@ -30,6 +34,7 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (_isOrderComplete(document)) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(

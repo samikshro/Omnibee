@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/explore_card/widgets/documentCallbackButton.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,17 @@ import 'package:intl/intl.dart';
 
 class OrderCardPage extends StatelessWidget {
   final db = Firestore.instance;
+
+  bool _isDeliveryComplete(DocumentSnapshot doc) {
+    return doc['is_delivered'] != null;
+  }
+
+  void _confirmDeliveryComplete(DocumentSnapshot doc) {
+    db
+        .collection('orders')
+        .document(doc.documentID)
+        .setData({'is_received': true}, merge: true);
+  }
 
   String _getExpirationTime(DocumentSnapshot doc) {
     DateTime time = doc['user_id']['expiration_time'].toDate();
@@ -123,19 +135,27 @@ class OrderCardPage extends StatelessWidget {
   }
 
   Widget _controlButtons(BuildContext context, DocumentSnapshot doc) {
-    if (doc['user_id']['is_accepted'] == true) {
+    if (_isDeliveryComplete(doc)) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: DocumentCallbackButton(
+          'Confirm Delivery',
+          _confirmDeliveryComplete,
+          doc,
+        ),
+      );
+    } else if (doc['user_id']['is_accepted'] == true) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
-        child: RaisedButton(
-          onPressed: () {
-            _deleteDocument(doc);
-            Navigator.pop(context);
-          },
-          child: Text('Cancel Order'),
+        child: Center(
+          child: Text('Order is on the way!'),
         ),
       );
     } else {
-      return Container();
+      return Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: DocumentCallbackButton('Cancel Order', _deleteDocument, doc),
+      );
     }
   }
 

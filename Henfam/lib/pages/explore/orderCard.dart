@@ -6,6 +6,10 @@ class OrderCard extends StatelessWidget {
 
   OrderCard(BuildContext context, {this.document});
 
+  bool _isOrderComplete(DocumentSnapshot doc) {
+    return doc['is_received'] != null && doc['is_delivered'] != null;
+  }
+
   List<Widget> _itemsToOrder(DocumentSnapshot document) {
     List<Widget> children = [];
     for (int i = 0; i < document['user_id']['basket'].length; i++) {
@@ -21,6 +25,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (_isOrderComplete(document)) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(

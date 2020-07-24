@@ -1,9 +1,37 @@
+import 'package:Henfam/pages/explore/explore_card/widgets/documentCallbackButton.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryCardPage extends StatelessWidget {
+  void _markOrderComplete(DocumentSnapshot doc) {
+    final db = Firestore.instance;
+    db
+        .collection('orders')
+        .document(doc.documentID)
+        .setData({'is_delivered': true}, merge: true);
+  }
+
+  bool _isDeliveryComplete(DocumentSnapshot doc) {
+    return doc['is_delivered'] != null;
+  }
+
+  Widget _displayStatus(DocumentSnapshot doc) {
+    if (_isDeliveryComplete(doc)) {
+      return Center(
+        child: Text('Waiting for confirmation from recipient...'),
+      );
+    } else {
+      return DocumentCallbackButton(
+        'Delivery Complete',
+        _markOrderComplete,
+        doc,
+      );
+    }
+  }
+
   Widget _getOrderInformation(DocumentSnapshot doc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,6 +117,10 @@ class DeliveryCardPage extends StatelessWidget {
           _getDeliveryInformation(document),
           MediumTextSection('Order Information'),
           _getOrderInformation(document),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: _displayStatus(document),
+          ),
         ],
       ),
     );
