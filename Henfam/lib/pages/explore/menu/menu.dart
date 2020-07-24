@@ -48,94 +48,90 @@ class _MenuState extends State<Menu> {
     final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Scaffold(
-          body: CustomScrollView(
-        slivers: <Widget>[
-          SliverPersistentHeader(
-            pinned: false,
-            floating: true,
-            delegate: MenuPageHeader(
-              document: document,
-              minExtent: 150.0,
-              maxExtent: 250.0,
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              ExpansionTile(
-                  title: Text('Open until ' + document['hours']['end_time'])),
-              ListView.separated(
-                separatorBuilder: (context, index) {
-                  return Divider();
-                },
-                itemCount: document['food'].length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      _navigateAndGetOrderInfo(
-                              context, index, document, Menu.order)
-                          .then((FoodDocument ord) {
-                        if (ord != null) {
-                          setState(() {
-                            _onPressed = () {
-                              GeoPoint point = document['location'];
-                              Navigator.pushNamed(
-                                context,
-                                '/basket_form',
-                                arguments: BasketData(
-                                  orders: ord.order,
-                                  restaurant_name: document['rest_name'],
-                                  restaurant_loc: Position(
-                                    latitude: point.latitude,
-                                    longitude: point.longitude,
-                                  ),
-                                  restaurant_pic: document['big_photo'],
-                                ),
-                              );
-                            };
-                          });
-                        } else {
-                          _onPressed = () {};
-                        }
-                      });
-                    },
-                    title: Text(document['food'][index]['name']),
-                    subtitle: Wrap(direction: Axis.vertical, children: [
-                      Text(document['food'][index]['desc']),
-                      Text("\$" + document['food'][index]['price'].toString()),
-                    ]),
-                    isThreeLine: true,
-                  );
-                },
-              )
-            ]),
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            fillOverscroll:
-                true, // Set true to change overscroll behavior. Purely preference.
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.infinity,
-                height: 60,
-                child: RaisedButton(
-                  child: Text('View Basket',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Theme.of(context).scaffoldBackgroundColor)),
-                  onPressed: _onPressed,
-                ),
+        onWillPop: () async {
+          return true;
+        },
+        child: Scaffold(
+            bottomNavigationBar: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: RaisedButton(
+                child: Text('View Basket',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).scaffoldBackgroundColor)),
+                onPressed: _onPressed,
               ),
             ),
-          )
-        ],
-      )),
-    );
+            // ),
+            body: CustomScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              slivers: <Widget>[
+                SliverPersistentHeader(
+                  pinned: false,
+                  floating: true,
+                  delegate: MenuPageHeader(
+                    document: document,
+                    minExtent: 150.0,
+                    maxExtent: 250.0,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ExpansionTile(
+                        title: Text(
+                            'Open until ' + document['hours']['end_time'])),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                      itemCount: document['food'].length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            _navigateAndGetOrderInfo(
+                                    context, index, document, Menu.order)
+                                .then((FoodDocument ord) {
+                              if (ord != null) {
+                                setState(() {
+                                  _onPressed = () {
+                                    GeoPoint point = document['location'];
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/basket_form',
+                                      arguments: BasketData(
+                                        orders: ord.order,
+                                        restaurant_name: document['rest_name'],
+                                        restaurant_loc: Position(
+                                          latitude: point.latitude,
+                                          longitude: point.longitude,
+                                        ),
+                                        restaurant_pic: document['big_photo'],
+                                      ),
+                                    );
+                                  };
+                                });
+                              } else {
+                                _onPressed = () {};
+                              }
+                            });
+                          },
+                          title: Text(document['food'][index]['name']),
+                          subtitle: Wrap(direction: Axis.vertical, children: [
+                            Text(document['food'][index]['desc']),
+                            Text("\$" +
+                                document['food'][index]['price'].toString()),
+                          ]),
+                          isThreeLine: true,
+                        );
+                      },
+                    )
+                  ]),
+                ),
+              ],
+            )));
   }
 }
