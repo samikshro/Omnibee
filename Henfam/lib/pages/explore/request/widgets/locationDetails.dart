@@ -22,27 +22,32 @@ class LocationDetails extends StatefulWidget {
 class _LocationDetailsState extends State<LocationDetails> {
   final kGoogleApiKey = "AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o";
   String findAddressText = "Find address";
+  bool _isDisposed = false;
 
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: LocationDetails.kGoogleApiKey);
 
   Future<Null> updateLocation(Prediction p) async {
-    if (p != null) {
-      PlacesDetailsResponse detail =
-          await _places.getDetailsByPlaceId(p.placeId);
+    PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(p.placeId);
 
-      double lat = detail.result.geometry.location.lat;
-      double lng = detail.result.geometry.location.lng;
+    double lat = detail.result.geometry.location.lat;
+    double lng = detail.result.geometry.location.lng;
 
-      widget.setLocation(
-        p.description,
-        Position(latitude: lat, longitude: lng),
-      );
-    }
+    widget.setLocation(
+      p.description,
+      Position(latitude: lat, longitude: lng),
+    );
   }
 
   _updateButtonText(String loc) {
     findAddressText = "Found location: " + loc;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _isDisposed = true;
+    print("is disposed is true now");
   }
 
   @override
@@ -62,8 +67,10 @@ class _LocationDetailsState extends State<LocationDetails> {
                 context: context,
                 apiKey: kGoogleApiKey,
               );
-              updateLocation(p);
-              _updateButtonText(p.description);
+              if (p != null && !_isDisposed) {
+                updateLocation(p);
+                _updateButtonText(p.description);
+              }
             },
             child: Text(findAddressText),
           ),
