@@ -39,6 +39,8 @@ class _DeliveryState extends State<Delivery> {
                   stream: Firestore.instance.collection('menu').snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return const Text('Loading....');
+                    print("length of delivery doc steam: " +
+                        snapshot.data.documents.length.toString());
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,
                         scrollDirection: Axis.vertical,
