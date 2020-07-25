@@ -37,6 +37,7 @@ class CurrentOrders extends StatelessWidget {
                   stream: _getUserOrders(uid.data),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Text('Loading...');
+                    print(snapshot.data.documents.length);
                     return ExpansionTile(
                       title: Text('Your Orders'),
                       children: snapshot.data.documents
@@ -52,6 +53,7 @@ class CurrentOrders extends StatelessWidget {
                   stream: _getUserDeliveries(uid.data),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Text('Loading...');
+                    print(snapshot.data.documents.length);
                     return ExpansionTile(
                       title: Text('Your Deliveries'),
                       children: snapshot.data.documents

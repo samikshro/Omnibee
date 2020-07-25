@@ -27,18 +27,20 @@ class _MenuState extends State<Menu> {
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).accentColor,
-          elevation: 10.0,
-          content: Text(
-              "Added " + result.document['food'][result.index]['name'] + "!"),
-          duration: Duration(milliseconds: 100)));
+    if (result != null) {
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+            backgroundColor: Theme.of(context).accentColor,
+            elevation: 10.0,
+            content: Text(
+                "Added " + result.document['food'][result.index]['name'] + "!"),
+            duration: Duration(milliseconds: 100)));
 
-    setState(() {
-      Menu.order = result.order;
-    });
+      setState(() {
+        Menu.order = result.order;
+      });
+    }
 
     return result;
   }

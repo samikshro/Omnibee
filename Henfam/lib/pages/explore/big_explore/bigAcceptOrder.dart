@@ -70,39 +70,40 @@ class _AcceptOrderState extends State<AcceptOrder> {
       document,
     ];
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        CustomMap(docList, selectedList),
-        ExpansionTile(
-          title: Text(_getNumRequests(docList)),
-          onExpansionChanged: _onExpand,
-          trailing: Text(
-            'DECOUPLE',
-            style: TextStyle(color: Colors.cyan),
-          ),
-          children: <Widget>[
-            ExpandedDecouple(docList, selectedList, _changeCheckBox),
-          ],
-        ),
-        DisplaySmallUsers(isExpanded, docList, selectedList),
-        MinEarnings(docList, selectedList),
-        AcceptOrderInfo(docList, selectedList),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: CupertinoButton(
-            color: Theme.of(context).primaryColor,
-            child: Text('Confirm', style: TextStyle(fontSize: 20.0)),
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: RaisedButton(
+            child: Text('Proceed to Request',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).scaffoldBackgroundColor)),
             onPressed: () {
               _markOrdersAccepted(docList);
               Navigator.popUntil(
                   context, ModalRoute.withName(Navigator.defaultRouteName));
             },
           ),
-        )
-      ],
-    )));
+        ),
+        body: SingleChildScrollView(
+            child: Column(
+          children: <Widget>[
+            CustomMap(docList, selectedList),
+            ExpansionTile(
+              title: Text(_getNumRequests(docList)),
+              onExpansionChanged: _onExpand,
+              trailing: Text(
+                'DECOUPLE',
+                style: TextStyle(color: Colors.cyan),
+              ),
+              children: <Widget>[
+                ExpandedDecouple(docList, selectedList, _changeCheckBox),
+              ],
+            ),
+            DisplaySmallUsers(isExpanded, docList, selectedList),
+            MinEarnings(docList, selectedList),
+            AcceptOrderInfo(docList, selectedList),
+          ],
+        )));
   }
 }
