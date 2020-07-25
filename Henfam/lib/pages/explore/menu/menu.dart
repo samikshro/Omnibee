@@ -49,6 +49,7 @@ class _MenuState extends State<Menu> {
 
     return WillPopScope(
         onWillPop: () async {
+          Menu.order = [];
           return true;
         },
         child: Scaffold(
