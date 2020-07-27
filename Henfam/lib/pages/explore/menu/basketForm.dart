@@ -22,17 +22,26 @@ class Basket extends StatefulWidget {
 }
 
 class _BasketState extends State<Basket> {
+  List<Widget> _displayAddOns(item) {
+    List<Widget> addOns = [];
+    if (item.addOns != null) {
+      for (int i = 0; i < item.addOns.length; i++) {
+        addOns.add(Text(item.addOns[i]));
+      }
+    }
+
+    return addOns;
+  }
+
   Widget _buildTile(BuildContext context, BasketData args, int index) {
     return ListTile(
       onTap: () {},
       trailing: Text("\$" + args.orders[index].price.toString()),
       title: Text(args.orders[index].name),
-      subtitle: Wrap(direction: Axis.vertical, children: [
-        // Text(
-        //   // args.addons[index],
-        //   _ordersToAddons(args.orders[index].addOns),
-        // ),
-      ]),
+      subtitle: Wrap(
+        direction: Axis.vertical,
+        children: _displayAddOns(args.orders[index]),
+      ),
       isThreeLine: true,
     );
   }
