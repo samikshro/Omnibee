@@ -8,12 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Menu extends StatefulWidget {
   final DocumentSnapshot document;
   static List<FoodInfo> order;
+  static var onPressed;
   Menu({this.document});
   @override
   _MenuState createState() => _MenuState();
 }
-
-var _onPressed;
 
 class _MenuState extends State<Menu> {
   Future<FoodDocument> _navigateAndGetOrderInfo(BuildContext context, int index,
@@ -63,10 +62,9 @@ class _MenuState extends State<Menu> {
                     style: TextStyle(
                         fontSize: 20.0,
                         color: Theme.of(context).scaffoldBackgroundColor)),
-                onPressed: _onPressed,
+                onPressed: Menu.onPressed,
               ),
             ),
-            // ),
             body: CustomScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               slivers: <Widget>[
@@ -100,7 +98,7 @@ class _MenuState extends State<Menu> {
                                 .then((FoodDocument ord) {
                               if (ord != null) {
                                 setState(() {
-                                  _onPressed = () {
+                                  Menu.onPressed = () {
                                     GeoPoint point = document['location'];
                                     Navigator.pushNamed(
                                       context,
@@ -118,7 +116,7 @@ class _MenuState extends State<Menu> {
                                   };
                                 });
                               } else {
-                                _onPressed = () {};
+                                Menu.onPressed = () {};
                               }
                             });
                           },

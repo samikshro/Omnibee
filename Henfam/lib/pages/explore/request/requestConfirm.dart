@@ -109,6 +109,7 @@ class RequestConfirm extends StatelessWidget {
               }
             });
             Menu.order = []; //clears order after submitting
+            Menu.onPressed = () {}; //clears onPressed fcn after submitting
             Navigator.popUntil(
                 context, ModalRoute.withName(Navigator.defaultRouteName));
           },

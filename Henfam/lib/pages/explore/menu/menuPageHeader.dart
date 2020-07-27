@@ -49,6 +49,7 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
           color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),
           onPressed: () {
             Menu.order = [];
+            Menu.onPressed = () {};
             Navigator.pop(context);
           },
         ),
