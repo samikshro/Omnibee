@@ -13,6 +13,9 @@ class _BigModeState extends State<BigMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Run Errand'),
+      ),
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -21,7 +24,6 @@ class _BigModeState extends State<BigMode> {
             Padding(
               padding: EdgeInsets.all(10),
             ),
-            LargeTextSection('Run Errand'),
             Container(
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(6),

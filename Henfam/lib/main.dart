@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder.dart';
@@ -80,6 +81,7 @@ ThemeData _buildTheme() {
     buttonColor: Color(0xffFD9827),
     appBarTheme: base.appBarTheme.copyWith(
       color: Colors.white,
+      brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: Colors.white,
     cardColor: Colors.white,

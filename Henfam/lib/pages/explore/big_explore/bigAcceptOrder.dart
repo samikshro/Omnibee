@@ -74,7 +74,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           width: double.infinity,
           height: 60,
           child: RaisedButton(
-            child: Text('Proceed to Request',
+            child: Text('Run Errand',
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
@@ -88,7 +88,17 @@ class _AcceptOrderState extends State<AcceptOrder> {
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
-            CustomMap(docList, selectedList),
+            Stack(
+              children: <Widget>[
+                CustomMap(docList, selectedList),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: BackButton(
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
             ExpansionTile(
               title: Text(_getNumRequests(docList)),
               onExpansionChanged: _onExpand,

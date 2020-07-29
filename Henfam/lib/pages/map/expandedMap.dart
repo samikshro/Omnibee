@@ -19,13 +19,25 @@ class _ExpandedMapState extends State<ExpandedMap> {
     final MapArgs args = ModalRoute.of(context).settings.arguments;
     return Hero(
       tag: 'map',
-      child: GoogleMap(
-        myLocationButtonEnabled: false,
-        onMapCreated: _onMapCreated,
-        markers: args.markers,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(args.center.latitude, args.center.longitude),
-          zoom: 14,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            GoogleMap(
+              myLocationButtonEnabled: false,
+              onMapCreated: _onMapCreated,
+              markers: args.markers,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(args.center.latitude, args.center.longitude),
+                zoom: 14,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: BackButton(
+                color: Colors.blue,
+              ),
+            ),
+          ],
         ),
       ),
     );
