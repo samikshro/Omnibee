@@ -17,15 +17,16 @@ class _ExploreState extends State<Explore> {
     {
       'picture': Image(
         image: AssetImage('assets/activity1.png'),
+        fit: BoxFit.cover,
       ),
       'caption': 'Getting Food from Collegetown',
     },
-    {
+    /* {
       'picture': Image(
         image: AssetImage('assets/activity2.png'),
       ),
       'caption': 'Getting Food from Campus',
-    },
+    }, */
   ];
 
   @override
@@ -42,8 +43,6 @@ class _ExploreState extends State<Explore> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  // LocationEggScore(score: _score, location: _location),
-                  // LilBigSwitch(_switchToLil, _switchToBig),
                   Padding(
                     padding: EdgeInsets.all(10),
                   ),
@@ -58,7 +57,10 @@ class _ExploreState extends State<Explore> {
                     ),
                     onPressed: _switchToBig,
                   ),
-                  CurrentOrders(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: CurrentOrders(),
+                  ),
                 ],
               ),
               LilMode(_activities)

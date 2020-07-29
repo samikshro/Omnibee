@@ -37,9 +37,11 @@ class CurrentOrders extends StatelessWidget {
                   stream: _getUserOrders(uid.data),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Container();
-                    print(snapshot.data.documents.length);
                     return ExpansionTile(
-                      title: Text('Your Orders'),
+                      title: Text(
+                        'Your Orders',
+                        style: TextStyle(fontSize: 18),
+                      ),
                       children: snapshot.data.documents
                           .map<Widget>((doc) => OrderCard(
                                 context,
@@ -53,9 +55,11 @@ class CurrentOrders extends StatelessWidget {
                   stream: _getUserDeliveries(uid.data),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return Container();
-                    print(snapshot.data.documents.length);
                     return ExpansionTile(
-                      title: Text('Your Deliveries'),
+                      title: Text(
+                        'Your Deliveries',
+                        style: TextStyle(fontSize: 18),
+                      ),
                       children: snapshot.data.documents
                           .map<Widget>((doc) => DeliveryCard(
                                 context,

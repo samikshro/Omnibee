@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'bigCard.dart';
-import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BigMode extends StatefulWidget {
@@ -10,6 +9,18 @@ class BigMode extends StatefulWidget {
 
 class _BigModeState extends State<BigMode> {
   Timestamp tiempo = Timestamp.now();
+
+  bool _allRunsAccepted(documents) {
+    for (int i = 0; i < documents.length; i++) {
+      if (documents[i]['user_id']['is_accepted'] == false) {
+        print('here');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +35,7 @@ class _BigModeState extends State<BigMode> {
             Padding(
               padding: EdgeInsets.all(10),
             ),
-            Container(
+            /* Container(
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -49,7 +60,7 @@ class _BigModeState extends State<BigMode> {
                       },
                     )),
               ),
-            ),
+            ), */
             Flexible(
               child: StreamBuilder(
                   stream: Firestore.instance
@@ -58,9 +69,23 @@ class _BigModeState extends State<BigMode> {
                           isGreaterThanOrEqualTo: new DateTime.now())
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) return const Text('Loading....');
-                    print("length of snapshot: " +
-                        snapshot.data.documents.length.toString());
+                    print('deciding');
+                    if (!snapshot.hasData) {
+                      print('no data');
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    ;
+                    if (_allRunsAccepted(snapshot.data.documents)) {
+                      print('accepted runs');
+                      return Center(
+                        child: Text(
+                          'No runs currently available',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      );
+                    }
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,
                         scrollDirection: Axis.vertical,

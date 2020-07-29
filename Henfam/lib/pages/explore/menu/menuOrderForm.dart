@@ -66,12 +66,16 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
     double finalPrice = item['price'];
     for (int i = 0; i < selectedAddOns.length; i++) {
       if (selectedAddOns[i]) {
-        print(item['add_ons'][i]['price']);
         finalPrice += item['add_ons'][i]['price'];
       }
     }
 
     return finalPrice;
+  }
+
+  Text getAddOnPrice(FoodDocument foodDoc, int index) {
+    return Text(
+        '\$${foodDoc.document['food'][foodDoc.index]['add_ons'][index]['price'].toStringAsFixed(2)}');
   }
 
   @override
@@ -161,6 +165,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                     CheckboxListTile(
                   title: Text(foodDoc.document['food'][foodDoc.index]['add_ons']
                       [index]['name']),
+                  subtitle: getAddOnPrice(foodDoc, index),
                   value: _addOnsSelected[index],
                   onChanged: (value) {
                     _selectAddOn(value, index);

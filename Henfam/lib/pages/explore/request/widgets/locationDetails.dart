@@ -50,46 +50,55 @@ class _LocationDetailsState extends State<LocationDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        MediumTextSection('Location Details'),
-        Divider(),
-        MiniHeader('Building / Place Name'),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(26, 8, 10, 8),
-          child: CupertinoButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () async {
-              Prediction p = await PlacesAutocomplete.show(
-                context: context,
-                apiKey: kGoogleApiKey,
-              );
-              if (p != null && !_isDisposed) {
-                updateLocation(p);
-                _updateButtonText(p.description);
-              }
-            },
-            child: Text(findAddressText),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          MediumTextSection('Location Details'),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: MiniHeader('Building / Place Name'),
           ),
-        ),
-        MiniHeader('Instructions for delivery'),
-        Container(
-          margin: EdgeInsets.all(15),
-          child: TextField(
-            maxLines: 3,
-            decoration: InputDecoration(
-              hintText: "e.g. Leave next to couch outside map room.",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(
-                  style: BorderStyle.solid,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(26, 8, 10, 8),
+            child: CupertinoButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () async {
+                Prediction p = await PlacesAutocomplete.show(
+                  context: context,
+                  apiKey: kGoogleApiKey,
+                );
+                if (p != null && !_isDisposed) {
+                  updateLocation(p);
+                  _updateButtonText(p.description);
+                }
+              },
+              child: Text(findAddressText),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: MiniHeader('Instructions for delivery'),
+          ),
+          Container(
+            margin: EdgeInsets.all(15),
+            child: TextField(
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: "e.g. Leave next to couch outside map room.",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                    style: BorderStyle.solid,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

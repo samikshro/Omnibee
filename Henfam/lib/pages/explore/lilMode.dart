@@ -16,7 +16,7 @@ class LilMode extends StatelessWidget {
       children: <Widget>[
         // CurrentOrder("Jessie", "7:30", "on the way"),
         // ScheduledRequests(),
-        LargeTextSection("What would you like help with?"),
+        LargeTextSection("Request an Errand"),
         Container(
           child: HelpCard(activities),
         ),

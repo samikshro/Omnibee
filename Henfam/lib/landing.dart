@@ -30,10 +30,10 @@ class LandingPage extends StatelessWidget {
               indicatorColor: Theme.of(context).primaryColor,
               labelColor: Theme.of(context).primaryColor,
               tabs: [
-                Tab(icon: Icon(Icons.explore)),
+                Tab(icon: Icon(Icons.explore, size: 35)),
                 // Tab(icon: Icon(Icons.chat)),
                 // Tab(icon: Icon(Icons.local_offer)),
-                Tab(icon: Icon(Icons.account_circle)),
+                Tab(icon: Icon(Icons.account_circle, size: 35)),
               ]),
           body: TabBarView(
             children: [

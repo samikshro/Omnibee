@@ -32,20 +32,62 @@ class HenfamBasic extends StatelessWidget {
       theme: _appTheme,
       initialRoute: '/',
       routes: {
-        '/explore': (context) => Explore(),
-        '/Delivery': (context) => Delivery(),
-        '/chatlist': (context) => ChatList(),
-        '/chat': (context) => Chat(),
-        '/Menu': (context) => Menu(),
-        '/menu_order_form': (context) => MenuOrderForm(),
-        '/basket_form': (context) => Basket(),
-        '/request': (context) => Request(),
-        '/bigmode': (context) => BigMode(),
-        '/matching': (context) => MatchingProgress(),
-        '/accept_order': (context) => AcceptOrder(),
-        '/expanded_map': (context) => ExpandedMap(),
-        '/order_card_page': (context) => OrderCardPage(),
-        '/delivery_card_page': (context) => DeliveryCardPage(),
+        '/explore': (context) => SafeArea(
+              top: false,
+              child: Explore(),
+            ),
+        '/Delivery': (context) => SafeArea(
+              top: false,
+              child: Delivery(),
+            ),
+        '/chatlist': (context) => SafeArea(
+              top: false,
+              child: ChatList(),
+            ),
+        '/chat': (context) => SafeArea(
+              top: false,
+              child: Chat(),
+            ),
+        '/Menu': (context) => SafeArea(
+              top: false,
+              child: Menu(),
+            ),
+        '/menu_order_form': (context) => SafeArea(
+              top: false,
+              child: MenuOrderForm(),
+            ),
+        '/basket_form': (context) => SafeArea(
+              top: false,
+              child: Basket(),
+            ),
+        '/request': (context) => SafeArea(
+              top: false,
+              child: Request(),
+            ),
+        '/bigmode': (context) => SafeArea(
+              top: false,
+              child: BigMode(),
+            ),
+        '/matching': (context) => SafeArea(
+              top: false,
+              child: MatchingProgress(),
+            ),
+        '/accept_order': (context) => SafeArea(
+              top: false,
+              child: AcceptOrder(),
+            ),
+        '/expanded_map': (context) => SafeArea(
+              top: false,
+              child: ExpandedMap(),
+            ),
+        '/order_card_page': (context) => SafeArea(
+              top: false,
+              child: OrderCardPage(),
+            ),
+        '/delivery_card_page': (context) => SafeArea(
+              top: false,
+              child: DeliveryCardPage(),
+            ),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/big_filter") {
@@ -64,8 +106,11 @@ class HenfamBasic extends StatelessWidget {
           return null;
         }
       },
-      home: new RootPage(
-        auth: new Auth(),
+      home: SafeArea(
+        top: false,
+        child: new RootPage(
+          auth: new Auth(),
+        ),
       ),
     );
   }

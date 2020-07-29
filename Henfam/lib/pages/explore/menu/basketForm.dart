@@ -22,6 +22,24 @@ class Basket extends StatefulWidget {
 }
 
 class _BasketState extends State<Basket> {
+  BasketData orderInformation;
+
+  void inputBasketData(BasketData args) {
+    setState(() {
+      orderInformation = args;
+    });
+  }
+
+  void deleteItem(int index) {
+    setState(() {
+      orderInformation.orders.removeAt(index);
+    });
+
+    if (orderInformation.orders.length == 0) {
+      Navigator.pop(context);
+    }
+  }
+
   List<Widget> _displayAddOns(item) {
     List<Widget> addOns = [];
     if (item.addOns != null) {
@@ -36,7 +54,7 @@ class _BasketState extends State<Basket> {
   Widget _buildTile(BuildContext context, BasketData args, int index) {
     return ListTile(
       onTap: () {},
-      trailing: Text("\$" + args.orders[index].price.toString()),
+      trailing: getTrailing(args, index),
       title: Text(args.orders[index].name),
       subtitle: Wrap(
         direction: Axis.vertical,
@@ -46,9 +64,28 @@ class _BasketState extends State<Basket> {
     );
   }
 
+  Widget getTrailing(BasketData args, int index) {
+    return Column(
+      children: <Widget>[
+        Text("\$" + args.orders[index].price.toStringAsFixed(2)),
+        Expanded(
+          child: FlatButton(
+            child: Icon(
+              Icons.remove_circle,
+              size: 20,
+            ),
+            onPressed: () {
+              deleteItem(index);
+            },
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final BasketData args = ModalRoute.of(context).settings.arguments;
+    inputBasketData(ModalRoute.of(context).settings.arguments);
     return Scaffold(
         bottomNavigationBar: SizedBox(
           width: double.infinity,
@@ -59,7 +96,8 @@ class _BasketState extends State<Basket> {
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
             onPressed: () {
-              Navigator.pushNamed(context, '/request', arguments: args);
+              Navigator.pushNamed(context, '/request',
+                  arguments: orderInformation);
             },
           ),
         ),
@@ -76,8 +114,10 @@ class _BasketState extends State<Basket> {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildTile(context, args, index),
-                childCount: args.orders.length,
+                (context, index) {
+                  return _buildTile(context, orderInformation, index);
+                },
+                childCount: orderInformation.orders.length,
               ),
             ),
           ],

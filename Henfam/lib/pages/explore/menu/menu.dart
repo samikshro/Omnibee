@@ -99,20 +99,23 @@ class _MenuState extends State<Menu> {
                               if (ord != null) {
                                 setState(() {
                                   Menu.onPressed = () {
-                                    GeoPoint point = document['location'];
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/basket_form',
-                                      arguments: BasketData(
-                                        orders: ord.order,
-                                        restaurant_name: document['rest_name'],
-                                        restaurant_loc: Position(
-                                          latitude: point.latitude,
-                                          longitude: point.longitude,
+                                    if (ord.order.length != 0) {
+                                      GeoPoint point = document['location'];
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/basket_form',
+                                        arguments: BasketData(
+                                          orders: ord.order,
+                                          restaurant_name:
+                                              document['rest_name'],
+                                          restaurant_loc: Position(
+                                            latitude: point.latitude,
+                                            longitude: point.longitude,
+                                          ),
+                                          restaurant_pic: document['big_photo'],
                                         ),
-                                        restaurant_pic: document['big_photo'],
-                                      ),
-                                    );
+                                      );
+                                    }
                                   };
                                 });
                               } else {
