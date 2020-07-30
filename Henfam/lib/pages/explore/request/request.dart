@@ -17,12 +17,19 @@ class Request extends StatefulWidget {
 class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _deliveryRange = DateTime(0, 0, 0, 0, 30);
+  var _endDeliveryDate = DateTime.now().add(new Duration(hours: 1));
   String _location = '';
   Position _locationCoordinates = Position();
 
   void _setDeliveryDate(DateTime _newDate) {
     setState(() {
       _deliveryDate = _newDate;
+    });
+  }
+
+  void _setEndDeliveryDate(DateTime _newDate) {
+    setState(() {
+      _endDeliveryDate = _newDate;
     });
   }
 
@@ -73,7 +80,7 @@ class _RequestState extends State<Request> {
                 [
                   Column(
                     children: <Widget>[
-                      DeliveryOptions(_setDeliveryDate, _setDeliveryRange),
+                      DeliveryOptions(_setDeliveryDate, _setEndDeliveryDate),
                       LocationDetails(_setLocation),
                       // PaymentSection(),
                     ],
@@ -103,7 +110,8 @@ class _RequestState extends State<Request> {
                               context: context,
                               builder: (context) => RequestConfirm(
                                 _deliveryDate,
-                                _deliveryRange,
+                                // _deliveryRange,
+                                _endDeliveryDate,
                                 args,
                                 s,
                                 _location,

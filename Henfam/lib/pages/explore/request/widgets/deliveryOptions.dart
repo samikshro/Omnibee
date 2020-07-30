@@ -4,24 +4,25 @@ import 'package:flutter/cupertino.dart';
 
 class DeliveryOptions extends StatefulWidget {
   final Function setGlobalDate;
-  final Function setGlobalRange;
+  final Function setGlobalEndDate;
 
-  DeliveryOptions(this.setGlobalDate, this.setGlobalRange);
+  DeliveryOptions(this.setGlobalDate, this.setGlobalEndDate);
 
   @override
   _DeliveryOptionsState createState() => _DeliveryOptionsState(
         this.setGlobalDate,
-        this.setGlobalRange,
+        this.setGlobalEndDate,
       );
 }
 
 class _DeliveryOptionsState extends State<DeliveryOptions> {
   Function setGlobalDate;
-  Function setGlobalRange;
+  Function setGlobalEndDate;
 
-  _DeliveryOptionsState(this.setGlobalDate, this.setGlobalRange);
+  _DeliveryOptionsState(this.setGlobalDate, this.setGlobalEndDate);
 
   final _date = DateTime.now();
+  final _endDate = DateTime.now().add(new Duration(hours: 1));
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         children: <Widget>[
-          MediumTextSection('Delivery Options'),
+          MediumTextSection('Delivery Window'),
           Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0),
@@ -67,7 +68,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 25.0),
             child: Text(
-              "Order should arrive in (h:m)",
+              "Deliver by",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -76,31 +77,26 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           ),
           Container(
             decoration: BoxDecoration(
-              // border: Border.all(width: 2),
               borderRadius: BorderRadius.all(
                 const Radius.circular(20.0),
               ),
             ),
             child: SizedBox(
-              height: 80,
+              height: 100,
               width: 350,
               child: CupertinoDatePicker(
                 minuteInterval: 10,
-                mode: CupertinoDatePickerMode.time,
-                use24hFormat: true,
                 minimumDate:
-                    DateTime(_date.year, _date.month, _date.day, 0, 30),
-                maximumDate: DateTime(_date.year, _date.month, _date.day)
-                    .add(Duration(hours: 4)),
+                    _endDate.add(Duration(minutes: 10 - _endDate.minute % 10)),
+                maximumDate: _date.add(Duration(days: 1)),
                 initialDateTime:
-                    DateTime(_date.year, _date.month, _date.day, 0, 30),
-                onDateTimeChanged: (newRange) {
-                  setGlobalRange(newRange);
+                    _endDate.add(Duration(minutes: 10 - _endDate.minute % 10)),
+                onDateTimeChanged: (newDate) {
+                  setGlobalEndDate(newDate);
                 },
               ),
             ),
           ),
-          // CancelRangeDropDown(_dropdownValue, _setCancelRange),
         ],
       ),
     );

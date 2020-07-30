@@ -9,7 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestConfirm extends StatelessWidget {
   final date;
-  final range;
+  final endDate;
   final BasketData args;
   final uid;
   final String loc;
@@ -18,7 +18,7 @@ class RequestConfirm extends StatelessWidget {
 
   RequestConfirm(
     this.date,
-    this.range,
+    this.endDate,
     this.args,
     this.uid,
     this.loc,
@@ -33,12 +33,11 @@ class RequestConfirm extends StatelessWidget {
     return (today.day == date.day) ? "Today" : "Tomorrow";
   }
 
-  List<String> getTimes(DateTime date, DateTime range) {
-    final interval = Duration(hours: range.hour, minutes: range.minute);
-    final endDate = date.add(interval);
-
-    final expirationInterval =
-        Duration(hours: range.hour, minutes: range.minute - 20);
+  List<String> getTimeInfo(DateTime date, DateTime endDate) {
+    var difference = endDate.difference(date);
+    print("difference in hours: " + difference.inHours.toString());
+    print("difference in hours: " + difference.inMinutes.toString());
+    final expirationInterval = Duration(minutes: difference.inMinutes - 20);
     final expirationDate = date.add(expirationInterval);
 
     final formatter = DateFormat.jm();
@@ -52,10 +51,12 @@ class RequestConfirm extends StatelessWidget {
     return lst;
   }
 
-  Timestamp get_expiration_date(DateTime date, DateTime range) {
-    final interval = Duration(hours: range.hour, minutes: range.minute - 20);
-    final endDate = date.add(interval);
-    return Timestamp.fromMillisecondsSinceEpoch(endDate.millisecondsSinceEpoch);
+  Timestamp get_expiration_date(DateTime date, DateTime endDate) {
+    var difference = endDate.difference(date);
+    final expirationInterval = Duration(minutes: difference.inMinutes - 20);
+    final expirationDate = date.add(expirationInterval);
+    return Timestamp.fromMillisecondsSinceEpoch(
+        expirationDate.millisecondsSinceEpoch);
   }
 
   List<Map> convertOrdersToMap(List<FoodInfo> ords) {
@@ -74,11 +75,11 @@ class RequestConfirm extends StatelessWidget {
           style: TextStyle(fontSize: 22.0)),
       message: Text(
           "Delivery Window: " +
-              getTimes(date, range)[0] +
+              getTimeInfo(date, endDate)[0] +
               " - " +
-              getTimes(date, range)[1] +
+              getTimeInfo(date, endDate)[1] +
               ". Your order will EXPIRE at " +
-              getTimes(date, range)[2],
+              getTimeInfo(date, endDate)[2],
           style: TextStyle(fontSize: 20.0)),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -99,10 +100,10 @@ class RequestConfirm extends StatelessWidget {
                 "basket": convertOrdersToMap(args.orders),
                 "location": loc,
                 "delivery_window": {
-                  "start_time": getTimes(date, range)[0],
-                  "end_time": getTimes(date, range)[1]
+                  "start_time": getTimeInfo(date, endDate)[0],
+                  "end_time": getTimeInfo(date, endDate)[1]
                 },
-                "expiration_time": get_expiration_date(date, range),
+                "expiration_time": get_expiration_date(date, endDate),
                 "is_accepted": false,
                 "runner": null,
                 "restaurant_pic": args.restaurant_pic,
