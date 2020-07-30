@@ -83,10 +83,11 @@ class _LocationDetailsState extends State<LocationDetails> {
           ),
           Container(
             margin: EdgeInsets.all(15),
-            child: TextField(
+            child: TextFormField(
+              textInputAction: TextInputAction.done,
               maxLines: 3,
               decoration: InputDecoration(
-                hintText: "e.g. Leave next to couch outside map room.",
+                hintText: "e.g. Apt 4G, Leave next to couch outside map room.",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                   borderSide: BorderSide(
