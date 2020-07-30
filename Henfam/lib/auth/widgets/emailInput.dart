@@ -16,6 +16,7 @@ class ShowEmailInput extends StatelessWidget {
   }
 
   String emailValidationSignup(String value) {
+    value = value.toLowerCase();
     final start = value.indexOf('@');
     final isCornellEmail =
         !((start == -1) || (value.substring(start) != "@cornell.edu"));

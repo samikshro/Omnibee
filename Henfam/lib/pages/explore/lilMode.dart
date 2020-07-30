@@ -1,3 +1,4 @@
+import 'package:Henfam/pages/explore/lil_explore/errandSelectionRow.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Henfam/pages/explore/helpcard.dart';
@@ -14,17 +15,8 @@ class LilMode extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-        // CurrentOrder("Jessie", "7:30", "on the way"),
-        // ScheduledRequests(),
         LargeTextSection("Request an Errand"),
-        Container(
-          child: HelpCard(activities),
-        ),
-        // LargeTextSection("Or choose from other errands nearby!"),
-        // Padding(
-        //   padding: EdgeInsets.only(bottom: 60),
-        //   child: ErrandsNearby(),
-        // ),
+        ErrandSelectionRow(),
       ],
     );
   }

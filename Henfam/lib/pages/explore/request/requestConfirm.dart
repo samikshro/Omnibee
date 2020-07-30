@@ -35,8 +35,6 @@ class RequestConfirm extends StatelessWidget {
 
   List<String> getTimeInfo(DateTime date, DateTime endDate) {
     var difference = endDate.difference(date);
-    print("difference in hours: " + difference.inHours.toString());
-    print("difference in hours: " + difference.inMinutes.toString());
     final expirationInterval = Duration(minutes: difference.inMinutes - 20);
     final expirationDate = date.add(expirationInterval);
 

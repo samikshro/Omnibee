@@ -52,23 +52,75 @@ class OrderCard extends StatelessWidget {
               image: AssetImage("assets/oishii_bowl_pic1.png"),
               fit: BoxFit.cover,
             ),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: const Text(
-                    'VIEW DETAILS',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/order_card_page',
-                        arguments: document);
-                  },
-                ),
-              ],
-            ),
+            OrderCardButtonBar(document, context),
           ],
         ),
       ),
+    );
+  }
+}
+
+class OrderCardButtonBar extends StatelessWidget {
+  final DocumentSnapshot document;
+  final BuildContext context;
+
+  OrderCardButtonBar(this.document, this.context);
+
+  MainAxisAlignment _getAlignment() {
+    if (document['is_delivered'] == null || document['is_delivered'] == false) {
+      return MainAxisAlignment.end;
+    } else {
+      return MainAxisAlignment.spaceAround;
+    }
+  }
+
+  void _markOrderComplete(DocumentSnapshot doc) {
+    final db = Firestore.instance;
+    db
+        .collection('orders')
+        .document(doc.documentID)
+        .setData({'is_received': true}, merge: true);
+  }
+
+  List<Widget> _getButtons() {
+    List<Widget> buttons = [
+      FlatButton(
+        child: const Text(
+          'VIEW DETAILS',
+          style: TextStyle(fontSize: 18),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, '/order_card_page', arguments: document);
+        },
+      ),
+    ];
+
+    if (document['is_delivered'] != null) {
+      buttons.insert(
+          0,
+          RaisedButton(
+            color: Color(0xffFD9827),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            child: const Text(
+              'CONFIRM DELIVERY',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+            onPressed: () {
+              _markOrderComplete(document);
+            },
+          ));
+    }
+
+    return buttons;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonBar(
+      alignment: _getAlignment(),
+      children: _getButtons(),
     );
   }
 }

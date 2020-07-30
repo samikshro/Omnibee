@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -5,6 +6,14 @@ class DeliveryCard extends StatelessWidget {
   final DocumentSnapshot document;
 
   DeliveryCard(BuildContext context, {this.document});
+
+  void _markOrderComplete(DocumentSnapshot doc) {
+    final db = Firestore.instance;
+    db
+        .collection('orders')
+        .document(doc.documentID)
+        .setData({'is_delivered': true}, merge: true);
+  }
 
   bool _isOrderComplete(DocumentSnapshot doc) {
     return doc['is_delivered'] != null && doc['is_received'] != null;
@@ -58,26 +67,71 @@ class DeliveryCard extends StatelessWidget {
                     document['user_id']['delivery_window']['end_time'] +
                     "\nEarnings: \$${_getEarnings()}"),
                 children: _itemsToOrder(document)),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: const Text(
-                    'VIEW DETAILS',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/delivery_card_page',
-                      arguments: document,
-                    );
-                  },
-                ),
-              ],
-            ),
+            DeliveryCardButtonBar(document, context),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DeliveryCardButtonBar extends StatelessWidget {
+  final DocumentSnapshot document;
+  final BuildContext context;
+
+  DeliveryCardButtonBar(this.document, this.context);
+
+  void _markOrderComplete(DocumentSnapshot doc) {
+    final db = Firestore.instance;
+    db
+        .collection('orders')
+        .document(doc.documentID)
+        .setData({'is_delivered': true}, merge: true);
+  }
+
+  List<Widget> _getButtons() {
+    List<Widget> buttons = [
+      RaisedButton(
+        color: Color(0xffFD9827),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        child: const Text(
+          'MARK DELIVERED',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        onPressed: () {
+          _markOrderComplete(document);
+        },
+      ),
+      FlatButton(
+        child: const Text(
+          'VIEW DETAILS',
+          style: TextStyle(fontSize: 18),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, '/delivery_card_page',
+              arguments: document);
+        },
+      ),
+    ];
+
+    if (document['is_delivered'] != null) {
+      buttons.removeAt(0);
+      buttons.insert(
+        0,
+        Text('Waiting for confirmation...'),
+      );
+    }
+
+    return buttons;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.spaceAround,
+      children: _getButtons(),
     );
   }
 }

@@ -69,14 +69,11 @@ class _BigModeState extends State<BigMode> {
                           isGreaterThanOrEqualTo: new DateTime.now())
                       .snapshots(),
                   builder: (context, snapshot) {
-                    print('deciding');
                     if (!snapshot.hasData) {
-                      print('no data');
                       return const Center(child: CircularProgressIndicator());
                     }
                     ;
                     if (_allRunsAccepted(snapshot.data.documents)) {
-                      print('accepted runs');
                       return Center(
                         child: Text(
                           'No runs currently available',

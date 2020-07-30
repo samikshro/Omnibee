@@ -45,7 +45,6 @@ class _LocationDetailsState extends State<LocationDetails> {
   void dispose() {
     super.dispose();
     _isDisposed = true;
-    print("is disposed is true now");
   }
 
   @override
