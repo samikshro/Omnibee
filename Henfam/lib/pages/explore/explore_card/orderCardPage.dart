@@ -3,19 +3,32 @@ import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stripe_payment/stripe_payment.dart';
+import 'package:Henfam/services/paymentService.dart';
 
-class OrderCardPage extends StatelessWidget {
+class OrderCardPage extends StatefulWidget {
+  @override
+  _OrderCardPageState createState() => _OrderCardPageState();
+}
+
+class _OrderCardPageState extends State<OrderCardPage> {
   final db = Firestore.instance;
 
   bool _isDeliveryComplete(DocumentSnapshot doc) {
     return doc['is_delivered'] != null;
   }
 
-  void _confirmDeliveryComplete(DocumentSnapshot doc) {
+  void _addStripeCard(BuildContext context) {
+    PaymentService ps;
+    ps.payment(context, 100.0);
+  }
+
+  void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
     db
         .collection('orders')
         .document(doc.documentID)
         .setData({'is_received': true}, merge: true);
+    _addStripeCard(context);
   }
 
   String _getExpirationTime(DocumentSnapshot doc) {
@@ -37,7 +50,7 @@ class OrderCardPage extends StatelessWidget {
     return "$startTime to $endTime";
   }
 
-  void _deleteDocument(DocumentSnapshot doc) async {
+  void _deleteDocument(DocumentSnapshot doc, BuildContext context) async {
     await db.collection('orders').document(doc.documentID).delete();
   }
 
@@ -134,15 +147,12 @@ class OrderCardPage extends StatelessWidget {
     );
   }
 
-  Widget _controlButtons(BuildContext context, DocumentSnapshot doc) {
+  Widget _controlButtons(DocumentSnapshot doc, BuildContext context) {
     if (_isDeliveryComplete(doc)) {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: DocumentCallbackButton(
-          'Confirm Delivery',
-          _confirmDeliveryComplete,
-          doc,
-        ),
+            'Confirm Delivery', _confirmDeliveryComplete, doc, context),
       );
     } else if (doc['user_id']['is_accepted'] == true) {
       return Padding(
@@ -154,9 +164,20 @@ class OrderCardPage extends StatelessWidget {
     } else {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
-        child: DocumentCallbackButton('Cancel Order', _deleteDocument, doc),
+        child: DocumentCallbackButton(
+            'Cancel Order', _deleteDocument, doc, context),
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    StripePayment.setOptions(StripeOptions(
+        publishableKey:
+            "pk_test_51HBPtnEmYc5NFWJZnUA1KfjQ7CfGBHrtjOKp7hxhJzw6e3mWZUvQhk2JYdTC98kQoy0ZCYRAQTlqDquL5DIimyLx00IU9EGn7r",
+        merchantId: "merchant.io.omnibee",
+        androidPayMode: 'test'));
   }
 
   @override
@@ -173,7 +194,7 @@ class OrderCardPage extends StatelessWidget {
           _getDeliveryInformation(document),
           MediumTextSection('Order Information'),
           _getOrderInformation(document),
-          _controlButtons(context, document),
+          _controlButtons(document, context),
         ],
       ),
     );
