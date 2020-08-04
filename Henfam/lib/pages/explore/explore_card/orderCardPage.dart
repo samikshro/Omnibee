@@ -18,17 +18,16 @@ class _OrderCardPageState extends State<OrderCardPage> {
     return doc['is_delivered'] != null;
   }
 
-  void _addStripeCard(BuildContext context) {
-    PaymentService ps;
-    ps.payment(context, 100.0);
+  bool _addStripeCard(BuildContext context) {
+    bool confirmed = PaymentService.payment(context, 100.0);
   }
 
   void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
-    db
-        .collection('orders')
-        .document(doc.documentID)
-        .setData({'is_received': true}, merge: true);
-    _addStripeCard(context);
+    if (_addStripeCard(context))
+      db
+          .collection('orders')
+          .document(doc.documentID)
+          .setData({'is_received': true}, merge: true);
   }
 
   String _getExpirationTime(DocumentSnapshot doc) {

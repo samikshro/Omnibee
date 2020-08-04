@@ -5,12 +5,14 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 
 class PaymentService {
-  final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+  static final HttpsCallable callable =
+      CloudFunctions.instance.getHttpsCallable(
     functionName: 'createPaymentIntent',
   );
 
-  _confirmDialog(
+  static _confirmDialog(
       BuildContext context, String clientSecret, PaymentMethod paymentMethod) {
+    print("confirm dialog: 1");
     var confirm = AlertDialog(
       title: Text("Confirm Payement"),
       content: Container(
@@ -47,15 +49,17 @@ class PaymentService {
         ),
       ],
     );
+    print("confirm dialog: 2");
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
+          print("confirm dialog: 3");
           return confirm;
         });
   }
 
-  _confirmPayment(
+  static _confirmPayment(
       BuildContext context, String sec, PaymentMethod paymentMethod) {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethod.id),
@@ -68,7 +72,8 @@ class PaymentService {
     });
   }
 
-  void payment(BuildContext context, double dollars) {
+  static bool payment(BuildContext context, double dollars) {
+    bool confirmed = false;
     StripePayment.paymentRequestWithCardForm(CardFormPaymentRequest())
         .then((paymentMethod) {
       double amount =
@@ -76,10 +81,13 @@ class PaymentService {
       callable
           .call(<String, dynamic>{'amount': amount, 'currency': 'usd'}).then(
               (response) {
+        print("got to confirm payment code");
         _confirmDialog(context, response.data["client_secret"],
             paymentMethod); //function for confirmation for payment
+        confirmed = true;
       });
     });
+    return confirmed;
   }
 
   addCard(token) {
