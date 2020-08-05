@@ -65,7 +65,6 @@ class _RequestState extends State<Request> {
 
   @override
   Widget build(BuildContext context) {
-    final BasketData args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -112,7 +111,6 @@ class _RequestState extends State<Request> {
                                 _deliveryDate,
                                 // _deliveryRange,
                                 _endDeliveryDate,
-                                args,
                                 s,
                                 _location,
                                 _locationCoordinates,

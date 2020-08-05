@@ -1,3 +1,6 @@
+import 'package:Henfam/bloc/basket/basket_bloc.dart';
+import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/bloc/simple_bloc_observer.dart';
 import 'package:flutter/services.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
@@ -20,6 +23,7 @@ import 'package:Henfam/pages/explore/request/request.dart';
 
 import 'package:Henfam/pages/explore/big_explore/bigMode.dart';
 import 'package:Henfam/pages/explore/big_explore/bigFilter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(HenfamBasic());
@@ -28,88 +32,102 @@ void main() {
 class HenfamBasic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: _appTheme,
-      initialRoute: '/',
-      routes: {
-        '/explore': (context) => SafeArea(
-              top: false,
-              child: Explore(),
-            ),
-        '/Delivery': (context) => SafeArea(
-              top: false,
-              child: Delivery(),
-            ),
-        '/chatlist': (context) => SafeArea(
-              top: false,
-              child: ChatList(),
-            ),
-        '/chat': (context) => SafeArea(
-              top: false,
-              child: Chat(),
-            ),
-        '/Menu': (context) => SafeArea(
-              top: false,
-              child: Menu(),
-            ),
-        '/menu_order_form': (context) => SafeArea(
-              top: false,
-              child: MenuOrderForm(),
-            ),
-        '/basket_form': (context) => SafeArea(
-              top: false,
-              child: Basket(),
-            ),
-        '/request': (context) => SafeArea(
-              top: false,
-              child: Request(),
-            ),
-        '/bigmode': (context) => SafeArea(
-              top: false,
-              child: BigMode(),
-            ),
-        '/matching': (context) => SafeArea(
-              top: false,
-              child: MatchingProgress(),
-            ),
-        '/accept_order': (context) => SafeArea(
-              top: false,
-              child: AcceptOrder(),
-            ),
-        '/expanded_map': (context) => SafeArea(
-              top: false,
-              child: ExpandedMap(),
-            ),
-        '/order_card_page': (context) => SafeArea(
-              top: false,
-              child: OrderCardPage(),
-            ),
-        '/delivery_card_page': (context) => SafeArea(
-              top: false,
-              child: DeliveryCardPage(),
-            ),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == "/big_filter") {
-          return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => BigFilter(),
-            transitionsBuilder: (_, anim, __, child) {
-              var begin = Offset(0.0, 1.0);
-              var end = Offset.zero;
-              var curve = Curves.ease;
-              var tween =
-                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              return SlideTransition(position: anim.drive(tween), child: child);
-            },
-          );
-        } else {
-          return null;
-        }
-      },
-      home: SafeArea(
-        top: false,
-        child: new RootPage(
-          auth: new Auth(),
+    Bloc.observer = SimpleBlocObserver();
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BasketBloc>(
+          create: (BuildContext context) => BasketBloc()..add(BasketLoaded()),
+        ),
+        BlocProvider<RestaurantBloc>(
+          create: (BuildContext context) =>
+              RestaurantBloc()..add(RestaurantLoaded()),
+        ),
+      ],
+      child: MaterialApp(
+        theme: _appTheme,
+        initialRoute: '/',
+        routes: {
+          '/explore': (context) => SafeArea(
+                top: false,
+                child: Explore(),
+              ),
+          '/Delivery': (context) => SafeArea(
+                top: false,
+                child: Delivery(),
+              ),
+          '/chatlist': (context) => SafeArea(
+                top: false,
+                child: ChatList(),
+              ),
+          '/chat': (context) => SafeArea(
+                top: false,
+                child: Chat(),
+              ),
+          '/Menu': (context) => SafeArea(
+                top: false,
+                child: Menu(),
+              ),
+          '/menu_order_form': (context) => SafeArea(
+                top: false,
+                child: MenuOrderForm(),
+              ),
+          '/basket_form': (context) => SafeArea(
+                top: false,
+                child: Basket(),
+              ),
+          '/request': (context) => SafeArea(
+                top: false,
+                child: Request(),
+              ),
+          '/bigmode': (context) => SafeArea(
+                top: false,
+                child: BigMode(),
+              ),
+          '/matching': (context) => SafeArea(
+                top: false,
+                child: MatchingProgress(),
+              ),
+          '/accept_order': (context) => SafeArea(
+                top: false,
+                child: AcceptOrder(),
+              ),
+          '/expanded_map': (context) => SafeArea(
+                top: false,
+                child: ExpandedMap(),
+              ),
+          '/order_card_page': (context) => SafeArea(
+                top: false,
+                child: OrderCardPage(),
+              ),
+          '/delivery_card_page': (context) => SafeArea(
+                top: false,
+                child: DeliveryCardPage(),
+              ),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == "/big_filter") {
+            return PageRouteBuilder(
+              pageBuilder: (_, __, ___) => BigFilter(),
+              transitionsBuilder: (_, anim, __, child) {
+                var begin = Offset(0.0, 1.0);
+                var end = Offset.zero;
+                var curve = Curves.ease;
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
+                return SlideTransition(
+                    position: anim.drive(tween), child: child);
+              },
+            );
+          } else {
+            return null;
+          }
+        },
+        home: SafeArea(
+          top: false,
+          child: new RootPage(
+            auth: new Auth(),
+          ),
         ),
       ),
     );

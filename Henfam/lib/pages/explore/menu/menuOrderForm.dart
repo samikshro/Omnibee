@@ -1,7 +1,10 @@
 import 'package:Henfam/auth/authentication.dart';
+import 'package:Henfam/bloc/basket/basket_bloc.dart';
+import 'package:Henfam/models/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FoodInfo {
   String name;
@@ -51,11 +54,15 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
     });
   }
 
-  List<String> _getAddOns(items, selectedAddOns) {
-    List<String> finalAddOns = [];
+  List<MenuItem> _getAddOns(items, selectedAddOns) {
+    List<MenuItem> finalAddOns = [];
     for (int i = 0; i < selectedAddOns.length; i++) {
       if (selectedAddOns[i]) {
-        finalAddOns.add(items[i]['name']);
+        finalAddOns.add(MenuItem(
+          items[i]['name'],
+          items[i]['price'].toDouble(),
+          [],
+        ));
       }
     }
 
@@ -87,106 +94,88 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
       _addOnsSelected.add(false);
     }
 
-    return Scaffold(
-      bottomNavigationBar: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: RaisedButton(
-          child: Text('Add to Cart',
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).scaffoldBackgroundColor)),
-          onPressed: () {
-            if (foodDoc.order != null) {
-              foodDoc.order.add(
-                FoodInfo(
-                  name: foodDoc.document['food'][foodDoc.index]['name'],
-                  addOns: _getAddOns(
-                    foodDoc.document['food'][foodDoc.index]['add_ons'],
-                    _addOnsSelected,
-                  ),
-                  price: _getPrice(
-                    foodDoc.document['food'][foodDoc.index],
-                    _addOnsSelected,
-                  ),
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
+      return Scaffold(
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: RaisedButton(
+            child: Text('Add to Cart',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).scaffoldBackgroundColor)),
+            onPressed: () {
+              MenuItem menuItem = MenuItem(
+                foodDoc.document['food'][foodDoc.index]['name'],
+                _getPrice(
+                  foodDoc.document['food'][foodDoc.index],
+                  _addOnsSelected,
+                ),
+                _getAddOns(
+                  foodDoc.document['food'][foodDoc.index]['add_ons'],
+                  _addOnsSelected,
                 ),
               );
-            } else {
-              foodDoc.order = [
-                FoodInfo(
-                  name: foodDoc.document['food'][foodDoc.index]['name'],
-                  addOns: _getAddOns(
-                    foodDoc.document['food'][foodDoc.index]['add_ons'],
-                    _addOnsSelected,
-                  ),
-                  price: _getPrice(
-                    foodDoc.document['food'][foodDoc.index],
-                    _addOnsSelected,
-                  ),
-                ),
-              ];
-            }
-            Navigator.pop(
-                context,
-                FoodDocument(
-                  document: foodDoc.document,
-                  index: foodDoc.index,
-                  order: foodDoc.order,
-                ));
-          },
+              BlocProvider.of<BasketBloc>(context2)
+                  .add(MenuItemAdded(menuItem));
+
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
-      appBar: AppBar(
-          title: Text(
-        foodDoc.document['food'][foodDoc.index]['name'],
-      )),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
-                child: Text(
-                  foodDoc.document['food'][foodDoc.index]['desc'],
-                  //args.desc,
-                  style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+        appBar: AppBar(
+            title: Text(
+          foodDoc.document['food'][foodDoc.index]['name'],
+        )),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
+                  child: Text(
+                    foodDoc.document['food'][foodDoc.index]['desc'],
+                    //args.desc,
+                    style:
+                        TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: LargeTextSection("Add-ons"),
-            ),
-            SliverToBoxAdapter(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount:
-                    foodDoc.document['food'][foodDoc.index]['add_ons'].length,
-                itemBuilder: (BuildContext context, int index) =>
-                    CheckboxListTile(
-                  title: Text(foodDoc.document['food'][foodDoc.index]['add_ons']
-                      [index]['name']),
-                  subtitle: getAddOnPrice(foodDoc, index),
-                  value: _addOnsSelected[index],
-                  onChanged: (value) {
-                    _selectAddOn(value, index);
-                  },
+              SliverToBoxAdapter(
+                child: LargeTextSection("Add-ons"),
+              ),
+              SliverToBoxAdapter(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount:
+                      foodDoc.document['food'][foodDoc.index]['add_ons'].length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      CheckboxListTile(
+                    title: Text(foodDoc.document['food'][foodDoc.index]
+                        ['add_ons'][index]['name']),
+                    subtitle: getAddOnPrice(foodDoc, index),
+                    value: _addOnsSelected[index],
+                    onChanged: (value) {
+                      _selectAddOn(value, index);
+                    },
+                  ),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
-            SliverToBoxAdapter(
-              child: Container(
-                  child: TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Requests',
-                ),
-              )),
-            ),
-          ],
+              SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
+              SliverToBoxAdapter(
+                child: Container(
+                    child: TextField(
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Requests',
+                  ),
+                )),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

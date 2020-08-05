@@ -1,16 +1,15 @@
+import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:Henfam/pages/explore/menu/basketForm.dart';
-import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestConfirm extends StatelessWidget {
   final date;
   final endDate;
-  final BasketData args;
   final uid;
   final String loc;
   final Position locCoords;
@@ -19,7 +18,6 @@ class RequestConfirm extends StatelessWidget {
   RequestConfirm(
     this.date,
     this.endDate,
-    this.args,
     this.uid,
     this.loc,
     this.locCoords,
@@ -57,69 +55,71 @@ class RequestConfirm extends StatelessWidget {
         expirationDate.millisecondsSinceEpoch);
   }
 
-  List<Map> convertOrdersToMap(List<FoodInfo> ords) {
-    List<Map> orders = [];
-    ords.forEach((FoodInfo ord) {
-      Map order = ord.toJson();
-      orders.add(order);
-    });
-    return orders;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return CupertinoActionSheet(
-      title: Text("Do you want to submit this order?",
-          style: TextStyle(fontSize: 22.0)),
-      message: Text(
-          "Delivery Window: " +
-              getTimeInfo(date, endDate)[0] +
-              " - " +
-              getTimeInfo(date, endDate)[1] +
-              ". Your order will EXPIRE at " +
-              getTimeInfo(date, endDate)[2],
-          style: TextStyle(fontSize: 20.0)),
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          child: Text("Confirm"),
-          isDefaultAction: true,
-          onPressed: () {
-            firestoreInstance.collection("orders").add({
-              "user_id": {
-                "name": name,
-                "uid": uid,
-                "user_coordinates":
-                    GeoPoint(locCoords.latitude, locCoords.longitude),
-                "rest_name_used": args.restaurant_name,
-                "restaurant_coordinates": GeoPoint(
-                  args.restaurant_loc.latitude,
-                  args.restaurant_loc.longitude,
-                ),
-                "basket": convertOrdersToMap(args.orders),
-                "location": loc,
-                "delivery_window": {
-                  "start_time": getTimeInfo(date, endDate)[0],
-                  "end_time": getTimeInfo(date, endDate)[1]
-                },
-                "expiration_time": get_expiration_date(date, endDate),
-                "is_accepted": false,
-                "runner": null,
-                "restaurant_pic": args.restaurant_pic,
-              }
-            });
-            Menu.order = []; //clears order after submitting
-            Menu.onPressed = () {}; //clears onPressed fcn after submitting
-            Navigator.popUntil(
-                context, ModalRoute.withName(Navigator.defaultRouteName));
-          },
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Text("Cancel"),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
+      return BlocBuilder<RestaurantBloc, RestaurantState>(
+          builder: (context, state2) {
+        return (state1 is BasketLoadSuccess)
+            ? ((state2 is RestaurantLoadSuccess)
+                ? CupertinoActionSheet(
+                    title: Text("Do you want to submit this order?",
+                        style: TextStyle(fontSize: 22.0)),
+                    message: Text(
+                        "Delivery Window: " +
+                            getTimeInfo(date, endDate)[0] +
+                            " - " +
+                            getTimeInfo(date, endDate)[1] +
+                            ". Your order will EXPIRE at " +
+                            getTimeInfo(date, endDate)[2],
+                        style: TextStyle(fontSize: 20.0)),
+                    actions: <Widget>[
+                      CupertinoActionSheetAction(
+                        child: Text("Confirm"),
+                        isDefaultAction: true,
+                        onPressed: () {
+                          firestoreInstance.collection("orders").add({
+                            "user_id": {
+                              "name": name,
+                              "uid": uid,
+                              "user_coordinates": GeoPoint(
+                                  locCoords.latitude, locCoords.longitude),
+                              "rest_name_used": state2.restaurant.name,
+                              "restaurant_coordinates": GeoPoint(
+                                state2.restaurant.location[0],
+                                state2.restaurant.location[1],
+                              ),
+                              "basket": state1.toJson(),
+                              "location": loc,
+                              "delivery_window": {
+                                "start_time": getTimeInfo(date, endDate)[0],
+                                "end_time": getTimeInfo(date, endDate)[1]
+                              },
+                              "expiration_time":
+                                  get_expiration_date(date, endDate),
+                              "is_accepted": false,
+                              "runner": null,
+                              "restaurant_pic": state2.restaurant.imagePath,
+                            }
+                          });
+                          Menu.order = []; //clears order after submitting
+                          Menu.onPressed =
+                              () {}; //clears onPressed fcn after submitting
+                          Navigator.popUntil(context,
+                              ModalRoute.withName(Navigator.defaultRouteName));
+                        },
+                      ),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                : Container())
+            : Container();
+      });
+    });
   }
 }
