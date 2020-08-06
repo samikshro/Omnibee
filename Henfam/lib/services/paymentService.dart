@@ -86,7 +86,8 @@ class PaymentService {
       }).then((response) {
         print("secret key: " + response.data["client_secret"]);
         print("got to confirm payment code");
-        _confirmDialog(context, response.data["client_secret"],
+        // _confirmDialog(context, response.data["client_secret"], paymentMethod);
+        _confirmPayment(context, response.data["client_secret"],
             paymentMethod); //function for confirmation for payment
         confirmed = true;
         return confirmed;
