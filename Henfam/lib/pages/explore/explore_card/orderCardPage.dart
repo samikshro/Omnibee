@@ -20,6 +20,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
 
   bool _addStripeCard(BuildContext context) {
     bool confirmed = PaymentService.payment(context, 100.0);
+    return confirmed;
   }
 
   void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
@@ -174,7 +175,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
     super.initState();
     StripePayment.setOptions(StripeOptions(
         publishableKey:
-            "pk_test_51HBPtnEmYc5NFWJZnUA1KfjQ7CfGBHrtjOKp7hxhJzw6e3mWZUvQhk2JYdTC98kQoy0ZCYRAQTlqDquL5DIimyLx00IU9EGn7r",
+            "pk_test_51HBOnhBJxTPXZlKXyxpYx1AuofRnDaDscu3mpP2pT7GLWkUkZc0vTXAEOo0hCevsSMPomSFTon4eiclxw9UZNB9Q00Qw2XOOPt",
         merchantId: "merchant.io.omnibee",
         androidPayMode: 'test'));
   }

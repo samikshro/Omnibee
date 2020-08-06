@@ -64,6 +64,7 @@ class PaymentService {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethod.id),
     ).then((val) {
+      print("_confirmPayment");
       // addPaymentDetailsToFirestore(); //Function to add Payment details to firestore
       final snackBar = SnackBar(
         content: Text('Payment Successfull'),
@@ -78,15 +79,20 @@ class PaymentService {
         .then((paymentMethod) {
       double amount =
           dollars * 100.0; // multipliying with 100 to change $ to cents
-      callable
-          .call(<String, dynamic>{'amount': amount, 'currency': 'usd'}).then(
-              (response) {
+      callable.call(<String, dynamic>{
+        'amount': amount,
+        'currency': 'usd',
+        'paymentMethod': paymentMethod.id,
+      }).then((response) {
+        print("secret key: " + response.data["client_secret"]);
         print("got to confirm payment code");
         _confirmDialog(context, response.data["client_secret"],
             paymentMethod); //function for confirmation for payment
         confirmed = true;
+        return confirmed;
       });
     });
+    print("this is the value of confirmed 3:" + confirmed.toString());
     return confirmed;
   }
 
