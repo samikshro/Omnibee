@@ -1,92 +1,66 @@
+import 'package:Henfam/bloc/basket/basket_bloc.dart';
+import 'package:Henfam/models/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
-import 'package:geolocator/geolocator.dart';
-import 'menuOrderForm.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BasketData {
-  final List<FoodInfo> orders;
-  final String restaurant_name;
-  final Position restaurant_loc;
-  final String restaurant_pic;
-  BasketData({
-    this.orders,
-    this.restaurant_name,
-    this.restaurant_loc,
-    this.restaurant_pic,
-  });
-}
-
-class Basket extends StatefulWidget {
-  @override
-  _BasketState createState() => _BasketState();
-}
-
-class _BasketState extends State<Basket> {
-  BasketData orderInformation;
-
-  void inputBasketData(BasketData args) {
-    setState(() {
-      orderInformation = args;
-    });
-  }
-
-  void deleteItem(int index) {
-    setState(() {
-      orderInformation.orders.removeAt(index);
-    });
-
-    if (orderInformation.orders.length == 0) {
-      Navigator.pop(context);
-    }
-  }
-
-  List<Widget> _displayAddOns(item) {
+class Basket extends StatelessWidget {
+  List<Widget> _displayAddOns(MenuItem menuItem) {
     List<Widget> addOns = [];
-    if (item.addOns != null) {
-      for (int i = 0; i < item.addOns.length; i++) {
-        addOns.add(Text(item.addOns[i]));
+    if (menuItem.addOns != null) {
+      for (int i = 0; i < menuItem.addOns.length; i++) {
+        addOns.add(Text(menuItem.addOns[i].name));
       }
     }
 
     return addOns;
   }
 
-  Widget _buildTile(BuildContext context, BasketData args, int index) {
+  Widget _buildTile(List<MenuItem> menuItems, int index) {
     return ListTile(
       onTap: () {},
-      trailing: getTrailing(args, index),
-      title: Text(args.orders[index].name),
+      trailing: _getTrailing(menuItems[index]),
+      title: Text(menuItems[index].name),
       subtitle: Wrap(
         direction: Axis.vertical,
-        children: _displayAddOns(args.orders[index]),
+        children: _displayAddOns(menuItems[index]),
       ),
       isThreeLine: true,
     );
   }
 
-  Widget getTrailing(BasketData args, int index) {
-    return Column(
-      children: <Widget>[
-        Text("\$" + args.orders[index].price.toStringAsFixed(2)),
-        Expanded(
-          child: FlatButton(
-            child: Icon(
-              Icons.remove_circle,
-              size: 20,
+  Widget _getTrailing(MenuItem menuItem) {
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
+      return Column(
+        children: <Widget>[
+          Text(menuItem.price.toString()),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove_circle,
+                size: 20,
+              ),
+              onPressed: () {
+                BlocProvider.of<BasketBloc>(context)
+                    .add(MenuItemDeleted(menuItem));
+              },
             ),
-            onPressed: () {
-              deleteItem(index);
-            },
-          ),
-        )
-      ],
-    );
+          )
+        ],
+      );
+    });
+  }
+
+  Function _getOnPressed(BuildContext context, BasketLoadSuccess state) {
+    return (state.menuItems.length == 0)
+        ? null
+        : () => Navigator.pushNamed(context, '/request');
   }
 
   @override
   Widget build(BuildContext context) {
-    inputBasketData(ModalRoute.of(context).settings.arguments);
-    return Scaffold(
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
+      return Scaffold(
         bottomNavigationBar: SizedBox(
           width: double.infinity,
           height: 60,
@@ -95,32 +69,29 @@ class _BasketState extends State<Basket> {
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
-            onPressed: () {
-              Navigator.pushNamed(context, '/request',
-                  arguments: orderInformation);
-            },
+            onPressed: _getOnPressed(context, state),
           ),
         ),
         appBar: AppBar(
             title: Text(
-          // _ordersToAddons(args.orders[0].addOns)
           'My Basket',
         )),
-        body: SafeArea(
-            child: CustomScrollView(
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: LargeTextSection("Items"),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return _buildTile(context, orderInformation, index);
-                },
-                childCount: orderInformation.orders.length,
-              ),
-            ),
-          ],
-        )));
+        body: (state is BasketLoadSuccess)
+            ? SafeArea(
+                child: Column(
+                children: <Widget>[
+                  LargeTextSection("Items"),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.menuItems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _buildTile(state.menuItems, index);
+                    },
+                  )
+                ],
+              ))
+            : Container(),
+      );
+    });
   }
 }
