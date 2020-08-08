@@ -1,3 +1,4 @@
+import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -74,15 +75,12 @@ class OrderCardButtonBar extends StatelessWidget {
     }
   }
 
-  void _markOrderComplete(DocumentSnapshot doc) {
-    final db = Firestore.instance;
-    db
-        .collection('orders')
-        .document(doc.documentID)
-        .setData({'is_received': true}, merge: true);
+  void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
+    PaymentService.payment(
+        doc, context, 50.0, doc['user_id']['payment_method_id']);
   }
 
-  List<Widget> _getButtons() {
+  List<Widget> _getButtons(BuildContext context) {
     List<Widget> buttons = [
       FlatButton(
         child: const Text(
@@ -108,7 +106,7 @@ class OrderCardButtonBar extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () {
-              _markOrderComplete(document);
+              _markOrderComplete(document, context);
             },
           ));
     }
@@ -120,7 +118,7 @@ class OrderCardButtonBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonBar(
       alignment: _getAlignment(),
-      children: _getButtons(),
+      children: _getButtons(context),
     );
   }
 }

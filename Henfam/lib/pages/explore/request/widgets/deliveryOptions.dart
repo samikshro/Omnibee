@@ -44,7 +44,6 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           ),
           Container(
             decoration: BoxDecoration(
-              // border: Border.all(width: 2),
               borderRadius: BorderRadius.all(
                 const Radius.circular(20.0),
               ),
