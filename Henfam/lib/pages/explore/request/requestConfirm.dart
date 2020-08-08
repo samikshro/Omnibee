@@ -15,16 +15,10 @@ class RequestConfirm extends StatelessWidget {
   final String loc;
   final Position locCoords;
   final String name;
+  final String pmID;
 
-  RequestConfirm(
-    this.date,
-    this.endDate,
-    this.args,
-    this.uid,
-    this.loc,
-    this.locCoords,
-    this.name,
-  );
+  RequestConfirm(this.date, this.endDate, this.args, this.uid, this.loc,
+      this.locCoords, this.name, this.pmID);
 
   final firestoreInstance = Firestore.instance;
 
@@ -105,6 +99,7 @@ class RequestConfirm extends StatelessWidget {
                 "is_accepted": false,
                 "runner": null,
                 "restaurant_pic": args.restaurant_pic,
+                "payment_method_id": pmID,
               }
             });
             Menu.order = []; //clears order after submitting

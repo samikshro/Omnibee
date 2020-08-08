@@ -18,17 +18,9 @@ class _OrderCardPageState extends State<OrderCardPage> {
     return doc['is_delivered'] != null;
   }
 
-  bool _addStripeCard(BuildContext context) {
-    bool confirmed = PaymentService.payment(context, 100.0);
-    return confirmed;
-  }
-
   void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
-    if (_addStripeCard(context))
-      db
-          .collection('orders')
-          .document(doc.documentID)
-          .setData({'is_received': true}, merge: true);
+    PaymentService.payment(
+        doc, context, 100.0, doc['user_id']['payment_method_id']);
   }
 
   String _getExpirationTime(DocumentSnapshot doc) {
@@ -150,9 +142,10 @@ class _OrderCardPageState extends State<OrderCardPage> {
   Widget _controlButtons(DocumentSnapshot doc, BuildContext context) {
     if (_isDeliveryComplete(doc)) {
       return Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: DocumentCallbackButton(
-            'Confirm Delivery', _confirmDeliveryComplete, doc, context),
+        padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
+        child: Center(
+          child: Text('Order delivered!'),
+        ),
       );
     } else if (doc['user_id']['is_accepted'] == true) {
       return Padding(
@@ -168,16 +161,6 @@ class _OrderCardPageState extends State<OrderCardPage> {
             'Cancel Order', _deleteDocument, doc, context),
       );
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    StripePayment.setOptions(StripeOptions(
-        publishableKey:
-            "pk_test_51HBOnhBJxTPXZlKXyxpYx1AuofRnDaDscu3mpP2pT7GLWkUkZc0vTXAEOo0hCevsSMPomSFTon4eiclxw9UZNB9Q00Qw2XOOPt",
-        merchantId: "merchant.io.omnibee",
-        androidPayMode: 'test'));
   }
 
   @override

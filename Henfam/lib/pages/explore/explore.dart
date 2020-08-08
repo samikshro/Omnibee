@@ -1,6 +1,7 @@
 import 'package:Henfam/pages/explore/currentOrders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 import './lilMode.dart';
 
 class Explore extends StatefulWidget {
@@ -28,6 +29,16 @@ class _ExploreState extends State<Explore> {
       'caption': 'Getting Food from Campus',
     }, */
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    StripePayment.setOptions(StripeOptions(
+        publishableKey:
+            "pk_test_51HBOnhBJxTPXZlKXyxpYx1AuofRnDaDscu3mpP2pT7GLWkUkZc0vTXAEOo0hCevsSMPomSFTon4eiclxw9UZNB9Q00Qw2XOOPt",
+        merchantId: "merchant.io.omnibee",
+        androidPayMode: 'test'));
+  }
 
   @override
   Widget build(BuildContext context) {
