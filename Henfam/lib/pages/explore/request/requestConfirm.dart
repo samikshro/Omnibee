@@ -89,7 +89,7 @@ class RequestConfirm extends StatelessWidget {
                                 state2.restaurant.location[0],
                                 state2.restaurant.location[1],
                               ),
-                              "basket": state1.toJson(),
+                              "basket": state1.jsonEncoding,
                               "location": loc,
                               "delivery_window": {
                                 "start_time": getTimeInfo(date, endDate)[0],

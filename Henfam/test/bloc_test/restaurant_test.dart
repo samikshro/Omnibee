@@ -3,7 +3,7 @@ import 'package:Henfam/models/models.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:test/test.dart';
 
-main() {
+void restaurantBlocTests() {
   group('RestaurantBloc', () {
     RestaurantBloc restaurantBloc;
 
