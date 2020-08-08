@@ -18,16 +18,16 @@ main() {
     );
 
     blocTest(
-      'emits BasketLoadSuccess when BasketLoaded added',
+      'RestaurantLoaded: emits RestaurantLoadSuccess when RestaurantLoaded added',
       build: () => restaurantBloc,
       act: (RestaurantBloc bloc) async => bloc.add(RestaurantLoaded()),
-      expect: <BasketState>[
-        BasketLoadSuccess([]),
+      expect: <RestaurantState>[
+        RestaurantLoadSuccess(Restaurant()),
       ],
     );
 
     blocTest(
-      'emits BasketLoadSuccess([tofu]) when tofu added',
+      'RestaurantUpdated: emits helloRestaurant when helloRestaurant added',
       build: () => restaurantBloc,
       act: (RestaurantBloc bloc) async => bloc
         ..add(RestaurantLoaded())
@@ -39,7 +39,7 @@ main() {
     );
 
     blocTest(
-      'MenuItemDeleted: emits [] when menu item is added then deleted',
+      'RestaurantReset: emits empty restaurant when reset',
       build: () => restaurantBloc,
       act: (RestaurantBloc bloc) async => bloc
         ..add(RestaurantLoaded())
