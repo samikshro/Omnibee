@@ -92,3 +92,7 @@ void basketBlocTests() {
     });
   });
 }
+
+main() {
+  basketBlocTests();
+}

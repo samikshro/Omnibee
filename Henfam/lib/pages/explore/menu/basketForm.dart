@@ -19,7 +19,7 @@ class Basket extends StatelessWidget {
   Widget _buildTile(List<MenuItem> menuItems, int index) {
     return ListTile(
       onTap: () {},
-      trailing: Text(menuItems[index].price.toString()),
+      trailing: _getTrailing(menuItems[index]),
       title: Text(menuItems[index].name),
       subtitle: Wrap(
         direction: Axis.vertical,
@@ -29,28 +29,37 @@ class Basket extends StatelessWidget {
     );
   }
 
-  Widget getTrailing(int index) {
-    return Column(
-      children: <Widget>[
-        //Text("\$" + args.orders[index].price.toStringAsFixed(2)),
-        Expanded(
-          child: FlatButton(
-            child: Icon(
-              Icons.remove_circle,
-              size: 20,
+  Widget _getTrailing(MenuItem menuItem) {
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
+      return Column(
+        children: <Widget>[
+          Text(menuItem.price.toString()),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove_circle,
+                size: 20,
+              ),
+              onPressed: () {
+                BlocProvider.of<BasketBloc>(context)
+                    .add(MenuItemDeleted(menuItem));
+              },
             ),
-            onPressed: () {
-              //deleteItem(index);
-            },
-          ),
-        )
-      ],
-    );
+          )
+        ],
+      );
+    });
+  }
+
+  Function _getOnPressed(BuildContext context, BasketLoadSuccess state) {
+    return (state.menuItems.length == 0)
+        ? null
+        : () => Navigator.pushNamed(context, '/request');
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
+    return BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
       return Scaffold(
         bottomNavigationBar: SizedBox(
           width: double.infinity,
@@ -60,9 +69,7 @@ class Basket extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
-            onPressed: () {
-              Navigator.pushNamed(context, '/request');
-            },
+            onPressed: _getOnPressed(context, state),
           ),
         ),
         appBar: AppBar(
