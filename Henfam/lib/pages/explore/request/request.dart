@@ -3,7 +3,6 @@ import 'package:Henfam/pages/explore/request/widgets/locationDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/request/requestConfirm.dart';
-import 'package:Henfam/pages/explore/menu/basketForm.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,7 +15,6 @@ class Request extends StatefulWidget {
 
 class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
-  var _deliveryRange = DateTime(0, 0, 0, 0, 30);
   var _endDeliveryDate = DateTime.now().add(new Duration(hours: 1));
   String _location = '';
   Position _locationCoordinates = Position();
@@ -30,12 +28,6 @@ class _RequestState extends State<Request> {
   void _setEndDeliveryDate(DateTime _newDate) {
     setState(() {
       _endDeliveryDate = _newDate;
-    });
-  }
-
-  void _setDeliveryRange(DateTime _newRange) {
-    setState(() {
-      _deliveryRange = _newRange;
     });
   }
 
@@ -109,7 +101,6 @@ class _RequestState extends State<Request> {
                               context: context,
                               builder: (context) => RequestConfirm(
                                 _deliveryDate,
-                                // _deliveryRange,
                                 _endDeliveryDate,
                                 s,
                                 _location,

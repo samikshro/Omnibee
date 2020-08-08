@@ -72,7 +72,7 @@ class _BigModeState extends State<BigMode> {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    ;
+
                     if (_allRunsAccepted(snapshot.data.documents)) {
                       return Center(
                         child: Text(

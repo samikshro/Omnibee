@@ -1,4 +1,5 @@
 import 'package:Henfam/pages/explore/currentOrders.dart';
+import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './lilMode.dart';
@@ -28,44 +29,37 @@ class _ExploreState extends State<Explore> {
       'caption': 'Getting Food from Campus',
     }, */
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Explore'),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: ListView(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                  ),
-                  CupertinoButton(
-                    color: Theme.of(context).primaryColor,
-                    child: Text(
-                      "Run an Errand",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(10),
+                ),
+                CupertinoButton(
+                  color: Theme.of(context).primaryColor,
+                  child: Text(
+                    "Run an Errand",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    onPressed: _switchToBig,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: CurrentOrders(),
-                  ),
-                ],
-              ),
-              LilMode(_activities)
-            ],
-          ),
+                  onPressed: _switchToBig,
+                ),
+              ],
+            ),
+            LilMode(_activities)
+          ],
         ),
       ),
     );
