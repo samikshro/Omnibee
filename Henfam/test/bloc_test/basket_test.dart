@@ -7,10 +7,12 @@ main() {
   group('BasketBloc', () {
     BasketBloc basketBloc;
     MenuItem superBlandTofu;
+    MenuItem extraTofu;
 
     setUp(() {
       basketBloc = BasketBloc();
-      superBlandTofu = MenuItem('Super Bland Tofu', 100, []);
+      extraTofu = MenuItem('Extra Tofu', 0, []);
+      superBlandTofu = MenuItem('Super Bland Tofu', 100, [extraTofu]);
     });
 
     blocTest(
@@ -20,42 +22,73 @@ main() {
     );
 
     blocTest(
-      'BasketLoaded: emits BasketLoadSucess',
+      'BasketLoaded: emits BasketLoadSuccess',
       build: () => basketBloc,
       act: (BasketBloc bloc) async => bloc.add(BasketLoaded()),
       expect: <BasketState>[
-        BasketLoadSuccess([]),
+        BasketLoadSuccess([], []),
       ],
     );
 
     blocTest(
-      'MenuItemAdded: emits BasketLoadSucess([superBlandTofu])',
+      'MenuItemAdded: emits BasketLoadSuccess([superBlandTofu])',
       build: () => basketBloc,
       act: (BasketBloc bloc) async =>
           bloc..add(BasketLoaded())..add(MenuItemAdded(superBlandTofu)),
       expect: <BasketState>[
-        BasketLoadSuccess([]),
-        BasketLoadSuccess([MenuItem('Super Bland Tofu', 100, [])]),
+        BasketLoadSuccess([], []),
+        BasketLoadSuccess(
+          [
+            MenuItem(
+              'Super Bland Tofu',
+              100,
+              [MenuItem('Extra Tofu', 0, [])],
+            ),
+          ],
+          [
+            {
+              'name': 'Super Bland Tofu',
+              'price': 100.0,
+              'add_ons': ['Extra Tofu'],
+            }
+          ],
+        ),
       ],
     );
 
     blocTest(
-      'MenuItemDeleted: emits BasketLoadSucess([])',
+      'MenuItemDeleted: emits BasketLoadSuccess([])',
       build: () => basketBloc,
       act: (BasketBloc bloc) async => bloc
         ..add(BasketLoaded())
         ..add(MenuItemAdded(superBlandTofu))
         ..add(MenuItemDeleted(superBlandTofu)),
       expect: <BasketState>[
-        BasketLoadSuccess([]),
-        BasketLoadSuccess([MenuItem('Super Bland Tofu', 100, [])]),
-        BasketLoadSuccess([])
+        BasketLoadSuccess([], []),
+        BasketLoadSuccess(
+          [
+            MenuItem(
+              'Super Bland Tofu',
+              100,
+              [MenuItem('Extra Tofu', 0, [])],
+            ),
+          ],
+          [
+            {
+              'name': 'Super Bland Tofu',
+              'price': 100.0,
+              'add_ons': ['Extra Tofu'],
+            }
+          ],
+        ),
+        BasketLoadSuccess([], [])
       ],
     );
 
     tearDown(() {
       basketBloc = null;
       superBlandTofu = null;
+      extraTofu = null;
     });
   });
 }

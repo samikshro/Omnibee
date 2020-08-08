@@ -12,39 +12,16 @@ class BasketLoadInProgress extends BasketState {}
 
 class BasketLoadSuccess extends BasketState {
   final List<MenuItem> menuItems;
+  final List<Map> jsonEncoding;
 
-  const BasketLoadSuccess([this.menuItems = const []]);
+  const BasketLoadSuccess(this.menuItems, this.jsonEncoding);
 
   @override
   List<Object> get props => [menuItems];
 
   @override
-  String toString() => 'BasketLoadSuccess { menuItems: $menuItems }';
-
-  List<Map> toJson() {
-    List<Map> orders = [];
-    menuItems.forEach((MenuItem menuItem) {
-      Map order = _getJsonEncoding(menuItem);
-      orders.add(order);
-    });
-    return orders;
-  }
-
-  Map<String, dynamic> _getJsonEncoding(MenuItem menuItem) {
-    return {
-      'name': menuItem.name,
-      'price': menuItem.price,
-      'add_ons': _addOnsToStringList(menuItem)
-    };
-  }
-
-  List<String> _addOnsToStringList(MenuItem menuItem) {
-    List<String> addOnsStringList = [];
-    menuItem.addOns.forEach((addOn) {
-      addOnsStringList.add(addOn.name);
-    });
-    return addOnsStringList;
-  }
+  String toString() =>
+      'BasketLoadSuccess { menuItems: $menuItems , jsonEncoding: $jsonEncoding}';
 }
 
 class BasketLoadFailure extends BasketState {}

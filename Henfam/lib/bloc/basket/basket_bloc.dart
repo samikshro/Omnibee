@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:Henfam/models/menu_item.dart';
 import 'package:bloc/bloc.dart';
@@ -26,7 +27,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   Stream<BasketState> _mapBasketLoadedToState() async* {
     try {
-      yield BasketLoadSuccess([]);
+      yield BasketLoadSuccess([], []);
     } catch (_) {
       yield BasketLoadFailure();
     }
@@ -37,7 +38,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       final List<MenuItem> updatedMenuItems =
           List.from((state as BasketLoadSuccess).menuItems)
             ..add(event.menuItem);
-      yield BasketLoadSuccess(updatedMenuItems);
+      final jsonEncoding = _toJson(updatedMenuItems);
+      yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
     }
   }
 
@@ -46,7 +48,36 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       final List<MenuItem> updatedMenuItems =
           List.from((state as BasketLoadSuccess).menuItems)
             ..remove(event.menuItem);
-      yield BasketLoadSuccess(updatedMenuItems);
+      final jsonEncoding = _toJson(updatedMenuItems);
+      yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
     }
+  }
+
+  List<Map> _toJson(List<MenuItem> menuItems) {
+    List<Map> orders = [];
+    if (menuItems == []) {
+      return orders;
+    }
+    menuItems.forEach((MenuItem menuItem) {
+      Map order = _getJsonEncoding(menuItem);
+      orders.add(order);
+    });
+    return orders;
+  }
+
+  Map<String, dynamic> _getJsonEncoding(MenuItem menuItem) {
+    return {
+      'name': menuItem.name,
+      'price': menuItem.price,
+      'add_ons': _addOnsToStringList(menuItem)
+    };
+  }
+
+  List<String> _addOnsToStringList(MenuItem menuItem) {
+    List<String> addOnsStringList = [];
+    menuItem.addOns.forEach((addOn) {
+      addOnsStringList.add(addOn.name);
+    });
+    return addOnsStringList;
   }
 }
