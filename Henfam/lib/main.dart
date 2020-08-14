@@ -4,6 +4,7 @@ import 'package:Henfam/bloc/simple_bloc_observer.dart';
 import 'package:flutter/services.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
+import 'package:Henfam/notifications/notificationHandler.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder.dart';
 
 import 'package:Henfam/pages/explore/explore_card/deliveryCardPage.dart';
@@ -125,8 +126,10 @@ class HenfamBasic extends StatelessWidget {
         },
         home: SafeArea(
           top: false,
-          child: new RootPage(
-            auth: new Auth(),
+          child: NotificationHandler(
+            child: new RootPage(
+              auth: new Auth(),
+            ),
           ),
         ),
       ),
