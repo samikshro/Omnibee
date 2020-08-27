@@ -78,6 +78,8 @@ class RequestConfirm extends StatelessWidget {
                         child: Text("Confirm"),
                         isDefaultAction: true,
                         onPressed: () {
+                          BlocProvider.of<BasketBloc>(context)
+                              .add(BasketReset());
                           firestoreInstance.collection("orders").add({
                             "user_id": {
                               "name": name,
