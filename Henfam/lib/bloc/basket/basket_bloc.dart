@@ -21,6 +21,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       yield* _mapMenuItemAddedToState(event);
     } else if (event is MenuItemDeleted) {
       yield* _mapMenuItemDeletedToState(event);
+    } else if (event is BasketReset) {
+      yield* _mapBasketResetToState(event);
     }
   }
 
@@ -49,6 +51,12 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
             ..remove(event.menuItem);
       final jsonEncoding = _toJson(updatedMenuItems);
       yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
+    }
+  }
+
+  Stream<BasketState> _mapBasketResetToState(BasketReset event) async* {
+    if (state is BasketLoadSuccess) {
+      yield BasketLoadSuccess([], []);
     }
   }
 
