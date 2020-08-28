@@ -22,6 +22,11 @@ class PaymentService {
     functionName: 'payments-createAccountLink',
   );
 
+  static final HttpsCallable updateConnAccountLink =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-updateAccountLink',
+  );
+
   static final HttpsCallable paymentIntentTransfer =
       CloudFunctions.instance.getHttpsCallable(
     functionName: 'payments-createPaymentIntentTransfer',
@@ -143,6 +148,38 @@ class PaymentService {
     });
   }
 
+  static void paymentTransfer(
+      DocumentSnapshot doc,
+      BuildContext context,
+      double dollars,
+      double applicationFee,
+      String paymentMethodID,
+      String delivererAccountId) async {
+    double amount = dollars * 100;
+    double appFeeAmount = applicationFee * 100;
+    paymentIntentTransfer.call(<String, dynamic>{
+      'amount': amount,
+      'currency': 'usd',
+      'paymentMethod': paymentMethodID,
+      'fee_amount': appFeeAmount,
+      'transfer_dest': delivererAccountId,
+    }).then((response) async {
+      // _confirmDialog(context, response.data["client_secret"], paymentMethod);
+      _confirmPayment(doc, context, response.data["client_secret"],
+          paymentMethodID); //function for confirmation for payment
+    });
+  }
+
+  static void updateAccountLink(String accountId) {
+    print("updateAccountLink");
+    updateConnAccountLink.call(<String, dynamic>{
+      'account_num': accountId,
+    }).then((response) {
+      print(response.data['url']);
+      Profile.launchURL(response.data['url']);
+    });
+  }
+
   static void createAccountLink(String accountId) {
     print("createAccountLink");
     createConnAccountLink.call(<String, dynamic>{
@@ -158,19 +195,13 @@ class PaymentService {
     createConnAccount.call(<String, dynamic>{
       'email': email,
     }).then((response) {
-      createAccountLink(response.data["id"]);
-    });
-  }
-
-  addCard(token) {
-    FirebaseAuth.instance.currentUser().then((user) {
-      Firestore.instance
-          .collection('users')
-          .document(user.uid)
-          .collection('cards')
-          .add({'tokenId': token}).then((val) {
-        print('saved');
+      FirebaseAuth.instance.currentUser().then((user) {
+        Firestore.instance
+            .collection('users')
+            .document(user.uid)
+            .setData({'stripeAccountId': response.data["id"]}, merge: true);
       });
+      createAccountLink(response.data["id"]);
     });
   }
 }
