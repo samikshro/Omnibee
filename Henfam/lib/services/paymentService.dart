@@ -157,6 +157,7 @@ class PaymentService {
       String delivererAccountId) async {
     double amount = dollars * 100;
     double appFeeAmount = applicationFee * 100;
+    print("paymentTransfer");
     paymentIntentTransfer.call(<String, dynamic>{
       'amount': amount,
       'currency': 'usd',

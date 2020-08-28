@@ -18,10 +18,11 @@ class _OrderCardPageState extends State<OrderCardPage> {
     return doc['is_delivered'] != null;
   }
 
-  void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
-    PaymentService.payment(
-        doc, context, 100.0, doc['user_id']['payment_method_id']);
-  }
+  //TODO: deprecated. remove and update this code.
+  // void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
+  //   PaymentService.payment(
+  //       doc, context, 100.0, doc['user_id']['payment_method_id']);
+  // }
 
   String _getExpirationTime(DocumentSnapshot doc) {
     DateTime time = doc['user_id']['expiration_time'].toDate();
