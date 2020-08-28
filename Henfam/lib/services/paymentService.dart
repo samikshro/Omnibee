@@ -4,11 +4,27 @@ import 'package:stripe_payment/stripe_payment.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/explore_card/orderCardPage.dart';
+import 'package:Henfam/pages/account/profile.dart';
 
 class PaymentService {
-  static final HttpsCallable callable =
+  static final HttpsCallable paymentIntent =
       CloudFunctions.instance.getHttpsCallable(
     functionName: 'createPaymentIntent',
+  );
+
+  static final HttpsCallable createConnAccount =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-createConnectedAccount',
+  );
+
+  static final HttpsCallable createConnAccountLink =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-createAccountLink',
+  );
+
+  static final HttpsCallable paymentIntentTransfer =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-createPaymentIntentTransfer',
   );
 
   // static _confirmDialog(
@@ -116,7 +132,7 @@ class PaymentService {
       double dollars, String paymentMethodID) async {
     double amount =
         dollars * 100.0; // multipliying with 100 to change $ to cents
-    callable.call(<String, dynamic>{
+    paymentIntent.call(<String, dynamic>{
       'amount': amount,
       'currency': 'usd',
       'paymentMethod': paymentMethodID,
@@ -124,6 +140,25 @@ class PaymentService {
       // _confirmDialog(context, response.data["client_secret"], paymentMethod);
       _confirmPayment(doc, context, response.data["client_secret"],
           paymentMethodID); //function for confirmation for payment
+    });
+  }
+
+  static void createAccountLink(String accountId) {
+    print("createAccountLink");
+    createConnAccountLink.call(<String, dynamic>{
+      'account_num': accountId,
+    }).then((response) {
+      print(response.data['url']);
+      Profile.launchURL(response.data['url']);
+    });
+  }
+
+  static void createAccount(String email) {
+    print("createAccount");
+    createConnAccount.call(<String, dynamic>{
+      'email': email,
+    }).then((response) {
+      createAccountLink(response.data["id"]);
     });
   }
 
