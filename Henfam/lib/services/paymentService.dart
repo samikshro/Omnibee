@@ -4,6 +4,7 @@ import 'package:stripe_payment/stripe_payment.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/explore_card/orderCardPage.dart';
+import 'package:Henfam/pages/account/profile.dart';
 
 class PaymentService {
   static final HttpsCallable paymentIntent =
@@ -143,14 +144,17 @@ class PaymentService {
   }
 
   static void createAccountLink(String accountId) {
+    print("createAccountLink");
     createConnAccountLink.call(<String, dynamic>{
       'account_num': accountId,
     }).then((response) {
       print(response.data['url']);
+      Profile.launchURL(response.data['url']);
     });
   }
 
   static void createAccount(String email) {
+    print("createAccount");
     createConnAccount.call(<String, dynamic>{
       'email': email,
     }).then((response) {
