@@ -80,20 +80,8 @@ class OrderCardButtonBar extends StatelessWidget {
     // TODO: Commented code: in-app payments. Live code: marketplace transfers.
     // PaymentService.payment(
     //     doc, context, 50.0, doc['user_id']['payment_method_id']);
-    String pmId = doc['user_id']['payment_method_id'];
-    FirebaseAuth.instance.currentUser().then((user) {
-      Firestore.instance
-          .collection('users')
-          .document(user.uid)
-          .get()
-          .then((DocumentSnapshot document) {
-        if (document != null && document['stripeAccountId'] != null) {
-          print("payment id: " + pmId);
-          PaymentService.paymentTransfer(
-              doc, context, 10.0, 1.23, pmId, document['stripeAccountId']);
-        }
-      });
-    });
+    PaymentService.paymentTransfer(doc, context, 10.0, 1.23,
+        doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }
 
   List<Widget> _getButtons(BuildContext context) {
