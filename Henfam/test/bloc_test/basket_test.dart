@@ -85,6 +85,62 @@ void basketBlocTests() {
       ],
     );
 
+    blocTest(
+      'MenuItemReset: emits BasketLoadSuccess([])',
+      build: () => basketBloc,
+      act: (BasketBloc bloc) async => bloc
+        ..add(BasketLoaded())
+        ..add(MenuItemAdded(superBlandTofu))
+        ..add(MenuItemAdded(superBlandTofu))
+        ..add(BasketReset()),
+      expect: <BasketState>[
+        BasketLoadSuccess([], []),
+        BasketLoadSuccess(
+          [
+            MenuItem(
+              'Super Bland Tofu',
+              100,
+              [MenuItem('Extra Tofu', 0, [])],
+            ),
+          ],
+          [
+            {
+              'name': 'Super Bland Tofu',
+              'price': 100.0,
+              'add_ons': ['Extra Tofu'],
+            }
+          ],
+        ),
+        BasketLoadSuccess(
+          [
+            MenuItem(
+              'Super Bland Tofu',
+              100,
+              [MenuItem('Extra Tofu', 0, [])],
+            ),
+            MenuItem(
+              'Super Bland Tofu',
+              100,
+              [MenuItem('Extra Tofu', 0, [])],
+            ),
+          ],
+          [
+            {
+              'name': 'Super Bland Tofu',
+              'price': 100.0,
+              'add_ons': ['Extra Tofu'],
+            },
+            {
+              'name': 'Super Bland Tofu',
+              'price': 100.0,
+              'add_ons': ['Extra Tofu'],
+            }
+          ],
+        ),
+        BasketLoadSuccess([], [])
+      ],
+    );
+
     tearDown(() {
       basketBloc = null;
       superBlandTofu = null;

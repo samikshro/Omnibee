@@ -33,3 +33,5 @@ class MenuItemDeleted extends BasketEvent {
   @override
   String toString() => 'MenuItemDeleted { menuItem: $menuItem }';
 }
+
+class BasketReset extends BasketEvent {}

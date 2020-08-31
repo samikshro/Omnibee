@@ -60,4 +60,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    classpath 'com.google.gms:google-services:4.3.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

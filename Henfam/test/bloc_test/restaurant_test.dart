@@ -57,3 +57,7 @@ void restaurantBlocTests() {
     });
   });
 }
+
+main() {
+  restaurantBlocTests();
+}

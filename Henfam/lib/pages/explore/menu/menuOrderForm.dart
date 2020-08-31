@@ -58,11 +58,13 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
     List<MenuItem> finalAddOns = [];
     for (int i = 0; i < selectedAddOns.length; i++) {
       if (selectedAddOns[i]) {
-        finalAddOns.add(MenuItem(
-          items[i]['name'],
-          items[i]['price'].toDouble(),
-          [],
-        ));
+        finalAddOns.add(
+          MenuItem(
+            items[i]['name'],
+            items[i]['price'].toDouble(),
+            [],
+          ),
+        );
       }
     }
 
@@ -77,7 +79,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
       }
     }
 
-    return finalPrice;
+    return num.parse(finalPrice.toStringAsFixed(2)).toDouble();
   }
 
   Text getAddOnPrice(FoodDocument foodDoc, int index) {
