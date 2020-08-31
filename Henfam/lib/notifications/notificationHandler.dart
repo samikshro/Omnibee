@@ -1,7 +1,6 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -54,20 +53,30 @@ class _NotificationHandlerState extends State<NotificationHandler> {
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
         showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
+            context: context,
+            builder: (context) {
+              print('inside');
+              return AlertDialog(
+                content: ListTile(
+                  /* title: Text(message['notification']['title']),
+                  subtitle: Text(message['notification']['body']), */
+                  title: Text(message['aps']['alert']['title']),
+                  subtitle: Text(message['aps']['alert']['body']),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              );
+            });
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('onResume: $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('onLaunch: $message');
       },
     );
   }
