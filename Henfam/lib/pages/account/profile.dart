@@ -2,6 +2,7 @@ import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +54,33 @@ class Profile extends StatelessWidget {
     print("setupStripeAccount");
     _getEmail().then((val) {
       PaymentService.createAccount(val);
-      // launchURL('https://connect.stripe.com/express/onboarding/CAftIeGFz9oj');
+    });
+  }
+
+  void _updateStripeAccount(String accountId) {
+    print("updateStripeAccount");
+    bool updateEnabled = false;
+    if (updateEnabled)
+      PaymentService.updateAccountLink(accountId);
+    else
+      PaymentService.createAccountLink(accountId);
+  }
+
+  void _stripeAccount() {
+    bool setup = true;
+    String accountId;
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('users')
+          .document(user.uid)
+          .get()
+          .then((DocumentSnapshot doc) {
+        if (doc != null && doc['stripeAccountId'] != null) {
+          setup = false;
+          accountId = doc['stripeAccountId'];
+        }
+        setup ? _setupStripeAccount() : _updateStripeAccount(accountId);
+      });
     });
   }
 
@@ -83,7 +110,7 @@ class Profile extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                     child: Text("Setup Payments"),
                     onPressed: () {
-                      _setupStripeAccount();
+                      _stripeAccount();
                     }),
                 Divider(),
                 ProfileContact(signOut),

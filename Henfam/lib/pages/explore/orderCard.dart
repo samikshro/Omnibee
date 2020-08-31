@@ -1,4 +1,5 @@
 import 'package:Henfam/services/paymentService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -76,8 +77,11 @@ class OrderCardButtonBar extends StatelessWidget {
   }
 
   void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
-    PaymentService.payment(
-        doc, context, 50.0, doc['user_id']['payment_method_id']);
+    // TODO: Commented code: in-app payments. Live code: marketplace transfers.
+    // PaymentService.payment(
+    //     doc, context, 50.0, doc['user_id']['payment_method_id']);
+    PaymentService.paymentTransfer(doc, context, 10.0, 1.23,
+        doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }
 
   List<Widget> _getButtons(BuildContext context) {

@@ -7,6 +7,7 @@ import 'package:Henfam/pages/map/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:Henfam/services/paymentService.dart';
 
 class AcceptOrder extends StatefulWidget {
   BaseAuth auth = new Auth();
@@ -48,19 +49,80 @@ class _AcceptOrderState extends State<AcceptOrder> {
     final firestore = Firestore.instance;
     final batch = firestore.batch();
 
-    for (int i = 0; i < docList.length; i++) {
-      final docId = docList[i].documentID;
-      DocumentReference doc = firestore.collection('orders').document(docId);
-      batch.updateData(
-          doc, {'user_id.is_accepted': true, 'user_id.runner': uid});
-    }
+    firestore
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot delivererDoc) {
+      for (int i = 0; i < docList.length; i++) {
+        final docId = docList[i].documentID;
+        DocumentReference doc = firestore.collection('orders').document(docId);
+        batch.updateData(
+            doc, {'user_id.is_accepted': true, 'user_id.runner': uid});
 
-    batch.commit();
+        batch.setData(doc, {'stripeAccountId': delivererDoc['stripeAccountId']},
+            merge: true);
+      }
+
+      batch.commit();
+    });
+  }
+
+  void _isStripeSetup(List<DocumentSnapshot> docList) async {
+    final uid = await _getUserID();
+    final firestore = Firestore.instance;
+
+    firestore
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot delivererDoc) {
+      if (delivererDoc != null && delivererDoc['stripeAccountId'] != null) {
+        _markOrdersAccepted(docList);
+        Navigator.popUntil(
+            context, ModalRoute.withName(Navigator.defaultRouteName));
+      } else
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Column(
+              children: [
+                Text(
+                    'Please setup a payment account to get paid after your delivery!'),
+                CupertinoButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text("Setup Payments"),
+                    onPressed: () {
+                      _setupStripeAccount();
+                    }),
+              ],
+            );
+          },
+        );
+    }).catchError((error, stackTrace) {
+      return Future.error(error, stackTrace);
+    });
   }
 
   Future<String> _getUserID() async {
     final result = await widget.auth.getCurrentUser();
     return result.uid;
+  }
+
+  Future<String> _getEmail(userId) async {
+    final _firestore = Firestore.instance;
+    final docSnapShot =
+        await _firestore.collection('users').document(userId).get();
+    return docSnapShot['email'];
+  }
+
+  void _setupStripeAccount() {
+    print("setupStripeAccount");
+    _getUserID().then((uid) {
+      _getEmail(uid).then((val) {
+        PaymentService.createAccount(val);
+      });
+    });
   }
 
   @override
@@ -79,9 +141,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
             onPressed: () {
-              _markOrdersAccepted(docList);
-              Navigator.popUntil(
-                  context, ModalRoute.withName(Navigator.defaultRouteName));
+              _isStripeSetup(docList);
             },
           ),
         ),
