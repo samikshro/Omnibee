@@ -101,8 +101,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           },
         );
     }).catchError((error, stackTrace) {
-      print("inner: $error");
-      return false;
+      return Future.error(error, stackTrace);
     });
   }
 
