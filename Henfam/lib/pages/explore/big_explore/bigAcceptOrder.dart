@@ -77,7 +77,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
         .document(uid)
         .get()
         .then((DocumentSnapshot delivererDoc) {
-      print("middle of isStripeSetup");
       if (delivererDoc != null && delivererDoc['stripeAccountId'] != null) {
         _markOrdersAccepted(docList);
         Navigator.popUntil(
