@@ -6,8 +6,10 @@ class DocumentCallbackButton extends StatelessWidget {
   final String _label;
   final Function _callback;
   final DocumentSnapshot _document;
+  final BuildContext _context;
 
-  DocumentCallbackButton(this._label, this._callback, this._document);
+  DocumentCallbackButton(
+      this._label, this._callback, this._document, this._context);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class DocumentCallbackButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          _callback(_document);
+          _callback(_document, _context);
           Navigator.pop(context);
         },
       ),

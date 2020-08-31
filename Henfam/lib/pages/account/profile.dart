@@ -2,7 +2,14 @@ import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// Following is for payments account setup. Will need to move to a different
+// location after success
+import 'package:url_launcher/url_launcher.dart';
+import 'package:Henfam/services/paymentService.dart';
 
 class Profile extends StatelessWidget {
   final BaseAuth auth;
@@ -27,6 +34,56 @@ class Profile extends StatelessWidget {
     return docSnapShot['name'];
   }
 
+  Future<String> _getEmail() async {
+    final _firestore = Firestore.instance;
+    final docSnapShot =
+        await _firestore.collection('users').document(userId).get();
+    return docSnapShot['email'];
+  }
+
+  static void launchURL(String s) async {
+    String url = s;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void _setupStripeAccount() {
+    print("setupStripeAccount");
+    _getEmail().then((val) {
+      PaymentService.createAccount(val);
+    });
+  }
+
+  void _updateStripeAccount(String accountId) {
+    print("updateStripeAccount");
+    bool updateEnabled = false;
+    if (updateEnabled)
+      PaymentService.updateAccountLink(accountId);
+    else
+      PaymentService.createAccountLink(accountId);
+  }
+
+  void _stripeAccount() {
+    bool setup = true;
+    String accountId;
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('users')
+          .document(user.uid)
+          .get()
+          .then((DocumentSnapshot doc) {
+        if (doc != null && doc['stripeAccountId'] != null) {
+          setup = false;
+          accountId = doc['stripeAccountId'];
+        }
+        setup ? _setupStripeAccount() : _updateStripeAccount(accountId);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +105,14 @@ class Profile extends StatelessWidget {
             Divider(),
             ProfilePrefs(),
             Divider(), */
+                Divider(),
+                CupertinoButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text("Setup Payments"),
+                    onPressed: () {
+                      _stripeAccount();
+                    }),
+                Divider(),
                 ProfileContact(signOut),
               ],
             );

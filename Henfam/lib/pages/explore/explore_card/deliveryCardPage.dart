@@ -18,7 +18,7 @@ class DeliveryCardPage extends StatelessWidget {
     return doc['is_delivered'] != null;
   }
 
-  Widget _displayStatus(DocumentSnapshot doc) {
+  Widget _displayStatus(DocumentSnapshot doc, BuildContext context) {
     if (_isDeliveryComplete(doc)) {
       return Center(
         child: Text('Waiting for confirmation from recipient...'),
@@ -28,6 +28,7 @@ class DeliveryCardPage extends StatelessWidget {
         'Delivery Complete',
         _markOrderComplete,
         doc,
+        context,
       );
     }
   }
@@ -119,7 +120,7 @@ class DeliveryCardPage extends StatelessWidget {
           _getOrderInformation(document),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
-            child: _displayStatus(document),
+            child: _displayStatus(document, context),
           ),
         ],
       ),

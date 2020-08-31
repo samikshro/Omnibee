@@ -6,6 +6,7 @@ import 'package:Henfam/pages/explore/request/requestConfirm.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 
 class Request extends StatefulWidget {
   BaseAuth auth = new Auth();
@@ -97,6 +98,9 @@ class _RequestState extends State<Request> {
                       onPressed: () {
                         _getUserID().then((String s) {
                           _getUserName(s).then((String name) {
+                            StripePayment.paymentRequestWithCardForm(
+                                    CardFormPaymentRequest())
+                                .then((paymentMethod) {
                             showCupertinoModalPopup(
                               context: context,
                               builder: (context) => RequestConfirm(
@@ -106,8 +110,10 @@ class _RequestState extends State<Request> {
                                 _location,
                                 _locationCoordinates,
                                 name,
+                                paymentMethod.id
                               ),
                             );
+                            });
                           });
                         });
                       }),
