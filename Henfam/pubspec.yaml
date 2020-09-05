@@ -1,7 +1,7 @@
 name: Henfam
 description: A new Flutter project.
 publish_to: "none" 
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -71,3 +71,4 @@ flutter:
     - assets/woman1@3x.png
     - assets/beelogo.png
     - assets/bowl.png
+    - assets/ctb.png

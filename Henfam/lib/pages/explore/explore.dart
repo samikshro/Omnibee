@@ -69,7 +69,7 @@ class _ExploreState extends State<Explore> {
                 ),
               ],
             ),
-            LilMode(_activities)
+            LilMode()
           ],
         ),
       ),

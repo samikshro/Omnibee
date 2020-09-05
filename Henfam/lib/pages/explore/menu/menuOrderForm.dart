@@ -61,6 +61,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
         finalAddOns.add(
           MenuItem(
             items[i]['name'],
+            '',
             items[i]['price'].toDouble(),
             [],
           ),
@@ -109,14 +110,13 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
             onPressed: () {
               MenuItem menuItem = MenuItem(
                 foodDoc.document['food'][foodDoc.index]['name'],
+                '',
                 _getPrice(
                   foodDoc.document['food'][foodDoc.index],
                   _addOnsSelected,
                 ),
-                _getAddOns(
-                  foodDoc.document['food'][foodDoc.index]['add_ons'],
-                  _addOnsSelected,
-                ),
+                [],
+                addOns: [],
               );
               BlocProvider.of<BasketBloc>(context2)
                   .add(MenuItemAdded(menuItem));
