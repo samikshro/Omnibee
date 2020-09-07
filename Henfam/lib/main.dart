@@ -1,5 +1,6 @@
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/bloc/simple_bloc_observer.dart';
 import 'package:flutter/services.dart';
 import 'package:Henfam/auth/authentication.dart';
@@ -43,6 +44,10 @@ class HenfamBasic extends StatelessWidget {
         BlocProvider<RestaurantBloc>(
           create: (BuildContext context) =>
               RestaurantBloc()..add(RestaurantLoaded()),
+        ),
+        BlocProvider<MenuOrderFormBloc>(
+          create: (BuildContext context) =>
+              MenuOrderFormBloc()..add(MenuOrderFormLoaded()),
         ),
       ],
       child: MaterialApp(

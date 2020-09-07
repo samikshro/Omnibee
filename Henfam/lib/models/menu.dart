@@ -7,6 +7,10 @@ class Menu extends Equatable {
 
   Menu({this.categories, this.modifiers});
 
+  int getNumberCategories() {
+    return categories.length;
+  }
+
   @override
   List<Object> get props => [
         categories,

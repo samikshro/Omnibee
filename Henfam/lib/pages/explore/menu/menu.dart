@@ -1,5 +1,12 @@
+import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
+import 'package:Henfam/bloc/restaurant/restaurant_bloc.dart';
+import 'package:Henfam/models/menu_category.dart';
+import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/pages/explore/menu/menuPageHeader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'menuPageHeader.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -44,80 +51,110 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
-
-    return WillPopScope(
-      onWillPop: () async {
-        Menu.order = [];
-        return true;
-      },
-      child: Scaffold(
-        bottomNavigationBar: SizedBox(
-          width: double.infinity,
-          height: 60,
-          child: RaisedButton(
-            child: Text('View Basket',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).scaffoldBackgroundColor)),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/basket_form',
-              );
-            },
-          ),
-        ),
-        body: CustomScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          slivers: <Widget>[
-            SliverPersistentHeader(
-              pinned: false,
-              floating: true,
-              delegate: MenuPageHeader(
-                document: document,
-                minExtent: 150.0,
-                maxExtent: 250.0,
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                ExpansionTile(
-                    title: Text('Open until ' + document['hours']['end_time'])),
-                ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                  itemCount: document['food'].length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        _navigateAndGetOrderInfo(
-                                context, index, document, Menu.order)
-                            .then((FoodDocument ord) {
-                          if (ord != null) {
-                            Menu.onPressed = () {};
-                          }
-                        });
+    return BlocBuilder<RestaurantBloc, RestaurantState>(
+        builder: (context, state) {
+      return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+          builder: (context1, state1) {
+        return (state is RestaurantLoadSuccess)
+            ? WillPopScope(
+                onWillPop: () async {
+                  Menu.order = [];
+                  return true;
+                },
+                child: Scaffold(
+                  bottomNavigationBar: SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: RaisedButton(
+                      child: Text('View Basket',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color:
+                                  Theme.of(context).scaffoldBackgroundColor)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/basket_form',
+                        );
                       },
-                      title: Text(document['food'][index]['name']),
-                      subtitle: Wrap(direction: Axis.vertical, children: [
-                        Text(document['food'][index]['desc']),
-                        Text(
-                            "\$" + document['food'][index]['price'].toString()),
-                      ]),
-                      isThreeLine: true,
-                    );
-                  },
-                )
-              ]),
-            ),
-          ],
-        ),
-      ),
-    );
+                    ),
+                  ),
+                  body: CustomScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    slivers: <Widget>[
+                      SliverPersistentHeader(
+                        pinned: false,
+                        floating: true,
+                        delegate: MenuPageHeader(
+                          restaurant: state.restaurant,
+                          minExtent: 150.0,
+                          maxExtent: 250.0,
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate([
+                          ExpansionTile(
+                              title: Text('Open until ' +
+                                  state.restaurant.hours['end_time'])),
+                          ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
+                              separatorBuilder: (context, index) {
+                                return Divider();
+                              },
+                              itemCount:
+                                  state.restaurant.menu.getNumberCategories(),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                MenuCategory category =
+                                    state.restaurant.menu.categories[index];
+                                return ListView.separated(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  separatorBuilder: (context, index) {
+                                    return Divider();
+                                  },
+                                  itemCount: category.getNumItems(),
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index2) {
+                                    MenuItem menuItem =
+                                        category.menuItems[index2];
+
+                                    return ListTile(
+                                      onTap: () {
+                                        BlocProvider.of<MenuOrderFormBloc>(
+                                                context1)
+                                            .add(ItemAdded(menuItem));
+                                        Navigator.pushNamed(
+                                            context, '/menu_order_form');
+                                      },
+                                      title: Text(menuItem.name),
+                                      subtitle: Wrap(
+                                          direction: Axis.vertical,
+                                          children: menuItem.description != null
+                                              ? [
+                                                  Text(menuItem.description),
+                                                  Text("\$" +
+                                                      menuItem.price
+                                                          .toString()),
+                                                ]
+                                              : [
+                                                  Text("\$" +
+                                                      menuItem.price.toString())
+                                                ]),
+                                      isThreeLine: true,
+                                    );
+                                  },
+                                );
+                              }),
+                        ]),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Container();
+      });
+    });
   }
 }

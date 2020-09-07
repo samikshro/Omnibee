@@ -83,7 +83,7 @@ class MenuFactory {
 
       MenuItem item = MenuItem(
         currentItem['name'],
-        currentItem['description'],
+        currentItem['desc'],
         currentItem['price'].toDouble(),
         modifiers,
       );
