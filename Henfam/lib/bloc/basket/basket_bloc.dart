@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -82,8 +83,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   List<String> _addOnsToStringList(MenuItem menuItem) {
     List<String> addOnsStringList = [];
-    menuItem.addOns.forEach((addOn) {
-      addOnsStringList.add(addOn.name);
+    menuItem.modifiersChosen.forEach((modifier) {
+      addOnsStringList.add(modifier.name);
     });
     return addOnsStringList;
   }

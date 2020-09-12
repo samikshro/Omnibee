@@ -11,14 +11,16 @@ class MenuOrderFormLoadInProgress extends MenuOrderFormState {}
 
 class MenuOrderFormLoadSuccess extends MenuOrderFormState {
   final MenuItem menuItem;
+  final List<MenuModifier> modifiers;
 
-  const MenuOrderFormLoadSuccess(this.menuItem);
-
-  @override
-  List<Object> get props => [menuItem];
+  const MenuOrderFormLoadSuccess(this.menuItem, this.modifiers);
 
   @override
-  String toString() => 'BasketLoadSuccess { menuItem: $menuItem}';
+  List<Object> get props => [menuItem, modifiers];
+
+  @override
+  String toString() =>
+      'MenuOrderFormLoadSuccess { menuItem: $menuItem, modifiers: $modifiers }';
 }
 
 class MenuOrderFormLoadFailure extends MenuOrderFormState {}

@@ -5,17 +5,6 @@ import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Basket extends StatelessWidget {
-  List<Widget> _displayAddOns(MenuItem menuItem) {
-    List<Widget> addOns = [];
-    if (menuItem.addOns != null) {
-      for (int i = 0; i < menuItem.addOns.length; i++) {
-        addOns.add(Text(menuItem.addOns[i].name));
-      }
-    }
-
-    return addOns;
-  }
-
   Widget _buildTile(List<MenuItem> menuItems, int index) {
     return ListTile(
       onTap: () {},
@@ -23,7 +12,6 @@ class Basket extends StatelessWidget {
       title: Text(menuItems[index].name),
       subtitle: Wrap(
         direction: Axis.vertical,
-        children: _displayAddOns(menuItems[index]),
       ),
       isThreeLine: true,
     );

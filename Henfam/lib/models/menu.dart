@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class Menu extends Equatable {
   final List<MenuCategory> categories;
-  final List<MenuModifier> modifiers;
+  final Map<String, MenuModifier> modifiers;
 
   Menu({this.categories, this.modifiers});
 

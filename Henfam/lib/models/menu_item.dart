@@ -1,4 +1,5 @@
-import 'package:Henfam/models/AddOnModel.dart';
+import 'package:Henfam/models/menu_modifier.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 class MenuItem extends Equatable {
@@ -6,10 +7,10 @@ class MenuItem extends Equatable {
   final String description;
   final double price;
   final List<String> modifiers;
-  final List<AddOns> addOns;
+  final List<ModifierItem> modifiersChosen;
 
   MenuItem(this.name, this.description, this.price, this.modifiers,
-      {this.addOns});
+      {this.modifiersChosen});
 
   @override
   List<Object> get props => [

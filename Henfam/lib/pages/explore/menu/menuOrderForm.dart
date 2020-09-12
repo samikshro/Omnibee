@@ -2,6 +2,8 @@ import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/menu_modifier.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -47,48 +49,32 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
-  final _addOnsSelected = [];
-
-  void _selectAddOn(bool value, int index) {
-    setState(() {
-      _addOnsSelected[index] = value;
-    });
+  Widget _buildModifierList(MenuModifier modifier) {
+    return Column(
+      children: [
+        LargeTextSection(modifier.header),
+        ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: modifier.modifierItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              ModifierItem item = modifier.modifierItems[index];
+              return ListTile(
+                title: Text(item.name),
+                subtitle: _getPrice(item.price),
+                trailing: Icon(Icons.add),
+              );
+            }),
+      ],
+    );
   }
 
-  List<MenuItem> _getAddOns(items, selectedAddOns) {
-    List<MenuItem> finalAddOns = [];
-    for (int i = 0; i < selectedAddOns.length; i++) {
-      if (selectedAddOns[i]) {
-        finalAddOns.add(
-          MenuItem(
-            items[i]['name'],
-            '',
-            items[i]['price'].toDouble(),
-            [],
-          ),
-        );
-      }
-    }
-
-    return finalAddOns;
-  }
-
-  double _getPrice(item, selectedAddOns) {
-    double finalPrice = item['price'];
-    for (int i = 0; i < selectedAddOns.length; i++) {
-      if (selectedAddOns[i]) {
-        finalPrice += item['add_ons'][i]['price'];
-      }
-    }
-
-    return num.parse(finalPrice.toStringAsFixed(2)).toDouble();
+  Widget _getPrice(double price) {
+    return Text(price == 0 ? "" : "+${price.toStringAsFixed(2)}");
   }
 
   @override
   Widget build(BuildContext context) {
-    /* for (int i = 0; i < addOns.length; i++) {
-      _addOnsSelected.add(false);
-    } */
     return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
         builder: (context3, state3) {
       return (state3 is MenuOrderFormLoadSuccess)
@@ -105,11 +91,8 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor)),
                           onPressed: () {
-                            if (state3 is MenuOrderFormLoadSuccess) {
-                              BlocProvider.of<BasketBloc>(context2)
-                                  .add(MenuItemAdded(state3.menuItem));
-                            }
-
+                            BlocProvider.of<BasketBloc>(context2)
+                                .add(MenuItemAdded(state3.menuItem));
                             Navigator.pop(context);
                           },
                         ),
@@ -134,24 +117,15 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                               ),
                             ),
                             SliverToBoxAdapter(
-                              child: LargeTextSection("Add-ons"),
-                            ),
-                            SliverToBoxAdapter(
                               child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: state3.menuItem.addOns.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        CheckboxListTile(
-                                  title:
-                                      Text(state3.menuItem.addOns[index].name),
-                                  subtitle: Text('1'),
-                                  value: _addOnsSelected[index],
-                                  onChanged: (value) {
-                                    _selectAddOn(value, index);
-                                  },
-                                ),
-                              ),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: state3.modifiers.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return _buildModifierList(
+                                        state3.modifiers[index]);
+                                  }),
                             ),
                             SliverToBoxAdapter(
                                 child: LargeTextSection("Special Requests")),

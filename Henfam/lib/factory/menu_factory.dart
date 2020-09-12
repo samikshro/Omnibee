@@ -9,7 +9,7 @@ class MenuFactory {
         List<Map>.from(restaurantDoc['menu']['categories']);
     List<MenuCategory> categories =
         MenuFactory.constructMenuCategory(categoryData);
-    List<MenuModifier> modifiers =
+    Map<String, MenuModifier> modifiers =
         MenuFactory.constructMenuModifiers(restaurantDoc['menu']['modifiers']);
 
     return Menu(categories: categories, modifiers: modifiers);
@@ -33,8 +33,8 @@ class MenuFactory {
     return categories;
   }
 
-  static List<MenuModifier> constructMenuModifiers(Map modifierData) {
-    List<MenuModifier> modifiers = [];
+  static Map<String, MenuModifier> constructMenuModifiers(Map modifierData) {
+    Map<String, MenuModifier> modifiers = {};
 
     modifierData.forEach((key, value) {
       MenuModifier modifier = MenuModifier(
@@ -43,7 +43,7 @@ class MenuFactory {
         MenuFactory.constructModifierItems(List<Map>.from(value['items'])),
       );
 
-      modifiers.add(modifier);
+      modifiers[key] = modifier;
     });
 
     return modifiers;

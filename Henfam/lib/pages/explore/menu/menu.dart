@@ -2,7 +2,9 @@ import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/bloc/restaurant/restaurant_bloc.dart';
 import 'package:Henfam/models/menu_category.dart';
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/menu_modifier.dart';
 import 'package:Henfam/pages/explore/menu/menuPageHeader.dart';
+import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +49,17 @@ class _MenuState extends State<Menu> {
     }
 
     return result;
+  }
+
+  List<MenuModifier> _getMenuModifiers(
+      Map<String, MenuModifier> allModifiers, MenuItem menuItem) {
+    List<MenuModifier> modifiers = [];
+
+    for (int index = 0; index < menuItem.modifiers.length; index++) {
+      modifiers.add(allModifiers[menuItem.modifiers[index]]);
+    }
+
+    return modifiers;
   }
 
   @override
@@ -108,43 +121,63 @@ class _MenuState extends State<Menu> {
                               itemBuilder: (context, index) {
                                 MenuCategory category =
                                     state.restaurant.menu.categories[index];
-                                return ListView.separated(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  separatorBuilder: (context, index) {
-                                    return Divider();
-                                  },
-                                  itemCount: category.getNumItems(),
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index2) {
-                                    MenuItem menuItem =
-                                        category.menuItems[index2];
-
-                                    return ListTile(
-                                      onTap: () {
-                                        BlocProvider.of<MenuOrderFormBloc>(
-                                                context1)
-                                            .add(ItemAdded(menuItem));
-                                        Navigator.pushNamed(
-                                            context, '/menu_order_form');
+                                return Column(
+                                  children: [
+                                    LargeTextSection(category.categoryName),
+                                    Divider(),
+                                    ListView.separated(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      separatorBuilder: (context, index) {
+                                        return Divider();
                                       },
-                                      title: Text(menuItem.name),
-                                      subtitle: Wrap(
-                                          direction: Axis.vertical,
-                                          children: menuItem.description != null
-                                              ? [
-                                                  Text(menuItem.description),
-                                                  Text("\$" +
-                                                      menuItem.price
-                                                          .toString()),
-                                                ]
-                                              : [
-                                                  Text("\$" +
-                                                      menuItem.price.toString())
-                                                ]),
-                                      isThreeLine: true,
-                                    );
-                                  },
+                                      itemCount: category.getNumItems(),
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index2) {
+                                        MenuItem menuItem =
+                                            category.menuItems[index2];
+
+                                        return ListTile(
+                                          onTap: () {
+                                            List<MenuModifier> modifiers =
+                                                _getMenuModifiers(
+                                                    state.restaurant.menu
+                                                        .modifiers,
+                                                    menuItem);
+
+                                            BlocProvider.of<MenuOrderFormBloc>(
+                                                    context1)
+                                                .add(ItemAdded(
+                                                    menuItem, modifiers));
+                                            Navigator.pushNamed(
+                                                context, '/menu_order_form');
+                                          },
+                                          title: Text(menuItem.name),
+                                          subtitle: Wrap(
+                                              direction: Axis.vertical,
+                                              children: menuItem.description !=
+                                                      null
+                                                  ? [
+                                                      Text(
+                                                        menuItem.description,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                      Text("\$" +
+                                                          menuItem.price
+                                                              .toStringAsFixed(
+                                                                  2)),
+                                                    ]
+                                                  : [
+                                                      Text("\$" +
+                                                          menuItem.price
+                                                              .toString())
+                                                    ]),
+                                          isThreeLine: true,
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 );
                               }),
                         ]),

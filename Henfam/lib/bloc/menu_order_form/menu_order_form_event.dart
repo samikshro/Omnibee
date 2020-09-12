@@ -11,12 +11,14 @@ class MenuOrderFormLoaded extends MenuOrderFormEvent {}
 
 class ItemAdded extends MenuOrderFormEvent {
   final MenuItem menuItem;
+  final List<MenuModifier> modifiers;
 
-  const ItemAdded(this.menuItem);
-
-  @override
-  List<Object> get props => [menuItem];
+  const ItemAdded(this.menuItem, this.modifiers);
 
   @override
-  String toString() => 'MenuItemAdded { menuItem: $menuItem }';
+  List<Object> get props => [menuItem, modifiers];
+
+  @override
+  String toString() =>
+      'ItemAdded { menuItem: $menuItem , modifiers: $modifiers }';
 }

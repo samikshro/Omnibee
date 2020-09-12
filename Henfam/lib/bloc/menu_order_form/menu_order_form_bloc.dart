@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/menu_modifier.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -21,7 +22,7 @@ class MenuOrderFormBloc extends Bloc<MenuOrderFormEvent, MenuOrderFormState> {
 
   Stream<MenuOrderFormState> _mapMenuItemAddedToState(ItemAdded event) async* {
     try {
-      yield MenuOrderFormLoadSuccess(event.menuItem);
+      yield MenuOrderFormLoadSuccess(event.menuItem, event.modifiers);
     } catch (_) {
       yield MenuOrderFormLoadFailure();
     }
