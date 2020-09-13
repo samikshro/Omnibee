@@ -200,7 +200,10 @@ class PaymentService {
         Firestore.instance
             .collection('users')
             .document(user.uid)
-            .setData({'stripeAccountId': response.data["id"]}, merge: true);
+            .updateData({'stripeAccountId': response.data["id"]});
+        // .setData(
+        //     {'stripeAccountId': response.data["id"]},
+        //     merge: true);
       });
       createAccountLink(response.data["id"]);
     });

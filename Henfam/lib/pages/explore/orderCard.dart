@@ -77,7 +77,7 @@ class OrderCardButtonBar extends StatelessWidget {
   }
 
   void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
-    // TODO: Commented code: in-app payments. Live code: marketplace transfers.
+    // Commented code: in-app payments. Live code: marketplace transfers.
     // PaymentService.payment(
     //     doc, context, 50.0, doc['user_id']['payment_method_id']);
     PaymentService.paymentTransfer(doc, context, 10.0, 1.23,
