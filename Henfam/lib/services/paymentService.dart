@@ -178,6 +178,7 @@ class PaymentService {
     }).then((response) {
       print(response.data['url']);
       Profile.launchURL(response.data['url']);
+      //tst
     });
   }
 
