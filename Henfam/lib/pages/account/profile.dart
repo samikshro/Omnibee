@@ -82,7 +82,7 @@ class Profile extends StatelessWidget {
           if (doc['stripe_setup_complete'])
             print("Stripe Setup is Complete"); // TODO: add a snackbar here
           else
-            doc['stripeAccountId'] != ""
+            doc['stripeAccountId'] == ""
                 ? _setupStripeAccount()
                 : _updateStripeAccount(doc['stripeAccountId']);
         }

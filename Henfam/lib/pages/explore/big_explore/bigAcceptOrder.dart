@@ -97,7 +97,13 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     color: Theme.of(context).primaryColor,
                     child: Text("Setup Payments"),
                     onPressed: () {
-                      _setupStripeAccount();
+                      if (delivererDoc != null) {
+                        delivererDoc['stripeAccountId'] == ""
+                            ? _setupStripeAccount()
+                            : _updateStripeAccount(
+                                delivererDoc['stripeAccountId']);
+                        // _setupStripeAccount();
+                      }
                     }),
               ],
             );
@@ -127,6 +133,15 @@ class _AcceptOrderState extends State<AcceptOrder> {
         PaymentService.createAccount(val);
       });
     });
+  }
+
+  void _updateStripeAccount(String accountId) {
+    print("updateStripeAccount");
+    bool updateEnabled = false;
+    if (updateEnabled)
+      PaymentService.updateAccountLink(accountId);
+    else
+      PaymentService.createAccountLink(accountId);
   }
 
   @override
