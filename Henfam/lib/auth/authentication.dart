@@ -40,6 +40,8 @@ class Auth implements BaseAuth {
       'boosters': 0,
       'earnings': 0.0,
       'points': 0,
+      'stripe_setup_complete': false,
+      'stripeAccountId': "",
     });
 
     return user.uid;
