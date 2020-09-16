@@ -66,20 +66,26 @@ class Profile extends StatelessWidget {
       PaymentService.createAccountLink(accountId);
   }
 
+  /// [_stripeAccount] sets up a Stripe account or updates a Stripe account.
+  /// If a user document's 'stripe_setup_complete' == false and
+  /// 'stripeAccountId' == "", then setup. If 'stripe_setup_complete' == false
+  /// and 'stripeAccountId' != "", then update. If 'stripe_setup_complete'
+  /// == true, cleanly exit function.
   void _stripeAccount() {
-    bool setup = true;
-    String accountId;
     FirebaseAuth.instance.currentUser().then((user) {
       Firestore.instance
           .collection('users')
           .document(user.uid)
           .get()
           .then((DocumentSnapshot doc) {
-        if (doc != null && doc['stripeAccountId'] != null) {
-          setup = false;
-          accountId = doc['stripeAccountId'];
+        if (doc != null) {
+          if (doc['stripe_setup_complete'])
+            print("Stripe Setup is Complete"); // TODO: add a snackbar here
+          else
+            doc['stripeAccountId'] == ""
+                ? _setupStripeAccount()
+                : _updateStripeAccount(doc['stripeAccountId']);
         }
-        setup ? _setupStripeAccount() : _updateStripeAccount(accountId);
       });
     });
   }

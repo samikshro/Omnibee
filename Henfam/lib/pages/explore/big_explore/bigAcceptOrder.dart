@@ -27,9 +27,9 @@ class _AcceptOrderState extends State<AcceptOrder> {
     });
   }
 
-  void _onExpand(bool is_expanded) {
+  void _onExpand(bool isExpanded) {
     setState(() {
-      isExpanded = is_expanded;
+      isExpanded = isExpanded;
     });
   }
 
@@ -68,6 +68,9 @@ class _AcceptOrderState extends State<AcceptOrder> {
     });
   }
 
+  /// [_isStripeSetup] checks if stripe setup has been approved and payouts have
+  /// been enabled. If payouts are enabled, the order is accepted. If payouts
+  /// are not enabled, the user is asked to setup a payment account.
   void _isStripeSetup(List<DocumentSnapshot> docList) async {
     final uid = await _getUserID();
     final firestore = Firestore.instance;
@@ -77,7 +80,8 @@ class _AcceptOrderState extends State<AcceptOrder> {
         .document(uid)
         .get()
         .then((DocumentSnapshot delivererDoc) {
-      if (delivererDoc != null && delivererDoc['stripeAccountId'] != null) {
+      if (delivererDoc != null && delivererDoc['stripe_setup_complete']) {
+        // delivererDoc['stripeAccountId'] != null) {
         _markOrdersAccepted(docList);
         Navigator.popUntil(
             context, ModalRoute.withName(Navigator.defaultRouteName));
@@ -93,7 +97,13 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     color: Theme.of(context).primaryColor,
                     child: Text("Setup Payments"),
                     onPressed: () {
-                      _setupStripeAccount();
+                      if (delivererDoc != null) {
+                        delivererDoc['stripeAccountId'] == ""
+                            ? _setupStripeAccount()
+                            : _updateStripeAccount(
+                                delivererDoc['stripeAccountId']);
+                        // _setupStripeAccount();
+                      }
                     }),
               ],
             );
@@ -123,6 +133,15 @@ class _AcceptOrderState extends State<AcceptOrder> {
         PaymentService.createAccount(val);
       });
     });
+  }
+
+  void _updateStripeAccount(String accountId) {
+    print("updateStripeAccount");
+    bool updateEnabled = false;
+    if (updateEnabled)
+      PaymentService.updateAccountLink(accountId);
+    else
+      PaymentService.createAccountLink(accountId);
   }
 
   @override
