@@ -3,7 +3,6 @@ import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'menu.dart';
 
 class MenuPageHeader extends SliverPersistentHeaderDelegate {

@@ -74,20 +74,7 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                           ? Checkbox(
                               value: selectedItems.contains(item),
                               onChanged: (bool isSelected) {
-                                if (!selectedItems.contains(item)) {
-                                  BlocProvider.of<MenuOrderFormBloc>(context)
-                                      .add(ModifierAdded(item));
-
-                                  setState(() {
-                                    selectedItems.add(item);
-                                  });
-                                } else {
-                                  BlocProvider.of<MenuOrderFormBloc>(context)
-                                      .add(ModifierDeleted(item));
-                                  setState(() {
-                                    selectedItems.remove(item);
-                                  });
-                                }
+                                _selectModifier(isSelected, item, modifier);
                               },
                             )
                           : Container();
@@ -98,8 +85,37 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
     );
   }
 
+  void _selectModifier(
+      bool isSelected, ModifierItem item, MenuModifier modifier) {
+    bool isNotAlreadySelected = !selectedItems.contains(item);
+    bool canSelectMore = _canSelectMore(item, modifier);
+
+    if (isNotAlreadySelected && canSelectMore) {
+      BlocProvider.of<MenuOrderFormBloc>(context).add(ModifierAdded(item));
+      setState(() {
+        selectedItems.add(item);
+      });
+    } else if (!isNotAlreadySelected) {
+      BlocProvider.of<MenuOrderFormBloc>(context).add(ModifierDeleted(item));
+      setState(() {
+        selectedItems.remove(item);
+      });
+    }
+  }
+
   Widget _getPrice(double price) {
     return Text(price == 0 ? "" : "+${price.toStringAsFixed(2)}");
+  }
+
+  bool _canSelectMore(ModifierItem item, MenuModifier modifier) {
+    int totalSelected = 1;
+    for (int index = 0; index < selectedItems.length; index++) {
+      if (modifier.modifierItems.contains(selectedItems[index])) {
+        totalSelected++;
+      }
+    }
+
+    return totalSelected <= modifier.maxSelectable;
   }
 
   @override
@@ -120,9 +136,9 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor)),
                           onPressed: () {
+                            //if (_sufficientModifiersChosen())
                             BlocProvider.of<BasketBloc>(context2)
                                 .add(MenuItemAdded(state3.menuItem));
-                            print(state3.menuItem.modifiersChosen.length);
                             BlocProvider.of<MenuOrderFormBloc>(context2)
                                 .add(ModifierReset());
                             setState(() {

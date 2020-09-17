@@ -1,4 +1,3 @@
-import 'package:Henfam/models/menu_modifier.dart';
 import 'package:Henfam/models/models.dart';
 import 'package:equatable/equatable.dart';
 
@@ -23,14 +22,5 @@ class MenuItem extends Equatable {
   void setModifiersChosen(List<ModifierItem> selectedItems) {
     modifiersChosen.clear();
     modifiersChosen.addAll(selectedItems);
-  }
-
-  List<ModifierItem> cloneModifiersChosen() {
-    List<ModifierItem> copy = [];
-    modifiersChosen.forEach((modifier) {
-      copy.add(modifier.copy());
-    });
-
-    return copy;
   }
 }

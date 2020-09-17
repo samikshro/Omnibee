@@ -42,7 +42,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         event.menuItem.description,
         event.menuItem.price,
         event.menuItem.modifiers,
-        modifiersChosen: event.menuItem.cloneModifiersChosen(),
+        modifiersChosen:
+            List<ModifierItem>.from(event.menuItem.modifiersChosen),
       );
 
       final List<MenuItem> updatedMenuItems =
