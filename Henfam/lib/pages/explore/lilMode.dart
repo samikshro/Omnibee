@@ -5,10 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 
 class LilMode extends StatelessWidget {
-  final List<Map<String, Object>> activities;
-
-  LilMode(this.activities);
-
   @override
   Widget build(BuildContext context) {
     return ListView(

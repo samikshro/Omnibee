@@ -1,3 +1,4 @@
+import 'package:Henfam/models/restaurant.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,18 +10,18 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
   MenuPageHeader({
     this.minExtent,
     @required this.maxExtent,
-    @required this.document,
+    @required this.restaurant,
   });
   final double minExtent;
   final double maxExtent;
-  final DocumentSnapshot document;
+  final Restaurant restaurant;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(fit: StackFit.expand, children: [
       Image(
-        image: AssetImage(document['big_photo']),
+        image: AssetImage(restaurant.bigImagePath),
         fit: BoxFit.cover,
       ),
       Container(
@@ -36,7 +37,7 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
         left: 16.0,
         right: 16.0,
         bottom: 16.0,
-        child: Text(document['rest_name'],
+        child: Text(restaurant.name,
             style: TextStyle(
               fontSize: 32.0,
               color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),

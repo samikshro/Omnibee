@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
+import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/menu_modifier.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,138 +51,138 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
-  final _addOnsSelected = [];
+  List<ModifierItem> selectedItems = [];
 
-  void _selectAddOn(bool value, int index) {
-    setState(() {
-      _addOnsSelected[index] = value;
-    });
+  Widget _buildModifierList(MenuModifier modifier, int index) {
+    return Column(
+      children: [
+        LargeTextSection(modifier.header),
+        ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: modifier.modifierItems.length,
+            itemBuilder: (BuildContext context2, int index2) {
+              ModifierItem item = modifier.modifierItems[index2];
+              return ListTile(
+                  title: Text(item.name),
+                  subtitle: _getPrice(item.price),
+                  trailing: SizedBox(
+                    width: 80,
+                    child: BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+                        builder: (context, state) {
+                      return (state is MenuOrderFormLoadSuccess)
+                          ? Checkbox(
+                              value: selectedItems.contains(item),
+                              onChanged: (bool isSelected) {
+                                if (!selectedItems.contains(item)) {
+                                  BlocProvider.of<MenuOrderFormBloc>(context)
+                                      .add(ModifierAdded(item));
+
+                                  setState(() {
+                                    selectedItems.add(item);
+                                  });
+                                } else {
+                                  BlocProvider.of<MenuOrderFormBloc>(context)
+                                      .add(ModifierDeleted(item));
+                                  setState(() {
+                                    selectedItems.remove(item);
+                                  });
+                                }
+                              },
+                            )
+                          : Container();
+                    }),
+                  ));
+            }),
+      ],
+    );
   }
 
-  List<MenuItem> _getAddOns(items, selectedAddOns) {
-    List<MenuItem> finalAddOns = [];
-    for (int i = 0; i < selectedAddOns.length; i++) {
-      if (selectedAddOns[i]) {
-        finalAddOns.add(
-          MenuItem(
-            items[i]['name'],
-            items[i]['price'].toDouble(),
-            [],
-          ),
-        );
-      }
-    }
-
-    return finalAddOns;
-  }
-
-  double _getPrice(item, selectedAddOns) {
-    double finalPrice = item['price'];
-    for (int i = 0; i < selectedAddOns.length; i++) {
-      if (selectedAddOns[i]) {
-        finalPrice += item['add_ons'][i]['price'];
-      }
-    }
-
-    return num.parse(finalPrice.toStringAsFixed(2)).toDouble();
-  }
-
-  Text getAddOnPrice(FoodDocument foodDoc, int index) {
-    return Text(
-        '\$${foodDoc.document['food'][foodDoc.index]['add_ons'][index]['price'].toStringAsFixed(2)}');
+  Widget _getPrice(double price) {
+    return Text(price == 0 ? "" : "+${price.toStringAsFixed(2)}");
   }
 
   @override
   Widget build(BuildContext context) {
-    final FoodDocument foodDoc = ModalRoute.of(context).settings.arguments;
-    final addOns = foodDoc.document['food'][foodDoc.index]['add_ons'];
-
-    for (int i = 0; i < addOns.length; i++) {
-      _addOnsSelected.add(false);
-    }
-
-    return BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
-      return Scaffold(
-        bottomNavigationBar: SizedBox(
-          width: double.infinity,
-          height: 60,
-          child: RaisedButton(
-            child: Text('Add to Cart',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).scaffoldBackgroundColor)),
-            onPressed: () {
-              MenuItem menuItem = MenuItem(
-                foodDoc.document['food'][foodDoc.index]['name'],
-                _getPrice(
-                  foodDoc.document['food'][foodDoc.index],
-                  _addOnsSelected,
-                ),
-                _getAddOns(
-                  foodDoc.document['food'][foodDoc.index]['add_ons'],
-                  _addOnsSelected,
-                ),
-              );
-              BlocProvider.of<BasketBloc>(context2)
-                  .add(MenuItemAdded(menuItem));
-
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        appBar: AppBar(
-            title: Text(
-          foodDoc.document['food'][foodDoc.index]['name'],
-        )),
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
-                  child: Text(
-                    foodDoc.document['food'][foodDoc.index]['desc'],
-                    //args.desc,
-                    style:
-                        TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: LargeTextSection("Add-ons"),
-              ),
-              SliverToBoxAdapter(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount:
-                      foodDoc.document['food'][foodDoc.index]['add_ons'].length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      CheckboxListTile(
-                    title: Text(foodDoc.document['food'][foodDoc.index]
-                        ['add_ons'][index]['name']),
-                    subtitle: getAddOnPrice(foodDoc, index),
-                    value: _addOnsSelected[index],
-                    onChanged: (value) {
-                      _selectAddOn(value, index);
-                    },
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: LargeTextSection("Special Requests")),
-              SliverToBoxAdapter(
-                child: Container(
-                    child: TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Requests',
-                  ),
-                )),
-              ),
-            ],
-          ),
-        ),
-      );
+    return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+        builder: (context3, state3) {
+      return (state3 is MenuOrderFormLoadSuccess)
+          ? BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
+              return (state is BasketLoadSuccess)
+                  ? Scaffold(
+                      bottomNavigationBar: SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: RaisedButton(
+                          child: Text('Add to Cart',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor)),
+                          onPressed: () {
+                            BlocProvider.of<BasketBloc>(context2)
+                                .add(MenuItemAdded(state3.menuItem));
+                            print(state3.menuItem.modifiersChosen.length);
+                            BlocProvider.of<MenuOrderFormBloc>(context2)
+                                .add(ModifierReset());
+                            setState(() {
+                              selectedItems = [];
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      appBar: AppBar(
+                          title: Text(
+                        state3.menuItem.name,
+                      )),
+                      body: SafeArea(
+                        child: CustomScrollView(
+                          slivers: <Widget>[
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
+                                child: Text(
+                                  state3.menuItem.description,
+                                  //args.desc,
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: state3.modifiers.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return _buildModifierList(
+                                      state3.modifiers[index],
+                                      index,
+                                    );
+                                  }),
+                            ),
+                            SliverToBoxAdapter(
+                                child: LargeTextSection("Special Requests")),
+                            SliverToBoxAdapter(
+                              child: Container(
+                                  child: TextField(
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Requests',
+                                ),
+                              )),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container();
+            })
+          : Container();
     });
   }
 }

@@ -1,5 +1,9 @@
 export 'restaurant.dart';
+export 'menu.dart';
+export 'menu_category.dart';
 export 'menu_item.dart';
+export 'menu_modifier.dart';
+export 'modifier_item.dart';
 export 'AddOnModel.dart';
 export 'chatModel.dart';
 export 'contactModel.dart';

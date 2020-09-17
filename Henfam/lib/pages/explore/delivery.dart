@@ -27,7 +27,8 @@ class _DeliveryState extends State<Delivery> {
             LargeTextSection("Choose a restaurant"),
             Column(children: [
               StreamBuilder(
-                  stream: Firestore.instance.collection('menu').snapshots(),
+                  stream:
+                      Firestore.instance.collection('restaurants').snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return const Text('Loading....');
                     return ListView.builder(

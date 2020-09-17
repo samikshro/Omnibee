@@ -16,16 +16,8 @@ class RequestConfirm extends StatelessWidget {
   final String name;
   final String pmID;
 
-
-  RequestConfirm(
-    this.date,
-    this.endDate,
-    this.uid,
-    this.loc,
-    this.locCoords,
-    this.name,
-    this.pmID
-  );
+  RequestConfirm(this.date, this.endDate, this.uid, this.loc, this.locCoords,
+      this.name, this.pmID);
 
   final firestoreInstance = Firestore.instance;
 
@@ -60,7 +52,6 @@ class RequestConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
       return BlocBuilder<RestaurantBloc, RestaurantState>(
           builder: (context, state2) {
@@ -105,7 +96,7 @@ class RequestConfirm extends StatelessWidget {
                                   get_expiration_date(date, endDate),
                               "is_accepted": false,
                               "runner": null,
-                              "restaurant_pic": state2.restaurant.imagePath,
+                              "restaurant_pic": state2.restaurant.bigImagePath,
                               "payment_method_id": pmID,
                             }
                           });

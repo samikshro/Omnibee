@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -36,9 +37,16 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   Stream<BasketState> _mapMenuItemAddedToState(MenuItemAdded event) async* {
     if (state is BasketLoadSuccess) {
+      MenuItem item = MenuItem(
+        event.menuItem.name,
+        event.menuItem.description,
+        event.menuItem.price,
+        event.menuItem.modifiers,
+        modifiersChosen: event.menuItem.cloneModifiersChosen(),
+      );
+
       final List<MenuItem> updatedMenuItems =
-          List.from((state as BasketLoadSuccess).menuItems)
-            ..add(event.menuItem);
+          List.from((state as BasketLoadSuccess).menuItems)..add(item);
       final jsonEncoding = _toJson(updatedMenuItems);
       yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
     }
@@ -46,9 +54,12 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   Stream<BasketState> _mapMenuItemDeletedToState(MenuItemDeleted event) async* {
     if (state is BasketLoadSuccess) {
+      MenuItem deleteThis = List.from((state as BasketLoadSuccess).menuItems)
+          .firstWhere(((item) =>
+              (item.name == event.menuItem.name) &&
+              (item.modifiersChosen == event.menuItem.modifiersChosen)));
       final List<MenuItem> updatedMenuItems =
-          List.from((state as BasketLoadSuccess).menuItems)
-            ..remove(event.menuItem);
+          List.from((state as BasketLoadSuccess).menuItems)..remove(deleteThis);
       final jsonEncoding = _toJson(updatedMenuItems);
       yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
     }
@@ -82,9 +93,11 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   List<String> _addOnsToStringList(MenuItem menuItem) {
     List<String> addOnsStringList = [];
-    menuItem.addOns.forEach((addOn) {
-      addOnsStringList.add(addOn.name);
+
+    menuItem.modifiersChosen.forEach((modifier) {
+      addOnsStringList.add(modifier.name);
     });
+
     return addOnsStringList;
   }
 }
