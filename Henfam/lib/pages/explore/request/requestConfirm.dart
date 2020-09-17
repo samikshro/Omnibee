@@ -50,6 +50,14 @@ class RequestConfirm extends StatelessWidget {
         expirationDate.millisecondsSinceEpoch);
   }
 
+  double _getBasketPrice(List<Map> jsonEncoding) {
+    double price = 0;
+    jsonEncoding.forEach((item) {
+      price += item['price'];
+    });
+    return price;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
@@ -87,6 +95,7 @@ class RequestConfirm extends StatelessWidget {
                                 state2.restaurant.location[1],
                               ),
                               "basket": state1.jsonEncoding,
+                              "price": _getBasketPrice(state1.jsonEncoding),
                               "location": loc,
                               "delivery_window": {
                                 "start_time": getTimeInfo(date, endDate)[0],

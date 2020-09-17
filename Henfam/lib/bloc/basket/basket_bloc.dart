@@ -87,9 +87,18 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   Map<String, dynamic> _getJsonEncoding(MenuItem menuItem) {
     return {
       'name': menuItem.name,
-      'price': menuItem.price,
+      'price': _getPrice(menuItem),
       'add_ons': _addOnsToStringList(menuItem)
     };
+  }
+
+  double _getPrice(MenuItem menuItem) {
+    double price = menuItem.price;
+    menuItem.modifiersChosen.forEach((item) {
+      price += item.price;
+    });
+
+    return price;
   }
 
   List<String> _addOnsToStringList(MenuItem menuItem) {
