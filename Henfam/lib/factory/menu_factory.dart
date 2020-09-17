@@ -86,6 +86,7 @@ class MenuFactory {
         currentItem['desc'],
         currentItem['price'].toDouble(),
         modifiers,
+        modifiersChosen: [],
       );
 
       menuItems.add(item);

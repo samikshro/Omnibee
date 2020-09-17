@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
@@ -49,7 +51,9 @@ class MenuOrderForm extends StatefulWidget {
 List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
-  Widget _buildModifierList(MenuModifier modifier) {
+  List<ModifierItem> selectedItems = [];
+
+  Widget _buildModifierList(MenuModifier modifier, int index) {
     return Column(
       children: [
         LargeTextSection(modifier.header),
@@ -57,13 +61,38 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: modifier.modifierItems.length,
-            itemBuilder: (BuildContext context, int index) {
-              ModifierItem item = modifier.modifierItems[index];
+            itemBuilder: (BuildContext context2, int index2) {
+              ModifierItem item = modifier.modifierItems[index2];
               return ListTile(
-                title: Text(item.name),
-                subtitle: _getPrice(item.price),
-                trailing: Icon(Icons.add),
-              );
+                  title: Text(item.name),
+                  subtitle: _getPrice(item.price),
+                  trailing: SizedBox(
+                    width: 80,
+                    child: BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+                        builder: (context, state) {
+                      return (state is MenuOrderFormLoadSuccess)
+                          ? Checkbox(
+                              value: selectedItems.contains(item),
+                              onChanged: (bool isSelected) {
+                                if (!selectedItems.contains(item)) {
+                                  BlocProvider.of<MenuOrderFormBloc>(context)
+                                      .add(ModifierAdded(item));
+
+                                  setState(() {
+                                    selectedItems.add(item);
+                                  });
+                                } else {
+                                  BlocProvider.of<MenuOrderFormBloc>(context)
+                                      .add(ModifierDeleted(item));
+                                  setState(() {
+                                    selectedItems.remove(item);
+                                  });
+                                }
+                              },
+                            )
+                          : Container();
+                    }),
+                  ));
             }),
       ],
     );
@@ -93,6 +122,12 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                           onPressed: () {
                             BlocProvider.of<BasketBloc>(context2)
                                 .add(MenuItemAdded(state3.menuItem));
+                            print(state3.menuItem.modifiersChosen.length);
+                            BlocProvider.of<MenuOrderFormBloc>(context2)
+                                .add(ModifierReset());
+                            setState(() {
+                              selectedItems = [];
+                            });
                             Navigator.pop(context);
                           },
                         ),
@@ -124,7 +159,9 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return _buildModifierList(
-                                        state3.modifiers[index]);
+                                      state3.modifiers[index],
+                                      index,
+                                    );
                                   }),
                             ),
                             SliverToBoxAdapter(

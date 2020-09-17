@@ -12,6 +12,7 @@ class Basket extends StatelessWidget {
       title: Text(menuItems[index].name),
       subtitle: Wrap(
         direction: Axis.vertical,
+        children: _getModifiersList(menuItems[index]),
       ),
       isThreeLine: true,
     );
@@ -21,7 +22,7 @@ class Basket extends StatelessWidget {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
       return Column(
         children: <Widget>[
-          Text(menuItem.price.toString()),
+          Text(_getItemPrice(menuItem)),
           Expanded(
             child: FlatButton(
               child: Icon(
@@ -37,6 +38,22 @@ class Basket extends StatelessWidget {
         ],
       );
     });
+  }
+
+  List<Widget> _getModifiersList(MenuItem item) {
+    List<Widget> modifiers = [];
+    item.modifiersChosen.forEach((modifier) {
+      modifiers.add(Text(modifier.name));
+    });
+    return modifiers;
+  }
+
+  String _getItemPrice(MenuItem item) {
+    double price = item.price;
+    item.modifiersChosen.forEach((modifier) {
+      price += modifier.price;
+    });
+    return price.toStringAsFixed(2);
   }
 
   Function _getOnPressed(BuildContext context, BasketLoadSuccess state) {

@@ -19,7 +19,8 @@ class MenuItemAdded extends BasketEvent {
   List<Object> get props => [menuItem];
 
   @override
-  String toString() => 'MenuItemAdded { menuItem: $menuItem }';
+  String toString() =>
+      'MenuItemAdded { menuItem: $menuItem, hasModifiersSelected; ${menuItem.modifiersChosen.length != 0} }';
 }
 
 class MenuItemDeleted extends BasketEvent {

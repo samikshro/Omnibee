@@ -12,4 +12,8 @@ class ModifierItem extends Equatable {
         description,
         price,
       ];
+
+  ModifierItem copy() {
+    return ModifierItem(name: name, description: description, price: price);
+  }
 }

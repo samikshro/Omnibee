@@ -19,4 +19,18 @@ class MenuItem extends Equatable {
         price,
         modifiers,
       ];
+
+  void setModifiersChosen(List<ModifierItem> selectedItems) {
+    modifiersChosen.clear();
+    modifiersChosen.addAll(selectedItems);
+  }
+
+  List<ModifierItem> cloneModifiersChosen() {
+    List<ModifierItem> copy = [];
+    modifiersChosen.forEach((modifier) {
+      copy.add(modifier.copy());
+    });
+
+    return copy;
+  }
 }
