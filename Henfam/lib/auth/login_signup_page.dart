@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Henfam/auth/widgets/circularProgress.dart';
 import 'package:Henfam/auth/widgets/emailInput.dart';
 import 'package:Henfam/auth/widgets/errorMessage.dart';
@@ -77,12 +79,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           userId = await widget.auth.signIn(_email, _password);
         } else {
           userId = await widget.auth.signUp(_name, _email, _password);
+          userId = await widget.auth.signIn(_email, _password);
         }
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null && _isLoginForm) {
+        if (userId.length > 0 && userId != null) {
           widget.loginCallback();
         }
       } catch (e) {

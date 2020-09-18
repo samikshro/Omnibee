@@ -45,10 +45,6 @@ class _NotificationHandlerState extends State<NotificationHandler> {
       _saveDeviceToken();
     }
 
-    _fcm.getToken().then((token) {
-      print(token);
-    });
-
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
