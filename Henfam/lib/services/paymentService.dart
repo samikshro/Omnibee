@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:Henfam/pages/explore/explore_card/orderCardPage.dart';
 import 'package:Henfam/pages/account/profile.dart';
 
 class PaymentService {

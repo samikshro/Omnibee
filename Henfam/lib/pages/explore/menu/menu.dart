@@ -20,35 +20,6 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  Future<FoodDocument> _navigateAndGetOrderInfo(BuildContext context, int index,
-      DocumentSnapshot document, List<FoodInfo> order) async {
-    final result = await Navigator.pushNamed(context, '/menu_order_form',
-        arguments: FoodDocument(
-          document: document,
-          index: index,
-          order: order,
-        )) as FoodDocument;
-
-    // After the Selection Screen returns a result, hide any previous snackbars
-    // and show the new result.
-    if (result != null) {
-      Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).accentColor,
-            elevation: 10.0,
-            content: Text(
-                "Added " + result.document['food'][result.index]['name'] + "!"),
-            duration: Duration(milliseconds: 100)));
-
-      setState(() {
-        Menu.order = result.order;
-      });
-    }
-
-    return result;
-  }
-
   List<MenuModifier> _getMenuModifiers(
       Map<String, MenuModifier> allModifiers, MenuItem menuItem) {
     List<MenuModifier> modifiers = [];
