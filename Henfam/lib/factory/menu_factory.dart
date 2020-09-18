@@ -39,8 +39,8 @@ class MenuFactory {
     modifierData.forEach((key, value) {
       MenuModifier modifier = MenuModifier(
         value['header'],
-        value['max_select'],
-        MenuFactory.constructModifierItems(List<Map>.from(value['items'])),
+        _parseMaxSelectable(value),
+        _parseMenuModifiers(value),
       );
 
       modifiers[key] = modifier;
@@ -49,20 +49,30 @@ class MenuFactory {
     return modifiers;
   }
 
+  static int _parseMaxSelectable(value) {
+    int maxSelectable = value['max_select'];
+    return maxSelectable == null ? value['max_button_select'] : maxSelectable;
+  }
+
+  static List<ModifierItem> _parseMenuModifiers(value) {
+    if (value['items'] != null) {
+      return MenuFactory.constructModifierItems(List<Map>.from(value['items']));
+    } else {
+      return MenuFactory.constructModifierItems(
+          List<Map>.from(value['m_items']));
+    }
+  }
+
   static List<ModifierItem> constructModifierItems(List<Map> itemData) {
     List<ModifierItem> modifierItems = [];
 
     for (int index = 0; index < itemData.length; index++) {
       Map currentItem = itemData[index];
 
-      double price = currentItem['price'] is String
-          ? double.parse(currentItem['price'])
-          : currentItem['price'].toDouble();
-
       ModifierItem modifierItem = ModifierItem(
         name: currentItem['name'],
         description: currentItem['desc'],
-        price: price,
+        price: _getPrice(currentItem),
       );
 
       modifierItems.add(modifierItem);
@@ -84,7 +94,7 @@ class MenuFactory {
       MenuItem item = MenuItem(
         currentItem['name'],
         currentItem['desc'],
-        currentItem['price'].toDouble(),
+        _getPrice(currentItem),
         modifiers,
         modifiersChosen: [],
       );
@@ -93,5 +103,11 @@ class MenuFactory {
     }
 
     return menuItems;
+  }
+
+  static double _getPrice(Map currentItem) {
+    return currentItem['price'] is String
+        ? double.parse(currentItem['price'])
+        : currentItem['price'].toDouble();
   }
 }

@@ -114,8 +114,8 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
         totalSelected++;
       }
     }
-
-    return totalSelected <= modifier.maxSelectable;
+    int maxSelectable = modifier.maxSelectable;
+    return maxSelectable == -1 ? true : totalSelected <= modifier.maxSelectable;
   }
 
   @override
