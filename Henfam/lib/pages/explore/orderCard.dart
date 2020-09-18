@@ -79,7 +79,7 @@ class OrderCardButtonBar extends StatelessWidget {
     // TODO: Commented code: in-app payments. Live code: marketplace transfers.
     // PaymentService.payment(
     //     doc, context, 50.0, doc['user_id']['payment_method_id']);
-    PaymentService.paymentTransfer(doc, context, 10.0, 1.23,
+    PaymentService.paymentTransfer(doc, context, doc['price'], 1.23,
         doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }
 
