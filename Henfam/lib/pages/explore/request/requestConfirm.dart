@@ -55,7 +55,8 @@ class RequestConfirm extends StatelessWidget {
     jsonEncoding.forEach((item) {
       price += item['price'];
     });
-    return price;
+    print(double.parse(price.toStringAsFixed(2)));
+    return double.parse(price.toStringAsFixed(2));
   }
 
   @override

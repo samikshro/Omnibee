@@ -107,7 +107,7 @@ class MenuFactory {
 
   static double _getPrice(Map currentItem) {
     return currentItem['price'] is String
-        ? double.parse(currentItem['price'])
-        : currentItem['price'].toDouble();
+        ? double.parse(double.parse(currentItem['price']).toStringAsFixed(2))
+        : double.parse(currentItem['price'].toDouble().toStringAsFixed(2));
   }
 }

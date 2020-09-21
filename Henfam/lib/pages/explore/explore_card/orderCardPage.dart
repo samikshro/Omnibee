@@ -80,8 +80,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
                 Text(doc['user_id']['basket'][index]['name']),
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
-                  child: Text(
-                      '\$${doc['user_id']['basket'][index]['price'].toString()}'),
+                  child: Text('\$${doc['user_id']['price'].toString()}'),
                 )
               ],
             );
