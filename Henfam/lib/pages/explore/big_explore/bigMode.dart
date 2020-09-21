@@ -13,7 +13,6 @@ class _BigModeState extends State<BigMode> {
   bool _allRunsAccepted(documents) {
     for (int i = 0; i < documents.length; i++) {
       if (documents[i]['user_id']['is_accepted'] == false) {
-        print('here');
         return false;
       }
     }

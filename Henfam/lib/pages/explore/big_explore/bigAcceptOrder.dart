@@ -127,7 +127,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
   }
 
   void _setupStripeAccount() {
-    print("setupStripeAccount");
     _getUserID().then((uid) {
       _getEmail(uid).then((val) {
         PaymentService.createAccount(val);
@@ -136,7 +135,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
   }
 
   void _updateStripeAccount(String accountId) {
-    print("updateStripeAccount");
     bool updateEnabled = false;
     if (updateEnabled)
       PaymentService.updateAccountLink(accountId);
@@ -155,7 +153,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           width: double.infinity,
           height: 60,
           child: RaisedButton(
-            child: Text('Run Errand',
+            child: Text('Accept Errand',
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),

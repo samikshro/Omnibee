@@ -55,9 +55,9 @@ class ErrandFee extends StatelessWidget {
                             child: Text('Distance'),
                           ),
                           Container(
-                            width: 155,
+                            width: 170,
                             padding: EdgeInsets.all(8),
-                            child: Text("\$50 per 3-min walk*"),
+                            child: Text("\$0.50 per 3-min walk*"),
                           ),
                         ],
                       ),
@@ -82,7 +82,7 @@ class ErrandFee extends StatelessWidget {
                             child: Text('Effort'),
                           ),
                           Container(
-                            width: 155,
+                            width: 170,
                             padding: EdgeInsets.all(8),
                             child: Text("15% price of food"),
                           ),
