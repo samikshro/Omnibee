@@ -56,6 +56,7 @@ class _NotificationHandlerState extends State<NotificationHandler> {
                 content: ListTile(
                   title: Text(message['notification']['title']),
                   subtitle: Text(message['notification']['body']),
+                  // TODO: Uncomment out this code for testflight
                   /* title: Text(message['aps']['alert']['title']),
                   subtitle: Text(message['aps']['alert']['body']), */
                 ),
