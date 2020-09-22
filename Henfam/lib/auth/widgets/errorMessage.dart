@@ -8,10 +8,21 @@ class ShowErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (errorMessage.length > 0 && errorMessage != null) {
-      return new Text(
-        errorMessage,
-        style:
-            TextStyle(fontSize: 13.0, height: 1.0, fontWeight: FontWeight.w300),
+      return AlertDialog(
+        title: Text(
+          "Error",
+          style: TextStyle(color: Colors.black),
+        ),
+        content: Text(
+          errorMessage,
+          style: TextStyle(color: Colors.red),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Okay'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
       );
     } else {
       return new Container(

@@ -93,6 +93,26 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           _errorMessage = e.message;
           _formKey.currentState.reset();
         });
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  "Error",
+                  style: TextStyle(color: Colors.red),
+                ),
+                content: Text(
+                  _errorMessage,
+                  style: TextStyle(color: Colors.red),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Okay'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              );
+            });
       }
     }
   }
@@ -111,7 +131,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ShowPasswordInput(savePassword),
             ShowPrimaryButton(_isLoginForm, validateAndSubmit),
             ShowSecondaryButton(_isLoginForm, toggleFormMode),
-            ShowErrorMessage(_errorMessage),
+            //ShowErrorMessage(_errorMessage),
           ],
         ),
       ),

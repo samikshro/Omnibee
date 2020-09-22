@@ -61,7 +61,7 @@ class _NotificationHandlerState extends State<NotificationHandler> {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    child: Text('Ok'),
+                    child: Text('Okay'),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
