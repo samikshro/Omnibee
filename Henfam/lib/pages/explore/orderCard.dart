@@ -79,6 +79,10 @@ class OrderCardButtonBar extends StatelessWidget {
     // TODO: Commented code: in-app payments. Live code: marketplace transfers.
     // PaymentService.payment(
     //     doc, context, 50.0, doc['user_id']['payment_method_id']);
+    final snackBar = SnackBar(
+      content: Text('Confirming delivery, please wait one moment....'),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
     PaymentService.paymentTransfer(doc, context, doc['user_id']['price'], 1.23,
         doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }

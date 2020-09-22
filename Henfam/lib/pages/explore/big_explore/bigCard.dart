@@ -57,7 +57,7 @@ class BigCard extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: const Text(
-                    'ACCEPT',
+                    'VIEW',
                     style: TextStyle(fontSize: 18),
                   ),
                   onPressed: () {

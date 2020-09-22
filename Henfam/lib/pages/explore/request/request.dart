@@ -61,7 +61,7 @@ class _RequestState extends State<Request> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Your Order',
+          'Your Request',
         ),
       ),
       body: SafeArea(
@@ -90,7 +90,7 @@ class _RequestState extends State<Request> {
                   height: 60,
                   child: RaisedButton(
                       child: Text(
-                        'Submit Order',
+                        'Place Request',
                         style: TextStyle(
                             fontSize: 20.0,
                             color: Theme.of(context).scaffoldBackgroundColor),
@@ -101,18 +101,17 @@ class _RequestState extends State<Request> {
                             StripePayment.paymentRequestWithCardForm(
                                     CardFormPaymentRequest())
                                 .then((paymentMethod) {
-                            showCupertinoModalPopup(
-                              context: context,
-                              builder: (context) => RequestConfirm(
-                                _deliveryDate,
-                                _endDeliveryDate,
-                                s,
-                                _location,
-                                _locationCoordinates,
-                                name,
-                                paymentMethod.id
-                              ),
-                            );
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) => RequestConfirm(
+                                    _deliveryDate,
+                                    _endDeliveryDate,
+                                    s,
+                                    _location,
+                                    _locationCoordinates,
+                                    name,
+                                    paymentMethod.id),
+                              );
                             });
                           });
                         });

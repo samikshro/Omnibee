@@ -37,7 +37,7 @@ class ShowEmailInput extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
-          hintText: 'Email',
+          hintText: 'Cornell Email',
           icon: new Icon(
             Icons.mail,
           ),
