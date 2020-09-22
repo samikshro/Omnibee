@@ -74,10 +74,13 @@ class _BigModeState extends State<BigMode> {
 
                     if (_allRunsAccepted(snapshot.data.documents)) {
                       return Center(
-                        child: Text(
-                          'No errands are requested in your area now. Please check back later!',
-                          style: TextStyle(
-                            fontSize: 18,
+                        child: SizedBox(
+                          width: 300,
+                          child: Text(
+                            'No errands are requested in your area now. Please check back later!',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       );
