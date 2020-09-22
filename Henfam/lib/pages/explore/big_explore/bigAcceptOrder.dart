@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigAcceptOrderInfo.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
@@ -17,6 +19,7 @@ class AcceptOrder extends StatefulWidget {
 
 class _AcceptOrderState extends State<AcceptOrder> {
   var isExpanded = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   var selectedList = [
     true,
   ];
@@ -81,10 +84,15 @@ class _AcceptOrderState extends State<AcceptOrder> {
         .get()
         .then((DocumentSnapshot delivererDoc) {
       if (delivererDoc != null && delivererDoc['stripe_setup_complete']) {
-        // delivererDoc['stripeAccountId'] != null) {
         _markOrdersAccepted(docList);
-        Navigator.popUntil(
-            context, ModalRoute.withName(Navigator.defaultRouteName));
+        final snackBar = SnackBar(
+          content: Text('Accepted errand!'),
+        );
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+        Timer(Duration(seconds: 2), () {
+          Navigator.popUntil(
+              context, ModalRoute.withName(Navigator.defaultRouteName));
+        });
       } else
         showModalBottomSheet(
           context: context,
@@ -102,7 +110,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
                             ? _setupStripeAccount()
                             : _updateStripeAccount(
                                 delivererDoc['stripeAccountId']);
-                        // _setupStripeAccount();
                       }
                     }),
               ],
@@ -149,6 +156,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
       document,
     ];
     return Scaffold(
+        key: _scaffoldKey,
         bottomNavigationBar: SizedBox(
           width: double.infinity,
           height: 60,
@@ -158,7 +166,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
             onPressed: () {
-              _isStripeSetup(docList);
+              _isStripeSetup(docList); //, context);
             },
           ),
         ),

@@ -8,7 +8,7 @@ class ShowNameInput extends StatelessWidget {
 
   String nameValidation(String value) {
     if (value.isEmpty) {
-      return 'Email can\'t be empty';
+      return 'Name can\'t be empty';
     }
     return null;
   }

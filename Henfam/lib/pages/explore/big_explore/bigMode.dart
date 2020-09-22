@@ -75,7 +75,7 @@ class _BigModeState extends State<BigMode> {
                     if (_allRunsAccepted(snapshot.data.documents)) {
                       return Center(
                         child: Text(
-                          'No runs currently available',
+                          'No errands are requested in your area now. Please check back later!',
                           style: TextStyle(
                             fontSize: 18,
                           ),
