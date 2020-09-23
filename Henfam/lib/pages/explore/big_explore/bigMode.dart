@@ -34,32 +34,6 @@ class _BigModeState extends State<BigMode> {
             Padding(
               padding: EdgeInsets.all(10),
             ),
-            /* Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              )),
-              child: TextField(
-                decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                    ),
-                    hintText: "Search",
-                    hintStyle: TextStyle(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.tune,
-                      ),
-                      tooltip: 'Filter',
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/big_filter');
-                        //,arguments: BasketData(orders: ord.order));
-                      },
-                    )),
-              ),
-            ), */
             Flexible(
               child: StreamBuilder(
                   stream: Firestore.instance

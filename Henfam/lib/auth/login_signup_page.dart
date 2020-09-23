@@ -1,6 +1,5 @@
 import 'package:Henfam/auth/widgets/circularProgress.dart';
 import 'package:Henfam/auth/widgets/emailInput.dart';
-import 'package:Henfam/auth/widgets/errorMessage.dart';
 import 'package:Henfam/auth/widgets/logo.dart';
 import 'package:Henfam/auth/widgets/nameInput.dart';
 import 'package:Henfam/auth/widgets/passwordInput.dart';

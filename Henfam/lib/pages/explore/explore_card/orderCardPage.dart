@@ -3,8 +3,6 @@ import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:stripe_payment/stripe_payment.dart';
-import 'package:Henfam/services/paymentService.dart';
 
 class OrderCardPage extends StatefulWidget {
   @override
