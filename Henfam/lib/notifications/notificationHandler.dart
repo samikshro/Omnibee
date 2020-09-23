@@ -51,7 +51,6 @@ class _NotificationHandlerState extends State<NotificationHandler> {
         showDialog(
             context: context,
             builder: (context) {
-              print('inside');
               return AlertDialog(
                 content: ListTile(
                   title: Text(message['notification']['title']),
