@@ -1,18 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+import 'package:Henfam/entities/entities.dart';
+
 import 'package:meta/meta.dart';
 
 @immutable
 class Order {
   final String name;
   final String uid;
-  final GeoPoint userCoordinates;
+  final Point userCoordinates;
   final String restaurantName;
-  final GeoPoint restaurantCoordinates;
+  final Point restaurantCoordinates;
   final List<Map<dynamic, dynamic>> basket;
   final String location;
   final String startTime;
   final String endTime;
-  final Timestamp expirationTime;
+  final DateTime expirationTime;
   final bool isAccepted;
   final String runnerUid;
   final String restaurantImage;
@@ -42,14 +44,14 @@ class Order {
   Order copyWith(
       {String name,
       String uid,
-      GeoPoint userCoordinates,
+      Point userCoordinates,
       String restaurantName,
-      GeoPoint restaurantCoordinates,
+      Point restaurantCoordinates,
       List<Map<dynamic, dynamic>> basket,
       String location,
       String startTime,
       String endTime,
-      Timestamp expirationTime,
+      DateTime expirationTime,
       bool isAccepted,
       String runnerUid,
       String restaurantImage,
@@ -73,6 +75,95 @@ class Order {
       pmID,
       stripeAccountId,
       docID,
+    );
+  }
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      uid.hashCode ^
+      userCoordinates.hashCode ^
+      restaurantName.hashCode ^
+      restaurantCoordinates.hashCode ^
+      basket.hashCode ^
+      location.hashCode ^
+      startTime.hashCode ^
+      endTime.hashCode ^
+      expirationTime.hashCode ^
+      isAccepted.hashCode ^
+      runnerUid.hashCode ^
+      restaurantImage.hashCode ^
+      pmID.hashCode ^
+      stripeAccountId.hashCode ^
+      docID.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Order &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          uid == other.uid &&
+          userCoordinates == other.userCoordinates &&
+          restaurantName == other.restaurantName &&
+          restaurantCoordinates == other.restaurantCoordinates &&
+          basket == other.basket &&
+          location == other.location &&
+          startTime == other.startTime &&
+          endTime == other.endTime &&
+          expirationTime == other.expirationTime &&
+          isAccepted == other.isAccepted &&
+          runnerUid == other.runnerUid &&
+          restaurantImage == other.restaurantImage &&
+          pmID == other.pmID &&
+          stripeAccountId == other.stripeAccountId &&
+          docID == other.docID;
+
+  @override
+  String toString() {
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, restaurantImage: $restaurantImage, pmID: $pmID, stripeAccountId: $stripeAccountId, docID: $docID }';
+  }
+
+  OrderEntity toEntity() {
+    return OrderEntity(
+      name,
+      uid,
+      userCoordinates,
+      restaurantName,
+      restaurantCoordinates,
+      basket,
+      location,
+      startTime,
+      endTime,
+      expirationTime,
+      isAccepted,
+      runnerUid,
+      restaurantImage,
+      pmID,
+      stripeAccountId,
+      docID,
+    );
+  }
+
+  static Order fromEntity(OrderEntity entity) {
+    // TODO: CREATE BASKET MODEL
+    return Order(
+      entity.name,
+      entity.uid,
+      entity.userCoordinates,
+      entity.restaurantName,
+      entity.restaurantCoordinates,
+      entity.basket,
+      entity.location,
+      entity.startTime,
+      entity.endTime,
+      entity.expirationTime,
+      entity.isAccepted,
+      entity.runnerUid,
+      entity.restaurantImage,
+      entity.pmID,
+      entity.stripeAccountId,
+      entity.docID,
     );
   }
 }
