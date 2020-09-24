@@ -111,13 +111,13 @@ class Profile extends StatelessWidget {
             Divider(),
             ProfilePrefs(),
             Divider(), */
-                Divider(),
-                CupertinoButton(
-                    color: Theme.of(context).primaryColor,
-                    child: Text("Setup Payments"),
-                    onPressed: () {
-                      _stripeAccount();
-                    }),
+                // Divider(),
+                // CupertinoButton(
+                //     color: Theme.of(context).primaryColor,
+                //     child: Text("Setup Payments"),
+                //     onPressed: () {
+                //       _stripeAccount();
+                //     }),
                 Divider(),
                 ProfileContact(signOut),
               ],
