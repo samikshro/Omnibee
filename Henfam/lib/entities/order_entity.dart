@@ -16,7 +16,7 @@ class OrderEntity extends Equatable {
   final bool isAccepted;
   final String runnerUid;
   final String restaurantImage;
-  final String pmID;
+  final String paymentMethodID;
   final String stripeAccountId;
   final String docID;
 
@@ -34,7 +34,7 @@ class OrderEntity extends Equatable {
     this.isAccepted,
     this.runnerUid,
     this.restaurantImage,
-    this.pmID,
+    this.paymentMethodID,
     this.stripeAccountId,
     this.docID,
   );
@@ -54,7 +54,7 @@ class OrderEntity extends Equatable {
       "is_accepted": isAccepted,
       "runner": runnerUid,
       "restaurant_pic": restaurantImage,
-      "pmID": pmID,
+      "paymentMethodID": paymentMethodID,
       "stripeAccountId": stripeAccountId,
       "docID": docID,
     };
@@ -75,14 +75,14 @@ class OrderEntity extends Equatable {
         isAccepted,
         runnerUid,
         restaurantImage,
-        pmID,
+        paymentMethodID,
         stripeAccountId,
         docID,
       ];
 
   @override
   String toString() {
-    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, runner: $runnerUid, restaurant_pic: $restaurantImage, pmID: $pmID, stripeAccountId: $stripeAccountId, docID: $docID }';
+    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, runner: $runnerUid, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID }';
   }
 
   static OrderEntity fromJson(Map<String, Object> json) {
@@ -100,7 +100,7 @@ class OrderEntity extends Equatable {
       json["is_accepted"] as bool,
       json["runner_uid"] as String,
       json["restaurant_pic"] as String,
-      json["pmID"] as String,
+      json["paymentMethodID"] as String,
       json["stripeAccountId"] as String,
       json["docID"] as String,
     );
@@ -144,9 +144,30 @@ class OrderEntity extends Equatable {
         "is_accepted": isAccepted,
         "runner": runnerUid,
         "restaurant_pic": restaurantImage,
-        "pmID": pmID,
+        "paymentMethodID": paymentMethodID,
         "stripeAccountId": stripeAccountId,
       }
     };
+  }
+
+  static OrderEntity fromSnapshot(DocumentSnapshot snap) {
+    return OrderEntity(
+      snap.data['user_id']['name'],
+      snap.data['user_id']['uid'],
+      snap.data['user_id']['user_coordinates'],
+      snap.data['user_id']['rest_name_used'],
+      snap.data['user_id']['restaurant_coordinates'],
+      snap.data['user_id']['basket'],
+      snap.data['user_id']['location'],
+      snap.data['user_id']['delivery_window']['start_time'],
+      snap.data['user_id']['delivery_window']['end_time'],
+      snap.data['user_id']['expiration_time'],
+      snap.data['user_id']['is_accepted'],
+      snap.data['user_id']['runner'],
+      snap.data['user_id']['restaurant_pic'],
+      snap.data['user_id']['payment_method_id'],
+      snap.data['stripeAccountId'],
+      snap.documentID,
+    );
   }
 }

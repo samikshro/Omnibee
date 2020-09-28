@@ -18,7 +18,7 @@ class Order {
   final bool isAccepted;
   final String runnerUid;
   final String restaurantImage;
-  final String pmID;
+  final String paymentMethodId;
   final String stripeAccountId;
   final String docID;
 
@@ -36,7 +36,7 @@ class Order {
     this.isAccepted,
     this.runnerUid,
     this.restaurantImage,
-    this.pmID,
+    this.paymentMethodId,
     this.stripeAccountId,
     this.docID,
   );
@@ -55,7 +55,7 @@ class Order {
       bool isAccepted,
       String runnerUid,
       String restaurantImage,
-      String pmID,
+      String paymentMethodId,
       String stripeAccountId,
       String docID}) {
     return Order(
@@ -72,7 +72,7 @@ class Order {
       isAccepted,
       runnerUid,
       restaurantImage,
-      pmID,
+      paymentMethodId,
       stripeAccountId,
       docID,
     );
@@ -93,7 +93,7 @@ class Order {
       isAccepted.hashCode ^
       runnerUid.hashCode ^
       restaurantImage.hashCode ^
-      pmID.hashCode ^
+      paymentMethodId.hashCode ^
       stripeAccountId.hashCode ^
       docID.hashCode;
 
@@ -115,13 +115,13 @@ class Order {
           isAccepted == other.isAccepted &&
           runnerUid == other.runnerUid &&
           restaurantImage == other.restaurantImage &&
-          pmID == other.pmID &&
+          paymentMethodId == other.paymentMethodId &&
           stripeAccountId == other.stripeAccountId &&
           docID == other.docID;
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, restaurantImage: $restaurantImage, pmID: $pmID, stripeAccountId: $stripeAccountId, docID: $docID }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
   }
 
   OrderEntity toEntity() {
@@ -139,14 +139,13 @@ class Order {
       isAccepted,
       runnerUid,
       restaurantImage,
-      pmID,
+      paymentMethodId,
       stripeAccountId,
       docID,
     );
   }
 
   static Order fromEntity(OrderEntity entity) {
-    // TODO: CREATE BASKET MODEL
     return Order(
       entity.name,
       entity.uid,
@@ -161,7 +160,7 @@ class Order {
       entity.isAccepted,
       entity.runnerUid,
       entity.restaurantImage,
-      entity.pmID,
+      entity.paymentMethodID,
       entity.stripeAccountId,
       entity.docID,
     );

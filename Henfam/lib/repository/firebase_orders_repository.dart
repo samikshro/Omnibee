@@ -18,15 +18,18 @@ class FirebaseOrdersRepository implements OrdersRepository {
   }
 
   @override
-  Future<void> updateTodo(Order order) {
+  Future<void> updateOrder(Order order) {
     return orderCollection
         .document(order.docID)
         .updateData(order.toEntity().toDocument());
   }
 
   @override
-  Future<void> markOrderComplete(Order order) {
-    // TODO: implement markOrderComplete
-    throw UnimplementedError();
+  Stream<List<Order>> orders() {
+    return orderCollection.snapshots().map((snapshot) {
+      return snapshot.documents
+          .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
+          .toList();
+    });
   }
 }

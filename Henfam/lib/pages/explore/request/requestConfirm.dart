@@ -84,7 +84,27 @@ class RequestConfirm extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<BasketBloc>(context)
                               .add(BasketReset());
-                          firestoreInstance.collection("orders").add({
+
+                          BlocProvider.of<OrderBloc>(context)
+                              .add(OrderAdded(Order(
+                            name,
+                            uid,
+                            GeoPoint(locCoords.latitude, locCoords.longitude),
+                            state2.restaurant.name,
+                            GeoPoint(
+                              state2.restaurant.location[0],
+                              state2.restaurant.location[1],
+                            ),
+                            state1.jsonEncoding,
+                            loc,
+                            getTimeInfo(date, endDate)[0],
+                            getTimeInfo(date, endDate)[1],
+                            get_expiration_date(date, endDate),
+                            false,
+                            null,
+                            state2.restaurant.bigImagePath,
+                          )));
+                          /* firestoreInstance.collection("orders").add({
                             "user_id": {
                               "name": name,
                               "uid": uid,
@@ -109,7 +129,7 @@ class RequestConfirm extends StatelessWidget {
                               "restaurant_pic": state2.restaurant.bigImagePath,
                               "payment_method_id": pmID,
                             }
-                          });
+                          }); */
                           Menu.order = []; //clears order after submitting
                           Menu.onPressed =
                               () {}; //clears onPressed fcn after submitting

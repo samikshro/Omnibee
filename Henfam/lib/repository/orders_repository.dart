@@ -6,7 +6,7 @@ abstract class OrdersRepository {
 
   Future<void> deleteOrder(Order order);
 
-  Future<void> updateTodo(Order order);
+  Future<void> updateOrder(Order order);
 
-  Future<void> markOrderComplete(Order order);
+  Stream<List<Order>> orders();
 }
