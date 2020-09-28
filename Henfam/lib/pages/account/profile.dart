@@ -80,7 +80,7 @@ class Profile extends StatelessWidget {
           .then((DocumentSnapshot doc) {
         if (doc != null) {
           if (doc['stripe_setup_complete'])
-            print("Stripe Setup is Complete"); // TODO: add a snackbar here
+            print("Stripe Setup is Complete");
           else
             doc['stripeAccountId'] == ""
                 ? _setupStripeAccount()
