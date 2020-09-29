@@ -51,35 +51,38 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
   List<ModifierItem> selectedItems = [];
 
   Widget _buildModifierList(MenuModifier modifier, int index) {
-    return Column(
-      children: [
-        LargeTextSection(modifier.header),
-        ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: modifier.modifierItems.length,
-            itemBuilder: (BuildContext context2, int index2) {
-              ModifierItem item = modifier.modifierItems[index2];
-              return ListTile(
-                  title: Text(item.name),
-                  subtitle: _getPrice(item.price),
-                  trailing: SizedBox(
-                    width: 80,
-                    child: BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
-                        builder: (context, state) {
-                      return (state is MenuOrderFormLoadSuccess)
-                          ? Checkbox(
-                              value: selectedItems.contains(item),
-                              onChanged: (bool isSelected) {
-                                _selectModifier(isSelected, item, modifier);
-                              },
-                            )
-                          : Container();
-                    }),
-                  ));
-            }),
-      ],
-    );
+    return modifier == null
+        ? Container()
+        : Column(
+            children: [
+              LargeTextSection(modifier.header),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: modifier.modifierItems.length,
+                  itemBuilder: (BuildContext context2, int index2) {
+                    ModifierItem item = modifier.modifierItems[index2];
+                    return ListTile(
+                        title: Text(item.name),
+                        subtitle: _getPrice(item.price),
+                        trailing: SizedBox(
+                          width: 80,
+                          child: BlocBuilder<MenuOrderFormBloc,
+                              MenuOrderFormState>(builder: (context, state) {
+                            return (state is MenuOrderFormLoadSuccess)
+                                ? Checkbox(
+                                    value: selectedItems.contains(item),
+                                    onChanged: (bool isSelected) {
+                                      _selectModifier(
+                                          isSelected, item, modifier);
+                                    },
+                                  )
+                                : Container();
+                          }),
+                        ));
+                  }),
+            ],
+          );
   }
 
   void _selectModifier(

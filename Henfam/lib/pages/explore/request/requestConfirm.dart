@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/models/order.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +29,7 @@ class RequestConfirm extends StatelessWidget {
     return (today.day == date.day) ? "Today" : "Tomorrow";
   }
 
-  List<String> getTimeInfo(DateTime date, DateTime endDate) {
+  List<String> _getTimeInfo(DateTime date, DateTime endDate) {
     var difference = endDate.difference(date);
     final expirationInterval = Duration(minutes: difference.inMinutes - 20);
     final expirationDate = date.add(expirationInterval);
@@ -42,12 +45,11 @@ class RequestConfirm extends StatelessWidget {
     return lst;
   }
 
-  Timestamp get_expiration_date(DateTime date, DateTime endDate) {
+  DateTime _getExpirationDate(DateTime date, DateTime endDate) {
     var difference = endDate.difference(date);
     final expirationInterval = Duration(minutes: difference.inMinutes - 20);
     final expirationDate = date.add(expirationInterval);
-    return Timestamp.fromMillisecondsSinceEpoch(
-        expirationDate.millisecondsSinceEpoch);
+    return expirationDate;
   }
 
   double _getBasketPrice(List<Map> jsonEncoding) {
@@ -71,11 +73,11 @@ class RequestConfirm extends StatelessWidget {
                         style: TextStyle(fontSize: 22.0)),
                     message: Text(
                         "Delivery Window: " +
-                            getTimeInfo(date, endDate)[0] +
+                            _getTimeInfo(date, endDate)[0] +
                             " - " +
-                            getTimeInfo(date, endDate)[1] +
+                            _getTimeInfo(date, endDate)[1] +
                             ". Your order will EXPIRE at " +
-                            getTimeInfo(date, endDate)[2],
+                            _getTimeInfo(date, endDate)[2],
                         style: TextStyle(fontSize: 20.0)),
                     actions: <Widget>[
                       CupertinoActionSheetAction(
@@ -84,7 +86,31 @@ class RequestConfirm extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<BasketBloc>(context)
                               .add(BasketReset());
-                          firestoreInstance.collection("orders").add({
+
+                          BlocProvider.of<OrderBloc>(context)
+                              .add(OrderAdded(Order(
+                            name,
+                            uid,
+                            Point(locCoords.latitude, locCoords.longitude),
+                            state2.restaurant.name,
+                            Point(
+                              state2.restaurant.location[0],
+                              state2.restaurant.location[1],
+                            ),
+                            state1.jsonEncoding,
+                            loc,
+                            _getTimeInfo(date, endDate)[0],
+                            _getTimeInfo(date, endDate)[1],
+                            _getExpirationDate(date, endDate),
+                            false,
+                            null,
+                            _getBasketPrice(state1.jsonEncoding),
+                            state2.restaurant.bigImagePath,
+                            pmID,
+                            null,
+                            null,
+                          )));
+                          /* firestoreInstance.collection("orders").add({
                             "user_id": {
                               "name": name,
                               "uid": uid,
@@ -109,7 +135,7 @@ class RequestConfirm extends StatelessWidget {
                               "restaurant_pic": state2.restaurant.bigImagePath,
                               "payment_method_id": pmID,
                             }
-                          });
+                          }); */
                           Menu.order = []; //clears order after submitting
                           Menu.onPressed =
                               () {}; //clears onPressed fcn after submitting
