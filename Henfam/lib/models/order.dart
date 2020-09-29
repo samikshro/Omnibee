@@ -10,13 +10,14 @@ class Order {
   final Point userCoordinates;
   final String restaurantName;
   final Point restaurantCoordinates;
-  final List<Map<dynamic, dynamic>> basket;
+  final List<dynamic> basket;
   final String location;
   final String startTime;
   final String endTime;
   final DateTime expirationTime;
   final bool isAccepted;
   final String runnerUid;
+  final double price;
   final String restaurantImage;
   final String paymentMethodId;
   final String stripeAccountId;
@@ -35,6 +36,7 @@ class Order {
     this.expirationTime,
     this.isAccepted,
     this.runnerUid,
+    this.price,
     this.restaurantImage,
     this.paymentMethodId,
     this.stripeAccountId,
@@ -47,13 +49,14 @@ class Order {
       Point userCoordinates,
       String restaurantName,
       Point restaurantCoordinates,
-      List<Map<dynamic, dynamic>> basket,
+      List<dynamic> basket,
       String location,
       String startTime,
       String endTime,
       DateTime expirationTime,
       bool isAccepted,
       String runnerUid,
+      double price,
       String restaurantImage,
       String paymentMethodId,
       String stripeAccountId,
@@ -71,6 +74,7 @@ class Order {
       expirationTime,
       isAccepted,
       runnerUid,
+      price,
       restaurantImage,
       paymentMethodId,
       stripeAccountId,
@@ -92,6 +96,7 @@ class Order {
       expirationTime.hashCode ^
       isAccepted.hashCode ^
       runnerUid.hashCode ^
+      price.hashCode ^
       restaurantImage.hashCode ^
       paymentMethodId.hashCode ^
       stripeAccountId.hashCode ^
@@ -114,6 +119,7 @@ class Order {
           expirationTime == other.expirationTime &&
           isAccepted == other.isAccepted &&
           runnerUid == other.runnerUid &&
+          price == other.price &&
           restaurantImage == other.restaurantImage &&
           paymentMethodId == other.paymentMethodId &&
           stripeAccountId == other.stripeAccountId &&
@@ -121,7 +127,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, price: $price, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
   }
 
   OrderEntity toEntity() {
@@ -138,6 +144,7 @@ class Order {
       expirationTime,
       isAccepted,
       runnerUid,
+      price,
       restaurantImage,
       paymentMethodId,
       stripeAccountId,
@@ -159,6 +166,7 @@ class Order {
       entity.expirationTime,
       entity.isAccepted,
       entity.runnerUid,
+      entity.price,
       entity.restaurantImage,
       entity.paymentMethodID,
       entity.stripeAccountId,

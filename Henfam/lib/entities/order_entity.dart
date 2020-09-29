@@ -8,13 +8,14 @@ class OrderEntity extends Equatable {
   final Point userCoordinates;
   final String restaurantName;
   final Point restaurantCoordinates;
-  final List<Map<dynamic, dynamic>> basket;
+  final List<dynamic> basket;
   final String location;
   final String startTime;
   final String endTime;
   final DateTime expirationTime;
   final bool isAccepted;
   final String runnerUid;
+  final double price;
   final String restaurantImage;
   final String paymentMethodID;
   final String stripeAccountId;
@@ -33,6 +34,7 @@ class OrderEntity extends Equatable {
     this.expirationTime,
     this.isAccepted,
     this.runnerUid,
+    this.price,
     this.restaurantImage,
     this.paymentMethodID,
     this.stripeAccountId,
@@ -53,6 +55,7 @@ class OrderEntity extends Equatable {
       "expiration_time": expirationTime,
       "is_accepted": isAccepted,
       "runner": runnerUid,
+      "price": price,
       "restaurant_pic": restaurantImage,
       "paymentMethodID": paymentMethodID,
       "stripeAccountId": stripeAccountId,
@@ -74,6 +77,7 @@ class OrderEntity extends Equatable {
         expirationTime,
         isAccepted,
         runnerUid,
+        price,
         restaurantImage,
         paymentMethodID,
         stripeAccountId,
@@ -99,6 +103,7 @@ class OrderEntity extends Equatable {
       _castToTimestampAndReturnDateTime(json['expiration_time']),
       json["is_accepted"] as bool,
       json["runner_uid"] as String,
+      json["price"] as double,
       json["restaurant_pic"] as String,
       json["paymentMethodID"] as String,
       json["stripeAccountId"] as String,
@@ -123,6 +128,7 @@ class OrderEntity extends Equatable {
 
   Map<String, Object> toDocument() {
     return {
+      "stripeAccountId": stripeAccountId,
       "user_id": {
         "name": name,
         "uid": uid,
@@ -143,9 +149,9 @@ class OrderEntity extends Equatable {
         ),
         "is_accepted": isAccepted,
         "runner": runnerUid,
+        "price": price,
         "restaurant_pic": restaurantImage,
-        "paymentMethodID": paymentMethodID,
-        "stripeAccountId": stripeAccountId,
+        "payment_method_id": paymentMethodID,
       }
     };
   }
@@ -154,16 +160,23 @@ class OrderEntity extends Equatable {
     return OrderEntity(
       snap.data['user_id']['name'],
       snap.data['user_id']['uid'],
-      snap.data['user_id']['user_coordinates'],
+      _castToGeoPointAndReturnPoint(
+        snap.data['user_id']['user_coordinates'],
+      ),
       snap.data['user_id']['rest_name_used'],
-      snap.data['user_id']['restaurant_coordinates'],
+      _castToGeoPointAndReturnPoint(
+        snap.data['user_id']['restaurant_coordinates'],
+      ),
       snap.data['user_id']['basket'],
       snap.data['user_id']['location'],
       snap.data['user_id']['delivery_window']['start_time'],
       snap.data['user_id']['delivery_window']['end_time'],
-      snap.data['user_id']['expiration_time'],
+      _castToTimestampAndReturnDateTime(
+        snap.data['user_id']['expiration_time'],
+      ),
       snap.data['user_id']['is_accepted'],
       snap.data['user_id']['runner'],
+      snap.data['user_id']['price'],
       snap.data['user_id']['restaurant_pic'],
       snap.data['user_id']['payment_method_id'],
       snap.data['stripeAccountId'],
