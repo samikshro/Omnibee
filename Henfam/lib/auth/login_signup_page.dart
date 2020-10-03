@@ -3,6 +3,7 @@ import 'package:Henfam/auth/widgets/emailInput.dart';
 import 'package:Henfam/auth/widgets/logo.dart';
 import 'package:Henfam/auth/widgets/nameInput.dart';
 import 'package:Henfam/auth/widgets/passwordInput.dart';
+import 'package:Henfam/auth/widgets/phoneInput.dart';
 import 'package:Henfam/auth/widgets/primaryButton.dart';
 import 'package:Henfam/auth/widgets/secondaryButton.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   String _name;
   String _email;
   String _password;
+  String _phone;
   String _errorMessage = '';
 
   bool _isLoginForm = true;
@@ -52,6 +54,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     _password = value.trim();
   }
 
+  void savePhone(String value) {
+    _phone = value.trim();
+  }
+
   void resetForm() {
     _formKey.currentState.reset();
     _errorMessage = "";
@@ -75,7 +81,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
         } else {
-          userId = await widget.auth.signUp(_name, _email, _password);
+          userId = await widget.auth.signUp(_name, _email, _password, _phone);
           userId = await widget.auth.signIn(_email, _password);
         }
         setState(() {
@@ -127,6 +133,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ShowLogo(_isLoading),
             ShowNameInput(_isLoginForm, saveName),
             ShowEmailInput(_isLoginForm, saveEmail),
+            ShowPhoneInput(_isLoginForm, savePhone),
             ShowPasswordInput(savePassword),
             ShowPrimaryButton(_isLoginForm, validateAndSubmit),
             ShowSecondaryButton(_isLoginForm, toggleFormMode),
