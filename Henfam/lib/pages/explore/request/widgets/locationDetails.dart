@@ -54,7 +54,22 @@ class _LocationDetailsState extends State<LocationDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MediumTextSection('Location Details'),
+          Row(
+            children: [
+              Expanded(
+                child: MediumTextSection('Drop-off Location'),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: Icon(IconData(59736, fontFamily: 'MaterialIcons')),
+                  tooltip: "Where will you be located?",
+                  onPressed: () {
+                    Tooltip(message: "Where will you be located?");
+                  },
+                ),
+              )
+            ],
+          ),
           Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -87,7 +102,7 @@ class _LocationDetailsState extends State<LocationDetails> {
               textInputAction: TextInputAction.done,
               maxLines: 3,
               decoration: InputDecoration(
-                hintText: "e.g. Apt 4G, Leave next to couch outside map room.",
+                hintText: "e.g. Apt 4G, Leave next to door outside.",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                   borderSide: BorderSide(
