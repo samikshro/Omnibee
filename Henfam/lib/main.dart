@@ -2,6 +2,7 @@ import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/bloc/simple_bloc_observer.dart';
+import 'package:Henfam/repository/firebase_orders_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/auth/root_page.dart';
@@ -37,6 +38,11 @@ class HenfamBasic extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider<OrderBloc>(
+          create: (BuildContext context) =>
+              OrderBloc(ordersRepository: FirebaseOrdersRepository())
+                ..add(OrderLoadSuccess()),
+        ),
         BlocProvider<BasketBloc>(
           create: (BuildContext context) => BasketBloc()..add(BasketLoaded()),
         ),

@@ -56,6 +56,17 @@ class _RequestState extends State<Request> {
     return s;
   }
 
+  Future<String> _getPhoneNumber(String uid) async {
+    Future<String> s = Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return document['phone'];
+    });
+    return s;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,13 +115,14 @@ class _RequestState extends State<Request> {
                               showCupertinoModalPopup(
                                 context: context,
                                 builder: (context) => RequestConfirm(
-                                    _deliveryDate,
-                                    _endDeliveryDate,
-                                    s,
-                                    _location,
-                                    _locationCoordinates,
-                                    name,
-                                    paymentMethod.id),
+                                  _deliveryDate,
+                                  _endDeliveryDate,
+                                  s,
+                                  _location,
+                                  _locationCoordinates,
+                                  name,
+                                  paymentMethod.id,
+                                ),
                               );
                             });
                           });
