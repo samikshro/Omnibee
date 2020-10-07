@@ -99,7 +99,6 @@ class _RequestState extends State<Request> {
                       ),
                       onPressed: () {
                         _place_order_disabled
-                            // ignore: unnecessary_statements
                             ? null
                             : _getUserID().then((String s) {
                                 _getUserName(s).then((String name) {
