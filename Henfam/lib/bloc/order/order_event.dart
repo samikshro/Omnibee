@@ -7,7 +7,7 @@ abstract class OrderEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OrderLoadSuccess extends OrderEvent {}
+class OrderLoaded extends OrderEvent {}
 
 class OrderAdded extends OrderEvent {
   final Order order;
@@ -54,5 +54,5 @@ class OrderModified extends OrderEvent {
   List<Object> get props => [Order];
 
   @override
-  String toString() => 'OrderDeleted { Order: $Order }';
+  String toString() => 'OrderModified { Order: $Order }';
 }

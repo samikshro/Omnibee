@@ -1,8 +1,10 @@
-import 'package:Henfam/pages/explore/explore_card/widgets/documentCallbackButton.dart';
+import 'package:Henfam/models/order.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:Henfam/bloc/blocs.dart';
 
 class OrderCardPage extends StatefulWidget {
   @override
@@ -10,43 +12,27 @@ class OrderCardPage extends StatefulWidget {
 }
 
 class _OrderCardPageState extends State<OrderCardPage> {
-  final db = Firestore.instance;
-
-  bool _isDeliveryComplete(DocumentSnapshot doc) {
-    return doc['is_delivered'] != null;
-  }
-
-  //TODO: deprecated. remove and update this code.
-  // void _confirmDeliveryComplete(DocumentSnapshot doc, BuildContext context) {
-  //   PaymentService.payment(
-  //       doc, context, 100.0, doc['user_id']['payment_method_id']);
-  // }
-
-  String _getExpirationTime(DocumentSnapshot doc) {
-    DateTime time = doc['user_id']['expiration_time'].toDate();
+  String _getExpirationTime(Order order) {
+    DateTime time = order.expirationTime;
     final DateFormat formatter = DateFormat('jm');
     final String formatted = formatter.format(time);
     return formatted;
   }
 
-  String _getDeliveryLocation(DocumentSnapshot doc) {
-    String location = doc['user_id']['location'];
+  String _getDeliveryLocation(Order order) {
+    String location = order.location;
     List<String> wordList = location.split(',');
     return wordList[0];
   }
 
-  String _getDeliveryWindow(DocumentSnapshot doc) {
-    String startTime = doc['user_id']['delivery_window']['start_time'];
-    String endTime = doc['user_id']['delivery_window']['end_time'];
+  String _getDeliveryWindow(Order order) {
+    String startTime = order.startTime;
+    String endTime = order.endTime;
     return "$startTime to $endTime";
   }
 
-  void _deleteDocument(DocumentSnapshot doc, BuildContext context) async {
-    await db.collection('orders').document(doc.documentID).delete();
-  }
-
-  Widget _stillWaitingForMatch(DocumentSnapshot doc) {
-    if (doc['user_id']['is_accepted'] == true) {
+  Widget _stillWaitingForMatch(Order order) {
+    if (order.isAccepted) {
       return Container(child: Text('You have been paired with a big bee!'));
     } else {
       return Column(
@@ -56,7 +42,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-          Text('Order will expire at ${_getExpirationTime(doc)}'),
+          Text('Order will expire at ${_getExpirationTime(order)}'),
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
@@ -65,28 +51,30 @@ class _OrderCardPageState extends State<OrderCardPage> {
     }
   }
 
-  Widget _getYourItems(DocumentSnapshot doc) {
+  Widget _getYourItems(Order order) {
     return Padding(
       padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: doc['user_id']['basket'].length,
+          itemCount: order.basket.length,
           itemBuilder: (BuildContext context, int index) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(doc['user_id']['basket'][index]['name']),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Text('\$${doc['user_id']['price'].toString()}'),
-                )
+                Text(order.basket[index]['name']),
+                (index == order.basket.length - 1)
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Text('\$${order.price.toString()}'),
+                      )
+                    : Container(),
               ],
             );
           }),
     );
   }
 
-  Widget _getDeliveryInformation(DocumentSnapshot doc) {
+  Widget _getDeliveryInformation(Order order) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
@@ -98,7 +86,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(_getDeliveryLocation(doc)),
+            child: Text(_getDeliveryLocation(order)),
           ),
           Text(
             'Delivery Window:',
@@ -106,7 +94,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(_getDeliveryWindow(doc)),
+            child: Text(_getDeliveryWindow(order)),
           ),
           Text(
             'Status:',
@@ -114,14 +102,14 @@ class _OrderCardPageState extends State<OrderCardPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: _stillWaitingForMatch(doc),
+            child: _stillWaitingForMatch(order),
           ),
         ],
       ),
     );
   }
 
-  Widget _getOrderInformation(DocumentSnapshot doc) {
+  Widget _getOrderInformation(Order order) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
@@ -131,21 +119,21 @@ class _OrderCardPageState extends State<OrderCardPage> {
             'Your items:',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          _getYourItems(doc),
+          _getYourItems(order),
         ],
       ),
     );
   }
 
-  Widget _controlButtons(DocumentSnapshot doc, BuildContext context) {
-    if (_isDeliveryComplete(doc)) {
+  Widget _controlButtons(Order order, BuildContext context) {
+    if (order.isDelivered) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
         child: Center(
           child: Text('Order delivered!'),
         ),
       );
-    } else if (doc['user_id']['is_accepted'] == true) {
+    } else if (order.isAccepted) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
         child: Center(
@@ -155,15 +143,29 @@ class _OrderCardPageState extends State<OrderCardPage> {
     } else {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
-        child: DocumentCallbackButton(
-            'Cancel Order', _deleteDocument, doc, context),
+        child: Center(
+          child: CupertinoButton(
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              "Cancel Order",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {
+              BlocProvider.of<OrderBloc>(context).add(OrderDeleted(order));
+              Navigator.pop(context);
+            },
+          ),
+        ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
+    final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Order'),
@@ -172,10 +174,10 @@ class _OrderCardPageState extends State<OrderCardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Information'),
-          _getDeliveryInformation(document),
+          _getDeliveryInformation(order),
           MediumTextSection('Order Information'),
-          _getOrderInformation(document),
-          _controlButtons(document, context),
+          _getOrderInformation(order),
+          _controlButtons(order, context),
         ],
       ),
     );

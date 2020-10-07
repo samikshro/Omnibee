@@ -1,3 +1,4 @@
+import 'package:Henfam/models/order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -88,20 +89,20 @@ class PaymentService {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  static void mergeOrder(DocumentSnapshot doc) {
+  static void mergeOrder(Order order) {
     final db = Firestore.instance;
     print("merging!");
     db
         .collection('orders')
-        .document(doc.documentID)
+        .document(order.docID)
         .setData({'is_received': true}, merge: true);
   }
 
-  static bool _paymentCallback(DocumentSnapshot doc, String status) {
+  static bool _paymentCallback(Order order, String status) {
     switch (status) {
       case "succeeded":
         {
-          mergeOrder(doc);
+          mergeOrder(order);
           return true;
         }
         break;
@@ -113,8 +114,8 @@ class PaymentService {
     }
   }
 
-  static void _confirmPayment(DocumentSnapshot doc, BuildContext context,
-      String sec, String paymentMethodID) async {
+  static void _confirmPayment(Order order, BuildContext context, String sec,
+      String paymentMethodID) async {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethodID),
     ).then((val) {
@@ -126,13 +127,13 @@ class PaymentService {
 
       print("status: " + val.status);
 
-      _paymentCallback(doc, val.status);
+      _paymentCallback(order, val.status);
     }).catchError((error, stackTrace) {
       print("error!");
     }).whenComplete(() => _printSuccess(context));
   }
 
-  static void payment(DocumentSnapshot doc, BuildContext context,
+  /* static void payment(DocumentSnapshot doc, BuildContext context,
       double dollars, String paymentMethodID) async {
     double amount =
         dollars * 100.0; // multipliying with 100 to change $ to cents
@@ -142,13 +143,13 @@ class PaymentService {
       'paymentMethod': paymentMethodID,
     }).then((response) async {
       // _confirmDialog(context, response.data["client_secret"], paymentMethod);
-      _confirmPayment(doc, context, response.data["client_secret"],
+      _confirmPayment(order, context, response.data["client_secret"],
           paymentMethodID); //function for confirmation for payment
     });
-  }
+  } */
 
   static void paymentTransfer(
-      DocumentSnapshot doc,
+      Order order,
       BuildContext context,
       double dollars,
       double applicationFee,
@@ -165,7 +166,7 @@ class PaymentService {
       'transfer_dest': delivererAccountId,
     }).then((response) async {
       // _confirmDialog(context, response.data["client_secret"], paymentMethod);
-      _confirmPayment(doc, context, response.data["client_secret"],
+      _confirmPayment(order, context, response.data["client_secret"],
           paymentMethodID); //function for confirmation for payment
     });
   }

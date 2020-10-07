@@ -19,8 +19,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
-    if (event is OrderLoadSuccess) {
+    if (event is OrderLoaded) {
       yield* _mapOrderLoadSuccessToState();
+    } else if (event is OrdersUpdated) {
+      yield* _mapOrdersUpdatedToState(event);
     } else if (event is OrderAdded) {
       yield* _mapOrderAddedToState(event);
     } else if (event is OrderDeleted) {
@@ -33,8 +35,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Stream<OrderState> _mapOrderLoadSuccessToState() async* {
     _ordersSubscription?.cancel();
     _ordersSubscription = _ordersRepository.orders().listen(
-          (order) => add(OrdersUpdated(order)),
+          (orders) => add(OrdersUpdated(orders)),
         );
+  }
+
+  Stream<OrderState> _mapOrdersUpdatedToState(OrdersUpdated event) async* {
+    try {
+      yield OrderStateLoadSuccess(event.orders);
+    } catch (_) {
+      yield OrderStateLoadFailure();
+    }
   }
 
   Stream<OrderState> _mapOrderAddedToState(OrderAdded event) async* {

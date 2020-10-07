@@ -1,24 +1,20 @@
 import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/models/models.dart';
 
 class OrderCard extends StatelessWidget {
-  final DocumentSnapshot document;
+  final Order order;
 
-  OrderCard(BuildContext context, {this.document});
+  OrderCard(BuildContext context, {this.order});
 
-  bool _isOrderComplete(DocumentSnapshot doc) {
-    return doc['is_received'] != null && doc['is_delivered'] != null;
-  }
-
-  List<Widget> _itemsToOrder(DocumentSnapshot document) {
+  List<Widget> _itemsToOrder(Order order) {
     List<Widget> children = [];
-    for (int i = 0; i < document['user_id']['basket'].length; i++) {
+    for (int i = 0; i < order.basket.length; i++) {
       children.add(ListTile(
         title: Text(
-          document['user_id']['basket'][i]['name'],
+          order.basket[i]['name'],
         ),
-        trailing: Text(document['user_id']['basket'][i]['price'].toString()),
+        trailing: Text(order.basket[i]['price'].toString()),
       ));
     }
     return children;
@@ -26,7 +22,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_isOrderComplete(document)) return Container();
+    if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -40,20 +36,18 @@ class OrderCard extends StatelessWidget {
           children: <Widget>[
             ExpansionTile(
                 leading: Icon(Icons.fastfood),
-                title: Text(document['user_id']['name'] +
+                title: Text(order.name + ": " + order.restaurantName),
+                subtitle: Text(order.restaurantName +
                     ": " +
-                    document['user_id']['rest_name_used']),
-                subtitle: Text(document['user_id']['rest_name_used'] +
-                    ": " +
-                    document['user_id']['delivery_window']['start_time'] +
+                    order.startTime +
                     "-" +
-                    document['user_id']['delivery_window']['end_time']),
-                children: _itemsToOrder(document)),
+                    order.endTime),
+                children: _itemsToOrder(order)),
             Image(
               image: AssetImage("assets/oishii_bowl_pic1.png"),
               fit: BoxFit.cover,
             ),
-            OrderCardButtonBar(document, context),
+            OrderCardButtonBar(order, context),
           ],
         ),
       ),
@@ -62,20 +56,20 @@ class OrderCard extends StatelessWidget {
 }
 
 class OrderCardButtonBar extends StatelessWidget {
-  final DocumentSnapshot document;
+  final Order order;
   final BuildContext context;
 
-  OrderCardButtonBar(this.document, this.context);
+  OrderCardButtonBar(this.order, this.context);
 
   MainAxisAlignment _getAlignment() {
-    if (document['is_delivered'] == null || document['is_delivered'] == false) {
+    if (order.isDelivered != true) {
       return MainAxisAlignment.end;
     } else {
       return MainAxisAlignment.spaceAround;
     }
   }
 
-  void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
+  void _markOrderComplete(Order order, BuildContext context) {
     // TODO: Commented code: in-app payments. Live code: marketplace transfers.
     // PaymentService.payment(
     //     doc, context, 50.0, doc['user_id']['payment_method_id']);
@@ -83,8 +77,8 @@ class OrderCardButtonBar extends StatelessWidget {
       content: Text('Confirming delivery, please wait one moment....'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
-    PaymentService.paymentTransfer(doc, context, doc['user_id']['price'], 1.23,
-        doc['user_id']['payment_method_id'], doc['stripeAccountId']);
+    PaymentService.paymentTransfer(order, context, order.price, 1.23,
+        order.paymentMethodId, order.stripeAccountId);
   }
 
   List<Widget> _getButtons(BuildContext context) {
@@ -95,12 +89,12 @@ class OrderCardButtonBar extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/order_card_page', arguments: document);
+          Navigator.pushNamed(context, '/order_card_page', arguments: order);
         },
       ),
     ];
 
-    if (document['is_delivered'] != null) {
+    if (order.isDelivered) {
       buttons.insert(
           0,
           RaisedButton(
@@ -113,7 +107,7 @@ class OrderCardButtonBar extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () {
-              _markOrderComplete(document, context);
+              _markOrderComplete(order, context);
             },
           ));
     }

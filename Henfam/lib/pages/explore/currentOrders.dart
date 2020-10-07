@@ -1,11 +1,11 @@
 import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/explore/deliveryCard.dart';
 import 'package:Henfam/pages/explore/orderCard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:Henfam/bloc/blocs.dart';
 
 class CurrentOrders extends StatelessWidget {
-  final _firestore = Firestore.instance;
   BaseAuth _auth = Auth();
 
   Future<String> _getUserId() async {
@@ -13,67 +13,55 @@ class CurrentOrders extends StatelessWidget {
     return user.uid;
   }
 
-  Stream<QuerySnapshot> _getUserOrders(String uid) {
-    final ordersRef = _firestore.collection('orders');
-    return ordersRef.where('user_id.uid', isEqualTo: uid).snapshots();
-  }
-
-  Stream<QuerySnapshot> _getUserDeliveries(String uid) {
-    final ordersRef = _firestore.collection('orders');
-    return ordersRef.where('user_id.runner', isEqualTo: uid).snapshots();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: _getUserId(),
-        builder: (BuildContext context, AsyncSnapshot<String> uid) {
-          if (uid.hasData) {
-            return ListView(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              children: <Widget>[
-                StreamBuilder(
-                  stream: _getUserOrders(uid.data),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
-                    return ExpansionTile(
+    return BlocBuilder<OrderBloc, OrderState>(builder: (context, state) {
+      if (state is OrderStateLoadSuccess) {
+        return FutureBuilder<String>(
+            future: _getUserId(),
+            builder: (BuildContext context, AsyncSnapshot<String> uid) {
+              print("inside builder\n");
+              if (uid.hasData) {
+                return ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    ExpansionTile(
                       title: Text(
                         'Your Orders',
                         style: TextStyle(fontSize: 18),
                       ),
-                      children: snapshot.data.documents
-                          .map<Widget>((doc) => OrderCard(
+                      children: state
+                          .getUserOrders(uid.data)
+                          .map<Widget>((order) => OrderCard(
                                 context,
-                                document: doc,
+                                order: order,
                               ))
                           .toList(),
-                    );
-                  },
-                ),
-                StreamBuilder(
-                  stream: _getUserDeliveries(uid.data),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
-                    return ExpansionTile(
+                    ),
+                    ExpansionTile(
                       title: Text(
                         'Your Deliveries',
                         style: TextStyle(fontSize: 18),
                       ),
-                      children: snapshot.data.documents
-                          .map<Widget>((doc) => DeliveryCard(
+                      children: state
+                          .getUserDeliveries(uid.data)
+                          .map<Widget>((order) => DeliveryCard(
                                 context,
-                                document: doc,
+                                order: order,
                               ))
                           .toList(),
-                    );
-                  },
-                ),
-              ],
-            );
-          } else {
-            return Container();
-          }
-        });
+                    ),
+                  ],
+                );
+              } else {
+                print("In here\n");
+                return CircularProgressIndicator();
+              }
+            });
+      } else {
+        return Container();
+      }
+    });
   }
 }

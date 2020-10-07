@@ -103,6 +103,8 @@ class RequestConfirm extends StatelessWidget {
                             _getTimeInfo(date, endDate)[1],
                             _getExpirationDate(date, endDate),
                             false,
+                            false,
+                            false,
                             null,
                             _getBasketPrice(state1.jsonEncoding),
                             state2.restaurant.bigImagePath,

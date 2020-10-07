@@ -7,6 +7,7 @@ import 'package:Henfam/widgets/largeTextSection.dart';
 class LilMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Building lilmode\n");
     return ListView(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
