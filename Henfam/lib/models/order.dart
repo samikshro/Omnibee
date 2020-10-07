@@ -1,0 +1,176 @@
+import 'dart:math';
+import 'package:Henfam/entities/entities.dart';
+
+import 'package:meta/meta.dart';
+
+@immutable
+class Order {
+  final String name;
+  final String uid;
+  final Point userCoordinates;
+  final String restaurantName;
+  final Point restaurantCoordinates;
+  final List<dynamic> basket;
+  final String location;
+  final String startTime;
+  final String endTime;
+  final DateTime expirationTime;
+  final bool isAccepted;
+  final String runnerUid;
+  final double price;
+  final String restaurantImage;
+  final String paymentMethodId;
+  final String stripeAccountId;
+  final String docID;
+
+  Order(
+    this.name,
+    this.uid,
+    this.userCoordinates,
+    this.restaurantName,
+    this.restaurantCoordinates,
+    this.basket,
+    this.location,
+    this.startTime,
+    this.endTime,
+    this.expirationTime,
+    this.isAccepted,
+    this.runnerUid,
+    this.price,
+    this.restaurantImage,
+    this.paymentMethodId,
+    this.stripeAccountId,
+    this.docID,
+  );
+
+  Order copyWith(
+      {String name,
+      String uid,
+      Point userCoordinates,
+      String restaurantName,
+      Point restaurantCoordinates,
+      List<dynamic> basket,
+      String location,
+      String startTime,
+      String endTime,
+      DateTime expirationTime,
+      bool isAccepted,
+      String runnerUid,
+      double price,
+      String restaurantImage,
+      String paymentMethodId,
+      String stripeAccountId,
+      String docID}) {
+    return Order(
+      name,
+      uid,
+      userCoordinates,
+      restaurantName,
+      restaurantCoordinates,
+      basket,
+      location,
+      startTime,
+      endTime,
+      expirationTime,
+      isAccepted,
+      runnerUid,
+      price,
+      restaurantImage,
+      paymentMethodId,
+      stripeAccountId,
+      docID,
+    );
+  }
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      uid.hashCode ^
+      userCoordinates.hashCode ^
+      restaurantName.hashCode ^
+      restaurantCoordinates.hashCode ^
+      basket.hashCode ^
+      location.hashCode ^
+      startTime.hashCode ^
+      endTime.hashCode ^
+      expirationTime.hashCode ^
+      isAccepted.hashCode ^
+      runnerUid.hashCode ^
+      price.hashCode ^
+      restaurantImage.hashCode ^
+      paymentMethodId.hashCode ^
+      stripeAccountId.hashCode ^
+      docID.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Order &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          uid == other.uid &&
+          userCoordinates == other.userCoordinates &&
+          restaurantName == other.restaurantName &&
+          restaurantCoordinates == other.restaurantCoordinates &&
+          basket == other.basket &&
+          location == other.location &&
+          startTime == other.startTime &&
+          endTime == other.endTime &&
+          expirationTime == other.expirationTime &&
+          isAccepted == other.isAccepted &&
+          runnerUid == other.runnerUid &&
+          price == other.price &&
+          restaurantImage == other.restaurantImage &&
+          paymentMethodId == other.paymentMethodId &&
+          stripeAccountId == other.stripeAccountId &&
+          docID == other.docID;
+
+  @override
+  String toString() {
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, price: $price, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
+  }
+
+  OrderEntity toEntity() {
+    return OrderEntity(
+      name,
+      uid,
+      userCoordinates,
+      restaurantName,
+      restaurantCoordinates,
+      basket,
+      location,
+      startTime,
+      endTime,
+      expirationTime,
+      isAccepted,
+      runnerUid,
+      price,
+      restaurantImage,
+      paymentMethodId,
+      stripeAccountId,
+      docID,
+    );
+  }
+
+  static Order fromEntity(OrderEntity entity) {
+    return Order(
+      entity.name,
+      entity.uid,
+      entity.userCoordinates,
+      entity.restaurantName,
+      entity.restaurantCoordinates,
+      entity.basket,
+      entity.location,
+      entity.startTime,
+      entity.endTime,
+      entity.expirationTime,
+      entity.isAccepted,
+      entity.runnerUid,
+      entity.price,
+      entity.restaurantImage,
+      entity.paymentMethodID,
+      entity.stripeAccountId,
+      entity.docID,
+    );
+  }
+}

@@ -58,6 +58,17 @@ class _RequestState extends State<Request> {
     return s;
   }
 
+  Future<String> _getPhoneNumber(String uid) async {
+    Future<String> s = Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return document['phone'];
+    });
+    return s;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
