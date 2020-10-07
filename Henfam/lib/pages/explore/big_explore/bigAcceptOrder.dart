@@ -99,6 +99,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           builder: (context) {
             return Column(
               children: [
+                //TODO: try circular progress indicator
                 Text(
                     'Please setup a payment account to get paid after your delivery! It may take up to 2m to redirect you to the proper form.'),
                 CupertinoButton(
