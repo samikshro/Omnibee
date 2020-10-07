@@ -1,2 +1,2 @@
 # Omnibee
-[Omnibee](www.omnibee.io)
+[Omnibee](https://www.omnibee.io)
