@@ -54,22 +54,8 @@ class _LocationDetailsState extends State<LocationDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              Expanded(
-                child: MediumTextSection('Drop-off Location'),
-              ),
-              Expanded(
-                child: IconButton(
-                  icon: Icon(IconData(59736, fontFamily: 'MaterialIcons')),
-                  tooltip: "Where will you be located?",
-                  onPressed: () {
-                    Tooltip(message: "Where will you be located?");
-                  },
-                ),
-              )
-            ],
-          ),
+          MediumTextSection('Drop-off Location'),
+          Text('Where will you be located?'),
           Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
