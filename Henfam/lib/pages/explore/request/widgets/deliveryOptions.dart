@@ -29,30 +29,12 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         children: <Widget>[
-          Row(
-            children: [
-              Expanded(child: MediumTextSection('Delivery Window')),
-              Expanded(
-                child: IconButton(
-                  icon: Icon(IconData(59736, fontFamily: 'MaterialIcons')),
-                  tooltip: "In what time range do you want your food?",
-                  onPressed: () {
-                    Tooltip(message: "What time?");
-                  },
-                ),
-              )
-            ],
-          ),
+          MediumTextSection('Delivery Window'),
+          Text('In what time range do you want your food?'),
           Container(
               width: double.infinity,
               margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-              child: expiration
-              // Text(
-              //   expiration,
-              //   // style: TextStyle(fontSize: 22),
-              //   textAlign: TextAlign.left,
-              // ),
-              ),
+              child: expiration),
           Divider(),
           TimeRange(
             fromTitle: Text(

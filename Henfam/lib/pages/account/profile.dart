@@ -103,21 +103,6 @@ class Profile extends StatelessWidget {
             return ListView(
               children: <Widget>[
                 ProfileHeader(snapshot.data, 'gmm22'),
-                /* ProfileErrandSnapshot(),
-            Divider(),
-            ProfileEarnings(14.69, 3.65),
-            Divider(),
-            ProfilePointsBar(350),
-            Divider(),
-            ProfilePrefs(),
-            Divider(), */
-                // Divider(),
-                // CupertinoButton(
-                //     color: Theme.of(context).primaryColor,
-                //     child: Text("Setup Payments"),
-                //     onPressed: () {
-                //       _stripeAccount();
-                //     }),
                 Divider(),
                 ProfileContact(signOut),
               ],

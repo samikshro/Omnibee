@@ -18,6 +18,7 @@ class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _endDeliveryDate = DateTime.now().add(new Duration(hours: 1));
   String _location = '';
+  bool _place_order_disabled = true;
   Position _locationCoordinates = Position();
 
   void _setDeliveryDate(DateTime _newDate) {
@@ -36,6 +37,7 @@ class _RequestState extends State<Request> {
     setState(() {
       _location = loc;
       _locationCoordinates = locationCoords;
+      _place_order_disabled = false;
     });
   }
 
@@ -107,26 +109,27 @@ class _RequestState extends State<Request> {
                             color: Theme.of(context).scaffoldBackgroundColor),
                       ),
                       onPressed: () {
-                        _getUserID().then((String s) {
-                          _getUserName(s).then((String name) {
-                            StripePayment.paymentRequestWithCardForm(
-                                    CardFormPaymentRequest())
-                                .then((paymentMethod) {
-                              showCupertinoModalPopup(
-                                context: context,
-                                builder: (context) => RequestConfirm(
-                                  _deliveryDate,
-                                  _endDeliveryDate,
-                                  s,
-                                  _location,
-                                  _locationCoordinates,
-                                  name,
-                                  paymentMethod.id,
-                                ),
-                              );
-                            });
-                          });
-                        });
+                        _place_order_disabled
+                            ? null
+                            : _getUserID().then((String s) {
+                                _getUserName(s).then((String name) {
+                                  StripePayment.paymentRequestWithCardForm(
+                                          CardFormPaymentRequest())
+                                      .then((paymentMethod) {
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (context) => RequestConfirm(
+                                          _deliveryDate,
+                                          _endDeliveryDate,
+                                          s,
+                                          _location,
+                                          _locationCoordinates,
+                                          name,
+                                          paymentMethod.id),
+                                    );
+                                  });
+                                });
+                              });
                       }),
                 ),
               ),
