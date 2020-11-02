@@ -31,6 +31,11 @@ class PaymentService {
     functionName: 'payments-createPaymentIntentTransfer',
   );
 
+  static final HttpsCallable retrieveBalance =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-retrieveBalance',
+  );
+
   static void _printSuccess(BuildContext context) {
     // addPaymentDetailsToFirestore(); //Function to add Payment details to firestore
     final snackBar = SnackBar(
@@ -157,5 +162,24 @@ class PaymentService {
       });
       createAccountLink(response.data["id"]);
     });
+  }
+
+  static Future<HttpsCallableResult> retrieveAccountBalance(String accountId) {
+    return retrieveBalance.call(<String, dynamic>{
+      'account_num': accountId,
+    });
+
+    // .then((response) {
+    //   debugPrint("herehereher");
+    //   print(response.data["pending"]);
+    //   List<dynamic> z = response.data["pending"] as List<dynamic>;
+
+    //   int balance = 0;
+    //   for (int i = 0; i < z.length; i++) {
+    //     balance += z[i]["amount"];
+    //   }
+
+    //   return balance;
+    // });
   }
 }
