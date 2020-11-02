@@ -19,6 +19,7 @@ class DeliveryOptions extends StatefulWidget {
 class _DeliveryOptionsState extends State<DeliveryOptions> {
   Function setGlobalDate;
   Function setGlobalEndDate;
+  Widget expiration;
 
   _DeliveryOptionsState(this.setGlobalDate, this.setGlobalEndDate);
 
@@ -29,6 +30,11 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
       child: Column(
         children: <Widget>[
           MediumTextSection('Delivery Window'),
+          Text('In what time range do you want your food?'),
+          Container(
+              width: double.infinity,
+              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
+              child: expiration),
           Divider(),
           TimeRange(
             fromTitle: Text(
@@ -53,10 +59,52 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             timeBlock: 30,
             onRangeCompleted: (range) {
               final now = new DateTime.now();
+              final endtime = DateTime(now.year, now.month, now.day,
+                  range.end.hour, range.end.minute);
               setGlobalDate(DateTime(now.year, now.month, now.day,
                   range.start.hour, range.start.minute));
-              setGlobalEndDate(DateTime(now.year, now.month, now.day,
-                  range.end.hour, range.end.minute));
+              setGlobalEndDate(endtime);
+              final expiretime = endtime.subtract(new Duration(minutes: 20));
+              setState(() => expiration = RichText(
+                    text: TextSpan(
+                        text: 'Note: Your request will ',
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.normal),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'expire ',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: 'if no one accepts it at ',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                // fontSize: 20,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          TextSpan(
+                            text: expiretime.toString(),
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' (20m before final delivery time).',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                // fontSize: 20,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ]),
+                  ));
+
+              // "Note: Your request will expire if no one accepts it at " +
+              //     expiretime.toString() +
+              //     " (20m before final delivery time).");
             },
           )
         ],

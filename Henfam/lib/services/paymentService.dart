@@ -32,55 +32,6 @@ class PaymentService {
     functionName: 'payments-createPaymentIntentTransfer',
   );
 
-  // static _confirmDialog(
-  //     BuildContext context, String clientSecret, PaymentMethod paymentMethod) {
-  //   print("confirm dialog: 1");
-  //   var confirm = AlertDialog(
-  //     title: Text("Confirm Payement"),
-  //     content: Container(
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: <Widget>[
-  //           Text(
-  //             "Make Payment",
-  //             // style: TextStyle(fontSize: 25),
-  //           ),
-  //           Text("Charge amount:\$100")
-  //         ],
-  //       ),
-  //     ),
-  //     actions: <Widget>[
-  //       new RaisedButton(
-  //         child: new Text('CANCEL'),
-  //         onPressed: () {
-  //           Navigator.of(context).pop();
-  //           final snackBar = SnackBar(
-  //             content: Text('Payment Cancelled'),
-  //           );
-  //           Scaffold.of(context).showSnackBar(snackBar);
-  //         },
-  //       ),
-  //       new RaisedButton(
-  //         child: new Text('Confirm'),
-  //         onPressed: () {
-  //           Navigator.of(context).pop();
-  //           _confirmPayment(context, clientSecret,
-  //               paymentMethod); // function to confirm Payment
-  //         },
-  //       ),
-  //     ],
-  //   );
-  //   print("confirm dialog: 2");
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         print("confirm dialog: 3");
-  //         return confirm;
-  //       });
-  // }
-
   static void _printSuccess(BuildContext context) {
     // addPaymentDetailsToFirestore(); //Function to add Payment details to firestore
     final snackBar = SnackBar(

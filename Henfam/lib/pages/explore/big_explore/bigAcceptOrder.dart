@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/services/paymentService.dart';
+import 'package:Henfam/auth/widgets/circularProgress.dart';
 
 class AcceptOrder extends StatefulWidget {
   BaseAuth auth = new Auth();
@@ -20,6 +21,7 @@ class AcceptOrder extends StatefulWidget {
 class _AcceptOrderState extends State<AcceptOrder> {
   var isExpanded = false;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _loading = 0;
   var selectedList = [
     true,
   ];
@@ -88,6 +90,18 @@ class _AcceptOrderState extends State<AcceptOrder> {
     });
   }
 
+  Widget _setUpButtonChild() {
+    if (_loading == 0) {
+      return Text("Set Up Payments");
+    } else if (_loading == 1) {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
   /// [_isStripeSetup] checks if stripe setup has been approved and payouts have
   /// been enabled. If payouts are enabled, the order is accepted. If payouts
   /// are not enabled, the user is asked to setup a payment account.
@@ -116,18 +130,28 @@ class _AcceptOrderState extends State<AcceptOrder> {
           builder: (context) {
             return Column(
               children: [
+                //TODO: try circular progress indicator
                 Text(
-                    'Please setup a payment account to get paid after your delivery! It may take up to 2m to redirect you to the proper form.'),
+                    'Setup a payment account to get paid after your delivery!'),
+                Text('Please wait up to 10 seconds for the form to load.',
+                    style: TextStyle(fontSize: 18)),
                 CupertinoButton(
                     color: Theme.of(context).primaryColor,
-                    child: Text("Setup Payments"),
+                    child: _setUpButtonChild(), //Text("Set Up Payments"),
                     onPressed: () {
                       if (delivererDoc != null) {
+                        setState(() {
+                          _loading = 1;
+                        });
+
                         delivererDoc['stripeAccountId'] == ""
                             ? _setupStripeAccount()
                             : _updateStripeAccount(
                                 delivererDoc['stripeAccountId']);
                       }
+                      setState(() {
+                        _loading = 0;
+                      });
                     }),
               ],
             );
