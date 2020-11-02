@@ -1,41 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:Henfam/bloc/blocs.dart';
 
 class DeliveryCard extends StatelessWidget {
-  final DocumentSnapshot document;
+  final Order order;
 
-  DeliveryCard(BuildContext context, {this.document});
-
-  void _markOrderComplete(DocumentSnapshot doc) {
-    final db = Firestore.instance;
-    db
-        .collection('orders')
-        .document(doc.documentID)
-        .setData({'is_delivered': true}, merge: true);
-  }
-
-  bool _isOrderComplete(DocumentSnapshot doc) {
-    return doc['is_delivered'] != null && doc['is_received'] != null;
-  }
+  DeliveryCard(BuildContext context, {this.order});
 
   String _getEarnings() {
     double minEarnings = 0.0;
-    for (int j = 0; j < document['user_id']['basket'].length; j++) {
-      minEarnings += document['user_id']['basket'][j]['price'] * .33;
+    for (int j = 0; j < order.basket.length; j++) {
+      minEarnings += order.basket[j]['price'] * .33;
     }
 
     return minEarnings.toStringAsFixed(2);
   }
 
-  List<Widget> _itemsToOrder(DocumentSnapshot document) {
+  List<Widget> _itemsToOrder(Order order) {
     List<Widget> children = [];
-    for (int i = 0; i < document['user_id']['basket'].length; i++) {
+    for (int i = 0; i < order.basket.length; i++) {
       children.add(ListTile(
         title: Text(
-          document['user_id']['basket'][i]['name'],
+          order.basket[i]['name'],
         ),
-        trailing: Text(document['user_id']['basket'][i]['price'].toString()),
+        trailing: Text(order.basket[i]['price'].toString()),
       ));
     }
     return children;
@@ -43,7 +33,7 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_isOrderComplete(document)) return Container();
+    if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -57,17 +47,15 @@ class DeliveryCard extends StatelessWidget {
           children: <Widget>[
             ExpansionTile(
                 leading: Icon(Icons.fastfood),
-                title: Text(document['user_id']['name'] +
+                title: Text(order.name + ": " + order.restaurantName),
+                subtitle: Text(order.restaurantName +
                     ": " +
-                    document['user_id']['rest_name_used']),
-                subtitle: Text(document['user_id']['rest_name_used'] +
-                    ": " +
-                    document['user_id']['delivery_window']['start_time'] +
+                    order.startTime +
                     "-" +
-                    document['user_id']['delivery_window']['end_time'] +
+                    order.endTime +
                     "\nEarnings: \$${_getEarnings()}"),
-                children: _itemsToOrder(document)),
-            DeliveryCardButtonBar(document, context),
+                children: _itemsToOrder(order)),
+            DeliveryCardButtonBar(order, context),
           ],
         ),
       ),
@@ -76,18 +64,10 @@ class DeliveryCard extends StatelessWidget {
 }
 
 class DeliveryCardButtonBar extends StatelessWidget {
-  final DocumentSnapshot document;
+  final Order order;
   final BuildContext context;
 
-  DeliveryCardButtonBar(this.document, this.context);
-
-  void _markOrderComplete(DocumentSnapshot doc) {
-    final db = Firestore.instance;
-    db
-        .collection('orders')
-        .document(doc.documentID)
-        .setData({'is_delivered': true}, merge: true);
-  }
+  DeliveryCardButtonBar(this.order, this.context);
 
   List<Widget> _getButtons() {
     List<Widget> buttons = [
@@ -101,7 +81,28 @@ class DeliveryCardButtonBar extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         onPressed: () {
-          _markOrderComplete(document);
+          Order modifiedOrder = order.copyWith(
+            name: order.name,
+            uid: order.uid,
+            userCoordinates: order.userCoordinates,
+            restaurantName: order.restaurantName,
+            restaurantCoordinates: order.restaurantCoordinates,
+            basket: order.basket,
+            location: order.location,
+            startTime: order.startTime,
+            endTime: order.endTime,
+            expirationTime: order.expirationTime,
+            isAccepted: order.isAccepted,
+            isDelivered: true,
+            isReceived: order.isReceived,
+            runnerUid: order.runnerUid,
+            price: order.price,
+            restaurantImage: order.restaurantImage,
+            paymentMethodId: order.paymentMethodId,
+            stripeAccountId: order.stripeAccountId,
+            docID: order.docID,
+          );
+          BlocProvider.of<OrderBloc>(context).add(OrderModified(modifiedOrder));
         },
       ),
       FlatButton(
@@ -110,13 +111,12 @@ class DeliveryCardButtonBar extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/delivery_card_page',
-              arguments: document);
+          Navigator.pushNamed(context, '/delivery_card_page', arguments: order);
         },
       ),
     ];
 
-    if (document['is_delivered'] != null) {
+    if (order.isDelivered) {
       buttons.removeAt(0);
       buttons.insert(
         0,

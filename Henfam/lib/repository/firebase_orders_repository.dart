@@ -28,8 +28,15 @@ class FirebaseOrdersRepository implements OrdersRepository {
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
       return snapshot.documents
+          .where((doc) => _isOrderNotExpired(doc))
           .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
           .toList();
     });
+  }
+
+  bool _isOrderNotExpired(DocumentSnapshot doc) {
+    Timestamp expirationTime = doc['user_id']['expiration_time'];
+    return Timestamp.now().millisecondsSinceEpoch <
+        expirationTime.millisecondsSinceEpoch;
   }
 }

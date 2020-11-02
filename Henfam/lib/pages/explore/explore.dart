@@ -13,21 +13,6 @@ class _ExploreState extends State<Explore> {
     Navigator.pushNamed(context, '/bigmode');
   }
 
-  final _activities = const [
-    {
-      'picture': Image(
-        image: AssetImage('assets/activity1.png'),
-        fit: BoxFit.cover,
-      ),
-      'caption': 'Getting Food from Collegetown',
-    },
-    /* {
-      'picture': Image(
-        image: AssetImage('assets/activity2.png'),
-      ),
-      'caption': 'Getting Food from Campus',
-    }, */
-  ];
   @override
   void initState() {
     super.initState();

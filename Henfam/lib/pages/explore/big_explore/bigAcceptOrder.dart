@@ -49,6 +49,17 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return "${numRequests.toString()} items";
   }
 
+  Future<String> _getUserName(String uid) async {
+    Future<String> s = Firestore.instance
+        .collection('users')
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return document['name'];
+    });
+    return s;
+  }
+
   void _markOrdersAccepted(List<DocumentSnapshot> docList) async {
     final uid = await _getUserID();
     final firestore = Firestore.instance;
@@ -62,14 +73,20 @@ class _AcceptOrderState extends State<AcceptOrder> {
       for (int i = 0; i < docList.length; i++) {
         final docId = docList[i].documentID;
         DocumentReference doc = firestore.collection('orders').document(docId);
-        batch.updateData(
-            doc, {'user_id.is_accepted': true, 'user_id.runner': uid});
+        _getUserName(uid).then((name) {
+          batch.updateData(doc, {
+            'user_id.is_accepted': true,
+            'user_id.runner': uid,
+            'user_id.runner_name': name
+          });
 
-        batch.setData(doc, {'stripeAccountId': delivererDoc['stripeAccountId']},
-            merge: true);
+          batch.setData(
+              doc, {'stripeAccountId': delivererDoc['stripeAccountId']},
+              merge: true);
+
+          batch.commit();
+        });
       }
-
-      batch.commit();
     });
   }
 

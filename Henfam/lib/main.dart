@@ -41,7 +41,7 @@ class HenfamBasic extends StatelessWidget {
         BlocProvider<OrderBloc>(
           create: (BuildContext context) =>
               OrderBloc(ordersRepository: FirebaseOrdersRepository())
-                ..add(OrderLoadSuccess()),
+                ..add(OrderLoaded()),
         ),
         BlocProvider<BasketBloc>(
           create: (BuildContext context) => BasketBloc()..add(BasketLoaded()),
