@@ -1,7 +1,9 @@
+import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/models/restaurant.dart';
 import 'package:Henfam/pages/explore/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math';
 import 'menu.dart';
 
@@ -48,6 +50,7 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
           icon: Icon(Icons.arrow_back_ios),
           color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),
           onPressed: () {
+            BlocProvider.of<BasketBloc>(context).add(BasketReset());
             Menu.order = [];
             Menu.onPressed = () {};
             Navigator.pop(context);

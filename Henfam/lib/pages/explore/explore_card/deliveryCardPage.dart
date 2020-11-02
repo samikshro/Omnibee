@@ -6,6 +6,7 @@ import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DeliveryCardPage extends StatelessWidget {
   Widget _displayStatus(Order order, BuildContext context) {
@@ -64,7 +65,7 @@ class DeliveryCardPage extends StatelessWidget {
     }
   }
 
-  Widget _callPhoneNumber(DocumentSnapshot doc, BuildContext context) {
+  Widget _callPhoneNumber(Order order, BuildContext context) {
     return Center(
       child: CupertinoButton(
         color: Theme.of(context).primaryColor,
@@ -76,15 +77,11 @@ class DeliveryCardPage extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          print("in onPressed");
           Firestore.instance
               .collection('users')
-              .document(doc["user_id"]["uid"])
+              .document(order.uid)
               .get()
               .then((DocumentSnapshot document) {
-            print("in then anonymous function");
-            print(document["phone"]);
-            print("past");
             launchURL("tel:" + document['phone']);
           });
         },
@@ -92,7 +89,7 @@ class DeliveryCardPage extends StatelessWidget {
     );
   }
 
-  Widget _getOrderInformation(DocumentSnapshot doc) {
+  Widget _getOrderInformation(Order order) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -186,6 +183,7 @@ class DeliveryCardPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Information'),
+          _callPhoneNumber(order, context),
           _getDeliveryInformation(order),
           MediumTextSection('Order Information'),
           _getOrderInformation(order),

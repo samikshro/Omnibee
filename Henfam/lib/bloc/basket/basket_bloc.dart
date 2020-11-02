@@ -55,14 +55,20 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   Stream<BasketState> _mapMenuItemDeletedToState(MenuItemDeleted event) async* {
     if (state is BasketLoadSuccess) {
-      MenuItem deleteThis = List.from((state as BasketLoadSuccess).menuItems)
-          .firstWhere(((item) =>
-              (item.name == event.menuItem.name) &&
-              (item.modifiersChosen == event.menuItem.modifiersChosen)));
-      final List<MenuItem> updatedMenuItems =
-          List.from((state as BasketLoadSuccess).menuItems)..remove(deleteThis);
-      final jsonEncoding = _toJson(updatedMenuItems);
-      yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
+      if (event.menuItem == null) {
+        yield BasketLoadSuccess((state as BasketLoadSuccess).menuItems,
+            (state as BasketLoadSuccess).jsonEncoding);
+      } else {
+        MenuItem deleteThis = List.from((state as BasketLoadSuccess).menuItems)
+            .firstWhere(((item) =>
+                (item.name == event.menuItem.name) &&
+                (item.modifiersChosen == event.menuItem.modifiersChosen)));
+        final List<MenuItem> updatedMenuItems =
+            List.from((state as BasketLoadSuccess).menuItems)
+              ..remove(deleteThis);
+        final jsonEncoding = _toJson(updatedMenuItems);
+        yield BasketLoadSuccess(updatedMenuItems, jsonEncoding);
+      }
     }
   }
 
