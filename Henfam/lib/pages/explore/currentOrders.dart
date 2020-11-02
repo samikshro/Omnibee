@@ -20,7 +20,6 @@ class CurrentOrders extends StatelessWidget {
         return FutureBuilder<String>(
             future: _getUserId(),
             builder: (BuildContext context, AsyncSnapshot<String> uid) {
-              print("inside builder\n");
               if (uid.hasData) {
                 return ListView(
                   physics: NeverScrollableScrollPhysics(),
@@ -55,7 +54,6 @@ class CurrentOrders extends StatelessWidget {
                   ],
                 );
               } else {
-                print("In here\n");
                 return CircularProgressIndicator();
               }
             });

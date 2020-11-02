@@ -106,6 +106,7 @@ class RequestConfirm extends StatelessWidget {
                             false,
                             false,
                             null,
+                            null,
                             _getBasketPrice(state1.jsonEncoding),
                             state2.restaurant.bigImagePath,
                             pmID,

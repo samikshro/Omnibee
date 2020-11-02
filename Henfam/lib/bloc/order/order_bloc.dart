@@ -40,11 +40,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   Stream<OrderState> _mapOrdersUpdatedToState(OrdersUpdated event) async* {
-    try {
-      yield OrderStateLoadSuccess(event.orders);
-    } catch (_) {
-      yield OrderStateLoadFailure();
-    }
+    yield OrderStateLoadSuccess(event.orders);
   }
 
   Stream<OrderState> _mapOrderAddedToState(OrderAdded event) async* {

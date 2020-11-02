@@ -51,24 +51,38 @@ class _OrderCardPageState extends State<OrderCardPage> {
     }
   }
 
+  List<Widget> _getAddOns(List<dynamic> addOns) {
+    if (addOns.length == 0) {
+      return [Container()];
+    }
+
+    List<Widget> output = [];
+    addOns.forEach((addOn) {
+      output.add(Padding(
+        padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
+        child: Text(addOn),
+      ));
+    });
+
+    return output;
+  }
+
   Widget _getYourItems(Order order) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
+      padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: order.basket.length,
           itemBuilder: (BuildContext context, int index) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(order.basket[index]['name']),
-                (index == order.basket.length - 1)
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Text('\$${order.price.toString()}'),
-                      )
-                    : Container(),
-              ],
+            return ExpansionTile(
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              expandedAlignment: Alignment.bottomLeft,
+              title: Text(order.basket[index]['name']),
+              subtitle: Text(
+                '\$${order.price.toString()}',
+              ),
+              trailing: Icon(Icons.arrow_drop_down),
+              children: _getAddOns(order.basket[index]['add_ons']),
             );
           }),
     );

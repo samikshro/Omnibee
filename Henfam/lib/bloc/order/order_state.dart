@@ -15,10 +15,10 @@ class OrderStateLoadSuccess extends OrderState {
   const OrderStateLoadSuccess([this.orders = const []]);
 
   @override
-  List<Object> get props => [Order];
+  List<Object> get props => [orders];
 
   @override
-  String toString() => 'OrderStateLoadSuccess { Order: $Order }';
+  String toString() => 'OrderStateLoadSuccess { Order: $orders }';
 
   List<Order> getUserOrders(String uid) {
     return orders.where((order) => (order.uid == uid)).toList();

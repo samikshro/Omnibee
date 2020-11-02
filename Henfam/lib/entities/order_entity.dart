@@ -17,6 +17,7 @@ class OrderEntity extends Equatable {
   final bool isDelivered;
   final bool isReceived;
   final String runnerUid;
+  final String runnerName;
   final double price;
   final String restaurantImage;
   final String paymentMethodID;
@@ -38,6 +39,7 @@ class OrderEntity extends Equatable {
     this.isDelivered,
     this.isReceived,
     this.runnerUid,
+    this.runnerName,
     this.price,
     this.restaurantImage,
     this.paymentMethodID,
@@ -61,6 +63,7 @@ class OrderEntity extends Equatable {
       "is_delivered": isDelivered,
       "is_received": isReceived,
       "runner": runnerUid,
+      "runner_name": runnerName,
       "price": price,
       "restaurant_pic": restaurantImage,
       "paymentMethodID": paymentMethodID,
@@ -85,6 +88,7 @@ class OrderEntity extends Equatable {
         isDelivered,
         isReceived,
         runnerUid,
+        runnerName,
         price,
         restaurantImage,
         paymentMethodID,
@@ -94,7 +98,7 @@ class OrderEntity extends Equatable {
 
   @override
   String toString() {
-    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID }';
+    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, runner_name: $runnerName, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID }';
   }
 
   static OrderEntity fromJson(Map<String, Object> json) {
@@ -113,6 +117,7 @@ class OrderEntity extends Equatable {
       json["is_delivered"] as bool,
       json["is_received"] as bool,
       json["runner_uid"] as String,
+      json["runner_name"] as String,
       json["price"] as double,
       json["restaurant_pic"] as String,
       json["paymentMethodID"] as String,
@@ -123,11 +128,6 @@ class OrderEntity extends Equatable {
 
   static Point _castToGeoPointAndReturnPoint(Object geopoint) {
     GeoPoint originalCoordinates = geopoint;
-    Point coords = Point(
-      originalCoordinates.latitude,
-      originalCoordinates.longitude,
-    );
-    print("The point is ${coords.toString()}");
     return Point(
       originalCoordinates.latitude,
       originalCoordinates.longitude,
@@ -142,9 +142,6 @@ class OrderEntity extends Equatable {
   }
 
   Map<String, Object> toDocument() {
-    print("user coords are ${userCoordinates.toString()}");
-    print("rest coords are ${restaurantCoordinates.toString()}");
-    print("uid are ${uid.toString()}");
     return {
       "stripeAccountId": stripeAccountId,
       "is_delivered": isDelivered,
@@ -169,6 +166,7 @@ class OrderEntity extends Equatable {
         ),
         "is_accepted": isAccepted,
         "runner": runnerUid,
+        "runner_name": runnerName,
         "price": price,
         "restaurant_pic": restaurantImage,
         "payment_method_id": paymentMethodID,
@@ -198,6 +196,7 @@ class OrderEntity extends Equatable {
       snap.data['is_delivered'],
       snap.data['is_received'],
       snap.data['user_id']['runner'],
+      snap.data['user_id']['runner_name'],
       snap.data['user_id']['price'],
       snap.data['user_id']['restaurant_pic'],
       snap.data['user_id']['payment_method_id'],
