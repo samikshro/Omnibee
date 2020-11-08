@@ -24,7 +24,6 @@ class BigCard extends StatelessWidget {
     if (document['user_id']['is_accepted'] == true) {
       return Container();
     }
-
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/accept_order', arguments: document);
@@ -39,16 +38,31 @@ class BigCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ExpansionTile(
-                leading: Icon(Icons.fastfood),
-                title: Text(document['user_id']['name'] +
-                    ": " +
-                    document['user_id']['rest_name_used']),
-                subtitle: Text(document['user_id']['rest_name_used'] +
-                    ": " +
-                    document['user_id']['delivery_window']['start_time'] +
-                    "-" +
-                    document['user_id']['delivery_window']['end_time']),
-                children: _itemsToOrder(document)),
+              leading: Icon(Icons.fastfood),
+              title: Text(
+                document['user_id']['rest_name_used'] +
+                    " to " +
+                    document['user_id']['location'],
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              children: _itemsToOrder(document),
+            ),
+            Text(
+              "Minimum Earnings: " +
+                  "\$" +
+                  (0.2 * document['user_id']['price']).toString(),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+              textAlign: TextAlign.right,
+            ),
+            Text(
+              "Deliver Between: " +
+                  document['user_id']['delivery_window']['start_time'] +
+                  "-" +
+                  document['user_id']['delivery_window']['end_time'] +
+                  "\n",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+              textAlign: TextAlign.left,
+            ),
             Image(
               image: AssetImage(document['user_id']['restaurant_pic']),
               fit: BoxFit.cover,

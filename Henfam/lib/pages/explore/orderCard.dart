@@ -69,16 +69,18 @@ class OrderCardButtonBar extends StatelessWidget {
     }
   }
 
-  void _markOrderComplete(Order order, BuildContext context) {
-    // TODO: Commented code: in-app payments. Live code: marketplace transfers.
-    // PaymentService.payment(
-    //     doc, context, 50.0, doc['user_id']['payment_method_id']);
+  void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
     final snackBar = SnackBar(
       content: Text('Confirming delivery, please wait one moment....'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
-    PaymentService.paymentTransfer(order, context, order.price, 1.23,
-        order.paymentMethodId, order.stripeAccountId);
+    double priceWithTax = 1.28 * doc['user_id']['price'];
+    priceWithTax = double.parse((priceWithTax).toStringAsFixed(2));
+    double fees = (1.28 * doc['user_id']['price'] * .03) + .3;
+    fees = double.parse((fees).toStringAsFixed(2));
+
+    PaymentService.paymentTransfer(doc, context, priceWithTax + fees, fees,
+        doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }
 
   List<Widget> _getButtons(BuildContext context) {

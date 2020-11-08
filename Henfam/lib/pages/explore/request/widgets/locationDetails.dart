@@ -55,7 +55,10 @@ class _LocationDetailsState extends State<LocationDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Drop-off Location'),
-          Text('Where will you be located?'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Text('Where will you be located?'),
+          ),
           Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),

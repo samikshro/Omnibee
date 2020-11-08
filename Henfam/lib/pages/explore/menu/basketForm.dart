@@ -66,6 +66,23 @@ class Basket extends StatelessWidget {
         : () => Navigator.pushNamed(context, '/request');
   }
 
+  List<String> _getDeliveryFeeAndTax(List<MenuItem> menuItems) {
+    double totalPrice = 0.0;
+    menuItems.forEach((item) {
+      totalPrice += double.parse(_getItemPrice(item));
+    });
+    double deliveryFee = totalPrice * .2;
+    double tax = .08 * (deliveryFee + totalPrice);
+    double applicationFee = .03 * (totalPrice + deliveryFee + tax) + .3;
+    double grandTotal = totalPrice + tax + applicationFee + deliveryFee;
+    return [
+      deliveryFee.toStringAsFixed(2),
+      applicationFee.toStringAsFixed(2),
+      tax.toStringAsFixed(2),
+      grandTotal.toStringAsFixed(2),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context2, state) {
@@ -98,18 +115,22 @@ class Basket extends StatelessWidget {
                       return _buildTile(state.menuItems, index);
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: ListTile(
-                      leading: Text(
-                        "Total Price",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      trailing: Text(
-                        _getItemsPrice(state.menuItems),
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
+                  ListTile(
+                    title: Text("Delivery Fee"),
+                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[0]),
+                  ),
+                  ListTile(
+                    title: Text("Application Fee"),
+                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[1]),
+                  ),
+                  ListTile(
+                    title: Text("Tax"),
+                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[2]),
+                  ),
+                  ListTile(
+                    title: Text("Total"),
+                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[3]),
+
                   ),
                 ],
               ))
