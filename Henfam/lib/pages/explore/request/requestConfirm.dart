@@ -52,15 +52,6 @@ class RequestConfirm extends StatelessWidget {
     return expirationDate;
   }
 
-  double _getBasketPrice(List<Map> jsonEncoding) {
-    double price = 0;
-    jsonEncoding.forEach((item) {
-      price += item['price'];
-    });
-    print(double.parse(price.toStringAsFixed(2)));
-    return double.parse(price.toStringAsFixed(2));
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
@@ -87,32 +78,36 @@ class RequestConfirm extends StatelessWidget {
                           BlocProvider.of<BasketBloc>(context)
                               .add(BasketReset());
 
-                          BlocProvider.of<OrderBloc>(context)
-                              .add(OrderAdded(Order(
-                            name,
-                            uid,
-                            Point(locCoords.latitude, locCoords.longitude),
-                            state2.restaurant.name,
-                            Point(
-                              state2.restaurant.location[0],
-                              state2.restaurant.location[1],
+                          BlocProvider.of<OrderBloc>(context).add(
+                            OrderAdded(
+                              Order(
+                                name,
+                                uid,
+                                Point(locCoords.latitude, locCoords.longitude),
+                                state2.restaurant.name,
+                                Point(
+                                  state2.restaurant.location[0],
+                                  state2.restaurant.location[1],
+                                ),
+                                state1.jsonEncoding,
+                                loc,
+                                _getTimeInfo(date, endDate)[0],
+                                _getTimeInfo(date, endDate)[1],
+                                _getExpirationDate(date, endDate),
+                                false,
+                                false,
+                                false,
+                                null,
+                                null,
+                                state1.getPrice(),
+                                state1.getMinEarnings(),
+                                state2.restaurant.bigImagePath,
+                                pmID,
+                                null,
+                                null,
+                              ),
                             ),
-                            state1.jsonEncoding,
-                            loc,
-                            _getTimeInfo(date, endDate)[0],
-                            _getTimeInfo(date, endDate)[1],
-                            _getExpirationDate(date, endDate),
-                            false,
-                            false,
-                            false,
-                            null,
-                            null,
-                            _getBasketPrice(state1.jsonEncoding),
-                            state2.restaurant.bigImagePath,
-                            pmID,
-                            null,
-                            null,
-                          )));
+                          );
                           Menu.order = []; //clears order after submitting
                           Menu.onPressed =
                               () {}; //clears onPressed fcn after submitting

@@ -19,6 +19,7 @@ class OrderEntity extends Equatable {
   final String runnerUid;
   final String runnerName;
   final double price;
+  final double minEarnings;
   final String restaurantImage;
   final String paymentMethodID;
   final String stripeAccountId;
@@ -41,6 +42,7 @@ class OrderEntity extends Equatable {
     this.runnerUid,
     this.runnerName,
     this.price,
+    this.minEarnings,
     this.restaurantImage,
     this.paymentMethodID,
     this.stripeAccountId,
@@ -65,6 +67,7 @@ class OrderEntity extends Equatable {
       "runner": runnerUid,
       "runner_name": runnerName,
       "price": price,
+      "min_earnings": minEarnings,
       "restaurant_pic": restaurantImage,
       "paymentMethodID": paymentMethodID,
       "stripeAccountId": stripeAccountId,
@@ -90,6 +93,7 @@ class OrderEntity extends Equatable {
         runnerUid,
         runnerName,
         price,
+        minEarnings,
         restaurantImage,
         paymentMethodID,
         stripeAccountId,
@@ -98,7 +102,7 @@ class OrderEntity extends Equatable {
 
   @override
   String toString() {
-    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, runner_name: $runnerName, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID }';
+    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, runner_name: $runnerName, price: $price, minEarnings: $minEarnings, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID }';
   }
 
   static OrderEntity fromJson(Map<String, Object> json) {
@@ -119,6 +123,7 @@ class OrderEntity extends Equatable {
       json["runner_uid"] as String,
       json["runner_name"] as String,
       json["price"] as double,
+      json["min_earnings"] as double,
       json["restaurant_pic"] as String,
       json["paymentMethodID"] as String,
       json["stripeAccountId"] as String,
@@ -168,6 +173,7 @@ class OrderEntity extends Equatable {
         "runner": runnerUid,
         "runner_name": runnerName,
         "price": price,
+        "min_earnings": minEarnings,
         "restaurant_pic": restaurantImage,
         "payment_method_id": paymentMethodID,
       }
@@ -198,6 +204,7 @@ class OrderEntity extends Equatable {
       snap.data['user_id']['runner'],
       snap.data['user_id']['runner_name'],
       snap.data['user_id']['price'],
+      snap.data['user_id']['min_earnings'],
       snap.data['user_id']['restaurant_pic'],
       snap.data['user_id']['payment_method_id'],
       snap.data['stripeAccountId'],

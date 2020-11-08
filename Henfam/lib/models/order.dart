@@ -21,6 +21,7 @@ class Order {
   final String runnerUid;
   final String runnerName;
   final double price;
+  final double minEarnings;
   final String restaurantImage;
   final String paymentMethodId;
   final String stripeAccountId;
@@ -43,6 +44,7 @@ class Order {
     this.runnerUid,
     this.runnerName,
     this.price,
+    this.minEarnings,
     this.restaurantImage,
     this.paymentMethodId,
     this.stripeAccountId,
@@ -66,6 +68,7 @@ class Order {
       String runnerUid,
       String runnerName,
       double price,
+      double minEarnings,
       String restaurantImage,
       String paymentMethodId,
       String stripeAccountId,
@@ -87,6 +90,7 @@ class Order {
       runnerUid,
       runnerName,
       price,
+      minEarnings,
       restaurantImage,
       paymentMethodId,
       stripeAccountId,
@@ -112,6 +116,7 @@ class Order {
       runnerUid.hashCode ^
       runnerName.hashCode ^
       price.hashCode ^
+      minEarnings.hashCode ^
       restaurantImage.hashCode ^
       paymentMethodId.hashCode ^
       stripeAccountId.hashCode ^
@@ -138,6 +143,7 @@ class Order {
           runnerUid == other.runnerUid &&
           runnerName == other.runnerName &&
           price == other.price &&
+          minEarnings == other.minEarnings &&
           restaurantImage == other.restaurantImage &&
           paymentMethodId == other.paymentMethodId &&
           stripeAccountId == other.stripeAccountId &&
@@ -145,7 +151,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
   }
 
   OrderEntity toEntity() {
@@ -166,6 +172,7 @@ class Order {
       runnerUid,
       runnerName,
       price,
+      minEarnings,
       restaurantImage,
       paymentMethodId,
       stripeAccountId,
@@ -191,6 +198,7 @@ class Order {
       entity.runnerUid,
       entity.runnerName,
       entity.price,
+      entity.minEarnings,
       entity.restaurantImage,
       entity.paymentMethodID,
       entity.stripeAccountId,

@@ -119,13 +119,14 @@ class _RequestState extends State<Request> {
                                     showCupertinoModalPopup(
                                       context: context,
                                       builder: (context) => RequestConfirm(
-                                          _deliveryDate,
-                                          _endDeliveryDate,
-                                          s,
-                                          _location,
-                                          _locationCoordinates,
-                                          name,
-                                          paymentMethod.id),
+                                        _deliveryDate,
+                                        _endDeliveryDate,
+                                        s,
+                                        _location,
+                                        _locationCoordinates,
+                                        name,
+                                        paymentMethod.id,
+                                      ),
                                     );
                                   });
                                 });
