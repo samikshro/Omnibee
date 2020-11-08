@@ -22,6 +22,31 @@ class BasketLoadSuccess extends BasketState {
   @override
   String toString() =>
       'BasketLoadSuccess { menuItems: $menuItems , jsonEncoding: $jsonEncoding}';
+
+  double _getItemsPrice() {
+    double price = 0.0;
+    menuItems.forEach((item) {
+      price += item.price;
+      item.modifiersChosen.forEach((modifier) {
+        price += modifier.price;
+      });
+    });
+    return price;
+  }
+
+  double getPrice() {
+    double price = _getItemsPrice();
+    double deliveryFee = .2 * price;
+    double tax = .08 * (deliveryFee + price);
+    double totalPrice = price + deliveryFee + tax;
+    return double.parse(totalPrice.toStringAsFixed(2));
+  }
+
+  double getMinEarnings() {
+    double price = _getItemsPrice();
+    double minEarnings = .2 * price;
+    return double.parse(minEarnings.toStringAsFixed(2));
+  }
 }
 
 class BasketLoadFailure extends BasketState {}

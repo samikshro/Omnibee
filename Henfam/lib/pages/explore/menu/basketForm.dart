@@ -1,6 +1,5 @@
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/models/menu_item.dart';
-import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,10 +66,7 @@ class Basket extends StatelessWidget {
   }
 
   List<String> _getDeliveryFeeAndTax(List<MenuItem> menuItems) {
-    double totalPrice = 0.0;
-    menuItems.forEach((item) {
-      totalPrice += double.parse(_getItemPrice(item));
-    });
+    double totalPrice = double.parse(_getItemsPrice(menuItems));
     double deliveryFee = totalPrice * .2;
     double tax = .08 * (deliveryFee + totalPrice);
     double applicationFee = .03 * (totalPrice + deliveryFee + tax) + .3;
@@ -130,7 +126,6 @@ class Basket extends StatelessWidget {
                   ListTile(
                     title: Text("Total"),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[3]),
-
                   ),
                 ],
               ))
