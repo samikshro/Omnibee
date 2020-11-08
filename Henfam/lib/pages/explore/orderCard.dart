@@ -76,9 +76,6 @@ class OrderCardButtonBar extends StatelessWidget {
   }
 
   void _markOrderComplete(DocumentSnapshot doc, BuildContext context) {
-    // TODO: Commented code: in-app payments. Live code: marketplace transfers.
-    // PaymentService.payment(
-    //     doc, context, 50.0, doc['user_id']['payment_method_id']);
     final snackBar = SnackBar(
       content: Text('Confirming delivery, please wait one moment....'),
     );
