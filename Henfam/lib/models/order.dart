@@ -16,7 +16,10 @@ class Order {
   final String endTime;
   final DateTime expirationTime;
   final bool isAccepted;
+  final bool isDelivered;
+  final bool isReceived;
   final String runnerUid;
+  final String runnerName;
   final double price;
   final String restaurantImage;
   final String paymentMethodId;
@@ -35,7 +38,10 @@ class Order {
     this.endTime,
     this.expirationTime,
     this.isAccepted,
+    this.isDelivered,
+    this.isReceived,
     this.runnerUid,
+    this.runnerName,
     this.price,
     this.restaurantImage,
     this.paymentMethodId,
@@ -55,7 +61,10 @@ class Order {
       String endTime,
       DateTime expirationTime,
       bool isAccepted,
+      bool isDelivered,
+      bool isReceived,
       String runnerUid,
+      String runnerName,
       double price,
       String restaurantImage,
       String paymentMethodId,
@@ -73,7 +82,10 @@ class Order {
       endTime,
       expirationTime,
       isAccepted,
+      isDelivered,
+      isReceived,
       runnerUid,
+      runnerName,
       price,
       restaurantImage,
       paymentMethodId,
@@ -95,7 +107,10 @@ class Order {
       endTime.hashCode ^
       expirationTime.hashCode ^
       isAccepted.hashCode ^
+      isDelivered.hashCode ^
+      isReceived.hashCode ^
       runnerUid.hashCode ^
+      runnerName.hashCode ^
       price.hashCode ^
       restaurantImage.hashCode ^
       paymentMethodId.hashCode ^
@@ -118,7 +133,10 @@ class Order {
           endTime == other.endTime &&
           expirationTime == other.expirationTime &&
           isAccepted == other.isAccepted &&
+          isDelivered == other.isDelivered &&
+          isReceived == other.isReceived &&
           runnerUid == other.runnerUid &&
+          runnerName == other.runnerName &&
           price == other.price &&
           restaurantImage == other.restaurantImage &&
           paymentMethodId == other.paymentMethodId &&
@@ -127,7 +145,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, runner: $runnerUid, price: $price, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
   }
 
   OrderEntity toEntity() {
@@ -143,7 +161,10 @@ class Order {
       endTime,
       expirationTime,
       isAccepted,
+      isDelivered,
+      isReceived,
       runnerUid,
+      runnerName,
       price,
       restaurantImage,
       paymentMethodId,
@@ -165,12 +186,19 @@ class Order {
       entity.endTime,
       entity.expirationTime,
       entity.isAccepted,
+      entity.isDelivered,
+      entity.isReceived,
       entity.runnerUid,
+      entity.runnerName,
       entity.price,
       entity.restaurantImage,
       entity.paymentMethodID,
       entity.stripeAccountId,
       entity.docID,
     );
+  }
+
+  bool isComplete() {
+    return isReceived == true && isDelivered == true;
   }
 }

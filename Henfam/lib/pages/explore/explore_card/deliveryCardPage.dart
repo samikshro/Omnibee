@@ -1,35 +1,57 @@
-import 'package:Henfam/pages/explore/explore_card/widgets/documentCallbackButton.dart';
+import 'package:Henfam/models/order.dart';
+import 'package:Henfam/bloc/blocs.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:Henfam/widgets/miniHeader.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DeliveryCardPage extends StatelessWidget {
-  void _markOrderComplete(DocumentSnapshot doc) {
-    final db = Firestore.instance;
-    db
-        .collection('orders')
-        .document(doc.documentID)
-        .setData({'is_delivered': true}, merge: true);
-  }
-
-  bool _isDeliveryComplete(DocumentSnapshot doc) {
-    return doc['is_delivered'] != null;
-  }
-
-  Widget _displayStatus(DocumentSnapshot doc, BuildContext context) {
-    if (_isDeliveryComplete(doc)) {
+  Widget _displayStatus(Order order, BuildContext context) {
+    if (order.isDelivered) {
       return Center(
         child: Text('Waiting for confirmation from recipient...'),
       );
     } else {
-      return DocumentCallbackButton(
-        'Delivery Complete',
-        _markOrderComplete,
-        doc,
-        context,
+      return Center(
+        child: CupertinoButton(
+          color: Theme.of(context).primaryColor,
+          child: Text(
+            "Mark Delivered",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Order modifiedOrder = order.copyWith(
+              name: order.name,
+              uid: order.uid,
+              userCoordinates: order.userCoordinates,
+              restaurantName: order.restaurantName,
+              restaurantCoordinates: order.restaurantCoordinates,
+              basket: order.basket,
+              location: order.location,
+              startTime: order.startTime,
+              endTime: order.endTime,
+              expirationTime: order.expirationTime,
+              isAccepted: order.isAccepted,
+              isDelivered: true,
+              isReceived: order.isReceived,
+              runnerUid: order.runnerUid,
+              price: order.price,
+              restaurantImage: order.restaurantImage,
+              paymentMethodId: order.paymentMethodId,
+              stripeAccountId: order.stripeAccountId,
+              docID: order.docID,
+            );
+            BlocProvider.of<OrderBloc>(context)
+                .add(OrderModified(modifiedOrder));
+            Navigator.pop(context);
+          },
+        ),
       );
     }
   }
@@ -43,7 +65,7 @@ class DeliveryCardPage extends StatelessWidget {
     }
   }
 
-  Widget _callPhoneNumber(DocumentSnapshot doc, BuildContext context) {
+  Widget _callPhoneNumber(Order order, BuildContext context) {
     return Center(
       child: CupertinoButton(
         color: Theme.of(context).primaryColor,
@@ -55,15 +77,11 @@ class DeliveryCardPage extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          print("in onPressed");
           Firestore.instance
               .collection('users')
-              .document(doc["user_id"]["uid"])
+              .document(order.uid)
               .get()
               .then((DocumentSnapshot document) {
-            print("in then anonymous function");
-            print(document["phone"]);
-            print("past");
             launchURL("tel:" + document['phone']);
           });
         },
@@ -71,79 +89,92 @@ class DeliveryCardPage extends StatelessWidget {
     );
   }
 
-  Widget _getOrderInformation(DocumentSnapshot doc) {
+  Widget _getOrderInformation(Order order) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         MiniHeader('Name'),
-        _getRequesterName(doc),
+        _getRequesterName(order),
         MiniHeader('Items'),
-        _getYourItems(doc),
+        _getYourItems(order),
       ],
     );
   }
 
-  Widget _getRequesterName(DocumentSnapshot doc) {
+  Widget _getRequesterName(Order order) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
-      child: Text(doc['user_id']['name']),
+      child: Text(order.name),
     );
   }
 
-  Widget _getYourItems(DocumentSnapshot doc) {
+  List<Widget> _getAddOns(List<dynamic> addOns) {
+    if (addOns.length == 0) {
+      return [Container()];
+    }
+
+    List<Widget> output = [];
+    addOns.forEach((addOn) {
+      output.add(Padding(
+        padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
+        child: Text(addOn),
+      ));
+    });
+
+    return output;
+  }
+
+  Widget _getYourItems(Order order) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(30, 5, 0, 10),
+      padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: doc['user_id']['basket'].length,
+          itemCount: order.basket.length,
           itemBuilder: (BuildContext context, int index) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(doc['user_id']['basket'][index]['name']),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Text('\$${doc['user_id']['price'].toString()}'),
-                )
-              ],
+            return ExpansionTile(
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              expandedAlignment: Alignment.bottomLeft,
+              title: Text(order.basket[index]['name']),
+              subtitle: Text(
+                '\$${order.price.toString()}',
+              ),
+              trailing: Icon(Icons.arrow_drop_down),
+              children: _getAddOns(order.basket[index]['add_ons']),
             );
           }),
     );
   }
 
-  Widget _getDeliveryWindow(DocumentSnapshot doc) {
-    String startTime = doc['user_id']['delivery_window']['start_time'];
-    String endTime = doc['user_id']['delivery_window']['end_time'];
+  Widget _getDeliveryWindow(Order order) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
-      child: Text("$startTime to $endTime"),
+      child: Text("${order.startTime} to ${order.endTime}"),
     );
   }
 
-  Widget _getDeliveryLocation(DocumentSnapshot doc) {
-    String location = doc['user_id']['location'];
-    List<String> wordList = location.split(',');
+  Widget _getDeliveryLocation(Order order) {
+    List<String> wordList = order.location.split(',');
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
       child: Text(wordList[0]),
     );
   }
 
-  Widget _getDeliveryInformation(DocumentSnapshot doc) {
+  Widget _getDeliveryInformation(Order order) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         MiniHeader('Delivery Window'),
-        _getDeliveryWindow(doc),
+        _getDeliveryWindow(order),
         MiniHeader('Destination'),
-        _getDeliveryLocation(doc),
+        _getDeliveryLocation(order),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
+    final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Delivery'),
@@ -152,13 +183,13 @@ class DeliveryCardPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Information'),
-          _callPhoneNumber(document, context),
-          _getDeliveryInformation(document),
+          _callPhoneNumber(order, context),
+          _getDeliveryInformation(order),
           MediumTextSection('Order Information'),
-          _getOrderInformation(document),
+          _getOrderInformation(order),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
-            child: _displayStatus(document, context),
+            child: _displayStatus(order, context),
           ),
         ],
       ),

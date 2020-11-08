@@ -1,5 +1,6 @@
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ class Basket extends StatelessWidget {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
       return Column(
         children: <Widget>[
-          Text(_getItemPrice(menuItem)),
+          Text(_getItemsPrice([menuItem])),
           Expanded(
             child: FlatButton(
               child: Icon(
@@ -48,10 +49,13 @@ class Basket extends StatelessWidget {
     return modifiers;
   }
 
-  String _getItemPrice(MenuItem item) {
-    double price = item.price;
-    item.modifiersChosen.forEach((modifier) {
-      price += modifier.price;
+  String _getItemsPrice(List<MenuItem> items) {
+    double price = 0.00;
+    items.forEach((item) {
+      price += item.price;
+      item.modifiersChosen.forEach((modifier) {
+        price += modifier.price;
+      });
     });
     return price.toStringAsFixed(2);
   }
@@ -100,10 +104,11 @@ class Basket extends StatelessWidget {
         )),
         body: (state is BasketLoadSuccess)
             ? SafeArea(
-                child: Column(
+                child: ListView(
                 children: <Widget>[
                   LargeTextSection("Items"),
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: state.menuItems.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -125,6 +130,7 @@ class Basket extends StatelessWidget {
                   ListTile(
                     title: Text("Total"),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[3]),
+
                   ),
                 ],
               ))

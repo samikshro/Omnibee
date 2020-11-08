@@ -7,7 +7,7 @@ abstract class OrderEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OrderLoadSuccess extends OrderEvent {}
+class OrderLoaded extends OrderEvent {}
 
 class OrderAdded extends OrderEvent {
   final Order order;
@@ -15,10 +15,10 @@ class OrderAdded extends OrderEvent {
   const OrderAdded(this.order);
 
   @override
-  List<Object> get props => [Order];
+  List<Object> get props => [order];
 
   @override
-  String toString() => 'OrderAdded { Order: $Order }';
+  String toString() => 'OrderAdded { Order: $order }';
 }
 
 class OrdersUpdated extends OrderEvent {
@@ -27,10 +27,10 @@ class OrdersUpdated extends OrderEvent {
   const OrdersUpdated(this.orders);
 
   @override
-  List<Object> get props => [Order];
+  List<Object> get props => [orders];
 
   @override
-  String toString() => 'OrderUpdated { Order: $Order }';
+  String toString() => 'OrderUpdated { Orders: $orders }';
 }
 
 class OrderDeleted extends OrderEvent {
@@ -39,10 +39,10 @@ class OrderDeleted extends OrderEvent {
   const OrderDeleted(this.order);
 
   @override
-  List<Object> get props => [Order];
+  List<Object> get props => [order];
 
   @override
-  String toString() => 'OrderDeleted { Order: $Order }';
+  String toString() => 'OrderDeleted { Order: $order }';
 }
 
 class OrderModified extends OrderEvent {
@@ -51,8 +51,8 @@ class OrderModified extends OrderEvent {
   const OrderModified(this.order);
 
   @override
-  List<Object> get props => [Order];
+  List<Object> get props => [order];
 
   @override
-  String toString() => 'OrderDeleted { Order: $Order }';
+  String toString() => 'OrderModified { Order: $order }';
 }

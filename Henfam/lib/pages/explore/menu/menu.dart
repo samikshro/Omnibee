@@ -1,3 +1,4 @@
+import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/bloc/restaurant/restaurant_bloc.dart';
 import 'package:Henfam/models/menu_category.dart';
@@ -54,6 +55,8 @@ class _MenuState extends State<Menu> {
                               color:
                                   Theme.of(context).scaffoldBackgroundColor)),
                       onPressed: () {
+                        BlocProvider.of<BasketBloc>(context)
+                            .add(MenuItemDeleted(null));
                         Navigator.pushNamed(
                           context,
                           '/basket_form',
