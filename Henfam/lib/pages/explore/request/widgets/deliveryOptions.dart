@@ -29,9 +29,13 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Window'),
-          Text('In what time range do you want your food?'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Text('In what time range do you want your food?'),
+          ),
           Container(
               width: double.infinity,
               margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
