@@ -84,7 +84,10 @@ class OrderCardButtonBar extends StatelessWidget {
     );
     Scaffold.of(context).showSnackBar(snackBar);
     double priceWithTax = 1.28 * doc['user_id']['price'];
+    priceWithTax = double.parse((priceWithTax).toStringAsFixed(2));
     double fees = (1.28 * doc['user_id']['price'] * .03) + .3;
+    fees = double.parse((fees).toStringAsFixed(2));
+
     PaymentService.paymentTransfer(doc, context, priceWithTax + fees, fees,
         doc['user_id']['payment_method_id'], doc['stripeAccountId']);
   }

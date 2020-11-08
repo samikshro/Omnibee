@@ -33,8 +33,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  int balance = 0;
-
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -86,7 +84,7 @@ class _ProfileState extends State<Profile> {
   /// 'stripeAccountId' == "", then setup. If 'stripe_setup_complete' == false
   /// and 'stripeAccountId' != "", then update. If 'stripe_setup_complete'
   /// == true, cleanly exit function.
-  void _stripeAccount() {
+  /* void _stripeAccount() {
     FirebaseAuth.instance.currentUser().then((user) {
       Firestore.instance
           .collection('users')
@@ -104,62 +102,61 @@ class _ProfileState extends State<Profile> {
       });
     });
   }
-
-  void _getBalance() {
-    _getStripeAccountID().then((val) async {
-      print("got to getBalance");
-      (PaymentService.retrieveAccountBalance(val)).then((response) {
-        debugPrint("herehereher");
-        print(response.data["pending"]);
+ */
+  Future<double> _getBalance() {
+    return _getStripeAccountID().then((val) async {
+      double bal = 0;
+      await (PaymentService.retrieveAccountBalance(val)).then((response) {
         List<dynamic> z = response.data["pending"] as List<dynamic>;
-        int bal = 0;
         for (int i = 0; i < z.length; i++) {
           bal += z[i]["amount"];
         }
-        setState(() {
-          balance = bal;
-        });
       });
+      return bal / 100;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _getBalance();
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Profile'),
-        ),
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Expanded(
-                child: LargeTextSection(
-                  "Balance to be Transferred: \$" + balance.toString(),
-                ),
-              ),
-              Expanded(
-                child: FutureBuilder<String>(
-                  future:
-                      _getName(), // a previously-obtained Future<String> or null
-                  builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) {
-                    if (!snapshot.hasData)
-                      return Center(child: Text('Loading...'));
-                    return ListView(
-                      children: <Widget>[
-                        ProfileHeader(snapshot.data, 'gmm22'),
-                        Divider(),
-                        ProfileContact(signOut),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ]));
+      appBar: AppBar(
+        title: Text('Your Profile'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          FutureBuilder<double>(
+            future: _getBalance(),
+            builder: (BuildContext context, AsyncSnapshot<double> balance) {
+              if (!balance.hasData) return Center(child: Text('Loading...'));
+              return LargeTextSection(
+                "Balance to be Transferred: \$" +
+                    balance.data.toStringAsFixed(2),
+              );
+            },
+          ),
+          Expanded(
+            child: FutureBuilder<String>(
+              future:
+                  _getName(), // a previously-obtained Future<String> or null
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (!snapshot.hasData) return Center(child: Text('Loading...'));
+                return ListView(
+                  children: <Widget>[
+                    ProfileHeader(snapshot.data, 'gmm22'),
+                    Divider(),
+                    ProfileContact(signOut),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
     // ));
   }
 }
