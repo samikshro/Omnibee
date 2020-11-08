@@ -1,10 +1,12 @@
 import 'package:Henfam/models/order.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:Henfam/bloc/blocs.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderCardPage extends StatefulWidget {
   @override
@@ -139,6 +141,39 @@ class _OrderCardPageState extends State<OrderCardPage> {
     );
   }
 
+  static void launchURL(String s) async {
+    String url = s;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _callPhoneNumber(Order order, BuildContext context) {
+    return Center(
+      child: CupertinoButton(
+        color: Theme.of(context).primaryColor,
+        child: Text(
+          "Call Errand Runner",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onPressed: () {
+          Firestore.instance
+              .collection('users')
+              .document(order.runnerUid)
+              .get()
+              .then((DocumentSnapshot document) {
+            launchURL("tel:" + document['phone']);
+          });
+        },
+      ),
+    );
+  }
+
   Widget _controlButtons(Order order, BuildContext context) {
     if (order.isDelivered) {
       return Padding(
@@ -188,6 +223,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Information'),
+          if (order.isAccepted) _callPhoneNumber(order, context),
           _getDeliveryInformation(order),
           MediumTextSection('Order Information'),
           _getOrderInformation(order),
