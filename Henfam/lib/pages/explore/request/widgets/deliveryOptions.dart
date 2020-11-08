@@ -2,6 +2,7 @@ import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:time_range/time_range.dart';
+import 'package:intl/intl.dart';
 
 class DeliveryOptions extends StatefulWidget {
   final Function setGlobalDate;
@@ -86,7 +87,8 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
                                 fontWeight: FontWeight.normal),
                           ),
                           TextSpan(
-                            text: expiretime.toString(),
+                            text: DateFormat('h:mm aa MM/dd/yy')
+                                .format(expiretime),
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 20,
