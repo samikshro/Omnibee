@@ -110,32 +110,6 @@ class RequestConfirm extends StatelessWidget {
                             null,
                             null,
                           )));
-                          /* firestoreInstance.collection("orders").add({
-                            "user_id": {
-                              "name": name,
-                              "uid": uid,
-                              "user_coordinates": GeoPoint(
-                                  locCoords.latitude, locCoords.longitude),
-                              "rest_name_used": state2.restaurant.name,
-                              "restaurant_coordinates": GeoPoint(
-                                state2.restaurant.location[0],
-                                state2.restaurant.location[1],
-                              ),
-                              "basket": state1.jsonEncoding,
-                              "price": _getBasketPrice(state1.jsonEncoding),
-                              "location": loc,
-                              "delivery_window": {
-                                "start_time": getTimeInfo(date, endDate)[0],
-                                "end_time": getTimeInfo(date, endDate)[1]
-                              },
-                              "expiration_time":
-                                  get_expiration_date(date, endDate),
-                              "is_accepted": false,
-                              "runner": null,
-                              "restaurant_pic": state2.restaurant.bigImagePath,
-                              "payment_method_id": pmID,
-                            }
-                          }); */
                           Menu.order = []; //clears order after submitting
                           Menu.onPressed =
                               () {}; //clears onPressed fcn after submitting
