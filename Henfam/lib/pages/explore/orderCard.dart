@@ -74,7 +74,7 @@ class OrderCardButtonBar extends StatelessWidget {
       content: Text('Confirming delivery, please wait one moment....'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
-    double priceWithTax = 1.28 * order.price;
+    double priceWithTax = 1.28 * order.price; //doc['user_id']['price'];
     priceWithTax = double.parse((priceWithTax).toStringAsFixed(2));
     double fees = (1.28 * order.price * .03) + .3;
     fees = double.parse((fees).toStringAsFixed(2));

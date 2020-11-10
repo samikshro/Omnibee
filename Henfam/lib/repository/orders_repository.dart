@@ -9,4 +9,6 @@ abstract class OrdersRepository {
   Future<void> updateOrder(Order order);
 
   Stream<List<Order>> orders();
+
+  Stream<List<Order>> expiredOrders();
 }
