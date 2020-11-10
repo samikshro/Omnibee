@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
+//TODO: move to using bloc
 class BigCard extends StatelessWidget {
   final DocumentSnapshot document;
 
@@ -17,6 +19,13 @@ class BigCard extends StatelessWidget {
       ));
     }
     return children;
+  }
+
+  double _roundDown(double value, int precision) {
+    final isNegative = value.isNegative;
+    final mod = pow(10.0, precision);
+    final roundDown = (((value.abs() * mod).floor()) / mod);
+    return isNegative ? -roundDown : roundDown;
   }
 
   @override
@@ -50,7 +59,9 @@ class BigCard extends StatelessWidget {
             Text(
               "Minimum Earnings: " +
                   "\$" +
-                  (0.2 * document['user_id']['price']).toString(),
+                  //TODO: used a hack to get correct truncation + floor round
+                  // (0.2 * document['user_id']['price']).toString(),
+                  _roundDown(0.2 * document['user_id']['price'], 2).toString(),
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
               textAlign: TextAlign.right,
             ),
