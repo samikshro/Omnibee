@@ -57,7 +57,7 @@ class _NotificationHandlerState extends State<NotificationHandler> {
                   subtitle: Text(message['notification']['body']),
                   // TODO: Uncomment out this code for testflight
                   /* title: Text(message['aps']['alert']['title']),
-                  subtitle: Text(message['aps']['alert']['body']), */
+                  subtitle: Text(message['aps']['acd ilert']['body']) */,
                 ),
                 actions: <Widget>[
                   FlatButton(
