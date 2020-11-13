@@ -23,11 +23,11 @@ class LilMode extends StatelessWidget {
         ),
         CurrentOrders(),
         //TODO: fix PreviousOrders to actually connect with expired requests
-        // Padding(
-        //   padding: EdgeInsets.only(top: 20),
-        //   child: LargeTextSection("Your Previous Errands"),
-        // ),
-        // PreviousOrders(),
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: LargeTextSection("Your Previous Errands"),
+        ),
+        PreviousOrders(),
       ],
     );
   }

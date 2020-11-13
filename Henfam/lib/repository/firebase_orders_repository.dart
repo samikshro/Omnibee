@@ -28,32 +28,8 @@ class FirebaseOrdersRepository implements OrdersRepository {
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
       return snapshot.documents
-          .where((doc) => _isOrderNotExpired(doc))
           .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
           .toList();
     });
-  }
-
-  @override
-  Stream<List<Order>> expiredOrders() {
-    return orderCollection.snapshots().map((snapshot) {
-      return snapshot.documents
-          .where((doc) => _isOrderExpiredAndAccepted(doc))
-          .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
-          .toList();
-    });
-  }
-
-  bool _isOrderNotExpired(DocumentSnapshot doc) {
-    Timestamp expirationTime = doc['user_id']['expiration_time'];
-    return Timestamp.now().millisecondsSinceEpoch <
-        expirationTime.millisecondsSinceEpoch;
-  }
-
-  bool _isOrderExpiredAndAccepted(DocumentSnapshot doc) {
-    Timestamp expirationTime = doc['user_id']['expiration_time'];
-    return Timestamp.now().millisecondsSinceEpoch >
-            expirationTime.millisecondsSinceEpoch &&
-        doc['user_id']['is_accepted'] == true;
   }
 }
