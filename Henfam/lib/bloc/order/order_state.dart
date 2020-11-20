@@ -23,19 +23,38 @@ class OrderStateLoadSuccess extends OrderState {
   String toString() => 'OrderStateLoadSuccess { Order: $orders }';
 
   List<Order> getUserOrders(String uid) {
-    return orders.where((order) => (order.uid == uid)).toList();
+    return orders
+        .where((order) => ((order.uid == uid) && (_isOrderNotExpired(order))))
+        .toList();
   }
 
   List<Order> getUserDeliveries(String uid) {
-    return orders.where((order) => (order.runnerUid == uid)).toList();
+    return orders
+        .where((order) =>
+            ((order.runnerUid == uid) && (_isOrderNotExpired(order))))
+        .toList();
+  }
+
+  bool _isOrderNotExpired(Order order) {
+    return DateTime.now().millisecondsSinceEpoch <
+        order.expirationTime.millisecondsSinceEpoch;
   }
 
   List<Order> getPrevUserOrders(String uid) {
-    return expiredOrders.where((order) => (order.uid == uid)).toList();
+    return expiredOrders
+        .where((order) => ((order.uid == uid) && _isExpiredAndAccepted(order)))
+        .toList();
   }
 
   List<Order> getPrevUserDeliveries(String uid) {
-    return expiredOrders.where((order) => (order.runnerUid == uid)).toList();
+    return expiredOrders
+        .where((order) =>
+            ((order.runnerUid == uid) && _isExpiredAndAccepted(order)))
+        .toList();
+  }
+
+  bool _isExpiredAndAccepted(Order order) {
+    return (order.isAccepted && !_isOrderNotExpired(order));
   }
 }
 
