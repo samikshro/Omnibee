@@ -20,7 +20,7 @@ class OrderStateLoadSuccess extends OrderState {
   List<Object> get props => [orders];
 
   @override
-  String toString() => 'OrderStateLoadSuccess { Order: $orders }';
+  String toString() => 'OrderStateLoadSuccess { Orders: $orders }';
 
   List<Order> getUserOrders(String uid) {
     return orders

@@ -7,3 +7,4 @@ export 'modifier_item.dart';
 export 'chatModel.dart';
 export 'contactModel.dart';
 export 'order.dart';
+export 'user.dart';

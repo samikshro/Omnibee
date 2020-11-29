@@ -6,8 +6,13 @@ import 'package:Henfam/auth/widgets/passwordInput.dart';
 import 'package:Henfam/auth/widgets/phoneInput.dart';
 import 'package:Henfam/auth/widgets/primaryButton.dart';
 import 'package:Henfam/auth/widgets/secondaryButton.dart';
+import 'package:Henfam/bloc/auth/auth_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/auth/authentication.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:Henfam/models/models.dart';
+import 'package:Henfam/entities/entities.dart';
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
@@ -89,6 +94,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         });
 
         if (userId.length > 0 && userId != null) {
+          User user = await Firestore.instance
+              .collection("users")
+              .document(userId)
+              .get()
+              .then((DocumentSnapshot document) {
+            return User.fromEntity(UserEntity.fromSnapshot(document));
+          });
+          BlocProvider.of<AuthBloc>(context).add(WasAuthenticated(user));
           widget.loginCallback();
         }
       } catch (e) {
