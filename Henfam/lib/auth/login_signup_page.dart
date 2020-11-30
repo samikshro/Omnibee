@@ -15,10 +15,9 @@ import 'package:Henfam/models/models.dart';
 import 'package:Henfam/entities/entities.dart';
 
 class LoginSignupPage extends StatefulWidget {
-  LoginSignupPage({this.auth, this.loginCallback});
+  LoginSignupPage({this.auth});
 
   final BaseAuth auth;
-  final VoidCallback loginCallback;
 
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
@@ -102,7 +101,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             return User.fromEntity(UserEntity.fromSnapshot(document));
           });
           BlocProvider.of<AuthBloc>(context).add(WasAuthenticated(user));
-          widget.loginCallback();
         }
       } catch (e) {
         print('Error: $e');

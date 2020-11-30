@@ -4,23 +4,16 @@ import 'package:Henfam/pages/explore/explore.dart';
 import 'package:Henfam/pages/account/profile.dart';
 import 'package:Henfam/notifications/notificationHandler.dart';
 
-class LandingPage extends StatelessWidget {
-  LandingPage({Key key, this.auth, this.userId, this.logoutCallback})
-      : super(key: key);
+class LandingPage extends StatefulWidget {
+  LandingPage({Key key, this.auth}) : super(key: key);
 
   final BaseAuth auth;
-  final VoidCallback logoutCallback;
-  final String userId;
 
-  signOut() async {
-    try {
-      await auth.signOut();
-      logoutCallback();
-    } catch (e) {
-      print(e);
-    }
-  }
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
 
+class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return NotificationHandler(
@@ -42,7 +35,7 @@ class LandingPage extends StatelessWidget {
                 Explore(),
                 // ChatList(),
                 // BigMode(),
-                Profile(auth, logoutCallback, userId),
+                Profile(widget.auth),
               ],
             ),
           ),

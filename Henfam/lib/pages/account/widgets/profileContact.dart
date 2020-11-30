@@ -13,24 +13,6 @@ class ProfileContact extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          /* SectionHeader('Contact'),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
-            child: Text(
-              'Phone',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          CustomTile(label: '(932) 555-1212'),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
-            child: Text(
-              'Support',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          CustomTile(label: 'Help'),
-          CustomTile(label: 'Feedback'), */
           CustomTile(label: 'Log out', onTap: signOut),
         ],
       ),
