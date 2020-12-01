@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  // Future<double> _getBalance(String accId) {
+  // Future<double> _getBalance() {
   //   return _getStripeAccountID().then((val) async {
   //     double bal = 0;
   //     await (PaymentService.retrieveAccountBalance(accId)).then((response) {
