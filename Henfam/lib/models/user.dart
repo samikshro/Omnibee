@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class User {
   final String uid;
   final int boosters;
-  final int earnings;
+  final double earnings;
   final String email;
   final String name;
   final int points;
@@ -33,7 +33,7 @@ class User {
   User copyWith(
       {String uid,
       int boosters,
-      int earnings,
+      double earnings,
       String email,
       String name,
       int points,

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 class UserEntity extends Equatable {
   final String uid;
   final int boosters;
-  final int earnings;
+  final double earnings;
   final String email;
   final String name;
   final int points;
@@ -69,7 +69,7 @@ class UserEntity extends Equatable {
     return UserEntity(
       json["uid"] as String,
       json["boosters"] as int,
-      json["earnings"] as int,
+      json["earnings"] as double,
       json["email"] as String,
       json["name"] as String,
       json["points"] as int,
