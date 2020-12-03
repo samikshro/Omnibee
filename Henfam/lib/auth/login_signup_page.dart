@@ -67,6 +67,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     _errorMessage = "";
   }
 
+// potentially causing problem: "setting setState after dispose"
   void toggleFormMode() {
     resetForm();
     setState(() {
@@ -103,7 +104,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           BlocProvider.of<AuthBloc>(context).add(WasAuthenticated(user));
         }
       } catch (e) {
+        print("in catch statement");
         print('Error: $e');
+
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;

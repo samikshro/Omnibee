@@ -19,15 +19,21 @@ class FirebaseUserRepository implements UserRepository {
   }
 
   @override
-  Future<String> signIn(String email, String password) async {
+  Future<User> signIn(String email, String password) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
-    return user.uid;
+    FirebaseUser fUser = result.user;
+    User user = await userCollection
+        .document(fUser.uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return User.fromEntity(UserEntity.fromSnapshot(document));
+    });
+    return user;
   }
 
   @override
-  Future<String> signUp(
+  Future<List<String>> signUp(
       String name, String email, String password, String phone) async {
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -46,7 +52,7 @@ class FirebaseUserRepository implements UserRepository {
       'phone': phone,
     });
 
-    return user.uid;
+    return [email, password];
   }
 
   @override
