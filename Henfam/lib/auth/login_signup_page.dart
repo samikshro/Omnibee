@@ -81,28 +81,16 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       _isLoading = true;
     });
     if (validateAndSave()) {
-      String userId = "";
       try {
         if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
+          BlocProvider.of<AuthBloc>(context).add(SignedIn(_email, _password));
         } else {
-          userId = await widget.auth.signUp(_name, _email, _password, _phone);
-          userId = await widget.auth.signIn(_email, _password);
+          BlocProvider.of<AuthBloc>(context)
+              .add(SignedUp(_name, _email, _password, _phone));
         }
         setState(() {
           _isLoading = false;
         });
-
-        if (userId.length > 0 && userId != null) {
-          User user = await Firestore.instance
-              .collection("users")
-              .document(userId)
-              .get()
-              .then((DocumentSnapshot document) {
-            return User.fromEntity(UserEntity.fromSnapshot(document));
-          });
-          BlocProvider.of<AuthBloc>(context).add(WasAuthenticated(user));
-        }
       } catch (e) {
         print("in catch statement");
         print('Error: $e');
