@@ -67,7 +67,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     _errorMessage = "";
   }
 
-// potentially causing problem: "setting setState after dispose"
+// TODO: potentially causing problem: "setting setState after dispose"
   void toggleFormMode() {
     resetForm();
     setState(() {
