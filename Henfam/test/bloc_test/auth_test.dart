@@ -63,29 +63,17 @@ void authBlocTests() {
     blocTest(
       'SignedIn: emits [Authenticated(user)] when SignedIn added',
       build: () => authBloc,
-      act: (AuthBloc bloc) async => bloc
-        ..add(AppStarted())
-        ..add(SignedIn("account18@cornell.edu", "account18")),
+      act: (AuthBloc bloc) async =>
+          bloc..add(AppStarted())..add(SignedIn("", "")),
       expect: <AuthState>[
         Unauthenticated(),
-        Authenticated(User(
-            "Y0q3pyC44qf14wogcylX1FLbBAw1",
-            0,
-            0,
-            "account18@cornell.edu",
-            "account18@cornell.edu",
-            0,
-            0,
-            0,
-            "acct_1HTygMD50gL9tipE",
-            "cgF9RW4CJ0BIogX1oHxzCh:APA91bEdwV9i1tJGM7Jcyp_IZHE7zYyMfYUsaUVH4BWtV2EG2CCKur-fuU3Evtfbg6HZb_4bPaa9KdH2wi7yZheluVi58Lk6bdq6xwkWJ-jLMGUcHhzVoQv1wR03TBHX7Uk1DnrioTrQ",
-            true))
+        Authenticated(null),
       ],
     );
 
     tearDown(() {
       mockUser = null;
-      authBloc = null;
+      authBloc?.close();
     });
   });
 }

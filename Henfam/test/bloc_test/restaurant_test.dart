@@ -53,7 +53,7 @@ void restaurantBlocTests() {
     );
 
     tearDown(() {
-      restaurantBloc = null;
+      restaurantBloc?.close();
     });
   });
 }
