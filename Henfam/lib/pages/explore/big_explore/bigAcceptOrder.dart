@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/services/paymentService.dart';
-import 'package:Henfam/auth/widgets/circularProgress.dart';
 
 class AcceptOrder extends StatefulWidget {
   BaseAuth auth = new Auth();

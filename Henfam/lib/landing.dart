@@ -1,13 +1,15 @@
-import 'package:Henfam/auth/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/explore.dart';
 import 'package:Henfam/pages/account/profile.dart';
 import 'package:Henfam/notifications/notificationHandler.dart';
 
 class LandingPage extends StatefulWidget {
-  LandingPage({Key key, this.auth}) : super(key: key);
+  LandingPage({
+    Key key,
+    /*this.auth*/
+  }) : super(key: key);
 
-  final BaseAuth auth;
+  //final BaseAuth auth;
 
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -35,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
                 Explore(),
                 // ChatList(),
                 // BigMode(),
-                Profile(widget.auth),
+                Profile(/*widget.auth*/),
               ],
             ),
           ),

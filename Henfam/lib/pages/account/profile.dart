@@ -1,4 +1,3 @@
-import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
@@ -13,9 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:Henfam/services/paymentService.dart';
 
 class Profile extends StatefulWidget {
-  final BaseAuth auth;
-
-  Profile(this.auth);
+  //final BaseAuth auth;
 
   static void launchURL(String s) async {
     String url = s;
@@ -33,7 +30,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   signOut() async {
     try {
-      await widget.auth.signOut();
+      //await widget.auth.signOut();
       BlocProvider.of<AuthBloc>(context).add(WasUnauthenticated());
     } catch (e) {
       print(e);

@@ -22,16 +22,29 @@ class OrderStateLoadSuccess extends OrderState {
   @override
   String toString() => 'OrderStateLoadSuccess { Orders: $orders }';
 
-  List<Order> getUserOrders(String uid) {
+  String _getUserId() {
+    String uid;
+    BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated) {
+          uid = state.user.uid;
+        }
+      },
+    );
+    return uid;
+  }
+
+  List<Order> getUserOrders() {
     return orders
-        .where((order) => ((order.uid == uid) && (_isOrderNotExpired(order))))
+        .where((order) =>
+            ((order.uid == _getUserId()) && (_isOrderNotExpired(order))))
         .toList();
   }
 
-  List<Order> getUserDeliveries(String uid) {
+  List<Order> getUserDeliveries() {
     return orders
         .where((order) =>
-            ((order.runnerUid == uid) && (_isOrderNotExpired(order))))
+            ((order.runnerUid == _getUserId()) && (_isOrderNotExpired(order))))
         .toList();
   }
 
@@ -40,16 +53,17 @@ class OrderStateLoadSuccess extends OrderState {
         order.expirationTime.millisecondsSinceEpoch;
   }
 
-  List<Order> getPrevUserOrders(String uid) {
+  List<Order> getPrevUserOrders() {
     return expiredOrders
-        .where((order) => ((order.uid == uid) && _isExpiredAndAccepted(order)))
+        .where((order) =>
+            ((order.uid == _getUserId()) && _isExpiredAndAccepted(order)))
         .toList();
   }
 
-  List<Order> getPrevUserDeliveries(String uid) {
+  List<Order> getPrevUserDeliveries() {
     return expiredOrders
         .where((order) =>
-            ((order.runnerUid == uid) && _isExpiredAndAccepted(order)))
+            ((order.runnerUid == _getUserId()) && _isExpiredAndAccepted(order)))
         .toList();
   }
 

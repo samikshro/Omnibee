@@ -20,16 +20,18 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Future<User> signIn(String email, String password) async {
-    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    FirebaseUser fUser = result.user;
-    User user = await userCollection
-        .document(fUser.uid)
-        .get()
-        .then((DocumentSnapshot document) {
-      return User.fromEntity(UserEntity.fromSnapshot(document));
-    });
-    return user;
+    try {
+      AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser fUser = result.user;
+      User user = await userCollection
+          .document(fUser.uid)
+          .get()
+          .then((DocumentSnapshot document) {
+        return User.fromEntity(UserEntity.fromSnapshot(document));
+      });
+      return user;
+    } catch (e) {}
   }
 
   @override
