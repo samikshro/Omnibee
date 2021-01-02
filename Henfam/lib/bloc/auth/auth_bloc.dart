@@ -64,17 +64,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignedInToState(SignedIn event) async* {
-    if (state is Unauthenticated) {
-      User user = await _userRepository.signIn(event.email, event.password);
-      yield Authenticated(user);
+    try {
+      if (state is Unauthenticated) {
+        User user = await _userRepository.signIn(event.email, event.password);
+        yield Authenticated(user);
+      }
+    } catch (e) {
+      throw e;
     }
   }
 
   Stream<AuthState> _mapSignedUpToState(SignedUp event) async* {
-    if (state is Unauthenticated) {
-      List<String> signedUp = await _userRepository.signUp(
-          event.name, event.email, event.password, event.phone);
-      _mapSignedInToState(SignedIn(signedUp[0], signedUp[1]));
+    try {
+      if (state is Unauthenticated) {
+        List<String> signedUp = await _userRepository.signUp(
+            event.name, event.email, event.password, event.phone);
+        _mapSignedInToState(SignedIn(signedUp[0], signedUp[1]));
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
