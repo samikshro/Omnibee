@@ -22,3 +22,15 @@ class Authenticated extends AuthState {
 }
 
 class Unauthenticated extends AuthState {}
+
+class ErrorState extends AuthState {
+  final String errorMessage;
+
+  const ErrorState(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+
+  @override
+  String toString() => 'ErrorState { errorMessage: $errorMessage }';
+}

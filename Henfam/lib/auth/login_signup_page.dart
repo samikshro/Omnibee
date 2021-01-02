@@ -135,7 +135,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ShowPasswordInput(savePassword),
             ShowPrimaryButton(_isLoginForm, validateAndSubmit),
             ShowSecondaryButton(_isLoginForm, toggleFormMode),
-            //ShowErrorMessage(_errorMessage),
           ],
         ),
       ),
@@ -144,16 +143,45 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Omnibee"),
+    return BlocListener<AuthBloc, AuthState>(
+      child: new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Omnibee"),
+        ),
+        body: Stack(
+          children: <Widget>[
+            _showForm(),
+            ShowCircularProgress(_isLoading),
+          ],
+        ),
       ),
-      body: Stack(
-        children: <Widget>[
-          _showForm(),
-          ShowCircularProgress(_isLoading),
-        ],
-      ),
+      listener: (context, state) {
+        if (state is ErrorState) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                    "Error",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  content: Text(
+                    state.errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Okay'),
+                      onPressed: () {
+                        BlocProvider.of<AuthBloc>(context).add(AppStarted());
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+        }
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Henfam/exception/invalid_login.dart';
 import 'package:meta/meta.dart';
 
 import 'package:bloc/bloc.dart';
@@ -64,25 +65,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignedInToState(SignedIn event) async* {
-    try {
-      if (state is Unauthenticated) {
-        User user = await _userRepository.signIn(event.email, event.password);
+    if (state is Unauthenticated) {
+      User user = await _userRepository.signIn(event.email, event.password);
+      print(user);
+      if (user != null) {
         yield Authenticated(user);
+      } else {
+        print("Yielding error state");
+        yield ErrorState("Invalid login. Please try again.");
       }
-    } catch (e) {
-      throw e;
     }
   }
 
   Stream<AuthState> _mapSignedUpToState(SignedUp event) async* {
-    try {
-      if (state is Unauthenticated) {
+    if (state is Unauthenticated) {
+      try {
         List<String> signedUp = await _userRepository.signUp(
             event.name, event.email, event.password, event.phone);
         _mapSignedInToState(SignedIn(signedUp[0], signedUp[1]));
+      } catch (e) {
+        yield ErrorState("Invalid signup. Please try again.");
       }
-    } catch (e) {
-      throw e;
     }
   }
 }
