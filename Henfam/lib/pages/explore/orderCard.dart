@@ -82,6 +82,7 @@ class OrderCardButtonBar extends StatelessWidget {
     // PaymentService.paymentTransfer(order, context, priceWithTax + fees, fees,
     //     order.paymentMethodId, order.stripeAccountId);
 
+    //TODO: we are taking fee from whole order, not the delivery fee itself
     double taxRate = 1.08;
     double omnibeeShare = 0.20;
     double goalPrice = ((taxRate + omnibeeShare) * order.price);
