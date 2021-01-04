@@ -1,4 +1,3 @@
-import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/pages/explore/deliveryCard.dart';
 import 'package:Henfam/pages/explore/orderCard.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Henfam/bloc/blocs.dart';
 
 class PreviousOrders extends StatelessWidget {
-  //BaseAuth _auth = Auth();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrderBloc, OrderState>(builder: (context, state) {
@@ -48,8 +45,5 @@ class PreviousOrders extends StatelessWidget {
         return CircularProgressIndicator();
       }
     });
-    /* } else {
-        return Container();
-      } */
   }
 }
