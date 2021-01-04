@@ -53,12 +53,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapWasAuthenticatedToState(WasAuthenticated event) async* {
+    print("User name in wasauthenticated is ${event.user.name}");
     yield Authenticated(event.user);
   }
 
   Stream<AuthState> _mapWasUnauthenticatedToState(
       WasUnauthenticated event) async* {
     if (state is Authenticated) {
+      _userSubscription?.cancel();
       _userRepository.signOut();
     }
     yield Unauthenticated();

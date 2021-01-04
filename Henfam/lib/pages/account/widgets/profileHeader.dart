@@ -7,6 +7,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(name);
     return Container(
       child: Row(
         children: <Widget>[

@@ -63,46 +63,44 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Profile'),
-        ),
-        body: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is Authenticated) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                  ),
-                  FutureBuilder<double>(
-                    future: _getBalance(state.user.stripeAccountId),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<double> balance) {
-                      if (!balance.hasData)
-                        return Center(child: Text('Loading...'));
-                      return LargeTextSection(
-                        "Balance to be Transferred: \$" +
-                            balance.data.toStringAsFixed(2),
-                      );
-                    },
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        ProfileHeader(state.user.name),
-                        Divider(),
-                        ProfileContact(signOut),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return Container();
-            }
-          },
-        ));
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      if (state is Authenticated) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Your Profile'),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              FutureBuilder<double>(
+                future: _getBalance(state.user.stripeAccountId),
+                builder: (BuildContext context, AsyncSnapshot<double> balance) {
+                  if (!balance.hasData)
+                    return Center(child: Text('Loading...'));
+                  return LargeTextSection(
+                    "Balance to be Transferred: \$" +
+                        balance.data.toStringAsFixed(2),
+                  );
+                },
+              ),
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    ProfileHeader(state.user.name),
+                    Divider(),
+                    ProfileContact(signOut),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }
