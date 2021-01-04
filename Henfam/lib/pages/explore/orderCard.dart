@@ -79,7 +79,18 @@ class OrderCardButtonBar extends StatelessWidget {
     double fees = (1.28 * order.price * .03) + .3;
     fees = double.parse((fees).toStringAsFixed(2));
 
-    PaymentService.paymentTransfer(order, context, priceWithTax + fees, fees,
+    // PaymentService.paymentTransfer(order, context, priceWithTax + fees, fees,
+    //     order.paymentMethodId, order.stripeAccountId);
+
+    double taxRate = 1.08;
+    double omnibeeShare = 0.20;
+    double goalPrice = ((taxRate + omnibeeShare) * order.price);
+    double pCharge =
+        double.parse(((goalPrice + 0.3) / 0.971).toStringAsFixed(2));
+    double omnibeeFee =
+        double.parse((omnibeeShare * goalPrice).toStringAsFixed(2));
+
+    PaymentService.paymentTransfer(order, context, pCharge, omnibeeFee,
         order.paymentMethodId, order.stripeAccountId);
   }
 
