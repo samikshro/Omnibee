@@ -26,7 +26,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   String _email;
   String _password;
   String _phone;
-  String _errorMessage = '';
 
   bool _isLoginForm = true;
   bool _isLoading = false;
@@ -60,10 +59,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void resetForm() {
     _formKey.currentState.reset();
-    _errorMessage = "";
   }
 
-// TODO: potentially causing problem: "setting setState after dispose"
   void toggleFormMode() {
     resetForm();
     setState(() {
@@ -73,50 +70,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (validateAndSave()) {
-      try {
-        if (_isLoginForm) {
-          BlocProvider.of<AuthBloc>(context).add(SignedIn(_email, _password));
-        } else {
-          BlocProvider.of<AuthBloc>(context)
-              .add(SignedUp(_name, _email, _password, _phone));
-        }
-        setState(() {
-          _isLoading = false;
-        });
-      } catch (e) {
-        print("in catch statement");
-        print('Error: $e');
-
-        setState(() {
-          _isLoading = false;
-          _errorMessage = e.message;
-          _formKey.currentState.reset();
-        });
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "Error",
-                  style: TextStyle(color: Colors.red),
-                ),
-                content: Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Okay'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              );
-            });
+      if (_isLoginForm) {
+        BlocProvider.of<AuthBloc>(context).add(SignedIn(_email, _password));
+      } else {
+        BlocProvider.of<AuthBloc>(context)
+            .add(SignedUp(_name, _email, _password, _phone));
       }
+      /* setState(() {
+          _isLoading = false;
+        }); */
     }
   }
 
@@ -125,7 +90,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       padding: EdgeInsets.all(16.0),
       child: new Form(
         key: _formKey,
-        child: new ListView(
+        child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             ShowLogo(_isLoading),
@@ -156,6 +121,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         ),
       ),
       listener: (context, state) {
+        setState(() {
+          _isLoading = false;
+        });
         if (state is ErrorState) {
           showDialog(
               context: context,

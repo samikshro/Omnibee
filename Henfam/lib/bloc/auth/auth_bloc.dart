@@ -67,13 +67,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignedInToState(SignedIn event) async* {
+    print(state is Unauthenticated);
     if (state is Unauthenticated) {
-      User user = await _userRepository.signIn(event.email, event.password);
-      print(user);
+      User user = await _userRepository.signIn(
+        event.email,
+        event.password,
+      );
       if (user != null) {
         yield Authenticated(user);
       } else {
-        print("Yielding error state");
         yield ErrorState("Invalid login. Please try again.");
       }
     }
@@ -82,9 +84,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapSignedUpToState(SignedUp event) async* {
     if (state is Unauthenticated) {
       try {
-        List<String> signedUp = await _userRepository.signUp(
-            event.name, event.email, event.password, event.phone);
-        _mapSignedInToState(SignedIn(signedUp[0], signedUp[1]));
+        await _userRepository.signUp(
+          event.name,
+          event.email,
+          event.password,
+          event.phone,
+        );
+        User user = await _userRepository.signIn(
+          event.email,
+          event.password,
+        );
+        yield Authenticated(user);
       } catch (e) {
         yield ErrorState("Invalid signup. Please try again.");
       }
