@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Henfam/models/order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +9,67 @@ import 'package:flutter/material.dart';
 import 'package:Henfam/pages/account/profile.dart';
 
 class PaymentService {
+  static double _round(double val) {
+    double mod = pow(10.0, 2);
+    return ((val * mod).round().toDouble() / mod);
+  }
+
+  static double _getTaxedPrice(double price) {
+    double taxRate = 0.08;
+    return _round((taxRate * price) + price);
+  }
+
+  static double getDeliveryFee(double price) {
+    double effortShare = 0.17; //%17 subtotal to 20% subtotal
+    double distanceShare = 1.00;
+    return _round((effortShare * _getTaxedPrice(price)) + distanceShare);
+  }
+
+  static double getOmnibeeFee(double price) {
+    double omnibeeShare = 0.2;
+    double deliveryFee = getDeliveryFee(price);
+    return _round(omnibeeShare * deliveryFee);
+  }
+
+  static double getDelivererFee(double price) {
+    double delivererShare = 0.8;
+    double deliveryFee = getDeliveryFee(price);
+    return _round(delivererShare * deliveryFee);
+  }
+
+  static double getStripeFee(double price) {
+    double taxedPrice = _getTaxedPrice(price);
+    double deliveryFee = getDeliveryFee(taxedPrice);
+    double goalPrice = (taxedPrice + deliveryFee);
+
+    double pCharge =
+        _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
+
+    return (pCharge - goalPrice);
+  }
+
+  static double getTotalFees(double price) {
+    double stripeFee = getStripeFee(price);
+    double deliveryFee = getDeliveryFee(price);
+    return _round(stripeFee + deliveryFee);
+  }
+
+  static double getPCharge(double price) {
+    double taxedPrice = _getTaxedPrice(price);
+    print("taxed price: $taxedPrice");
+
+    double deliveryFee = getDeliveryFee(price);
+    print("delivery fee: $deliveryFee");
+
+    double goalPrice = (taxedPrice + deliveryFee);
+    print("goal price: $goalPrice");
+
+    double pCharge =
+        _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
+
+    return pCharge;
+  }
+
   static final HttpsCallable paymentIntent =
       CloudFunctions.instance.getHttpsCallable(
     functionName: 'createPaymentIntent',
