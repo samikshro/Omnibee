@@ -12,9 +12,13 @@ class OrderLoadInProgress extends OrderState {}
 class OrderStateLoadSuccess extends OrderState {
   final List<Order> orders;
   final List<Order> expiredOrders;
+  final User user;
 
-  const OrderStateLoadSuccess(
-      [this.orders = const [], this.expiredOrders = const []]);
+  const OrderStateLoadSuccess({
+    this.orders = const [],
+    this.expiredOrders = const [],
+    this.user,
+  });
 
   @override
   List<Object> get props => [orders];
@@ -22,29 +26,20 @@ class OrderStateLoadSuccess extends OrderState {
   @override
   String toString() => 'OrderStateLoadSuccess { Orders: $orders }';
 
-  String _getUserId() {
-    String uid;
-    BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is Authenticated) {
-          uid = state.user.uid;
-        }
-      },
-    );
-    return uid;
-  }
-
   List<Order> getUserOrders() {
-    return orders
-        .where((order) =>
-            ((order.uid == _getUserId()) && (_isOrderNotExpired(order))))
+    List<Order> userOrders = orders
+        .where(
+            (order) => (order.uid == user.uid && (_isOrderNotExpired(order))))
         .toList();
+    print("User id: ${user.uid}");
+    print("User orders: $userOrders");
+    return userOrders;
   }
 
   List<Order> getUserDeliveries() {
     return orders
         .where((order) =>
-            ((order.runnerUid == _getUserId()) && (_isOrderNotExpired(order))))
+            ((order.runnerUid == user.uid) && (_isOrderNotExpired(order))))
         .toList();
   }
 
@@ -56,14 +51,14 @@ class OrderStateLoadSuccess extends OrderState {
   List<Order> getPrevUserOrders() {
     return expiredOrders
         .where((order) =>
-            ((order.uid == _getUserId()) && _isExpiredAndAccepted(order)))
+            ((order.uid == user.uid) && _isExpiredAndAccepted(order)))
         .toList();
   }
 
   List<Order> getPrevUserDeliveries() {
     return expiredOrders
         .where((order) =>
-            ((order.runnerUid == _getUserId()) && _isExpiredAndAccepted(order)))
+            ((order.runnerUid == user.uid) && _isExpiredAndAccepted(order)))
         .toList();
   }
 

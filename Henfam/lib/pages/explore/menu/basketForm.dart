@@ -1,5 +1,6 @@
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/models/menu_item.dart';
+import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,7 @@ class Basket extends StatelessWidget {
     return modifiers;
   }
 
+  // TODO: put modifier prices inside of order, not just display
   String _getItemsPrice(List<MenuItem> items) {
     double price = 0.00;
     items.forEach((item) {
@@ -67,15 +69,13 @@ class Basket extends StatelessWidget {
 
   List<String> _getDeliveryFeeAndTax(List<MenuItem> menuItems) {
     double totalPrice = double.parse(_getItemsPrice(menuItems));
-    double deliveryFee = totalPrice * .2;
-    double tax = .08 * (deliveryFee + totalPrice);
-    double applicationFee = .03 * (totalPrice + deliveryFee + tax) + .3;
-    double grandTotal = totalPrice + tax + applicationFee + deliveryFee;
+
     return [
-      deliveryFee.toStringAsFixed(2),
-      applicationFee.toStringAsFixed(2),
-      tax.toStringAsFixed(2),
-      grandTotal.toStringAsFixed(2),
+      PaymentService.getDeliveryFee(totalPrice).toString(),
+      PaymentService.getOmnibeeFee(totalPrice).toString(),
+      (PaymentService.getTaxedPrice(totalPrice) - totalPrice)
+          .toStringAsFixed(2),
+      PaymentService.getPCharge(totalPrice).toString(),
     ];
   }
 

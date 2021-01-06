@@ -14,7 +14,7 @@ class PaymentService {
     return ((val * mod).round().toDouble() / mod);
   }
 
-  static double _getTaxedPrice(double price) {
+  static double getTaxedPrice(double price) {
     double taxRate = 0.08;
     return _round((taxRate * price) + price);
   }
@@ -22,7 +22,7 @@ class PaymentService {
   static double getDeliveryFee(double price) {
     double effortShare = 0.17; //%17 subtotal to 20% subtotal
     double distanceShare = 1.00;
-    return _round((effortShare * _getTaxedPrice(price)) + distanceShare);
+    return _round((effortShare * getTaxedPrice(price)) + distanceShare);
   }
 
   static double getOmnibeeFee(double price) {
@@ -38,7 +38,7 @@ class PaymentService {
   }
 
   static double getStripeFee(double price) {
-    double taxedPrice = _getTaxedPrice(price);
+    double taxedPrice = getTaxedPrice(price);
     double deliveryFee = getDeliveryFee(taxedPrice);
     double goalPrice = (taxedPrice + deliveryFee);
 
@@ -55,15 +55,9 @@ class PaymentService {
   }
 
   static double getPCharge(double price) {
-    double taxedPrice = _getTaxedPrice(price);
-    print("taxed price: $taxedPrice");
-
+    double taxedPrice = getTaxedPrice(price);
     double deliveryFee = getDeliveryFee(price);
-    print("delivery fee: $deliveryFee");
-
     double goalPrice = (taxedPrice + deliveryFee);
-    print("goal price: $goalPrice");
-
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 

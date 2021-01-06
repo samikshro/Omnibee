@@ -74,30 +74,9 @@ class OrderCardButtonBar extends StatelessWidget {
       content: Text('Confirming delivery, please wait one moment....'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
-    double priceWithTax = 1.28 * order.price;
-    priceWithTax = double.parse((priceWithTax).toStringAsFixed(2));
-    double fees = (1.28 * order.price * .03) + .3;
-    fees = double.parse((fees).toStringAsFixed(2));
 
-    // PaymentService.paymentTransfer(order, context, priceWithTax + fees, fees,
-    //     order.paymentMethodId, order.stripeAccountId);
-
-    double taxRate = 0.08;
-    double effortShare = 0.17; //%17 subtotal to 20% subtotal
-    double distanceShare = 1.00;
-    double taxedPrice = ((taxRate * order.price) + order.price);
-    double deliveryFee = (effortShare * taxedPrice) + distanceShare;
-    double goalPrice = (taxedPrice + deliveryFee);
-
-    double pCharge = double.parse(((goalPrice + 0.3) / 0.971)
-        .toStringAsFixed(2)); //adds on Stripe fee to goalPrice
-
-    double omnibeeShare = 0.2;
-    double omnibeeFee =
-        double.parse((omnibeeShare * deliveryFee).toStringAsFixed(2));
-
-    double stripeFee = (pCharge - goalPrice);
-    double totalFees = stripeFee + deliveryFee;
+    double pCharge = PaymentService.getPCharge(order.price);
+    double omnibeeFee = PaymentService.getOmnibeeFee(order.price);
 
     PaymentService.paymentTransfer(order, context, pCharge, omnibeeFee,
         order.paymentMethodId, order.stripeAccountId);

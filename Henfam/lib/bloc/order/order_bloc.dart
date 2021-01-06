@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:Henfam/bloc/auth/auth_bloc.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:Henfam/models/order.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,13 +12,30 @@ part 'order_event.dart';
 part 'order_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
-  final OrdersRepository _ordersRepository;
+  OrdersRepository _ordersRepository;
   StreamSubscription _ordersSubscription;
 
-  OrderBloc({@required OrdersRepository ordersRepository})
-      : assert(ordersRepository != null),
-        _ordersRepository = ordersRepository,
-        super(OrderLoadInProgress());
+  AuthBloc _authBloc;
+  StreamSubscription _authSubscription;
+
+  OrderBloc(
+      {@required OrdersRepository ordersRepository,
+      @required AuthBloc authBloc})
+      : super(
+          authBloc.state is Authenticated
+              ? OrderStateLoadSuccess(
+                  user: (authBloc.state as Authenticated).user,
+                )
+              : OrderLoadInProgress(),
+        ) {
+    assert(ordersRepository != null && authBloc != null);
+    _ordersRepository = ordersRepository;
+    _authBloc = authBloc;
+    _authSubscription = authBloc.listen((state) {
+      add(UpdateUser((state as Authenticated).user));
+    });
+    //super(OrderLoadInProgress());
+  }
 
   @override
   Stream<OrderState> mapEventToState(OrderEvent event) async* {
@@ -31,6 +49,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       yield* _mapOrderDeletedToState(event);
     } else if (event is OrderModified) {
       yield* _mapOrderModifiedToState(event);
+    } else if (event is UpdateUser) {
+      yield* _mapUpdateUserToState(event);
     }
   }
 
@@ -39,10 +59,18 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     _ordersSubscription = _ordersRepository.orders().listen(
           (orders) => add(OrdersUpdated(orders)),
         );
+    /* _authSubscription?.cancel();
+    print("Before authsubscription initialize");
+    print(_authBloc);
+    _authSubscription = _authBloc.listen((state) {
+      print("Adding UpdateUser event");
+      add(UpdateUser((_authBloc.state as Authenticated).user));
+    });
+    print("After authsubscription initialize"); */
   }
 
   Stream<OrderState> _mapOrdersUpdatedToState(OrdersUpdated event) async* {
-    yield OrderStateLoadSuccess(event.orders);
+    yield OrderStateLoadSuccess(orders: event.orders);
   }
 
   Stream<OrderState> _mapOrderAddedToState(OrderAdded event) async* {
@@ -57,9 +85,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     _ordersRepository.updateOrder(event.order);
   }
 
+  Stream<OrderState> _mapUpdateUserToState(UpdateUser event) async* {
+    print("Updating user: ${event.user.uid}");
+    yield OrderStateLoadSuccess(user: event.user);
+  }
+
   @override
   Future<void> close() {
     _ordersSubscription?.cancel();
+    _authSubscription?.cancel();
     return super.close();
   }
 }

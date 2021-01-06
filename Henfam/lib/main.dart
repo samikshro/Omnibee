@@ -38,15 +38,16 @@ class HenfamBasic extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<OrderBloc>(
-          create: (BuildContext context) =>
-              OrderBloc(ordersRepository: FirebaseOrdersRepository())
-                ..add(OrderLoaded()),
-        ),
         BlocProvider<AuthBloc>(
           create: (BuildContext context) =>
               AuthBloc(userRepository: FirebaseUserRepository())
                 ..add(AppStarted()),
+        ),
+        BlocProvider<OrderBloc>(
+          create: (BuildContext context) => OrderBloc(
+              ordersRepository: FirebaseOrdersRepository(),
+              authBloc: BlocProvider.of<AuthBloc>(context))
+            ..add(OrderLoaded()),
         ),
         BlocProvider<BasketBloc>(
           create: (BuildContext context) => BasketBloc()..add(BasketLoaded()),
