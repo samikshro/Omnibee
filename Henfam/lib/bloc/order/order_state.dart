@@ -31,8 +31,7 @@ class OrderStateLoadSuccess extends OrderState {
         .where(
             (order) => (order.uid == user.uid && (_isOrderNotExpired(order))))
         .toList();
-    print("User id: ${user.uid}");
-    print("User orders: $userOrders");
+
     return userOrders;
   }
 

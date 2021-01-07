@@ -22,7 +22,7 @@ class PaymentService {
   static double getDeliveryFee(double price) {
     double effortShare = 0.17; //%17 subtotal to 20% subtotal
     double distanceShare = 1.00;
-    return _round((effortShare * getTaxedPrice(price)) + distanceShare);
+    return _round((effortShare * price) + distanceShare);
   }
 
   static double getOmnibeeFee(double price) {
@@ -38,9 +38,8 @@ class PaymentService {
   }
 
   static double getStripeFee(double price) {
-    double taxedPrice = getTaxedPrice(price);
-    double deliveryFee = getDeliveryFee(taxedPrice);
-    double goalPrice = (taxedPrice + deliveryFee);
+    double deliveryFee = getDeliveryFee(price);
+    double goalPrice = getTaxedPrice(price + deliveryFee);
 
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
@@ -55,9 +54,8 @@ class PaymentService {
   }
 
   static double getPCharge(double price) {
-    double taxedPrice = getTaxedPrice(price);
     double deliveryFee = getDeliveryFee(price);
-    double goalPrice = (taxedPrice + deliveryFee);
+    double goalPrice = getTaxedPrice(price + deliveryFee);
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 

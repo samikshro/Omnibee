@@ -31,7 +31,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     assert(ordersRepository != null && authBloc != null);
     _ordersRepository = ordersRepository;
     _authBloc = authBloc;
-    _authSubscription = authBloc.listen((state) {
+    _authSubscription = _authBloc.listen((state) {
       add(UpdateUser((state as Authenticated).user));
     });
     //super(OrderLoadInProgress());
@@ -59,18 +59,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     _ordersSubscription = _ordersRepository.orders().listen(
           (orders) => add(OrdersUpdated(orders)),
         );
-    /* _authSubscription?.cancel();
-    print("Before authsubscription initialize");
-    print(_authBloc);
-    _authSubscription = _authBloc.listen((state) {
-      print("Adding UpdateUser event");
-      add(UpdateUser((_authBloc.state as Authenticated).user));
-    });
-    print("After authsubscription initialize"); */
   }
 
   Stream<OrderState> _mapOrdersUpdatedToState(OrdersUpdated event) async* {
-    yield OrderStateLoadSuccess(orders: event.orders);
+    User user = (state as OrderStateLoadSuccess).user;
+    yield OrderStateLoadSuccess(orders: event.orders, user: user);
   }
 
   Stream<OrderState> _mapOrderAddedToState(OrderAdded event) async* {
@@ -86,7 +79,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   Stream<OrderState> _mapUpdateUserToState(UpdateUser event) async* {
-    print("Updating user: ${event.user.uid}");
     yield OrderStateLoadSuccess(user: event.user);
   }
 

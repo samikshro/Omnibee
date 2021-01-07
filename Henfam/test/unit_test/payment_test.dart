@@ -3,25 +3,20 @@ import 'package:Henfam/services/paymentService.dart';
 
 void main() {
   group('Payments', () {
+    double orderPrice = 9.99;
     test('standard pcharge test', () {
-      double orderPrice = 9.259;
       double pCharge = PaymentService.getPCharge(orderPrice);
-
-      expect(pCharge, 13.39);
+      expect(pCharge, 14.43);
     });
 
     test('standard omnibeeFee test', () {
-      double orderPrice = 9.259;
       double omnibeeFee = PaymentService.getOmnibeeFee(orderPrice);
-
       expect(omnibeeFee, 0.54);
     });
 
     test('standard totalfees test', () {
-      double orderPrice = 9.259;
       double totalFees = PaymentService.getTotalFees(orderPrice);
-
-      expect(totalFees, 3.39);
+      expect(totalFees, 3.42);
     });
   });
 }

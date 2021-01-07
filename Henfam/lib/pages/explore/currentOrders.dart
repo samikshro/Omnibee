@@ -41,13 +41,6 @@ class CurrentOrders extends StatelessWidget {
             ),
           ],
         );
-        /* } else {
-                return CircularProgressIndicator();
-              }
-            });
-      } else {
-        return Container();
-      } */
       } else {
         return Container();
       }

@@ -43,16 +43,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       final userId = await _userRepository.getUserId();
       _userSubscription?.cancel();
-      _userSubscription = _userRepository.user(userId).listen(
-            (user) => add(WasAuthenticated(user)),
-          );
+      _userSubscription = _userRepository.user(userId).listen((user) {
+        add(WasAuthenticated(user));
+      });
     } catch (_) {
       yield Unauthenticated();
     }
   }
 
   Stream<AuthState> _mapWasAuthenticatedToState(WasAuthenticated event) async* {
-    print("User name in wasauthenticated is ${event.user.name}");
     yield Authenticated(event.user);
   }
 
@@ -66,7 +65,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignedInToState(SignedIn event) async* {
-    print(state is Unauthenticated);
     if (state is Unauthenticated) {
       User user = await _userRepository.signIn(
         event.email,

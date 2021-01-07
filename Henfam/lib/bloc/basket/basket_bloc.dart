@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Henfam/models/menu_item.dart';
 import 'package:Henfam/models/models.dart';
+import 'package:Henfam/services/paymentService.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';

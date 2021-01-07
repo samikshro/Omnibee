@@ -35,7 +35,6 @@ class HenfamBasic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Bloc.observer = SimpleBlocObserver();
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
