@@ -76,12 +76,12 @@ class OrderCardButtonBar extends StatelessWidget {
     Scaffold.of(context).showSnackBar(snackBar);
 
     double pCharge = order.price;
-    double omnibeeFee = order.omnibeeFee;
+    double applicationFee = order.applicationFee;
 
     print(
-        "MarkOrderComplete: pcharge is $pCharge and omnibeeFee is $omnibeeFee");
+        "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
 
-    PaymentService.paymentTransfer(order, context, pCharge, omnibeeFee,
+    PaymentService.paymentTransfer(order, context, pCharge, applicationFee,
         order.paymentMethodId, order.stripeAccountId);
   }
 

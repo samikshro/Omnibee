@@ -25,6 +25,14 @@ class FirebaseOrdersRepository implements OrdersRepository {
   }
 
   @override
+  Future<void> markOrderDelivered(Order order) {
+    print("Marking order delivered");
+    return orderCollection
+        .document(order.docID)
+        .updateData({'is_delivered': true});
+  }
+
+  @override
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
       return snapshot.documents

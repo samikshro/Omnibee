@@ -18,5 +18,10 @@ void main() {
       double totalFees = PaymentService.getTotalFees(orderPrice);
       expect(totalFees, 3.42);
     });
+
+    test('standard stripe fee test', () {
+      double stripeFee = PaymentService.getStripeFee(orderPrice);
+      expect(stripeFee, 0.72);
+    });
   });
 }

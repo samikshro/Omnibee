@@ -44,11 +44,11 @@ class BasketLoadSuccess extends BasketState {
     return PaymentService.getDelivererFee(price);
   }
 
-  double getOmnibeeFee() {
+  double getApplicationFee() {
     double price = _getItemsPrice();
-    double omnibeeFee = PaymentService.getOmnibeeFee(price);
-    print("Price in getOmnibeeFee (basket_state) is $omnibeeFee");
-    return omnibeeFee;
+    double applicationFee = PaymentService.getApplicationFee(price);
+    print("Price in getApplicationFee (basket_state) is $applicationFee");
+    return applicationFee;
   }
 }
 

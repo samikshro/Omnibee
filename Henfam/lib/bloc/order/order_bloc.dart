@@ -47,8 +47,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       yield* _mapOrderAddedToState(event);
     } else if (event is OrderDeleted) {
       yield* _mapOrderDeletedToState(event);
-    } else if (event is OrderModified) {
-      yield* _mapOrderModifiedToState(event);
+    } else if (event is OrderMarkDelivered) {
+      yield* _mapOrderMarkDeliveredToState(event);
     } else if (event is UpdateUser) {
       yield* _mapUpdateUserToState(event);
     }
@@ -74,8 +74,9 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     _ordersRepository.deleteOrder(event.order);
   }
 
-  Stream<OrderState> _mapOrderModifiedToState(OrderModified event) async* {
-    _ordersRepository.updateOrder(event.order);
+  Stream<OrderState> _mapOrderMarkDeliveredToState(
+      OrderMarkDelivered event) async* {
+    _ordersRepository.markOrderDelivered(event.order);
   }
 
   Stream<OrderState> _mapUpdateUserToState(UpdateUser event) async* {

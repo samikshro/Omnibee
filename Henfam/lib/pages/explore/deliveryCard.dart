@@ -81,28 +81,7 @@ class DeliveryCardButtonBar extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         onPressed: () {
-          Order modifiedOrder = order.copyWith(
-            name: order.name,
-            uid: order.uid,
-            userCoordinates: order.userCoordinates,
-            restaurantName: order.restaurantName,
-            restaurantCoordinates: order.restaurantCoordinates,
-            basket: order.basket,
-            location: order.location,
-            startTime: order.startTime,
-            endTime: order.endTime,
-            expirationTime: order.expirationTime,
-            isAccepted: order.isAccepted,
-            isDelivered: true,
-            isReceived: order.isReceived,
-            runnerUid: order.runnerUid,
-            price: order.price,
-            restaurantImage: order.restaurantImage,
-            paymentMethodId: order.paymentMethodId,
-            stripeAccountId: order.stripeAccountId,
-            docID: order.docID,
-          );
-          BlocProvider.of<OrderBloc>(context).add(OrderModified(modifiedOrder));
+          BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
         },
       ),
       FlatButton(
@@ -129,6 +108,7 @@ class DeliveryCardButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Order isDelivered: ${order.isDelivered}");
     return ButtonBar(
       alignment: MainAxisAlignment.spaceAround,
       children: _getButtons(),
