@@ -44,7 +44,7 @@ class PaymentService {
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 
-    return (pCharge - goalPrice);
+    return _round(pCharge - goalPrice);
   }
 
   static double getTotalFees(double price) {
@@ -60,6 +60,10 @@ class PaymentService {
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 
     return pCharge;
+  }
+
+  static double getApplicationFee(double price) {
+    return getOmnibeeFee(price) + getStripeFee(price);
   }
 
   static final HttpsCallable paymentIntent =

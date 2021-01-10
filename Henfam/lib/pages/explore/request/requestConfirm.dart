@@ -100,7 +100,7 @@ class RequestConfirm extends StatelessWidget {
                                 null,
                                 null,
                                 state1.getPrice(),
-                                state1.getOmnibeeFee(),
+                                state1.getApplicationFee(),
                                 state1.getMinEarnings(),
                                 state2.restaurant.bigImagePath,
                                 pmID,

@@ -72,7 +72,7 @@ class Basket extends StatelessWidget {
 
     return [
       PaymentService.getDeliveryFee(totalPrice).toString(),
-      PaymentService.getOmnibeeFee(totalPrice).toString(),
+      PaymentService.getApplicationFee(totalPrice).toString(),
       (PaymentService.getTaxedPrice(totalPrice) - totalPrice)
           .toStringAsFixed(2),
       PaymentService.getPCharge(totalPrice).toString(),

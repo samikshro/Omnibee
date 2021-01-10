@@ -19,7 +19,7 @@ void main() {
       expect(totalFees, 3.42);
     });
 
-    test('standard totalfees test', () {
+    test('standard stripe fee test', () {
       double stripeFee = PaymentService.getStripeFee(orderPrice);
       expect(stripeFee, 0.72);
     });
