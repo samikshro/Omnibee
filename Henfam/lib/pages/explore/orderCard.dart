@@ -85,6 +85,11 @@ class OrderCardButtonBar extends StatelessWidget {
         order.paymentMethodId, order.stripeAccountId);
   }
 
+  bool _isNotExpired(Order order) {
+    return order.expirationTime.millisecondsSinceEpoch >
+        DateTime.now().millisecondsSinceEpoch;
+  }
+
   List<Widget> _getButtons(BuildContext context) {
     List<Widget> buttons = [
       FlatButton(
@@ -98,7 +103,7 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered) {
+    if (order.isDelivered == true && _isNotExpired(order)) {
       buttons.insert(
           0,
           RaisedButton(

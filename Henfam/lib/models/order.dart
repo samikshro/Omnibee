@@ -217,4 +217,9 @@ class Order {
   bool isComplete() {
     return isReceived == true && isDelivered == true;
   }
+
+  bool isExpired() {
+    return expirationTime.millisecondsSinceEpoch <
+        DateTime.now().millisecondsSinceEpoch;
+  }
 }

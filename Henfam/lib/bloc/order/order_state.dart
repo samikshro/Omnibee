@@ -47,22 +47,30 @@ class OrderStateLoadSuccess extends OrderState {
         order.expirationTime.millisecondsSinceEpoch;
   }
 
+  bool _isExpiredAndAccepted(Order order) {
+    return (order.isAccepted && !_isOrderNotExpired(order));
+  }
+
+  // TODO: Fix previous orders & deliveries, need to change cards and card pages
   List<Order> getPrevUserOrders() {
-    return expiredOrders
+    return [];
+    /* return orders
         .where((order) =>
             ((order.uid == user.uid) && _isExpiredAndAccepted(order)))
-        .toList();
+        .toList(); */
   }
 
   List<Order> getPrevUserDeliveries() {
-    return expiredOrders
+    return [];
+    /*return orders
         .where((order) =>
             ((order.runnerUid == user.uid) && _isExpiredAndAccepted(order)))
-        .toList();
+        .toList(); */
   }
 
-  bool _isExpiredAndAccepted(Order order) {
-    return (order.isAccepted && !_isOrderNotExpired(order));
+  List<Order> getRunnableDeliveries() {
+    return orders.where(
+        (order) => (order.runnerUid == null) && _isOrderNotExpired(order));
   }
 }
 
