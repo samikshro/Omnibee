@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 
 import 'package:Henfam/models/menu_item.dart';
 import 'package:Henfam/models/models.dart';
@@ -63,7 +64,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         MenuItem deleteThis = List.from((state as BasketLoadSuccess).menuItems)
             .firstWhere(((item) =>
                 (item.name == event.menuItem.name) &&
-                (item.modifiersChosen == event.menuItem.modifiersChosen)));
+                (ListEquality().equals(
+                    item.modifiersChosen, event.menuItem.modifiersChosen)) &&
+                (item.modifiers == event.menuItem.modifiers)));
         final List<MenuItem> updatedMenuItems =
             List.from((state as BasketLoadSuccess).menuItems)
               ..remove(deleteThis);
@@ -110,6 +113,11 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   List<String> _addOnsToStringList(MenuItem menuItem) {
     List<String> addOnsStringList = [];
+
+    menuItem.modifiers.forEach((modifierName) {
+      print("Modifier name is $modifierName");
+      addOnsStringList.add(modifierName);
+    });
 
     menuItem.modifiersChosen.forEach((modifier) {
       addOnsStringList.add(modifier.name);

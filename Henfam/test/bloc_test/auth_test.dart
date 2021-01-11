@@ -17,14 +17,12 @@ void authBlocTests() {
     setUp(() {
       mockUser = User("", 0, 0, "", "", 0, 0, 0, "", "", true);
       userRepository = MockUserRepository();
-      // authBloc = AuthBloc(userRepository: FirebaseUserRepository());
       authBloc = AuthBloc(userRepository: userRepository);
     });
 
     blocTest(
       'emits [] when nothing is added',
       build: () => AuthBloc(userRepository: userRepository),
-      // AuthBloc(userRepository: FirebaseUserRepository()),
       expect: [],
     );
 
@@ -61,13 +59,24 @@ void authBlocTests() {
     );
 
     blocTest(
-      'SignedIn: emits [Authenticated(user)] when SignedIn added',
+      'SignedIn: emits [ErrorState(...)] when SignedIn added w/ null input',
       build: () => authBloc,
       act: (AuthBloc bloc) async =>
           bloc..add(AppStarted())..add(SignedIn("", "")),
       expect: <AuthState>[
         Unauthenticated(),
-        Authenticated(null),
+        ErrorState("Invalid login. Please try again."),
+      ],
+    );
+
+    blocTest(
+      'SignedIn: emits [ErrorState(...)] when SignedIn added w/ null input',
+      build: () => authBloc,
+      act: (AuthBloc bloc) async =>
+          bloc..add(AppStarted())..add(SignedIn("", "")),
+      expect: <AuthState>[
+        Unauthenticated(),
+        ErrorState("Invalid login. Please try again."),
       ],
     );
 

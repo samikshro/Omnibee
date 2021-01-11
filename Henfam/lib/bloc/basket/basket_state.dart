@@ -47,7 +47,6 @@ class BasketLoadSuccess extends BasketState {
   double getApplicationFee() {
     double price = _getItemsPrice();
     double applicationFee = PaymentService.getApplicationFee(price);
-    print("Price in getApplicationFee (basket_state) is $applicationFee");
     return applicationFee;
   }
 }

@@ -63,7 +63,7 @@ class PaymentService {
   }
 
   static double getApplicationFee(double price) {
-    return getOmnibeeFee(price) + getStripeFee(price);
+    return _round(getOmnibeeFee(price) + getStripeFee(price));
   }
 
   static final HttpsCallable paymentIntent =

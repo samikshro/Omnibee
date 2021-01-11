@@ -71,11 +71,11 @@ class Basket extends StatelessWidget {
     double totalPrice = double.parse(_getItemsPrice(menuItems));
 
     return [
-      PaymentService.getDeliveryFee(totalPrice).toString(),
-      PaymentService.getApplicationFee(totalPrice).toString(),
+      PaymentService.getDeliveryFee(totalPrice).toStringAsFixed(2),
+      PaymentService.getApplicationFee(totalPrice).toStringAsFixed(2),
       (PaymentService.getTaxedPrice(totalPrice) - totalPrice)
           .toStringAsFixed(2),
-      PaymentService.getPCharge(totalPrice).toString(),
+      PaymentService.getPCharge(totalPrice).toStringAsFixed(2),
     ];
   }
 
