@@ -11,9 +11,7 @@ class MinEarnings extends StatelessWidget {
     double minEarnings = 0;
     for (int i = 0; i < requests.length; i++) {
       if (selectedList[i] == true) {
-        for (int j = 0; j < requests[i]['user_id']['basket'].length; j++) {
-          minEarnings += requests[i]['user_id']['basket'][j]['price'] * .33;
-        }
+        minEarnings += requests[i]['user_id']['min_earnings'];
       }
     }
 

@@ -21,13 +21,6 @@ class BigCard extends StatelessWidget {
     return children;
   }
 
-  double _roundDown(double value, int precision) {
-    final isNegative = value.isNegative;
-    final mod = pow(10.0, precision);
-    final roundDown = (((value.abs() * mod).floor()) / mod);
-    return isNegative ? -roundDown : roundDown;
-  }
-
   @override
   Widget build(BuildContext context) {
     if (document['user_id']['is_accepted'] == true) {
@@ -57,11 +50,7 @@ class BigCard extends StatelessWidget {
               children: _itemsToOrder(document),
             ),
             Text(
-              "Minimum Earnings: " +
-                  "\$" +
-                  //TODO: used a hack to get correct truncation + floor round
-                  // (0.2 * document['user_id']['price']).toString(),
-                  _roundDown(0.2 * document['user_id']['price'], 2).toString(),
+              "Minimum Earnings: \$ ${document['user_id']['min_earnings'].toStringAsFixed(2)}",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
               textAlign: TextAlign.right,
             ),

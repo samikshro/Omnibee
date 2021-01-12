@@ -1,3 +1,4 @@
+import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/models.dart';
@@ -8,15 +9,6 @@ class DeliveryCard extends StatelessWidget {
   final Order order;
 
   DeliveryCard(BuildContext context, {this.order});
-
-  String _getEarnings() {
-    double minEarnings = 0.0;
-    for (int j = 0; j < order.basket.length; j++) {
-      minEarnings += order.basket[j]['price'] * .33;
-    }
-
-    return minEarnings.toStringAsFixed(2);
-  }
 
   List<Widget> _itemsToOrder(Order order) {
     List<Widget> children = [];
@@ -53,7 +45,7 @@ class DeliveryCard extends StatelessWidget {
                     order.startTime +
                     "-" +
                     order.endTime +
-                    "\nEarnings: \$${_getEarnings()}"),
+                    "\nEarnings: \$${order.minEarnings}"),
                 children: _itemsToOrder(order)),
             DeliveryCardButtonBar(order, context),
           ],
