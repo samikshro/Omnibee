@@ -1,20 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 
 class AcceptOrderInfo extends StatelessWidget {
-  List<DocumentSnapshot> requests;
-  List<bool> selectedList;
+  final List<Order> orders;
+  final List<bool> selectedList;
 
-  AcceptOrderInfo(this.requests, this.selectedList);
+  AcceptOrderInfo(this.orders, this.selectedList);
 
   Widget _getSubtotal() {
     int numItems = 0;
     double subtotal = 0;
-    for (int i = 0; i < requests.length; i++) {
+    for (int i = 0; i < orders.length; i++) {
       if (selectedList[i] == true) {
-        for (int j = 0; j < requests[i]['user_id']['basket'].length; j++) {
+        for (int j = 0; j < orders[i].basket.length; j++) {
           numItems += 1;
-          subtotal += requests[i]['user_id']['basket'][j]['price'];
+          subtotal += orders[i].basket[j]['price'];
         }
       }
     }
@@ -25,11 +25,11 @@ class AcceptOrderInfo extends StatelessWidget {
   }
 
   String _getStartAndEndLocations() {
-    String startLocation = requests[0]['user_id']['rest_name_used'];
+    String startLocation = orders[0].restaurantName;
     List<String> endLocations = [];
-    for (int i = 0; i < requests.length; i++) {
+    for (int i = 0; i < orders.length; i++) {
       if (selectedList[i] == true) {
-        String location = requests[i]['user_id']['location'];
+        String location = orders[i].location;
         List<String> locList = location.split(',');
         endLocations.add(locList[0]);
       }
@@ -57,16 +57,15 @@ class AcceptOrderInfo extends StatelessWidget {
     String upperBoundTime = '';
     double lowerBoundDouble = 0.0;
     double upperBoundDouble = 0.0;
-    for (int i = 0; i < requests.length; i++) {
+    for (int i = 0; i < orders.length; i++) {
       if (selectedList[i] == true) {
-        String startTime =
-            requests[i]['user_id']['delivery_window']['start_time'];
+        String startTime = orders[i].startTime;
         double startTimeDouble = _parseTimeToDouble(startTime);
         bool lowerLessThan = startTimeDouble > lowerBoundDouble;
         lowerBoundTime = lowerLessThan ? startTime : lowerBoundTime;
         lowerBoundDouble = lowerLessThan ? startTimeDouble : lowerBoundDouble;
 
-        String endTime = requests[i]['user_id']['delivery_window']['end_time'];
+        String endTime = orders[i].endTime;
         double endTimeDouble = _parseTimeToDouble(endTime);
         bool upperGreaterThan = endTimeDouble < upperBoundDouble;
         upperBoundTime = upperGreaterThan ? endTime : upperBoundTime;

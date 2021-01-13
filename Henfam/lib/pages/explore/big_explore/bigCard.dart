@@ -1,21 +1,20 @@
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
 
 //TODO: move to using bloc
 class BigCard extends StatelessWidget {
-  final DocumentSnapshot document;
+  final Order order;
 
-  BigCard(BuildContext context, {this.document});
+  BigCard(BuildContext context, {this.order});
 
-  List<Widget> _itemsToOrder(DocumentSnapshot document) {
+  List<Widget> _itemsToOrder(Order order) {
     List<Widget> children = [];
-    for (int i = 0; i < document['user_id']['basket'].length; i++) {
+    for (int i = 0; i < order.basket.length; i++) {
       children.add(ListTile(
         title: Text(
-          document['user_id']['basket'][i]['name'],
+          order.basket[i]['name'],
         ),
-        trailing: Text(document['user_id']['basket'][i]['price'].toString()),
+        trailing: Text(order.basket[i]['price'].toStringAsFixed(2)),
       ));
     }
     return children;
@@ -23,12 +22,12 @@ class BigCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (document['user_id']['is_accepted'] == true) {
+    if (order.isAccepted == true) {
       return Container();
     }
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/accept_order', arguments: document);
+        Navigator.pushNamed(context, '/accept_order', arguments: order);
       },
       child: Card(
         margin: EdgeInsets.all(10.0),
@@ -42,29 +41,23 @@ class BigCard extends StatelessWidget {
             ExpansionTile(
               leading: Icon(Icons.fastfood),
               title: Text(
-                document['user_id']['rest_name_used'] +
-                    " to " +
-                    document['user_id']['location'],
+                "${order.restaurantName} to ${order.location}",
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
-              children: _itemsToOrder(document),
+              children: _itemsToOrder(order),
             ),
             Text(
-              "Minimum Earnings: \$ ${document['user_id']['min_earnings'].toStringAsFixed(2)}",
+              "Minimum Earnings: \$${order.minEarnings.toStringAsFixed(2)}",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
               textAlign: TextAlign.right,
             ),
             Text(
-              "Deliver Between: " +
-                  document['user_id']['delivery_window']['start_time'] +
-                  "-" +
-                  document['user_id']['delivery_window']['end_time'] +
-                  "\n",
+              "Deliver Between: ${order.startTime} - ${order.endTime}\n",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
               textAlign: TextAlign.left,
             ),
             Image(
-              image: AssetImage(document['user_id']['restaurant_pic']),
+              image: AssetImage(order.restaurantImage),
               fit: BoxFit.cover,
             ),
             ButtonBar(
@@ -76,7 +69,7 @@ class BigCard extends StatelessWidget {
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/accept_order',
-                        arguments: document);
+                        arguments: order);
                   },
                 ),
               ],

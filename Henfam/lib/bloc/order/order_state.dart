@@ -69,8 +69,10 @@ class OrderStateLoadSuccess extends OrderState {
   }
 
   List<Order> getRunnableDeliveries() {
-    return orders.where(
-        (order) => (order.runnerUid == null) && _isOrderNotExpired(order));
+    return orders
+        .where(
+            (order) => (order.runnerUid == null) && _isOrderNotExpired(order))
+        .toList();
   }
 }
 

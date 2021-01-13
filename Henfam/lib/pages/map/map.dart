@@ -1,15 +1,17 @@
+import 'dart:math';
+
+import 'package:Henfam/models/models.dart';
 import 'package:Henfam/pages/map/mapArgs.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class CustomMap extends StatefulWidget {
-  List<DocumentSnapshot> requests;
-  List<bool> selectedList;
+  final List<Order> orders;
+  final List<bool> selectedList;
 
-  CustomMap(this.requests, this.selectedList);
+  CustomMap(this.orders, this.selectedList);
 
   @override
   _CustomMapState createState() => _CustomMapState();
@@ -30,29 +32,29 @@ class _CustomMapState extends State<CustomMap> {
   Future<Position> getUserPosition() async {
     final geolocator = Geolocator()..forceAndroidLocationManager = true;
     final position = await geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      //locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+      desiredAccuracy: LocationAccuracy.high,
+    );
     return position;
   }
 
   Position getRestaurantPosition() {
-    GeoPoint coordinates =
-        widget.requests[0]["user_id"]["restaurant_coordinates"];
+    Point coordinates = widget.orders[0].restaurantCoordinates;
     return Position(
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
+      latitude: coordinates.x,
+      longitude: coordinates.y,
     );
   }
 
   List<Position> getRequestPositions() {
     List<Position> requestPositions = [];
 
-    for (int i = 0; i < widget.requests.length; i++) {
+    for (int i = 0; i < widget.orders.length; i++) {
       if (widget.selectedList[i] == true) {
-        GeoPoint coordinates =
-            widget.requests[0]["user_id"]["user_coordinates"];
+        Point coordinates = widget.orders[i].restaurantCoordinates;
         Position pos = Position(
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
+          latitude: coordinates.x,
+          longitude: coordinates.y,
         );
         requestPositions.add(pos);
       }

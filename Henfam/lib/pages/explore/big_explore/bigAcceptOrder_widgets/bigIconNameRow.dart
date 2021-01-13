@@ -1,20 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 
 class IconNameRow extends StatelessWidget {
-  List<DocumentSnapshot> requests;
-  List<bool> selectedList;
+  final List<Order> orders;
+  final List<bool> selectedList;
 
-  IconNameRow(this.requests, this.selectedList);
+  IconNameRow(this.orders, this.selectedList);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
       child: Row(
-        children: requests.map((request) {
-          if (selectedList[requests.indexOf(request)] == true) {
-            return TinyIconAndName(request);
+        children: orders.map((order) {
+          if (selectedList[orders.indexOf(order)] == true) {
+            return TinyIconAndName(order);
           }
           return Container();
         }).toList(),
@@ -23,10 +23,11 @@ class IconNameRow extends StatelessWidget {
   }
 }
 
+// TODO: get rid of le beeperson
 class TinyIconAndName extends StatelessWidget {
-  DocumentSnapshot request;
+  final Order order;
 
-  TinyIconAndName(this.request);
+  TinyIconAndName(this.order);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class TinyIconAndName extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(right: 5),
         ),
-        Text(request['user_id']['name']),
+        Text(order.name),
         Padding(
           padding: EdgeInsets.only(right: 10),
         ),
