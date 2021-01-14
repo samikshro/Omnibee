@@ -74,13 +74,20 @@ class OrderCardButtonBar extends StatelessWidget {
       content: Text('Confirming delivery, please wait one moment....'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
-    double priceWithTax = 1.28 * order.price; //doc['user_id']['price'];
-    priceWithTax = double.parse((priceWithTax).toStringAsFixed(2));
-    double fees = (1.28 * order.price * .03) + .3;
-    fees = double.parse((fees).toStringAsFixed(2));
 
-    PaymentService.paymentTransfer(order, context, priceWithTax + fees, fees,
+    double pCharge = order.price;
+    double applicationFee = order.applicationFee;
+
+    print(
+        "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
+
+    PaymentService.paymentTransfer(order, context, pCharge, applicationFee,
         order.paymentMethodId, order.stripeAccountId);
+  }
+
+  bool _isNotExpired(Order order) {
+    return order.expirationTime.millisecondsSinceEpoch >
+        DateTime.now().millisecondsSinceEpoch;
   }
 
   List<Widget> _getButtons(BuildContext context) {
@@ -96,7 +103,7 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered) {
+    if (order.isDelivered == true && _isNotExpired(order)) {
       buttons.insert(
           0,
           RaisedButton(

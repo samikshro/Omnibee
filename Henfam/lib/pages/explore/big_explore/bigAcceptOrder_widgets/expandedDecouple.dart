@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedDecouple extends StatefulWidget {
-  List<DocumentSnapshot> requests;
-  List<bool> selectedList;
-  Function changeCheckBox;
+  final List<Order> orders;
+  final List<bool> selectedList;
+  final Function changeCheckBox;
 
-  ExpandedDecouple(this.requests, this.selectedList, this.changeCheckBox);
+  ExpandedDecouple(this.orders, this.selectedList, this.changeCheckBox);
   @override
   _ExpandedDecoupleState createState() => _ExpandedDecoupleState();
 }
@@ -19,13 +19,10 @@ class _ExpandedDecoupleState extends State<ExpandedDecouple> {
       child: SizedBox(
         height: 140,
         child: Row(
-          children: widget.requests.map((request) {
-            int requestIndex = widget.requests.indexOf(request);
-            return ProfileCheckBoxColumn(
-                request,
-                widget.selectedList[requestIndex],
-                requestIndex,
-                widget.changeCheckBox);
+          children: widget.orders.map((order) {
+            int orderIndex = widget.orders.indexOf(order);
+            return ProfileCheckBoxColumn(order, widget.selectedList[orderIndex],
+                orderIndex, widget.changeCheckBox);
           }).toList(),
         ),
       ),
@@ -34,19 +31,20 @@ class _ExpandedDecoupleState extends State<ExpandedDecouple> {
 }
 
 class ProfileCheckBoxColumn extends StatelessWidget {
-  DocumentSnapshot request;
-  bool isSelected;
-  int requestIndex;
-  Function changeCheckBox;
+  final Order order;
+  final bool isSelected;
+  final int requestIndex;
+  final Function changeCheckBox;
 
   ProfileCheckBoxColumn(
-    this.request,
+    this.order,
     this.isSelected,
     this.requestIndex,
     this.changeCheckBox,
   );
 
   @override
+  //TODO: add profile pics during signup, change beeperson
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20.0),
@@ -60,7 +58,7 @@ class ProfileCheckBoxColumn extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 10),
           ),
-          Text(request['user_id']['name']),
+          Text(order.name),
           Checkbox(
               value: isSelected,
               onChanged: (val) {

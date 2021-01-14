@@ -12,26 +12,33 @@ class OrderLoadInProgress extends OrderState {}
 class OrderStateLoadSuccess extends OrderState {
   final List<Order> orders;
   final List<Order> expiredOrders;
+  final User user;
 
-  const OrderStateLoadSuccess(
-      [this.orders = const [], this.expiredOrders = const []]);
+  const OrderStateLoadSuccess({
+    this.orders = const [],
+    this.expiredOrders = const [],
+    this.user,
+  });
 
   @override
   List<Object> get props => [orders];
 
   @override
-  String toString() => 'OrderStateLoadSuccess { Order: $orders }';
+  String toString() => 'OrderStateLoadSuccess { Orders: $orders }';
 
-  List<Order> getUserOrders(String uid) {
-    return orders
-        .where((order) => ((order.uid == uid) && (_isOrderNotExpired(order))))
+  List<Order> getUserOrders() {
+    List<Order> userOrders = orders
+        .where(
+            (order) => (order.uid == user.uid && (_isOrderNotExpired(order))))
         .toList();
+
+    return userOrders;
   }
 
-  List<Order> getUserDeliveries(String uid) {
+  List<Order> getUserDeliveries() {
     return orders
         .where((order) =>
-            ((order.runnerUid == uid) && (_isOrderNotExpired(order))))
+            ((order.runnerUid == user.uid) && (_isOrderNotExpired(order))))
         .toList();
   }
 
@@ -40,21 +47,32 @@ class OrderStateLoadSuccess extends OrderState {
         order.expirationTime.millisecondsSinceEpoch;
   }
 
-  List<Order> getPrevUserOrders(String uid) {
-    return expiredOrders
-        .where((order) => ((order.uid == uid) && _isExpiredAndAccepted(order)))
-        .toList();
-  }
-
-  List<Order> getPrevUserDeliveries(String uid) {
-    return expiredOrders
-        .where((order) =>
-            ((order.runnerUid == uid) && _isExpiredAndAccepted(order)))
-        .toList();
-  }
-
   bool _isExpiredAndAccepted(Order order) {
     return (order.isAccepted && !_isOrderNotExpired(order));
+  }
+
+  // TODO: Fix previous orders & deliveries, need to change cards and card pages
+  List<Order> getPrevUserOrders() {
+    return [];
+    /* return orders
+        .where((order) =>
+            ((order.uid == user.uid) && _isExpiredAndAccepted(order)))
+        .toList(); */
+  }
+
+  List<Order> getPrevUserDeliveries() {
+    return [];
+    /*return orders
+        .where((order) =>
+            ((order.runnerUid == user.uid) && _isExpiredAndAccepted(order)))
+        .toList(); */
+  }
+
+  List<Order> getRunnableDeliveries() {
+    return orders
+        .where(
+            (order) => (order.runnerUid == null) && _isOrderNotExpired(order))
+        .toList();
   }
 }
 

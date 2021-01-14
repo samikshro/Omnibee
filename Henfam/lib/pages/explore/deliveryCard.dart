@@ -9,15 +9,6 @@ class DeliveryCard extends StatelessWidget {
 
   DeliveryCard(BuildContext context, {this.order});
 
-  String _getEarnings() {
-    double minEarnings = 0.0;
-    for (int j = 0; j < order.basket.length; j++) {
-      minEarnings += order.basket[j]['price'] * .33;
-    }
-
-    return minEarnings.toStringAsFixed(2);
-  }
-
   List<Widget> _itemsToOrder(Order order) {
     List<Widget> children = [];
     for (int i = 0; i < order.basket.length; i++) {
@@ -53,7 +44,7 @@ class DeliveryCard extends StatelessWidget {
                     order.startTime +
                     "-" +
                     order.endTime +
-                    "\nEarnings: \$${_getEarnings()}"),
+                    "\nEarnings: \$${order.minEarnings}"),
                 children: _itemsToOrder(order)),
             DeliveryCardButtonBar(order, context),
           ],
@@ -81,28 +72,7 @@ class DeliveryCardButtonBar extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         onPressed: () {
-          Order modifiedOrder = order.copyWith(
-            name: order.name,
-            uid: order.uid,
-            userCoordinates: order.userCoordinates,
-            restaurantName: order.restaurantName,
-            restaurantCoordinates: order.restaurantCoordinates,
-            basket: order.basket,
-            location: order.location,
-            startTime: order.startTime,
-            endTime: order.endTime,
-            expirationTime: order.expirationTime,
-            isAccepted: order.isAccepted,
-            isDelivered: true,
-            isReceived: order.isReceived,
-            runnerUid: order.runnerUid,
-            price: order.price,
-            restaurantImage: order.restaurantImage,
-            paymentMethodId: order.paymentMethodId,
-            stripeAccountId: order.stripeAccountId,
-            docID: order.docID,
-          );
-          BlocProvider.of<OrderBloc>(context).add(OrderModified(modifiedOrder));
+          BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
         },
       ),
       FlatButton(
@@ -129,6 +99,7 @@ class DeliveryCardButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Order isDelivered: ${order.isDelivered}");
     return ButtonBar(
       alignment: MainAxisAlignment.spaceAround,
       children: _getButtons(),

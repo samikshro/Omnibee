@@ -1,19 +1,22 @@
-/* import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/models/models.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:test/test.dart';
 
 void basketBlocTests() {
-  //Broken
   group('BasketBloc', () {
     BasketBloc basketBloc;
     MenuItem superBlandTofu;
-    MenuItem extraTofu;
 
     setUp(() {
       basketBloc = BasketBloc();
-      extraTofu = MenuItem('Extra Tofu', "", 0, []);
-      superBlandTofu = MenuItem('Super Bland Tofu', "", 100, ["Tofu"]);
+      superBlandTofu = MenuItem(
+        'Super Bland Tofu',
+        "",
+        100,
+        ["Extra Tofu"],
+        modifiersChosen: [],
+      );
     });
 
     blocTest(
@@ -42,8 +45,9 @@ void basketBlocTests() {
           [
             MenuItem(
               'Super Bland Tofu',
+              "",
               100,
-              [MenuItem('Extra Tofu', 0, [])],
+              ['Extra Tofu'],
             ),
           ],
           [
@@ -70,8 +74,9 @@ void basketBlocTests() {
           [
             MenuItem(
               'Super Bland Tofu',
+              "",
               100,
-              [MenuItem('Extra Tofu', 0, [])],
+              ['Extra Tofu'],
             ),
           ],
           [
@@ -100,8 +105,9 @@ void basketBlocTests() {
           [
             MenuItem(
               'Super Bland Tofu',
+              "",
               100,
-              [MenuItem('Extra Tofu', 0, [])],
+              ["Extra Tofu"],
             ),
           ],
           [
@@ -116,13 +122,15 @@ void basketBlocTests() {
           [
             MenuItem(
               'Super Bland Tofu',
+              "",
               100,
-              [MenuItem('Extra Tofu', 0, [])],
+              ["Extra Tofu"],
             ),
             MenuItem(
               'Super Bland Tofu',
+              "",
               100,
-              [MenuItem('Extra Tofu', 0, [])],
+              ["Extra Tofu"],
             ),
           ],
           [
@@ -143,9 +151,8 @@ void basketBlocTests() {
     );
 
     tearDown(() {
-      basketBloc = null;
+      basketBloc?.close();
       superBlandTofu = null;
-      extraTofu = null;
     });
   });
 }
@@ -153,4 +160,3 @@ void basketBlocTests() {
 main() {
   basketBlocTests();
 }
- */

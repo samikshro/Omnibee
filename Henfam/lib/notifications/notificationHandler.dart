@@ -1,11 +1,10 @@
-import 'package:Henfam/auth/authentication.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:io';
-
+import 'package:Henfam/bloc/auth/auth_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationHandler extends StatefulWidget {
   NotificationHandler({this.child});
@@ -21,11 +20,18 @@ class _NotificationHandlerState extends State<NotificationHandler> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   _saveDeviceToken() async {
-    FirebaseUser user = await Auth().getCurrentUser();
+    String uid;
+    BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated) {
+          uid = state.user.uid;
+        }
+      },
+    );
     String fcmToken = await _fcm.getToken();
 
     if (fcmToken != null) {
-      var userRef = _db.collection('users').document(user.uid);
+      var userRef = _db.collection('users').document(uid);
       await userRef.setData({'token': fcmToken}, merge: true);
     }
   }

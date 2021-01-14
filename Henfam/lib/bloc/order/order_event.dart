@@ -45,14 +45,26 @@ class OrderDeleted extends OrderEvent {
   String toString() => 'OrderDeleted { Order: $order }';
 }
 
-class OrderModified extends OrderEvent {
+class OrderMarkDelivered extends OrderEvent {
   final Order order;
 
-  const OrderModified(this.order);
+  const OrderMarkDelivered(this.order);
 
   @override
   List<Object> get props => [order];
 
   @override
-  String toString() => 'OrderModified { Order: $order }';
+  String toString() => 'OrderMarkDelivered { Order: $order }';
+}
+
+class UpdateUser extends OrderEvent {
+  final User user;
+
+  const UpdateUser(this.user);
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() => 'UpdateUser { User: $user }';
 }

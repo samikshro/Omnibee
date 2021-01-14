@@ -1,4 +1,3 @@
-import 'package:Henfam/auth/authentication.dart';
 import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/models/menu_modifier.dart';
@@ -39,8 +38,6 @@ class FoodDocument {
 }
 
 class MenuOrderForm extends StatefulWidget {
-  BaseAuth auth = new Auth();
-
   @override
   _MenuOrderFormState createState() => _MenuOrderFormState();
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Henfam/auth/authentication.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigAcceptOrderInfo.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
@@ -10,10 +11,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/services/paymentService.dart';
-import 'package:Henfam/auth/widgets/circularProgress.dart';
 
+// TODO: remove auth, extract payments
 class AcceptOrder extends StatefulWidget {
-  BaseAuth auth = new Auth();
+  final BaseAuth auth = new Auth();
   @override
   _AcceptOrderState createState() => _AcceptOrderState();
 }
@@ -38,11 +39,11 @@ class _AcceptOrderState extends State<AcceptOrder> {
     });
   }
 
-  String _getNumRequests(List<DocumentSnapshot> docList) {
+  String _getNumRequests(List<Order> orderList) {
     int numRequests = 0;
-    for (int i = 0; i < docList.length; i++) {
+    for (int i = 0; i < orderList.length; i++) {
       if (selectedList[i] == true) {
-        numRequests += docList[i]['user_id']['basket'].length;
+        numRequests += orderList[i].basket.length;
       }
     }
 
@@ -60,7 +61,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return s;
   }
 
-  void _markOrdersAccepted(List<DocumentSnapshot> docList) async {
+  void _markOrdersAccepted(List<Order> orderList) async {
     final uid = await _getUserID();
     final firestore = Firestore.instance;
     final batch = firestore.batch();
@@ -70,8 +71,8 @@ class _AcceptOrderState extends State<AcceptOrder> {
         .document(uid)
         .get()
         .then((DocumentSnapshot delivererDoc) {
-      for (int i = 0; i < docList.length; i++) {
-        final docId = docList[i].documentID;
+      for (int i = 0; i < orderList.length; i++) {
+        final docId = orderList[i].docID;
         DocumentReference doc = firestore.collection('orders').document(docId);
         _getUserName(uid).then((name) {
           batch.updateData(doc, {
@@ -105,7 +106,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
   /// [_isStripeSetup] checks if stripe setup has been approved and payouts have
   /// been enabled. If payouts are enabled, the order is accepted. If payouts
   /// are not enabled, the user is asked to setup a payment account.
-  void _isStripeSetup(List<DocumentSnapshot> docList) async {
+  void _isStripeSetup(List<Order> orderList) async {
     final uid = await _getUserID();
     final firestore = Firestore.instance;
 
@@ -115,7 +116,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
         .get()
         .then((DocumentSnapshot delivererDoc) {
       if (delivererDoc != null && delivererDoc['stripe_setup_complete']) {
-        _markOrdersAccepted(docList);
+        _markOrdersAccepted(orderList);
         final snackBar = SnackBar(
           content: Text('Accepted errand!'),
         );
@@ -192,9 +193,9 @@ class _AcceptOrderState extends State<AcceptOrder> {
 
   @override
   Widget build(BuildContext context) {
-    final DocumentSnapshot document = ModalRoute.of(context).settings.arguments;
-    final docList = [
-      document,
+    final Order order = ModalRoute.of(context).settings.arguments;
+    final orderList = [
+      order,
     ];
     return Scaffold(
         key: _scaffoldKey,
@@ -207,16 +208,16 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     fontSize: 20.0,
                     color: Theme.of(context).scaffoldBackgroundColor)),
             onPressed: () {
-              _isStripeSetup(docList); //, context);
+              _isStripeSetup(orderList); //, context);
             },
           ),
         ),
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
-            Stack(
+            /* Stack(
               children: <Widget>[
-                CustomMap(docList, selectedList),
+                CustomMap(orderList, selectedList),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: BackButton(
@@ -224,21 +225,22 @@ class _AcceptOrderState extends State<AcceptOrder> {
                   ),
                 ),
               ],
-            ),
+            ), */
+            Padding(padding: const EdgeInsets.only(top: 50)),
             ExpansionTile(
-              title: Text(_getNumRequests(docList)),
+              title: Text(_getNumRequests(orderList)),
               onExpansionChanged: _onExpand,
               trailing: Text(
                 'DECOUPLE',
                 style: TextStyle(color: Colors.cyan),
               ),
               children: <Widget>[
-                ExpandedDecouple(docList, selectedList, _changeCheckBox),
+                ExpandedDecouple(orderList, selectedList, _changeCheckBox),
               ],
             ),
-            DisplaySmallUsers(isExpanded, docList, selectedList),
-            MinEarnings(docList, selectedList),
-            AcceptOrderInfo(docList, selectedList),
+            DisplaySmallUsers(isExpanded, orderList, selectedList),
+            MinEarnings(orderList, selectedList),
+            AcceptOrderInfo(orderList, selectedList),
           ],
         )));
   }

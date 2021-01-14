@@ -36,16 +36,18 @@ class BasketLoadSuccess extends BasketState {
 
   double getPrice() {
     double price = _getItemsPrice();
-    double deliveryFee = .2 * price;
-    double tax = .08 * (deliveryFee + price);
-    double totalPrice = price + deliveryFee + tax;
-    return double.parse(totalPrice.toStringAsFixed(2));
+    return PaymentService.getPCharge(price);
   }
 
   double getMinEarnings() {
     double price = _getItemsPrice();
-    double minEarnings = .2 * price;
-    return double.parse(minEarnings.toStringAsFixed(2));
+    return PaymentService.getDelivererFee(price);
+  }
+
+  double getApplicationFee() {
+    double price = _getItemsPrice();
+    double applicationFee = PaymentService.getApplicationFee(price);
+    return applicationFee;
   }
 }
 

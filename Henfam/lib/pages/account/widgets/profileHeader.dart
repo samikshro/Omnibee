@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String name;
-  final String netId;
 
-  ProfileHeader(this.name, this.netId);
+  ProfileHeader(this.name);
 
   @override
   Widget build(BuildContext context) {
+    print(name);
     return Container(
       child: Row(
         children: <Widget>[

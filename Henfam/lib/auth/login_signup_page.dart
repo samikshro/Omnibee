@@ -6,14 +6,14 @@ import 'package:Henfam/auth/widgets/passwordInput.dart';
 import 'package:Henfam/auth/widgets/phoneInput.dart';
 import 'package:Henfam/auth/widgets/primaryButton.dart';
 import 'package:Henfam/auth/widgets/secondaryButton.dart';
+import 'package:Henfam/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:Henfam/auth/authentication.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginSignupPage extends StatefulWidget {
-  LoginSignupPage({this.auth, this.loginCallback});
+  //LoginSignupPage({this.auth});
 
-  final BaseAuth auth;
-  final VoidCallback loginCallback;
+  //final BaseAuth auth;
 
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
@@ -26,7 +26,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   String _email;
   String _password;
   String _phone;
-  String _errorMessage = '';
 
   bool _isLoginForm = true;
   bool _isLoading = false;
@@ -60,7 +59,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void resetForm() {
     _formKey.currentState.reset();
-    _errorMessage = "";
   }
 
   void toggleFormMode() {
@@ -72,53 +70,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   void validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (validateAndSave()) {
-      String userId = "";
-      try {
-        if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
-        } else {
-          userId = await widget.auth.signUp(_name, _email, _password, _phone);
-          userId = await widget.auth.signIn(_email, _password);
-        }
-        setState(() {
-          _isLoading = false;
-        });
-
-        if (userId.length > 0 && userId != null) {
-          widget.loginCallback();
-        }
-      } catch (e) {
-        print('Error: $e');
-        setState(() {
-          _isLoading = false;
-          _errorMessage = e.message;
-          _formKey.currentState.reset();
-        });
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "Error",
-                  style: TextStyle(color: Colors.red),
-                ),
-                content: Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Okay'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              );
-            });
+      if (_isLoginForm) {
+        BlocProvider.of<AuthBloc>(context).add(SignedIn(_email, _password));
+      } else {
+        BlocProvider.of<AuthBloc>(context)
+            .add(SignedUp(_name, _email, _password, _phone));
       }
+      /* setState(() {
+          _isLoading = false;
+        }); */
     }
   }
 
@@ -127,7 +90,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       padding: EdgeInsets.all(16.0),
       child: new Form(
         key: _formKey,
-        child: new ListView(
+        child: ListView(
           shrinkWrap: true,
           children: <Widget>[
             ShowLogo(_isLoading),
@@ -137,7 +100,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ShowPasswordInput(savePassword),
             ShowPrimaryButton(_isLoginForm, validateAndSubmit),
             ShowSecondaryButton(_isLoginForm, toggleFormMode),
-            //ShowErrorMessage(_errorMessage),
           ],
         ),
       ),
@@ -146,16 +108,48 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Omnibee"),
+    return BlocListener<AuthBloc, AuthState>(
+      child: new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Omnibee"),
+        ),
+        body: Stack(
+          children: <Widget>[
+            _showForm(),
+            ShowCircularProgress(_isLoading),
+          ],
+        ),
       ),
-      body: Stack(
-        children: <Widget>[
-          _showForm(),
-          ShowCircularProgress(_isLoading),
-        ],
-      ),
+      listener: (context, state) {
+        setState(() {
+          _isLoading = false;
+        });
+        if (state is ErrorState) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                    "Error",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  content: Text(
+                    state.errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Okay'),
+                      onPressed: () {
+                        BlocProvider.of<AuthBloc>(context).add(AppStarted());
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+        }
+      },
     );
   }
 }

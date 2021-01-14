@@ -18,7 +18,7 @@ class _ExploreState extends State<Explore> {
     super.initState();
     StripePayment.setOptions(StripeOptions(
         publishableKey:
-            "pk_live_51HBOnhBJxTPXZlKX6lttyaTTTKJnYgdiLzDOVMKGoc2Y9Qfjju9SrunA5j8uJmpq7uuVtBFTzc5eA54dW9vvVYfx00FHpgEPHe",
+            "pk_test_51HBOnhBJxTPXZlKXyxpYx1AuofRnDaDscu3mpP2pT7GLWkUkZc0vTXAEOo0hCevsSMPomSFTon4eiclxw9UZNB9Q00Qw2XOOPt",
         merchantId: "merchant.io.omnibee",
         androidPayMode: 'test'));
   }

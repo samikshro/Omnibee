@@ -8,5 +8,7 @@ abstract class OrdersRepository {
 
   Future<void> updateOrder(Order order);
 
+  Future<void> markOrderDelivered(Order order);
+
   Stream<List<Order>> orders();
 }

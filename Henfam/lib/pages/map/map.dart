@@ -1,15 +1,17 @@
+import 'dart:math';
+
+import 'package:Henfam/models/models.dart';
 import 'package:Henfam/pages/map/mapArgs.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
 class CustomMap extends StatefulWidget {
-  List<DocumentSnapshot> requests;
-  List<bool> selectedList;
+  final List<Order> orders;
+  final List<bool> selectedList;
 
-  CustomMap(this.requests, this.selectedList);
+  CustomMap(this.orders, this.selectedList);
 
   @override
   _CustomMapState createState() => _CustomMapState();
@@ -29,30 +31,42 @@ class _CustomMapState extends State<CustomMap> {
 
   Future<Position> getUserPosition() async {
     final geolocator = Geolocator()..forceAndroidLocationManager = true;
+    print("Before getting current position");
     final position = await geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      //locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    print(
+        "Latitude is ${position.latitude} and longitude ${position.longitude}");
+
     return position;
   }
 
   Position getRestaurantPosition() {
-    GeoPoint coordinates =
-        widget.requests[0]["user_id"]["restaurant_coordinates"];
+    print("Inside getrestaurantposition");
+    Point coordinates = widget.orders[0].restaurantCoordinates;
+    print(
+        "restaurants: latitude is ${coordinates.x} and longitude is ${coordinates.y}");
     return Position(
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
+      latitude: coordinates.x,
+      longitude: coordinates.y,
     );
   }
 
   List<Position> getRequestPositions() {
+    print("Inside getRequestPosition");
+
     List<Position> requestPositions = [];
 
-    for (int i = 0; i < widget.requests.length; i++) {
+    for (int i = 0; i < widget.orders.length; i++) {
       if (widget.selectedList[i] == true) {
-        GeoPoint coordinates =
-            widget.requests[0]["user_id"]["user_coordinates"];
+        Point coordinates = widget.orders[i].restaurantCoordinates;
+        print(
+            "request: latitude is ${coordinates.x} and longitude is ${coordinates.y}");
+
         Position pos = Position(
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
+          latitude: coordinates.x,
+          longitude: coordinates.y,
         );
         requestPositions.add(pos);
       }
@@ -67,6 +81,7 @@ class _CustomMapState extends State<CustomMap> {
 
   @override
   Widget build(BuildContext context) {
+    print("Entering build custom map");
     return FutureBuilder<List<Position>>(
       future: getPositions(),
       builder: (BuildContext context, AsyncSnapshot<List<Position>> snapshot) {
@@ -134,9 +149,11 @@ class _CustomMapState extends State<CustomMap> {
 }
 
 Set<Marker> _createMarkers(List<Position> positions) {
+  print("Inside createmarkers");
   var markers = <Marker>[];
 
   for (var i = 0; i < positions.length; i++) {
+    print("Inside loop createmarkers");
     final newMarker = Marker(
       markerId: MarkerId(i.toString()),
       position: LatLng(
@@ -147,8 +164,9 @@ Set<Marker> _createMarkers(List<Position> positions) {
         BitmapDescriptor.hueOrange,
       ),
     );
+    print("Adding marker to list");
     markers.add(newMarker);
   }
-
+  print("Finished create markers");
   return markers.toSet();
 }

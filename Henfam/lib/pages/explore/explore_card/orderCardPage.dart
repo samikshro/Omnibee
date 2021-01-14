@@ -175,7 +175,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
   }
 
   Widget _controlButtons(Order order, BuildContext context) {
-    if (order.isDelivered) {
+    if (order.isDelivered == true) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
         child: Center(
@@ -223,7 +223,8 @@ class _OrderCardPageState extends State<OrderCardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           MediumTextSection('Delivery Information'),
-          if (order.isAccepted) _callPhoneNumber(order, context),
+          if (order.isAccepted && !order.isExpired())
+            _callPhoneNumber(order, context),
           _getDeliveryInformation(order),
           MediumTextSection('Order Information'),
           _getOrderInformation(order),
