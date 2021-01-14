@@ -215,7 +215,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
-            Stack(
+            /* Stack(
               children: <Widget>[
                 CustomMap(orderList, selectedList),
                 Padding(
@@ -225,7 +225,8 @@ class _AcceptOrderState extends State<AcceptOrder> {
                   ),
                 ),
               ],
-            ),
+            ), */
+            Padding(padding: const EdgeInsets.only(top: 50)),
             ExpansionTile(
               title: Text(_getNumRequests(orderList)),
               onExpansionChanged: _onExpand,
