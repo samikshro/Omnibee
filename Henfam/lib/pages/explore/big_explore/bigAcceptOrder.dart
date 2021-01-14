@@ -14,7 +14,7 @@ import 'package:Henfam/services/paymentService.dart';
 
 // TODO: remove auth, extract payments
 class AcceptOrder extends StatefulWidget {
-  BaseAuth auth = new Auth();
+  final BaseAuth auth = new Auth();
   @override
   _AcceptOrderState createState() => _AcceptOrderState();
 }

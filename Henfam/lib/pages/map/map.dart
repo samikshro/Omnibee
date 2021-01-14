@@ -31,15 +31,22 @@ class _CustomMapState extends State<CustomMap> {
 
   Future<Position> getUserPosition() async {
     final geolocator = Geolocator()..forceAndroidLocationManager = true;
+    print("Before getting current position");
     final position = await geolocator.getCurrentPosition(
       //locationPermissionLevel: GeolocationPermission.locationWhenInUse,
       desiredAccuracy: LocationAccuracy.high,
     );
+    print(
+        "Latitude is ${position.latitude} and longitude ${position.longitude}");
+
     return position;
   }
 
   Position getRestaurantPosition() {
+    print("Inside getrestaurantposition");
     Point coordinates = widget.orders[0].restaurantCoordinates;
+    print(
+        "restaurants: latitude is ${coordinates.x} and longitude is ${coordinates.y}");
     return Position(
       latitude: coordinates.x,
       longitude: coordinates.y,
@@ -47,11 +54,16 @@ class _CustomMapState extends State<CustomMap> {
   }
 
   List<Position> getRequestPositions() {
+    print("Inside getRequestPosition");
+
     List<Position> requestPositions = [];
 
     for (int i = 0; i < widget.orders.length; i++) {
       if (widget.selectedList[i] == true) {
         Point coordinates = widget.orders[i].restaurantCoordinates;
+        print(
+            "request: latitude is ${coordinates.x} and longitude is ${coordinates.y}");
+
         Position pos = Position(
           latitude: coordinates.x,
           longitude: coordinates.y,
@@ -69,6 +81,7 @@ class _CustomMapState extends State<CustomMap> {
 
   @override
   Widget build(BuildContext context) {
+    print("Entering build custom map");
     return FutureBuilder<List<Position>>(
       future: getPositions(),
       builder: (BuildContext context, AsyncSnapshot<List<Position>> snapshot) {
@@ -136,9 +149,11 @@ class _CustomMapState extends State<CustomMap> {
 }
 
 Set<Marker> _createMarkers(List<Position> positions) {
+  print("Inside createmarkers");
   var markers = <Marker>[];
 
   for (var i = 0; i < positions.length; i++) {
+    print("Inside loop createmarkers");
     final newMarker = Marker(
       markerId: MarkerId(i.toString()),
       position: LatLng(
@@ -149,8 +164,9 @@ Set<Marker> _createMarkers(List<Position> positions) {
         BitmapDescriptor.hueOrange,
       ),
     );
+    print("Adding marker to list");
     markers.add(newMarker);
   }
-
+  print("Finished create markers");
   return markers.toSet();
 }

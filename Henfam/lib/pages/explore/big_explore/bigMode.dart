@@ -13,16 +13,6 @@ class BigMode extends StatefulWidget {
 class _BigModeState extends State<BigMode> {
   Timestamp tiempo = Timestamp.now();
 
-  bool _allRunsAccepted(documents) {
-    for (int i = 0; i < documents.length; i++) {
-      if (documents[i]['user_id']['is_accepted'] == false) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

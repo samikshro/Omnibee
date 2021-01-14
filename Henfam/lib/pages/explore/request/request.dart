@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class Request extends StatefulWidget {
-  BaseAuth auth = new Auth();
+  final BaseAuth auth = new Auth();
   @override
   _RequestState createState() => _RequestState();
 }
@@ -54,17 +54,6 @@ class _RequestState extends State<Request> {
         .get()
         .then((DocumentSnapshot document) {
       return document['name'];
-    });
-    return s;
-  }
-
-  Future<String> _getPhoneNumber(String uid) async {
-    Future<String> s = Firestore.instance
-        .collection('users')
-        .document(uid)
-        .get()
-        .then((DocumentSnapshot document) {
-      return document['phone'];
     });
     return s;
   }
