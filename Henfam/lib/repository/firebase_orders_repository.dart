@@ -32,6 +32,16 @@ class FirebaseOrdersRepository implements OrdersRepository {
   }
 
   @override
+  Future<void> markOrderAccepted(Order order, User runner) {
+    return orderCollection.document(order.docID).updateData({
+      'user_id.is_accepted': true,
+      'user_id.runner': runner.uid,
+      'user_id.runner_name': runner.name,
+      'stripeAccountId': runner.stripeAccountId,
+    });
+  }
+
+  @override
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
       return snapshot.documents

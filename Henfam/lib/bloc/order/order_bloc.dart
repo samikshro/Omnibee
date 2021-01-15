@@ -34,7 +34,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     _authSubscription = _authBloc.listen((state) {
       add(UpdateUser((state as Authenticated).user));
     });
-    //super(OrderLoadInProgress());
   }
 
   @override
@@ -49,6 +48,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       yield* _mapOrderDeletedToState(event);
     } else if (event is OrderMarkDelivered) {
       yield* _mapOrderMarkDeliveredToState(event);
+    } else if (event is OrderMarkAccepted) {
+      yield* _mapOrderMarkAcceptedToState(event);
     } else if (event is UpdateUser) {
       yield* _mapUpdateUserToState(event);
     }
@@ -77,6 +78,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Stream<OrderState> _mapOrderMarkDeliveredToState(
       OrderMarkDelivered event) async* {
     _ordersRepository.markOrderDelivered(event.order);
+  }
+
+  Stream<OrderState> _mapOrderMarkAcceptedToState(
+      OrderMarkAccepted event) async* {
+    _ordersRepository.markOrderAccepted(event.order, event.runner);
   }
 
   Stream<OrderState> _mapUpdateUserToState(UpdateUser event) async* {

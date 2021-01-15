@@ -57,6 +57,19 @@ class OrderMarkDelivered extends OrderEvent {
   String toString() => 'OrderMarkDelivered { Order: $order }';
 }
 
+class OrderMarkAccepted extends OrderEvent {
+  final Order order;
+  final User runner;
+
+  const OrderMarkAccepted(this.order, this.runner);
+
+  @override
+  List<Object> get props => [order, runner];
+
+  @override
+  String toString() => 'OrderMarkAccepted { Order: $order, Runner: $runner }';
+}
+
 class UpdateUser extends OrderEvent {
   final User user;
 

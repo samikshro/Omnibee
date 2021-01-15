@@ -40,7 +40,7 @@ class UserEntity extends Equatable {
       "runs": runs,
       "stripeAccountId": stripeAccountId,
       "token": token,
-      "stripeSetupComplete": stripeSetupComplete,
+      "stripe_setup_complete": stripeSetupComplete,
     };
   }
 
@@ -76,7 +76,7 @@ class UserEntity extends Equatable {
       json["runs"] as int,
       json["stripeAccountId"] as String,
       json["token"] as String,
-      json["stripeSetupComplete"] as bool,
+      json["stripe_setup_complete"] as bool,
     );
   }
 
@@ -91,7 +91,7 @@ class UserEntity extends Equatable {
       "runs": runs,
       "stripeAccountId": stripeAccountId,
       "token": token,
-      "stripeSetupComplete": stripeSetupComplete,
+      "stripe_setup_complete": stripeSetupComplete,
     };
   }
 
@@ -107,7 +107,7 @@ class UserEntity extends Equatable {
       snap.data["runs"],
       snap.data["stripeAccountId"],
       snap.data["token"],
-      snap.data["stripeSetupComplete"],
+      snap.data["stripe_setup_complete"],
     );
   }
 }

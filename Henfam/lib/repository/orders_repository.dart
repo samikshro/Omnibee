@@ -10,5 +10,7 @@ abstract class OrdersRepository {
 
   Future<void> markOrderDelivered(Order order);
 
+  Future<void> markOrderAccepted(Order order, User runner);
+
   Stream<List<Order>> orders();
 }
