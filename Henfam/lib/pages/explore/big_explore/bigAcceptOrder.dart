@@ -6,7 +6,6 @@ import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigAccep
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
-import 'package:Henfam/pages/map/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +49,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return "${numRequests.toString()} items";
   }
 
+  // TODO: Switch to auth bloc
   Future<String> _getUserName(String uid) async {
     Future<String> s = Firestore.instance
         .collection('users')
@@ -61,6 +61,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return s;
   }
 
+  // TODO: Add event to order bloc for setting runner
   void _markOrdersAccepted(List<Order> orderList) async {
     final uid = await _getUserID();
     final firestore = Firestore.instance;

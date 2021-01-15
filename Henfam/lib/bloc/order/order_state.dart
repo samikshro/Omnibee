@@ -47,10 +47,6 @@ class OrderStateLoadSuccess extends OrderState {
         order.expirationTime.millisecondsSinceEpoch;
   }
 
-  bool _isExpiredAndAccepted(Order order) {
-    return (order.isAccepted && !_isOrderNotExpired(order));
-  }
-
   // TODO: Fix previous orders & deliveries, need to change cards and card pages
   List<Order> getPrevUserOrders() {
     return [];
