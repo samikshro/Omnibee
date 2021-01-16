@@ -141,9 +141,7 @@ class HenfamBasic extends StatelessWidget {
         },
         home: SafeArea(
           top: false,
-          child: new RootPage(
-              //auth: new Auth(),
-              ),
+          child: new RootPage(),
         ),
       ),
     );

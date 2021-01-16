@@ -27,6 +27,8 @@ class Order {
   final String paymentMethodId;
   final String stripeAccountId;
   final String docID;
+  final String runnerPhone;
+  final String phone;
 
   Order(
     this.name,
@@ -51,6 +53,8 @@ class Order {
     this.paymentMethodId,
     this.stripeAccountId,
     this.docID,
+    this.runnerPhone,
+    this.phone,
   );
 
   Order copyWith(
@@ -75,7 +79,9 @@ class Order {
       String restaurantImage,
       String paymentMethodId,
       String stripeAccountId,
-      String docID}) {
+      String docID,
+      String runnerPhone,
+      String phone}) {
     return Order(
       name,
       uid,
@@ -99,6 +105,8 @@ class Order {
       paymentMethodId,
       stripeAccountId,
       docID,
+      runnerPhone,
+      phone,
     );
   }
 
@@ -125,7 +133,9 @@ class Order {
       restaurantImage.hashCode ^
       paymentMethodId.hashCode ^
       stripeAccountId.hashCode ^
-      docID.hashCode;
+      docID.hashCode ^
+      runnerPhone.hashCode ^
+      phone.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -153,11 +163,13 @@ class Order {
           restaurantImage == other.restaurantImage &&
           paymentMethodId == other.paymentMethodId &&
           stripeAccountId == other.stripeAccountId &&
-          docID == other.docID;
+          docID == other.docID &&
+          runnerPhone == other.runnerPhone &&
+          phone == other.phone;
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId, runnerPhone: $runnerPhone, phone: $phone }';
   }
 
   OrderEntity toEntity() {
@@ -184,6 +196,8 @@ class Order {
       paymentMethodId,
       stripeAccountId,
       docID,
+      runnerPhone,
+      phone,
     );
   }
 
@@ -211,6 +225,8 @@ class Order {
       entity.paymentMethodID,
       entity.stripeAccountId,
       entity.docID,
+      entity.runnerPhone,
+      entity.phone,
     );
   }
 

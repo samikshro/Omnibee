@@ -29,13 +29,10 @@ class _RootPageState extends State<RootPage> {
       if (state is Uninitialized) {
         return buildWaitingScreen();
       } else if (state is Unauthenticated || state is ErrorState) {
-        return new LoginSignupPage(
-            //auth: widget.auth,
-            );
+        return new LoginSignupPage();
       } else if (state is Authenticated) {
-        return new LandingPage(
-            //auth: widget.auth,
-            );
+        print(state.user.name + " has logged in.");
+        return new LandingPage();
       } else {
         return buildWaitingScreen();
       }

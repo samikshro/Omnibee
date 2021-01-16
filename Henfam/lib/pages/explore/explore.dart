@@ -9,10 +9,6 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  void _switchToBig() {
-    Navigator.pushNamed(context, '/bigmode');
-  }
-
   @override
   void initState() {
     super.initState();
@@ -40,16 +36,17 @@ class _ExploreState extends State<Explore> {
                   padding: EdgeInsets.all(10),
                 ),
                 CupertinoButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text(
-                    "Run an Errand",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                    child: Text(
+                      "Run an Errand",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  onPressed: _switchToBig,
-                ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/bigmode');
+                    }),
               ],
             ),
             LilMode()

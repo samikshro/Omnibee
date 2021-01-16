@@ -61,42 +61,7 @@ class _BigModeState extends State<BigMode> {
                   return Center(child: CircularProgressIndicator());
                 }
               },
-            )
-
-                /*StreamBuilder(
-                  stream: Firestore.instance
-                      .collection('orders')
-                      .where("user_id.expiration_time",
-                          isGreaterThanOrEqualTo: new DateTime.now())
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    if (_allRunsAccepted(snapshot.data.documents)) {
-                      return Center(
-                        child: SizedBox(
-                          width: 300,
-                          child: Text(
-                            'No errands are requested in your area now. Please check back later!',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                        itemCount: snapshot.data.documents.length,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return BigCard(context,
-                              document: snapshot.data.documents[index]);
-                        });
-                  }),*/
-                ),
+            )),
           ]),
     );
   }

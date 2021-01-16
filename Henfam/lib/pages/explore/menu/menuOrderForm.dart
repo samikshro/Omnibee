@@ -4,7 +4,6 @@ import 'package:Henfam/models/menu_modifier.dart';
 import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FoodInfo {
@@ -26,12 +25,10 @@ class FoodInfo {
 }
 
 class FoodDocument {
-  final DocumentSnapshot document;
   final int index;
   List<FoodInfo> order;
 
   FoodDocument({
-    this.document,
     this.index,
     this.order,
   });

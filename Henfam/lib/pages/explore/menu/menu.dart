@@ -9,13 +9,12 @@ import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
+// TODO: to be tested. will removing foodinfo order work
 class Menu extends StatefulWidget {
-  final DocumentSnapshot document;
-  static List<FoodInfo> order;
+  // static List<FoodInfo> order;
   static var onPressed;
-  Menu({this.document});
+  Menu();
   @override
   _MenuState createState() => _MenuState();
 }
@@ -41,7 +40,6 @@ class _MenuState extends State<Menu> {
         return (state is RestaurantLoadSuccess)
             ? WillPopScope(
                 onWillPop: () async {
-                  Menu.order = [];
                   return true;
                 },
                 child: Scaffold(

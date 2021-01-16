@@ -15,6 +15,7 @@ class User {
   final String stripeAccountId;
   final String token;
   final bool stripeSetupComplete;
+  final String phone;
 
   User(
     this.uid,
@@ -28,6 +29,7 @@ class User {
     this.stripeAccountId,
     this.token,
     this.stripeSetupComplete,
+    this.phone,
   );
 
   User copyWith(
@@ -41,7 +43,8 @@ class User {
       int runs,
       String stripeAccountId,
       String token,
-      bool stripeSetupComplete}) {
+      bool stripeSetupComplete,
+      String phone}) {
     return User(
       uid,
       boosters,
@@ -54,6 +57,7 @@ class User {
       stripeAccountId,
       token,
       stripeSetupComplete,
+      phone,
     );
   }
 
@@ -69,7 +73,8 @@ class User {
       runs.hashCode ^
       stripeAccountId.hashCode ^
       token.hashCode ^
-      stripeSetupComplete.hashCode;
+      stripeSetupComplete.hashCode ^
+      phone.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -85,11 +90,12 @@ class User {
           runs == other.runs &&
           stripeAccountId == other.stripeAccountId &&
           token == other.token &&
-          stripeSetupComplete == other.stripeSetupComplete;
+          stripeSetupComplete == other.stripeSetupComplete &&
+          phone == other.phone;
 
   @override
   String toString() {
-    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete }';
+    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone }';
   }
 
   UserEntity toEntity() {
@@ -105,6 +111,7 @@ class User {
       stripeAccountId,
       token,
       stripeSetupComplete,
+      phone,
     );
   }
 
@@ -121,6 +128,7 @@ class User {
       entity.stripeAccountId,
       entity.token,
       entity.stripeSetupComplete,
+      entity.phone,
     );
   }
 }

@@ -15,7 +15,7 @@ void authBlocTests() {
     MockUserRepository userRepository;
 
     setUp(() {
-      mockUser = User("", 0, 0, "", "", 0, 0, 0, "", "", true);
+      mockUser = User("", 0, 0, "", "", 0, 0, 0, "", "", true, "");
       userRepository = MockUserRepository();
       authBloc = AuthBloc(userRepository: userRepository);
     });
@@ -40,7 +40,7 @@ void authBlocTests() {
           bloc..add(AppStarted())..add(WasAuthenticated(mockUser)),
       expect: <AuthState>[
         Unauthenticated(),
-        Authenticated(User("", 0, 0, "", "", 0, 0, 0, "", "", true))
+        Authenticated(User("", 0, 0, "", "", 0, 0, 0, "", "", true, ""))
       ],
     );
 
@@ -53,7 +53,7 @@ void authBlocTests() {
         ..add(WasUnauthenticated()),
       expect: <AuthState>[
         Unauthenticated(),
-        Authenticated(User("", 0, 0, "", "", 0, 0, 0, "", "", true)),
+        Authenticated(User("", 0, 0, "", "", 0, 0, 0, "", "", true, "")),
         Unauthenticated(),
       ],
     );

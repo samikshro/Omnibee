@@ -51,7 +51,8 @@ class MenuPageHeader extends SliverPersistentHeaderDelegate {
           color: Colors.white.withOpacity(titleOpacity(shrinkOffset)),
           onPressed: () {
             BlocProvider.of<BasketBloc>(context).add(BasketReset());
-            Menu.order = [];
+            // TODO: menu order
+            // Menu.order = [];
             Menu.onPressed = () {};
             Navigator.pop(context);
           },

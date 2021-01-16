@@ -148,21 +148,6 @@ class PaymentService {
     }).whenComplete(() => _printSuccess(context));
   }
 
-  /* static void payment(DocumentSnapshot doc, BuildContext context,
-      double dollars, String paymentMethodID) async {
-    double amount =
-        dollars * 100.0; // multipliying with 100 to change $ to cents
-    paymentIntent.call(<String, dynamic>{
-      'amount': amount,
-      'currency': 'usd',
-      'paymentMethod': paymentMethodID,
-    }).then((response) async {
-      // _confirmDialog(context, response.data["client_secret"], paymentMethod);
-      _confirmPayment(order, context, response.data["client_secret"],
-          paymentMethodID); //function for confirmation for payment
-    });
-  } */
-
   static void paymentTransfer(
       Order order,
       BuildContext context,
@@ -215,9 +200,6 @@ class PaymentService {
             .collection('users')
             .document(user.uid)
             .updateData({'stripeAccountId': response.data["id"]});
-        // .setData(
-        //     {'stripeAccountId': response.data["id"]},
-        //     merge: true);
       });
       createAccountLink(response.data["id"]);
     });
@@ -240,5 +222,9 @@ class PaymentService {
 
     //   return balance;
     // });
+  }
+
+  static Future<PaymentMethod> paymentRequestWithCardForm() async {
+    return StripePayment.paymentRequestWithCardForm(CardFormPaymentRequest());
   }
 }

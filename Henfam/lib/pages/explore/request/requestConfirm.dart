@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestConfirm extends StatelessWidget {
   final date;
@@ -21,8 +20,6 @@ class RequestConfirm extends StatelessWidget {
 
   RequestConfirm(this.date, this.endDate, this.uid, this.loc, this.locCoords,
       this.name, this.pmID);
-
-  final firestoreInstance = Firestore.instance;
 
   String getDay(DateTime date) {
     final today = DateTime.now();
@@ -54,78 +51,86 @@ class RequestConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
-      return BlocBuilder<RestaurantBloc, RestaurantState>(
-          builder: (context, state2) {
-        return (state1 is BasketLoadSuccess)
-            ? ((state2 is RestaurantLoadSuccess)
-                ? CupertinoActionSheet(
-                    title: Text("Do you want to submit this order?",
-                        style: TextStyle(fontSize: 22.0)),
-                    message: Text(
-                        "Delivery Window: " +
-                            _getTimeInfo(date, endDate)[0] +
-                            " - " +
-                            _getTimeInfo(date, endDate)[1] +
-                            ". Your order will EXPIRE at " +
-                            _getTimeInfo(date, endDate)[2],
-                        style: TextStyle(fontSize: 20.0)),
-                    actions: <Widget>[
-                      CupertinoActionSheetAction(
-                        child: Text("Confirm"),
-                        isDefaultAction: true,
-                        onPressed: () {
-                          BlocProvider.of<BasketBloc>(context)
-                              .add(BasketReset());
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return BlocBuilder<BasketBloc, BasketState>(builder: (context, state1) {
+        return BlocBuilder<RestaurantBloc, RestaurantState>(
+            builder: (context, state2) {
+          return (state1 is BasketLoadSuccess)
+              ? ((state2 is RestaurantLoadSuccess)
+                  ? CupertinoActionSheet(
+                      title: Text("Do you want to submit this order?",
+                          style: TextStyle(fontSize: 22.0)),
+                      message: Text(
+                          "Delivery Window: " +
+                              _getTimeInfo(date, endDate)[0] +
+                              " - " +
+                              _getTimeInfo(date, endDate)[1] +
+                              ". Your order will EXPIRE at " +
+                              _getTimeInfo(date, endDate)[2],
+                          style: TextStyle(fontSize: 20.0)),
+                      actions: <Widget>[
+                        CupertinoActionSheetAction(
+                          child: Text("Confirm"),
+                          isDefaultAction: true,
+                          onPressed: () {
+                            BlocProvider.of<BasketBloc>(context)
+                                .add(BasketReset());
 
-                          BlocProvider.of<OrderBloc>(context).add(
-                            OrderAdded(
-                              Order(
-                                name,
-                                uid,
-                                Point(locCoords.latitude, locCoords.longitude),
-                                state2.restaurant.name,
-                                Point(
-                                  state2.restaurant.location[0],
-                                  state2.restaurant.location[1],
+                            BlocProvider.of<OrderBloc>(context).add(
+                              OrderAdded(
+                                Order(
+                                  name,
+                                  uid,
+                                  Point(
+                                      locCoords.latitude, locCoords.longitude),
+                                  state2.restaurant.name,
+                                  Point(
+                                    state2.restaurant.location[0],
+                                    state2.restaurant.location[1],
+                                  ),
+                                  state1.jsonEncoding,
+                                  loc,
+                                  _getTimeInfo(date, endDate)[0],
+                                  _getTimeInfo(date, endDate)[1],
+                                  _getExpirationDate(date, endDate),
+                                  false,
+                                  false,
+                                  false,
+                                  null,
+                                  null,
+                                  state1.getPrice(),
+                                  state1.getApplicationFee(),
+                                  state1.getMinEarnings(),
+                                  state2.restaurant.bigImagePath,
+                                  pmID,
+                                  null,
+                                  null,
+                                  "",
+                                  (state as Authenticated).user.phone,
                                 ),
-                                state1.jsonEncoding,
-                                loc,
-                                _getTimeInfo(date, endDate)[0],
-                                _getTimeInfo(date, endDate)[1],
-                                _getExpirationDate(date, endDate),
-                                false,
-                                false,
-                                false,
-                                null,
-                                null,
-                                state1.getPrice(),
-                                state1.getApplicationFee(),
-                                state1.getMinEarnings(),
-                                state2.restaurant.bigImagePath,
-                                pmID,
-                                null,
-                                null,
                               ),
-                            ),
-                          );
-                          Menu.order = []; //clears order after submitting
-                          Menu.onPressed =
-                              () {}; //clears onPressed fcn after submitting
-                          Navigator.popUntil(context,
-                              ModalRoute.withName(Navigator.defaultRouteName));
+                            );
+                            //TODO: menu order issue
+                            // Menu.order = []; //clears order after submitting
+                            Menu.onPressed =
+                                () {}; //clears onPressed fcn after submitting
+                            Navigator.popUntil(
+                                context,
+                                ModalRoute.withName(
+                                    Navigator.defaultRouteName));
+                          },
+                        ),
+                      ],
+                      cancelButton: CupertinoActionSheetAction(
+                        child: Text("Cancel"),
+                        onPressed: () {
+                          Navigator.pop(context);
                         },
                       ),
-                    ],
-                    cancelButton: CupertinoActionSheetAction(
-                      child: Text("Cancel"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  )
-                : Container())
-            : Container();
+                    )
+                  : Container())
+              : Container();
+        });
       });
     });
   }

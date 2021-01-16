@@ -6,7 +6,6 @@ import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DeliveryCardPage extends StatelessWidget {
   Widget _displayStatus(Order order, BuildContext context) {
@@ -55,13 +54,7 @@ class DeliveryCardPage extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          Firestore.instance
-              .collection('users')
-              .document(order.uid)
-              .get()
-              .then((DocumentSnapshot document) {
-            launchURL("tel:" + document['phone']);
-          });
+          launchURL("tel:${order.phone}");
         },
       ),
     );

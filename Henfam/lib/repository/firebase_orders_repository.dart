@@ -38,6 +38,7 @@ class FirebaseOrdersRepository implements OrdersRepository {
       'user_id.runner': runner.uid,
       'user_id.runner_name': runner.name,
       'stripeAccountId': runner.stripeAccountId,
+      'user_id.runner_phone': runner.phone,
     });
   }
 

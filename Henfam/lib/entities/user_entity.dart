@@ -13,20 +13,21 @@ class UserEntity extends Equatable {
   final String stripeAccountId;
   final String token;
   final bool stripeSetupComplete;
+  final String phone;
 
   const UserEntity(
-    this.uid,
-    this.boosters,
-    this.earnings,
-    this.email,
-    this.name,
-    this.points,
-    this.requests,
-    this.runs,
-    this.stripeAccountId,
-    this.token,
-    this.stripeSetupComplete,
-  );
+      this.uid,
+      this.boosters,
+      this.earnings,
+      this.email,
+      this.name,
+      this.points,
+      this.requests,
+      this.runs,
+      this.stripeAccountId,
+      this.token,
+      this.stripeSetupComplete,
+      this.phone);
 
   Map<String, Object> toJson() {
     return {
@@ -41,6 +42,7 @@ class UserEntity extends Equatable {
       "stripeAccountId": stripeAccountId,
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
+      "phone": phone,
     };
   }
 
@@ -57,11 +59,12 @@ class UserEntity extends Equatable {
         stripeAccountId,
         token,
         stripeSetupComplete,
+        phone,
       ];
 
   @override
   String toString() {
-    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete }';
+    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone }';
   }
 
   static UserEntity fromJson(Map<String, Object> json) {
@@ -77,6 +80,7 @@ class UserEntity extends Equatable {
       json["stripeAccountId"] as String,
       json["token"] as String,
       json["stripe_setup_complete"] as bool,
+      json["phone"] as String,
     );
   }
 
@@ -92,6 +96,7 @@ class UserEntity extends Equatable {
       "stripeAccountId": stripeAccountId,
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
+      "phone": phone,
     };
   }
 
@@ -108,6 +113,7 @@ class UserEntity extends Equatable {
       snap.data["stripeAccountId"],
       snap.data["token"],
       snap.data["stripe_setup_complete"],
+      snap.data["phone"],
     );
   }
 }

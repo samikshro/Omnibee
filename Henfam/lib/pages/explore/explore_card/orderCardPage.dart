@@ -1,6 +1,5 @@
 import 'package:Henfam/models/order.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -162,13 +161,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
           ),
         ),
         onPressed: () {
-          Firestore.instance
-              .collection('users')
-              .document(order.runnerUid)
-              .get()
-              .then((DocumentSnapshot document) {
-            launchURL("tel:" + document['phone']);
-          });
+          launchURL("tel:${order.runnerPhone}");
         },
       ),
     );

@@ -81,3 +81,5 @@ class UpdateUser extends OrderEvent {
   @override
   String toString() => 'UpdateUser { User: $user }';
 }
+
+class OrderBlocClosed extends OrderEvent {}
