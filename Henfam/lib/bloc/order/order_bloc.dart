@@ -28,7 +28,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
                 )
               : OrderLoadInProgress(),
         ) {
-    print("getting to 31 first");
     print(state);
     print(authBloc.state);
     if (authBloc.state is Authenticated) {
@@ -54,14 +53,20 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       yield* _mapOrderMarkAcceptedToState(event);
     } else if (event is UpdateUser) {
       yield* _mapUpdateUserToState(event);
+    } else if (event is OrderBlocClosed) {
+      yield* _mapOrderBlocClosedToState(event);
     }
   }
 
   Stream<OrderState> _mapOrderLoadSuccessToState() async* {
     _authSubscription?.cancel();
     _authSubscription = _authBloc.listen((state) {
-      add(UpdateUser((state as Authenticated).user));
+      if (state is Authenticated) {
+        add(UpdateUser(state.user));
+      }
+      add(OrderLoaded());
     });
+
     _ordersSubscription?.cancel();
     _ordersSubscription = _ordersRepository.orders().listen(
           (orders) => add(OrdersUpdated(orders)),
@@ -93,6 +98,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   Stream<OrderState> _mapUpdateUserToState(UpdateUser event) async* {
     yield OrderStateLoadSuccess(user: event.user);
+  }
+
+  Stream<OrderState> _mapOrderBlocClosedToState(OrderBlocClosed event) async* {
+    yield OrderLoadInProgress();
   }
 
   @override

@@ -12,8 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:Henfam/services/paymentService.dart';
 
 class Profile extends StatefulWidget {
-  //final BaseAuth auth;
-
   static void launchURL(String s) async {
     String url = s;
     if (await canLaunch(url)) {
@@ -30,27 +28,17 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   signOut() async {
     try {
-      //await widget.auth.signOut();
       BlocProvider.of<AuthBloc>(context).add(WasUnauthenticated());
     } catch (e) {
       print(e);
     }
   }
 
-  // Future<double> _getBalance() {
-  //   return _getStripeAccountID().then((val) async {
-  //     double bal = 0;
-  //     await (PaymentService.retrieveAccountBalance(accId)).then((response) {
-  //       List<dynamic> z = response.data["pending"] as List<dynamic>;
-  //       for (int i = 0; i < z.length; i++) {
-  //         bal += z[i]["amount"];
-  //       }
-  //     });
-  //     return bal / 100;
-  //   });
-  // }
+  Future<String> _getBalance(String accId) async {
+    if (accId == "") {
+      return "\nN/A";
+    }
 
-  Future<double> _getBalance(String accId) async {
     double bal = 0;
     await PaymentService.retrieveAccountBalance(accId).then((response) {
       List<dynamic> z = response.data["pending"] as List<dynamic>;
@@ -58,7 +46,7 @@ class _ProfileState extends State<Profile> {
         bal += z[i]["amount"];
       }
     });
-    return bal / 100;
+    return "\$${(bal / 100).toStringAsFixed(2)}";
   }
 
   @override
@@ -75,14 +63,13 @@ class _ProfileState extends State<Profile> {
               Padding(
                 padding: EdgeInsets.all(10),
               ),
-              FutureBuilder<double>(
+              FutureBuilder<String>(
                 future: _getBalance(state.user.stripeAccountId),
-                builder: (BuildContext context, AsyncSnapshot<double> balance) {
+                builder: (BuildContext context, AsyncSnapshot<String> balance) {
                   if (!balance.hasData)
                     return Center(child: Text('Loading...'));
                   return LargeTextSection(
-                    "Balance to be Transferred: \$" +
-                        balance.data.toStringAsFixed(2),
+                    "Balance to be Transferred: ${balance.data}",
                   );
                 },
               ),
