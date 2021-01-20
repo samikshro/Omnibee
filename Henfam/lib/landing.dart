@@ -1,10 +1,7 @@
-import 'package:Henfam/bloc/blocs.dart';
-import 'package:Henfam/repository/repositories.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/pages/explore/explore.dart';
 import 'package:Henfam/pages/account/profile.dart';
 import 'package:Henfam/notifications/notificationHandler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({

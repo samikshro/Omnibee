@@ -1,7 +1,6 @@
 import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 
-//TODO: move to using bloc
 class BigCard extends StatelessWidget {
   final Order order;
 

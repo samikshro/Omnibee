@@ -8,11 +8,8 @@ import 'package:Henfam/pages/explore/menu/menuPageHeader.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Henfam/pages/explore/menu/menuOrderForm.dart';
 
-// TODO: to be tested. will removing foodinfo order work
 class Menu extends StatefulWidget {
-  // static List<FoodInfo> order;
   static var onPressed;
   Menu();
   @override

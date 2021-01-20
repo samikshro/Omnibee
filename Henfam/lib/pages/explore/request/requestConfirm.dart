@@ -110,8 +110,7 @@ class RequestConfirm extends StatelessWidget {
                                 ),
                               ),
                             );
-                            //TODO: menu order issue
-                            // Menu.order = []; //clears order after submitting
+
                             Menu.onPressed =
                                 () {}; //clears onPressed fcn after submitting
                             Navigator.popUntil(
