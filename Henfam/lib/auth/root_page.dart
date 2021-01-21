@@ -27,6 +27,7 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       if (state is Uninitialized) {
+        print("About to build waiting screen (auth state uninitialized)");
         return buildWaitingScreen();
       } else if (state is Unauthenticated || state is ErrorState) {
         return new LoginSignupPage();
@@ -34,6 +35,8 @@ class _RootPageState extends State<RootPage> {
         print(state.user.name + " has logged in.");
         return new LandingPage();
       } else {
+        print("About to build waiting screen (in else)");
+
         return buildWaitingScreen();
       }
     });

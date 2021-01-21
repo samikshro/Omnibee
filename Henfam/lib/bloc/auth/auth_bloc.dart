@@ -37,15 +37,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapAppStartedToState() async* {
     try {
+      print("Before call to isAuthenticated");
       final isSignedIn = await _userRepository.isAuthenticated();
+      print("isSignedIn is $isSignedIn");
       if (!isSignedIn) {
         yield Unauthenticated();
       }
-      final userId = await _userRepository.getUserId();
+      print("before call to to getUserId");
+      final user = await _userRepository.getUser();
+      print("userId is ${user.uid}");
       _userSubscription?.cancel();
-      _userSubscription = _userRepository.user(userId).listen((user) {
+      _userSubscription = _userRepository.user(user.uid).listen((user) {
         add(WasAuthenticated(user));
       });
+      yield Authenticated(user);
     } catch (_) {
       yield Unauthenticated();
     }

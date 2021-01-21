@@ -7,8 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationHandler extends StatefulWidget {
-  NotificationHandler({this.child});
+  NotificationHandler({this.child, this.uid});
 
+  final String uid;
   final Widget child;
 
   @override
@@ -20,19 +21,12 @@ class _NotificationHandlerState extends State<NotificationHandler> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   _saveDeviceToken() async {
-    String uid;
-    BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is Authenticated) {
-          uid = state.user.uid;
-        }
-      },
-    );
     String fcmToken = await _fcm.getToken();
 
     if (fcmToken != null) {
-      var userRef = _db.collection('users').document(uid);
-      await userRef.setData({'token': fcmToken}, merge: true);
+      print("uid is ${widget.uid}");
+      var userRef = _db.collection('users').document(widget.uid);
+      await userRef.updateData({'token': fcmToken});
     }
   }
 

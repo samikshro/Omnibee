@@ -13,6 +13,8 @@ abstract class UserRepository {
 
   Future<String> getUserId();
 
+  Future<User> getUser();
+
   Future<void> sendEmailVerification();
 
   Future<bool> isEmailVerified();

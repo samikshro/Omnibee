@@ -41,6 +41,7 @@ class FirebaseUserRepository implements UserRepository {
         email: email, password: password);
     FirebaseUser user = result.user;
 
+    print("creating new user in userCollection (signup)");
     userCollection.document(user.uid).setData({
       'name': name,
       'email': email,
@@ -52,7 +53,9 @@ class FirebaseUserRepository implements UserRepository {
       'stripe_setup_complete': false,
       'stripeAccountId': "",
       'phone': phone,
+      'token': "",
     });
+    print("after creating new user in userCollection (signup)");
 
     return [email, password];
   }
@@ -65,6 +68,20 @@ class FirebaseUserRepository implements UserRepository {
   @override
   Future<String> getUserId() async {
     return (await _firebaseAuth.currentUser()).uid;
+  }
+
+  @override
+  Future<User> getUser() async {
+    String uid = await getUserId();
+    print("Got userid in getUser()");
+    User user = await userCollection
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return User.fromEntity(UserEntity.fromSnapshot(document));
+    });
+    print("after getting user from firebase");
+    return user;
   }
 
   @override
