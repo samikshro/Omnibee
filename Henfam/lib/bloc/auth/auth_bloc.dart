@@ -47,8 +47,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _userRepository.getUser();
       print("userId is ${user.uid}");
       _userSubscription?.cancel();
-      _userSubscription = _userRepository.user(user.uid).listen((user) {
-        add(WasAuthenticated(user));
+      _userSubscription = _userRepository.user(user.uid).listen((updatedUser) {
+        print("Adding wasAuthenticated event");
+        add(WasAuthenticated(updatedUser));
       });
       yield Authenticated(user);
     } catch (_) {

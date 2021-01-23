@@ -131,6 +131,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
       order,
     ];
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      print("Building accept order again");
       return Scaffold(
           key: _scaffoldKey,
           bottomNavigationBar: SizedBox(

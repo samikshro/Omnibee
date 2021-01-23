@@ -41,7 +41,6 @@ class FirebaseUserRepository implements UserRepository {
         email: email, password: password);
     FirebaseUser user = result.user;
 
-    print("creating new user in userCollection (signup)");
     userCollection.document(user.uid).setData({
       'name': name,
       'email': email,
@@ -55,7 +54,6 @@ class FirebaseUserRepository implements UserRepository {
       'phone': phone,
       'token': "",
     });
-    print("after creating new user in userCollection (signup)");
 
     return [email, password];
   }
@@ -98,11 +96,16 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Stream<User> user(String uid) {
-    return userCollection.snapshots().map((snapshot) {
+    /* return userCollection.snapshots().map((snapshot) {
       return snapshot.documents
           .map((doc) => User.fromEntity(UserEntity.fromSnapshot(doc)))
           .toList()
           .firstWhere((user) => user.uid == uid);
-    });
+    }); */
+
+    return userCollection
+        .document(uid)
+        .snapshots()
+        .map((doc) => User.fromEntity(UserEntity.fromSnapshot(doc)));
   }
 }
