@@ -71,14 +71,22 @@ class FirebaseUserRepository implements UserRepository {
   @override
   Future<User> getUser() async {
     String uid = await getUserId();
-    print("Got userid in getUser()");
     User user = await userCollection
         .document(uid)
         .get()
         .then((DocumentSnapshot document) {
       return User.fromEntity(UserEntity.fromSnapshot(document));
     });
-    print("after getting user from firebase");
+    return user;
+  }
+
+  Future<User> getUserWUID(String uid) async {
+    User user = await userCollection
+        .document(uid)
+        .get()
+        .then((DocumentSnapshot document) {
+      return User.fromEntity(UserEntity.fromSnapshot(document));
+    });
     return user;
   }
 

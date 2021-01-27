@@ -28,132 +28,144 @@ class _MenuState extends State<Menu> {
     return modifiers;
   }
 
+  Function _getOnPressed(BuildContext context, BasketLoadSuccess state) {
+    if (state.menuItems.length == 0)
+      return null;
+    else {
+      return () {
+        BlocProvider.of<BasketBloc>(context).add(MenuItemDeleted(null));
+        Navigator.pushNamed(
+          context,
+          '/basket_form',
+        );
+      };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RestaurantBloc, RestaurantState>(
-        builder: (context, state) {
-      return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
-          builder: (context1, state1) {
-        return (state is RestaurantLoadSuccess)
-            ? WillPopScope(
-                onWillPop: () async {
-                  return true;
-                },
-                child: Scaffold(
-                  bottomNavigationBar: SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: RaisedButton(
-                      child: Text('View Basket',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color:
-                                  Theme.of(context).scaffoldBackgroundColor)),
-                      onPressed: () {
-                        BlocProvider.of<BasketBloc>(context)
-                            .add(MenuItemDeleted(null));
-                        Navigator.pushNamed(
-                          context,
-                          '/basket_form',
-                        );
-                      },
+    //TODO: add BasketBloc here and copy
+    return BlocBuilder<BasketBloc, BasketState>(builder: (bcontext, bstate) {
+      return BlocBuilder<RestaurantBloc, RestaurantState>(
+          builder: (context, state) {
+        return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+            builder: (context1, state1) {
+          return (state is RestaurantLoadSuccess)
+              ? WillPopScope(
+                  onWillPop: () async {
+                    return true;
+                  },
+                  child: Scaffold(
+                    bottomNavigationBar: SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: RaisedButton(
+                        child: Text('View Basket',
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor)),
+                        onPressed: _getOnPressed(context, bstate),
+                      ),
+                    ),
+                    body: CustomScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      slivers: <Widget>[
+                        SliverPersistentHeader(
+                          pinned: false,
+                          floating: true,
+                          delegate: MenuPageHeader(
+                            restaurant: state.restaurant,
+                            minExtent: 150.0,
+                            maxExtent: 250.0,
+                          ),
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate([
+                            ExpansionTile(
+                                title: Text('Open until ' +
+                                    state.restaurant.hours['end_time'])),
+                            ListView.separated(
+                                physics: NeverScrollableScrollPhysics(),
+                                separatorBuilder: (context, index) {
+                                  return Divider();
+                                },
+                                itemCount:
+                                    state.restaurant.menu.getNumberCategories(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  MenuCategory category =
+                                      state.restaurant.menu.categories[index];
+                                  return Column(
+                                    children: [
+                                      LargeTextSection(category.categoryName),
+                                      Divider(),
+                                      ListView.separated(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        separatorBuilder: (context, index) {
+                                          return Divider();
+                                        },
+                                        itemCount: category.getNumItems(),
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index2) {
+                                          MenuItem menuItem =
+                                              category.menuItems[index2];
+
+                                          return ListTile(
+                                            onTap: () {
+                                              List<MenuModifier> modifiers =
+                                                  _getMenuModifiers(
+                                                      state.restaurant.menu
+                                                          .modifiers,
+                                                      menuItem);
+
+                                              BlocProvider.of<
+                                                          MenuOrderFormBloc>(
+                                                      context1)
+                                                  .add(ItemAdded(
+                                                      menuItem, modifiers));
+                                              Navigator.pushNamed(
+                                                  context, '/menu_order_form');
+                                            },
+                                            title: Text(menuItem.name),
+                                            subtitle: Wrap(
+                                                direction: Axis.vertical,
+                                                children: menuItem
+                                                            .description !=
+                                                        null
+                                                    ? [
+                                                        Text(
+                                                          menuItem.description,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                        Text("\$" +
+                                                            menuItem.price
+                                                                .toStringAsFixed(
+                                                                    2)),
+                                                      ]
+                                                    : [
+                                                        Text("\$" +
+                                                            menuItem.price
+                                                                .toString())
+                                                      ]),
+                                            isThreeLine: true,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ]),
+                        ),
+                      ],
                     ),
                   ),
-                  body: CustomScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    slivers: <Widget>[
-                      SliverPersistentHeader(
-                        pinned: false,
-                        floating: true,
-                        delegate: MenuPageHeader(
-                          restaurant: state.restaurant,
-                          minExtent: 150.0,
-                          maxExtent: 250.0,
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          ExpansionTile(
-                              title: Text('Open until ' +
-                                  state.restaurant.hours['end_time'])),
-                          ListView.separated(
-                              physics: NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              itemCount:
-                                  state.restaurant.menu.getNumberCategories(),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                MenuCategory category =
-                                    state.restaurant.menu.categories[index];
-                                return Column(
-                                  children: [
-                                    LargeTextSection(category.categoryName),
-                                    Divider(),
-                                    ListView.separated(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      separatorBuilder: (context, index) {
-                                        return Divider();
-                                      },
-                                      itemCount: category.getNumItems(),
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index2) {
-                                        MenuItem menuItem =
-                                            category.menuItems[index2];
-
-                                        return ListTile(
-                                          onTap: () {
-                                            List<MenuModifier> modifiers =
-                                                _getMenuModifiers(
-                                                    state.restaurant.menu
-                                                        .modifiers,
-                                                    menuItem);
-
-                                            BlocProvider.of<MenuOrderFormBloc>(
-                                                    context1)
-                                                .add(ItemAdded(
-                                                    menuItem, modifiers));
-                                            Navigator.pushNamed(
-                                                context, '/menu_order_form');
-                                          },
-                                          title: Text(menuItem.name),
-                                          subtitle: Wrap(
-                                              direction: Axis.vertical,
-                                              children: menuItem.description !=
-                                                      null
-                                                  ? [
-                                                      Text(
-                                                        menuItem.description,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                      Text("\$" +
-                                                          menuItem.price
-                                                              .toStringAsFixed(
-                                                                  2)),
-                                                    ]
-                                                  : [
-                                                      Text("\$" +
-                                                          menuItem.price
-                                                              .toString())
-                                                    ]),
-                                          isThreeLine: true,
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ]),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : Container();
+                )
+              : Container();
+        });
       });
     });
   }
