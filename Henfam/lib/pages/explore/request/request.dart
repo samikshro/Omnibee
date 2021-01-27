@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/explore/request/widgets/deliveryOptions.dart';
 import 'package:Henfam/pages/explore/request/widgets/locationDetails.dart';
@@ -17,18 +19,25 @@ class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _endDeliveryDate = DateTime.now().add(new Duration(hours: 1));
   String _location = '';
-  bool _placeOrderDisabled = true;
+  Map<String, bool> infoAdded = {
+    'location': false,
+    'deliveryDate': false,
+    'endDeliveryDate': false
+  };
+
   Position _locationCoordinates = Position();
 
   void _setDeliveryDate(DateTime _newDate) {
     setState(() {
       _deliveryDate = _newDate;
+      infoAdded['deliveryDate'] = true;
     });
   }
 
   void _setEndDeliveryDate(DateTime _newDate) {
     setState(() {
       _endDeliveryDate = _newDate;
+      infoAdded['endDeliveryDate'] = true;
     });
   }
 
@@ -36,7 +45,7 @@ class _RequestState extends State<Request> {
     setState(() {
       _location = loc;
       _locationCoordinates = locationCoords;
-      _placeOrderDisabled = false;
+      infoAdded['location'] = true;
     });
   }
 
@@ -81,7 +90,24 @@ class _RequestState extends State<Request> {
                               color: Theme.of(context).scaffoldBackgroundColor),
                         ),
                         onPressed: () {
-                          if (!_placeOrderDisabled) {
+                          if (infoAdded.containsValue(false)) {
+                            //TODO: make this look better
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Column(children: [
+                                    Text(
+                                        'Please fill out the delivery time range and location fields!',
+                                        style: TextStyle(fontSize: 18)),
+                                    CupertinoButton(
+                                        color: Theme.of(context).primaryColor,
+                                        child: Text("Close"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                  ]);
+                                });
+                          } else {
                             PaymentService.paymentRequestWithCardForm()
                                 .then((paymentMethod) {
                               showCupertinoModalPopup(
@@ -97,8 +123,6 @@ class _RequestState extends State<Request> {
                                 ),
                               );
                             });
-                          } else {
-                            return null;
                           }
                         }),
                   ),
