@@ -33,6 +33,9 @@ class Basket extends StatelessWidget {
               onPressed: () {
                 BlocProvider.of<BasketBloc>(context)
                     .add(MenuItemDeleted(menuItem));
+                if ((state as BasketLoadSuccess).menuItems.length == 0) {
+                  Navigator.pop(context);
+                }
               },
             ),
           )
@@ -98,7 +101,7 @@ class Basket extends StatelessWidget {
             title: Text(
           'My Basket',
         )),
-        body: (state is BasketLoadSuccess)
+        body: ((state is BasketLoadSuccess) && (state.menuItems.length > 0))
             ? SafeArea(
                 child: ListView(
                 children: <Widget>[

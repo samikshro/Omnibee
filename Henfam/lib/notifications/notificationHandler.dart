@@ -24,7 +24,7 @@ class _NotificationHandlerState extends State<NotificationHandler> {
     String fcmToken = await _fcm.getToken();
 
     if (fcmToken != null) {
-      print("uid is ${widget.uid}");
+      print("uid in notification handler is ${widget.uid}");
       var userRef = _db.collection('users').document(widget.uid);
       await userRef.updateData({'token': fcmToken});
     }

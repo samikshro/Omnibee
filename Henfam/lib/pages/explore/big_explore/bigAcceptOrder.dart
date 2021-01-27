@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/entities/entities.dart';
 import 'package:Henfam/models/models.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigAcceptOrderInfo.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
 import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/services/paymentService.dart';
@@ -131,6 +133,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
       order,
     ];
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      print("Building accept order again");
       return Scaffold(
           appBar: AppBar(
             title: Text("${order.restaurantName} Errand"),
@@ -146,7 +149,19 @@ class _AcceptOrderState extends State<AcceptOrder> {
                       color: Theme.of(context).scaffoldBackgroundColor)),
               onPressed: () {
                 print("hello , at is stripe setup");
-                _isStripeSetup(orderList, (state as Authenticated).user);
+                // BlocProvider.of<AuthBloc>(context)
+                //     .add(WasStripeSetupCompleted());
+                print((state as Authenticated).user);
+                
+                Firestore.instance.collection('users')
+                    .document((state as Authenticated).user.uid)
+                    .get()
+                    .then((DocumentSnapshot document) {
+                  User user = User.fromEntity(UserEntity.fromSnapshot(document));
+                  _isStripeSetup(orderList, user);
+                });
+
+                
                 print("after isStripeSetup");
               },
             ),
