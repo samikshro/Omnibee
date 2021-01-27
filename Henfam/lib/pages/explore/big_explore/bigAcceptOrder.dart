@@ -145,21 +145,15 @@ class _AcceptOrderState extends State<AcceptOrder> {
                       fontSize: 20.0,
                       color: Theme.of(context).scaffoldBackgroundColor)),
               onPressed: () {
-                print("hello , at is stripe setup");
-                // BlocProvider.of<AuthBloc>(context)
-                //     .add(WasStripeSetupCompleted());
-                print((state as Authenticated).user);
-                
-                Firestore.instance.collection('users')
+                Firestore.instance
+                    .collection('users')
                     .document((state as Authenticated).user.uid)
                     .get()
                     .then((DocumentSnapshot document) {
-                  User user = User.fromEntity(UserEntity.fromSnapshot(document));
+                  User user =
+                      User.fromEntity(UserEntity.fromSnapshot(document));
                   _isStripeSetup(orderList, user);
                 });
-
-                
-                print("after isStripeSetup");
               },
             ),
           ),
