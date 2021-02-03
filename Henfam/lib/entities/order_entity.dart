@@ -146,12 +146,24 @@ class OrderEntity extends Equatable {
     );
   }
 
+  static double _round(double val) {
+    double mod = pow(10.0, 2);
+    return ((val * mod).round().toDouble() / mod);
+  }
+
   static Point _castToGeoPointAndReturnPoint(Object geopoint) {
     GeoPoint originalCoordinates = geopoint;
     return Point(
       originalCoordinates.latitude,
       originalCoordinates.longitude,
     );
+  }
+
+  static List<dynamic> _roundPricesTwoDecimals(List<dynamic> basket) {
+    for (int i = 0; i < basket.length; i++) {
+      basket[i]["price"] = _round(basket[i]["price"]);
+    }
+    return basket;
   }
 
   static DateTime _castToTimestampAndReturnDateTime(Object timestamp) {
@@ -209,7 +221,7 @@ class OrderEntity extends Equatable {
       _castToGeoPointAndReturnPoint(
         snap.data['user_id']['restaurant_coordinates'],
       ),
-      snap.data['user_id']['basket'],
+      _roundPricesTwoDecimals(snap.data['user_id']['basket']),
       snap.data['user_id']['location'],
       snap.data['user_id']['delivery_window']['start_time'],
       snap.data['user_id']['delivery_window']['end_time'],

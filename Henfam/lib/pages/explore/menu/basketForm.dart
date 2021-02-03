@@ -71,14 +71,12 @@ class Basket extends StatelessWidget {
   }
 
   List<String> _getDeliveryFeeAndTax(List<MenuItem> menuItems) {
-    double totalPrice = double.parse(_getItemsPrice(menuItems));
+    double subtotal = double.parse(_getItemsPrice(menuItems));
 
     return [
-      PaymentService.getDeliveryFee(totalPrice).toStringAsFixed(2),
-      PaymentService.getApplicationFee(totalPrice).toStringAsFixed(2),
-      (PaymentService.getTaxedPrice(totalPrice) - totalPrice)
-          .toStringAsFixed(2),
-      PaymentService.getPCharge(totalPrice).toStringAsFixed(2),
+      PaymentService.getTotalFees(subtotal).toStringAsFixed(2),
+      (PaymentService.getTaxedPrice(subtotal) - subtotal).toStringAsFixed(2),
+      PaymentService.getPCharge(subtotal).toStringAsFixed(2),
     ];
   }
 
@@ -119,16 +117,12 @@ class Basket extends StatelessWidget {
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[0]),
                   ),
                   ListTile(
-                    title: Text("Application Fee"),
+                    title: Text("Tax"),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[1]),
                   ),
                   ListTile(
-                    title: Text("Tax"),
-                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[2]),
-                  ),
-                  ListTile(
                     title: Text("Total"),
-                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[3]),
+                    trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[2]),
                   ),
                 ],
               ))

@@ -38,8 +38,9 @@ class PaymentService {
   }
 
   static double getStripeFee(double price) {
-    double deliveryFee = getDeliveryFee(price);
-    double goalPrice = getTaxedPrice(price + deliveryFee);
+    double taxedPrice = getTaxedPrice(price); //trying to match customer receipt
+    double deliveryFee = getDeliveryFee(price); //now our fees
+    double goalPrice = taxedPrice + deliveryFee;
 
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
@@ -58,8 +59,6 @@ class PaymentService {
     double deliveryFee = getDeliveryFee(price); //now our fees
     double goalPrice = taxedPrice + deliveryFee;
 
-    // double deliveryFee = getDeliveryFee(price);
-    // double goalPrice = getTaxedPrice(price + deliveryFee);
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 
