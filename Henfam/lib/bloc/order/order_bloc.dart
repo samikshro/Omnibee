@@ -28,8 +28,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
                 )
               : OrderLoadInProgress(),
         ) {
-    print(state);
-    print(authBloc.state);
     if (authBloc.state is Authenticated) {
       assert(ordersRepository != null && authBloc != null);
       _ordersRepository = ordersRepository;
@@ -68,11 +66,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     });
 
     _ordersSubscription?.cancel();
-    // _ordersSubscription = _ordersRepository.orders().listen(
-    //       (orders) => add(OrdersUpdated(orders)),
-    //     );
     _ordersSubscription = _ordersRepository.orders().listen((orders) {
-      print("adding OrdersUpdated event");
       add(OrdersUpdated(orders));
     });
   }
