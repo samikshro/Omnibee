@@ -20,9 +20,18 @@ class OrderCard extends StatelessWidget {
     return children;
   }
 
+  Widget _getIcon(Order order) {
+    if (order.isReceived) {
+      return Icon(Icons.check_circle, color: Colors.green, size: 45);
+    } else if (order.isExpired()) {
+      return Icon(Icons.cancel, color: Colors.red, size: 45);
+    } else {
+      return Icon(Icons.fastfood, size: 45);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -35,13 +44,9 @@ class OrderCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ExpansionTile(
-                leading: Icon(Icons.fastfood),
+                leading: _getIcon(order),
                 title: Text(order.name + ": " + order.restaurantName),
-                subtitle: Text(order.restaurantName +
-                    ": " +
-                    order.startTime +
-                    "-" +
-                    order.endTime),
+                subtitle: Text("${order.getDeliveryWindow()}"),
                 children: _itemsToOrder(order)),
             Image(
               image: AssetImage("assets/oishii_bowl_pic1.png"),
@@ -62,7 +67,7 @@ class OrderCardButtonBar extends StatelessWidget {
   OrderCardButtonBar(this.order, this.context);
 
   MainAxisAlignment _getAlignment() {
-    if (order.isDelivered != true) {
+    if (order.isDelivered != true || order.isReceived == true) {
       return MainAxisAlignment.end;
     } else {
       return MainAxisAlignment.spaceAround;
@@ -103,7 +108,7 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered == true && _isNotExpired(order)) {
+    if (order.isDelivered == true && _isNotExpired(order) && !order.isReceived) {
       buttons.insert(
           0,
           RaisedButton(

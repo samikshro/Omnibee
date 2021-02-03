@@ -13,6 +13,8 @@ class OrderCardPage extends StatefulWidget {
 }
 
 class _OrderCardPageState extends State<OrderCardPage> {
+  double fontSize = 16;
+
   String _getExpirationTime(Order order) {
     DateTime time = order.expirationTime;
     final DateFormat formatter = DateFormat('jm');
@@ -26,24 +28,22 @@ class _OrderCardPageState extends State<OrderCardPage> {
     return wordList[0];
   }
 
-  String _getDeliveryWindow(Order order) {
-    String startTime = order.startTime;
-    String endTime = order.endTime;
-    return "$startTime to $endTime";
-  }
-
-  Widget _stillWaitingForMatch(Order order) {
-    if (order.isAccepted) {
-      return Container(child: Text('You have been paired with a big bee!'));
+  Widget _getStatus(Order order) {
+    if (order.isReceived) {
+      return Container(child: Text('Your order was completed!', style: TextStyle(fontSize: fontSize),));
+    } else if (order.isExpired()) {
+      return Container(child: Text('Your order expired before being accepted.', style: TextStyle(fontSize: fontSize),));
+    } else if (order.isAccepted) {
+      return Container(child: Text('Your order is on the way!', style: TextStyle(fontSize: fontSize),));
     } else {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Waiting for a Big Bee...'),
+          Text('Waiting for a Big Bee...', style: TextStyle(fontSize: fontSize),),
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
-          Text('Order will expire at ${_getExpirationTime(order)}'),
+          Text('Order will expire at ${_getExpirationTime(order)}', style: TextStyle(fontSize: fontSize),),
           Padding(
             padding: EdgeInsets.only(top: 10),
           ),
@@ -97,27 +97,27 @@ class _OrderCardPageState extends State<OrderCardPage> {
         children: <Widget>[
           Text(
             'Drop-off Location:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(_getDeliveryLocation(order)),
+            child: Text(_getDeliveryLocation(order), style: TextStyle(fontSize: fontSize)),
           ),
           Text(
             'Delivery Window:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(_getDeliveryWindow(order)),
+            child: Text(order.getDeliveryWindow(), style: TextStyle(fontSize: fontSize)),
           ),
           Text(
             'Status:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: _stillWaitingForMatch(order),
+            child: _getStatus(order),
           ),
         ],
       ),
@@ -132,7 +132,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
         children: <Widget>[
           Text(
             'Your items:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
           ),
           _getYourItems(order),
         ],
@@ -156,7 +156,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
         child: Text(
           "Call Errand Runner",
           style: TextStyle(
-            fontSize: 16,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -175,13 +175,8 @@ class _OrderCardPageState extends State<OrderCardPage> {
           child: Text('Order delivered!'),
         ),
       );
-    } else if (order.isAccepted) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
-        child: Center(
-          child: Text('Order is on the way!'),
-        ),
-      );
+    } else if (order.isAccepted ) {
+      return Container();
     } else {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
@@ -191,7 +186,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
             child: Text(
               "Cancel Order",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: fontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -11,12 +11,10 @@ class OrderLoadInProgress extends OrderState {}
 
 class OrderStateLoadSuccess extends OrderState {
   final List<Order> orders;
-  final List<Order> expiredOrders;
   final User user;
 
   const OrderStateLoadSuccess({
     this.orders = const [],
-    this.expiredOrders = const [],
     this.user,
   });
 
@@ -24,12 +22,12 @@ class OrderStateLoadSuccess extends OrderState {
   List<Object> get props => [orders];
 
   @override
-  String toString() => 'OrderStateLoadSuccess { Orders: $orders }';
+  String toString() => 'OrderStateLoadSuccess { Orders: $orders, User $user }';
 
   List<Order> getUserOrders() {
     List<Order> userOrders = orders
         .where(
-            (order) => (order.uid == user.uid && (_isOrderNotExpired(order))))
+            (order) => (order.uid == user.uid && (_isOrderNotExpired(order) && !order.isReceived)))
         .toList();
 
     return userOrders;
@@ -38,7 +36,7 @@ class OrderStateLoadSuccess extends OrderState {
   List<Order> getUserDeliveries() {
     return orders
         .where((order) =>
-            ((order.runnerUid == user.uid) && (_isOrderNotExpired(order))))
+            ((order.runnerUid == user.uid) && (_isOrderNotExpired(order) && !order.isReceived)))
         .toList();
   }
 
@@ -47,13 +45,16 @@ class OrderStateLoadSuccess extends OrderState {
         order.expirationTime.millisecondsSinceEpoch;
   }
 
+  bool _isExpiredAndAccepted(Order order) {
+    return (order.isAccepted && !_isOrderNotExpired(order));
+  }
+
   // TODO: Fix previous orders & deliveries, need to change cards and card pages
   List<Order> getPrevUserOrders() {
-    return [];
-    /* return orders
+    return orders
         .where((order) =>
-            ((order.uid == user.uid) && _isExpiredAndAccepted(order)))
-        .toList(); */
+            ((order.uid == user.uid) && (order.isReceived || !_isOrderNotExpired(order))))
+        .toList();
   }
 
   List<Order> getPrevUserDeliveries() {

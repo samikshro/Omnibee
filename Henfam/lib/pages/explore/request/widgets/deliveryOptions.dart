@@ -26,6 +26,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: fix font sizes on smaller iphones if needed
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(

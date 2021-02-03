@@ -44,13 +44,12 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: add BasketBloc here and copy
     return BlocBuilder<BasketBloc, BasketState>(builder: (bcontext, bstate) {
       return BlocBuilder<RestaurantBloc, RestaurantState>(
           builder: (context, state) {
         return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
             builder: (context1, state1) {
-          return (state is RestaurantLoadSuccess)
+          return (state is RestaurantLoadSuccess && bstate is BasketLoadSuccess)
               ? WillPopScope(
                   onWillPop: () async {
                     return true;

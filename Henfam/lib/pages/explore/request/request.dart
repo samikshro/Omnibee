@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/explore/request/widgets/deliveryOptions.dart';
 import 'package:Henfam/pages/explore/request/widgets/locationDetails.dart';
@@ -68,7 +66,6 @@ class _RequestState extends State<Request> {
                       children: <Widget>[
                         DeliveryOptions(_setDeliveryDate, _setEndDeliveryDate),
                         LocationDetails(_setLocation),
-                        // PaymentSection(),
                       ],
                     ),
                   ],
@@ -96,9 +93,14 @@ class _RequestState extends State<Request> {
                                 context: context,
                                 builder: (context) {
                                   return Column(children: [
-                                    Text(
-                                        'Please fill out the delivery time range and location fields!',
-                                        style: TextStyle(fontSize: 18)),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 10),
+                                      child: Text(
+                                          'Please fill out the delivery time range and location fields!',
+                                          style: TextStyle(fontSize: 18)),
+                                    ),
+                                    Padding(padding: EdgeInsets.only(top:10),),
                                     CupertinoButton(
                                         color: Theme.of(context).primaryColor,
                                         child: Text("Close"),

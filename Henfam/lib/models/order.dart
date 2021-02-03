@@ -238,4 +238,8 @@ class Order {
     return expirationTime.millisecondsSinceEpoch <
         DateTime.now().millisecondsSinceEpoch;
   }
+
+  String getDeliveryWindow() {
+    return "${startTime} to ${endTime} ${expirationTime.timeZoneName} on ${expirationTime.month}/${expirationTime.day}/${expirationTime.year}";
+  }
 }

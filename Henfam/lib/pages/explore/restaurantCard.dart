@@ -46,7 +46,7 @@ class RestaurantCard extends StatelessWidget {
           );
           BlocProvider.of<RestaurantBloc>(context)
               .add(RestaurantUpdated(selectedRestaurant));
-          Navigator.pushNamed(context, '/Menu', arguments: document);
+          Navigator.pushNamed(context, '/Menu');
         },
         child: Card(
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
