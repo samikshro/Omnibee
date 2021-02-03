@@ -282,7 +282,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
                 textAlign: TextAlign.left,
               ),
             ),
-            if (order.isAccepted && !order.isExpired())
+            if (!order.isExpired()) //TODO: test these conditions
               _callPhoneNumber(order, context),
             _getDeliveryInformation(order),
             Container(

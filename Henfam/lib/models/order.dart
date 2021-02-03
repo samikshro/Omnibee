@@ -234,9 +234,12 @@ class Order {
     return isReceived == true && isDelivered == true;
   }
 
+//TODO: notification flow should have failsafe for cases when order accepted but too much time has passed. add warning notifications as well.
   bool isExpired() {
-    return expirationTime.millisecondsSinceEpoch <
-        DateTime.now().millisecondsSinceEpoch;
+    return (expirationTime.millisecondsSinceEpoch <
+                DateTime.now().millisecondsSinceEpoch &&
+            !isAccepted) ||
+        (isReceived);
   }
 
   String getDeliveryWindow() {

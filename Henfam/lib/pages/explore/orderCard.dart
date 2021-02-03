@@ -108,7 +108,9 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered == true && _isNotExpired(order) && !order.isReceived) {
+    if (order.isDelivered == true &&
+        _isNotExpired(order) &&
+        !order.isReceived) {
       buttons.insert(
           0,
           RaisedButton(
