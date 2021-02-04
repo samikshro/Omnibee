@@ -1,3 +1,4 @@
+import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,10 +55,20 @@ class _LocationDetailsState extends State<LocationDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MediumTextSection('Drop-off Location'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Text('Where will you be located?'),
+          Row(
+            children: [
+              SizedBox(
+                width: 240,
+                child: MediumTextSection('Drop-off Location'),
+              ),
+              InfoButton(
+                titleMessage: "Drop-off Location",
+                bodyMessage:
+                    "Choose where you want the food to be dropped off.",
+                buttonMessage: "Okay",
+                buttonSize: 25,
+              ),
+            ],
           ),
           Divider(),
           Padding(

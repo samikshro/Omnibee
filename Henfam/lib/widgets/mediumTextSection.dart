@@ -9,7 +9,7 @@ class MediumTextSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
+      margin: EdgeInsets.fromLTRB(15, 10, 0, 10),
       child: Text(
         caption,
         style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
