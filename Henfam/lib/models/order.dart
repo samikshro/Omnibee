@@ -234,7 +234,8 @@ class Order {
     return isReceived == true && isDelivered == true;
   }
 
-//TODO: notification flow should have failsafe for cases when order accepted but too much time has passed. add warning notifications as well.
+//TODO: notification flow should have failsafe for cases when order accepted
+//but too much time has passed. add warning notifications as well.
   bool isExpired() {
     return (expirationTime.millisecondsSinceEpoch <
                 DateTime.now().millisecondsSinceEpoch &&
@@ -243,6 +244,14 @@ class Order {
   }
 
   String getDeliveryWindow() {
-    return "${startTime} to ${endTime} ${expirationTime.timeZoneName} on ${expirationTime.month}/${expirationTime.day}/${expirationTime.year}";
+    return "$startTime to $endTime ${expirationTime.timeZoneName} on ${expirationTime.month}/${expirationTime.day}/${expirationTime.year}";
+  }
+
+  double getSubtotal() {
+    double subtotal = 0.0;
+    for (int i = 0; i < basket.length; i++) {
+      subtotal += basket[i]['price'];
+    }
+    return subtotal;
   }
 }

@@ -67,10 +67,10 @@ class OrderCardButtonBar extends StatelessWidget {
   OrderCardButtonBar(this.order, this.context);
 
   MainAxisAlignment _getAlignment() {
-    if (order.isDelivered != true || order.isReceived == true) {
-      return MainAxisAlignment.end;
-    } else {
+    if (order.isAccepted && order.isDelivered && !order.isReceived) {
       return MainAxisAlignment.spaceAround;
+    } else {
+      return MainAxisAlignment.end;
     }
   }
 
@@ -90,11 +90,6 @@ class OrderCardButtonBar extends StatelessWidget {
         order.paymentMethodId, order.stripeAccountId);
   }
 
-  bool _isNotExpired(Order order) {
-    return order.expirationTime.millisecondsSinceEpoch >
-        DateTime.now().millisecondsSinceEpoch;
-  }
-
   List<Widget> _getButtons(BuildContext context) {
     List<Widget> buttons = [
       FlatButton(
@@ -108,9 +103,7 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered == true &&
-        _isNotExpired(order) &&
-        !order.isReceived) {
+    if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
       buttons.insert(
           0,
           RaisedButton(

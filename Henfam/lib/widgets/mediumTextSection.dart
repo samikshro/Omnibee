@@ -12,7 +12,7 @@ class MediumTextSection extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
       child: Text(
         caption,
-        style: TextStyle(fontSize: 22),
+        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         textAlign: TextAlign.left,
       ),
     );

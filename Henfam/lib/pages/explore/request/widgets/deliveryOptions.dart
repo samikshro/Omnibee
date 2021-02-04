@@ -54,8 +54,8 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             titlePadding: 20,
             textStyle:
                 TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
-            activeTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            activeTextStyle: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white),
             borderColor: Colors.black54,
             backgroundColor: Colors.transparent,
             activeBackgroundColor: Theme.of(context).buttonColor,

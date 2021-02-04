@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Henfam/models/order.dart';
 import 'package:Henfam/services/paymentService.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
@@ -14,6 +16,7 @@ class OrderCardPage extends StatefulWidget {
 }
 
 class _OrderCardPageState extends State<OrderCardPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   double fontSize = 19;
   double boldFontSize = 22;
 
@@ -111,14 +114,6 @@ class _OrderCardPageState extends State<OrderCardPage> {
     );
   }
 
-  double _getSubtotal(Order order) {
-    double subtotal = 0.0;
-    for (int i = 0; i < order.basket.length; i++) {
-      subtotal += order.basket[i]['price'];
-    }
-    return subtotal;
-  }
-
   Widget _getDeliveryInformation(Order order) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
@@ -160,7 +155,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
   }
 
   Widget _getOrderInformation(Order order) {
-    double subtotal = _getSubtotal(order);
+    double subtotal = order.getSubtotal();
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
@@ -252,7 +247,14 @@ class _OrderCardPageState extends State<OrderCardPage> {
             ),
             onPressed: () {
               BlocProvider.of<OrderBloc>(context).add(OrderDeleted(order));
-              Navigator.pop(context);
+
+              final snackBar = SnackBar(
+                content: Text('Order successfully cancelled!'),
+              );
+              _scaffoldKey.currentState.showSnackBar(snackBar);
+              Timer(Duration(seconds: 2), () {
+                Navigator.pop(context);
+              });
             },
           ),
         ),
@@ -264,6 +266,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
   Widget build(BuildContext context) {
     final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Your Order'),
       ),
@@ -273,27 +276,12 @@ class _OrderCardPageState extends State<OrderCardPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-              child: Text(
-                "Delivery Information",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            if (!order.isExpired()) //TODO: test these conditions
+            MediumTextSection("Delivery Information"),
+            if (!order.isExpired() &&
+                order.isAccepted) //TODO: test these conditions
               _callPhoneNumber(order, context),
             _getDeliveryInformation(order),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-              child: Text(
-                "Order Information",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-              ),
-            ),
+            MediumTextSection("Order Information"),
             _getOrderInformation(order),
             _controlButtons(order, context),
           ],

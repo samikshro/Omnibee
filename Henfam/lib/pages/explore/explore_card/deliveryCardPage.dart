@@ -1,17 +1,23 @@
 import 'package:Henfam/models/order.dart';
 import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
-import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryCardPage extends StatelessWidget {
+  final double fontSize = 19;
+  final double boldFontSize = 22;
+
   Widget _displayStatus(Order order, BuildContext context) {
     if (order.isDelivered) {
       return Center(
-        child: Text('Waiting for confirmation from recipient...'),
+        child: Text(
+          'Waiting for confirmation from recipient...',
+          style: TextStyle(fontSize: fontSize),
+        ),
       );
     } else {
       return Center(
@@ -20,7 +26,7 @@ class DeliveryCardPage extends StatelessWidget {
           child: Text(
             "Mark Delivered",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -49,7 +55,7 @@ class DeliveryCardPage extends StatelessWidget {
         child: Text(
           "Call Requester",
           style: TextStyle(
-            fontSize: 16,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -61,13 +67,42 @@ class DeliveryCardPage extends StatelessWidget {
   }
 
   Widget _getOrderInformation(Order order) {
+    double subtotal = order.getSubtotal();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        MiniHeader('Name'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Name:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
         _getRequesterName(order),
-        MiniHeader('Items'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Items:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
         _getYourItems(order),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+              "Total Price: " +
+                  (PaymentService.getTaxedPrice(subtotal)).toStringAsFixed(2),
+              style: TextStyle(fontSize: fontSize)),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+              "Earnings: " +
+                  PaymentService.getDelivererFee(subtotal).toStringAsFixed(2),
+              style: TextStyle(fontSize: fontSize)),
+        ),
       ],
     );
   }
@@ -75,7 +110,10 @@ class DeliveryCardPage extends StatelessWidget {
   Widget _getRequesterName(Order order) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
-      child: Text(order.name),
+      child: Text(
+        order.name,
+        style: TextStyle(fontSize: fontSize),
+      ),
     );
   }
 
@@ -88,7 +126,10 @@ class DeliveryCardPage extends StatelessWidget {
     addOns.forEach((addOn) {
       output.add(Padding(
         padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
-        child: Text(addOn),
+        child: Text(
+          addOn,
+          style: TextStyle(fontSize: fontSize),
+        ),
       ));
     });
 
@@ -99,15 +140,20 @@ class DeliveryCardPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
       child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: order.basket.length,
           itemBuilder: (BuildContext context, int index) {
             return ExpansionTile(
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               expandedAlignment: Alignment.bottomLeft,
-              title: Text(order.basket[index]['name']),
+              title: Text(
+                order.basket[index]['name'],
+                style: TextStyle(fontSize: fontSize),
+              ),
               subtitle: Text(
-                '\$${order.price.toString()}',
+                '\$${order.basket[index]['price']}',
+                style: TextStyle(fontSize: fontSize),
               ),
               trailing: Icon(Icons.arrow_drop_down),
               children: _getAddOns(order.basket[index]['add_ons']),
@@ -118,8 +164,11 @@ class DeliveryCardPage extends StatelessWidget {
 
   Widget _getDeliveryWindow(Order order) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
-      child: Text("${order.startTime} to ${order.endTime}"),
+      padding: const EdgeInsets.fromLTRB(30, 5, 20, 10),
+      child: Text(
+        "Deliver from ${order.getDeliveryWindow()}",
+        style: TextStyle(fontSize: fontSize),
+      ),
     );
   }
 
@@ -127,7 +176,10 @@ class DeliveryCardPage extends StatelessWidget {
     List<String> wordList = order.location.split(',');
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
-      child: Text(wordList[0]),
+      child: Text(
+        wordList[0],
+        style: TextStyle(fontSize: fontSize),
+      ),
     );
   }
 
@@ -135,9 +187,23 @@ class DeliveryCardPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        MiniHeader('Delivery Window'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Delivery Window:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
         _getDeliveryWindow(order),
-        MiniHeader('Destination'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Destination:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
         _getDeliveryLocation(order),
       ],
     );
@@ -148,21 +214,27 @@ class DeliveryCardPage extends StatelessWidget {
     final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Delivery'),
+        title: Text(
+          'Your Delivery',
+          style: TextStyle(fontSize: fontSize),
+        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          MediumTextSection('Delivery Information'),
-          _callPhoneNumber(order, context),
-          _getDeliveryInformation(order),
-          MediumTextSection('Order Information'),
-          _getOrderInformation(order),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: _displayStatus(order, context),
-          ),
-        ],
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            MediumTextSection('Delivery Information'),
+            _callPhoneNumber(order, context),
+            _getDeliveryInformation(order),
+            MediumTextSection('Order Information'),
+            _getOrderInformation(order),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: _displayStatus(order, context),
+            ),
+          ],
+        ),
       ),
     );
   }
