@@ -29,6 +29,7 @@ class Order {
   final String docID;
   final String runnerPhone;
   final String phone;
+  final String deliveryIns;
 
   Order(
     this.name,
@@ -55,33 +56,36 @@ class Order {
     this.docID,
     this.runnerPhone,
     this.phone,
+    this.deliveryIns,
   );
 
-  Order copyWith(
-      {String name,
-      String uid,
-      Point userCoordinates,
-      String restaurantName,
-      Point restaurantCoordinates,
-      List<dynamic> basket,
-      String location,
-      String startTime,
-      String endTime,
-      DateTime expirationTime,
-      bool isAccepted,
-      bool isDelivered,
-      bool isReceived,
-      String runnerUid,
-      String runnerName,
-      double price,
-      double applicationFee,
-      double minEarnings,
-      String restaurantImage,
-      String paymentMethodId,
-      String stripeAccountId,
-      String docID,
-      String runnerPhone,
-      String phone}) {
+  Order copyWith({
+    String name,
+    String uid,
+    Point userCoordinates,
+    String restaurantName,
+    Point restaurantCoordinates,
+    List<dynamic> basket,
+    String location,
+    String startTime,
+    String endTime,
+    DateTime expirationTime,
+    bool isAccepted,
+    bool isDelivered,
+    bool isReceived,
+    String runnerUid,
+    String runnerName,
+    double price,
+    double applicationFee,
+    double minEarnings,
+    String restaurantImage,
+    String paymentMethodId,
+    String stripeAccountId,
+    String docID,
+    String runnerPhone,
+    String phone,
+    String deliveryIns,
+  }) {
     return Order(
       name,
       uid,
@@ -107,6 +111,7 @@ class Order {
       docID,
       runnerPhone,
       phone,
+      deliveryIns,
     );
   }
 
@@ -135,7 +140,8 @@ class Order {
       stripeAccountId.hashCode ^
       docID.hashCode ^
       runnerPhone.hashCode ^
-      phone.hashCode;
+      phone.hashCode ^
+      deliveryIns.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -165,11 +171,12 @@ class Order {
           stripeAccountId == other.stripeAccountId &&
           docID == other.docID &&
           runnerPhone == other.runnerPhone &&
-          phone == other.phone;
+          phone == other.phone &&
+          deliveryIns == other.deliveryIns;
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId, runnerPhone: $runnerPhone, phone: $phone }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId, runnerPhone: $runnerPhone, phone: $phone, deliveryIns $deliveryIns }';
   }
 
   OrderEntity toEntity() {
@@ -198,6 +205,7 @@ class Order {
       docID,
       runnerPhone,
       phone,
+      deliveryIns,
     );
   }
 
@@ -227,6 +235,7 @@ class Order {
       entity.docID,
       entity.runnerPhone,
       entity.phone,
+      entity.deliveryIns,
     );
   }
 

@@ -17,6 +17,9 @@ class _RequestState extends State<Request> {
   var _deliveryDate = DateTime.now();
   var _endDeliveryDate = DateTime.now().add(new Duration(hours: 1));
   String _location = '';
+  String _deliveryIns = '';
+  final _formKey = GlobalKey<FormState>();
+
   Map<String, bool> infoAdded = {
     'location': false,
     'deliveryDate': false,
@@ -47,6 +50,12 @@ class _RequestState extends State<Request> {
     });
   }
 
+  void _setDeliveryIns(String deliveryIns) {
+    setState(() {
+      _deliveryIns = deliveryIns;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
@@ -65,7 +74,11 @@ class _RequestState extends State<Request> {
                     Column(
                       children: <Widget>[
                         DeliveryOptions(_setDeliveryDate, _setEndDeliveryDate),
-                        LocationDetails(_setLocation),
+                        LocationDetails(
+                          _setLocation,
+                          _setDeliveryIns,
+                          _formKey,
+                        ),
                       ],
                     ),
                   ],
@@ -87,6 +100,7 @@ class _RequestState extends State<Request> {
                               color: Theme.of(context).scaffoldBackgroundColor),
                         ),
                         onPressed: () {
+                          _formKey.currentState.save();
                           if (infoAdded.containsValue(false)) {
                             //TODO: make this look better
                             showModalBottomSheet(
@@ -100,7 +114,9 @@ class _RequestState extends State<Request> {
                                           'Please fill out the delivery time range and location fields!',
                                           style: TextStyle(fontSize: 18)),
                                     ),
-                                    Padding(padding: EdgeInsets.only(top:10),),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                    ),
                                     CupertinoButton(
                                         color: Theme.of(context).primaryColor,
                                         child: Text("Close"),
@@ -122,6 +138,7 @@ class _RequestState extends State<Request> {
                                   _locationCoordinates,
                                   (state as Authenticated).user.name,
                                   paymentMethod.id,
+                                  _deliveryIns,
                                 ),
                               );
                             });

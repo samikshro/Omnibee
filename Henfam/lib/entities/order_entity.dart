@@ -27,33 +27,34 @@ class OrderEntity extends Equatable {
   final String docID;
   final String runnerPhone;
   final String phone;
+  final String deliveryIns;
 
   const OrderEntity(
-    this.name,
-    this.uid,
-    this.userCoordinates,
-    this.restaurantName,
-    this.restaurantCoordinates,
-    this.basket,
-    this.location,
-    this.startTime,
-    this.endTime,
-    this.expirationTime,
-    this.isAccepted,
-    this.isDelivered,
-    this.isReceived,
-    this.runnerUid,
-    this.runnerName,
-    this.price,
-    this.applicationFee,
-    this.minEarnings,
-    this.restaurantImage,
-    this.paymentMethodID,
-    this.stripeAccountId,
-    this.docID,
-    this.runnerPhone,
-    this.phone,
-  );
+      this.name,
+      this.uid,
+      this.userCoordinates,
+      this.restaurantName,
+      this.restaurantCoordinates,
+      this.basket,
+      this.location,
+      this.startTime,
+      this.endTime,
+      this.expirationTime,
+      this.isAccepted,
+      this.isDelivered,
+      this.isReceived,
+      this.runnerUid,
+      this.runnerName,
+      this.price,
+      this.applicationFee,
+      this.minEarnings,
+      this.restaurantImage,
+      this.paymentMethodID,
+      this.stripeAccountId,
+      this.docID,
+      this.runnerPhone,
+      this.phone,
+      this.deliveryIns);
 
   Map<String, Object> toJson() {
     return {
@@ -80,7 +81,8 @@ class OrderEntity extends Equatable {
       "stripeAccountId": stripeAccountId,
       "docID": docID,
       "runnerPhone": runnerPhone,
-      "phone": phone
+      "phone": phone,
+      "deliveryIns": deliveryIns,
     };
   }
 
@@ -110,11 +112,12 @@ class OrderEntity extends Equatable {
         docID,
         runnerPhone,
         phone,
+        deliveryIns,
       ];
 
   @override
   String toString() {
-    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, runner_name: $runnerName, price: $price, applicationFee: $applicationFee, minEarnings: $minEarnings, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID, runnerPhone: $runnerPhone, phone: $phone }';
+    return 'OrderEntity { name: $name, uid: $uid, user_coordinates: $userCoordinates, rest_name_used: $restaurantName, restaurant_coordinates: $restaurantCoordinates, basket: $basket, location: $location, start_time: $startTime, end_time: $endTime, expiration_time: $expirationTime, is_accepted: $isAccepted, is_delivered: $isDelivered, is_received: $isReceived, runner: $runnerUid, runner_name: $runnerName, price: $price, applicationFee: $applicationFee, minEarnings: $minEarnings, restaurant_pic: $restaurantImage, paymentMethodID: $paymentMethodID, stripeAccountId: $stripeAccountId, docID: $docID, runnerPhone: $runnerPhone, phone: $phone, deliveryIns: $deliveryIns }';
   }
 
   static OrderEntity fromJson(Map<String, Object> json) {
@@ -143,6 +146,7 @@ class OrderEntity extends Equatable {
       json["docID"] as String,
       json["runnerPhone"] as String,
       json["phone"] as String,
+      json["deliveryIns"] as String,
     );
   }
 
@@ -178,70 +182,70 @@ class OrderEntity extends Equatable {
       "stripeAccountId": stripeAccountId,
       "is_delivered": isDelivered,
       "is_received": isReceived,
-      "user_id": {
-        "name": name,
-        "uid": uid,
-        "user_coordinates": GeoPoint(userCoordinates.x, userCoordinates.y),
-        "rest_name_used": restaurantName,
-        "restaurant_coordinates": GeoPoint(
-          restaurantCoordinates.x,
-          restaurantCoordinates.y,
-        ),
-        "basket": basket,
-        "location": location,
-        "delivery_window": {
-          "start_time": startTime,
-          "end_time": endTime,
-        },
-        "expiration_time": Timestamp.fromMillisecondsSinceEpoch(
-          expirationTime.millisecondsSinceEpoch,
-        ),
-        "is_accepted": isAccepted,
-        "runner": runnerUid,
-        "runner_name": runnerName,
-        "price": price,
-        "applicationFee": applicationFee,
-        "min_earnings": minEarnings,
-        "restaurant_pic": restaurantImage,
-        "payment_method_id": paymentMethodID,
-        "runner_phone": runnerPhone,
-        "phone": phone,
-      }
+      "name": name,
+      "uid": uid,
+      "user_coordinates": GeoPoint(userCoordinates.x, userCoordinates.y),
+      "rest_name_used": restaurantName,
+      "restaurant_coordinates": GeoPoint(
+        restaurantCoordinates.x,
+        restaurantCoordinates.y,
+      ),
+      "basket": basket,
+      "location": location,
+      "delivery_window": {
+        "start_time": startTime,
+        "end_time": endTime,
+      },
+      "expiration_time": Timestamp.fromMillisecondsSinceEpoch(
+        expirationTime.millisecondsSinceEpoch,
+      ),
+      "is_accepted": isAccepted,
+      "runner": runnerUid,
+      "runner_name": runnerName,
+      "price": price,
+      "applicationFee": applicationFee,
+      "min_earnings": minEarnings,
+      "restaurant_pic": restaurantImage,
+      "payment_method_id": paymentMethodID,
+      "runner_phone": runnerPhone,
+      "phone": phone,
+      "deliveryIns": deliveryIns,
     };
   }
 
   static OrderEntity fromSnapshot(DocumentSnapshot snap) {
     return OrderEntity(
-      snap.data['user_id']['name'],
-      snap.data['user_id']['uid'],
+      snap.data['name'],
+      snap.data['uid'],
       _castToGeoPointAndReturnPoint(
-        snap.data['user_id']['user_coordinates'],
+        snap.data['user_coordinates'],
       ),
-      snap.data['user_id']['rest_name_used'],
+      snap.data['rest_name_used'],
       _castToGeoPointAndReturnPoint(
-        snap.data['user_id']['restaurant_coordinates'],
+        snap.data['restaurant_coordinates'],
       ),
-      _roundPricesTwoDecimals(snap.data['user_id']['basket']),
-      snap.data['user_id']['location'],
-      snap.data['user_id']['delivery_window']['start_time'],
-      snap.data['user_id']['delivery_window']['end_time'],
+      _roundPricesTwoDecimals(snap.data['basket']),
+      snap.data['location'],
+      snap.data['delivery_window']['start_time'],
+      snap.data['delivery_window']['end_time'],
       _castToTimestampAndReturnDateTime(
-        snap.data['user_id']['expiration_time'],
+        snap.data['expiration_time'],
       ),
-      snap.data['user_id']['is_accepted'],
+      snap.data['is_accepted'],
       snap.data['is_delivered'],
       snap.data['is_received'],
-      snap.data['user_id']['runner'],
-      snap.data['user_id']['runner_name'],
-      snap.data['user_id']['price'],
-      snap.data['user_id']['applicationFee'],
-      snap.data['user_id']['min_earnings'],
-      snap.data['user_id']['restaurant_pic'],
-      snap.data['user_id']['payment_method_id'],
+      snap.data['runner'],
+      snap.data['runner_name'],
+      snap.data['price'],
+      snap.data['applicationFee'],
+      snap.data['min_earnings'],
+      snap.data['restaurant_pic'],
+      snap.data['payment_method_id'],
       snap.data['stripeAccountId'],
       snap.documentID,
-      snap.data['user_id']['runner_phone'],
-      snap.data['user_id']['phone'],
+      snap.data['runner_phone'],
+      snap.data['phone'],
+      snap.data['deliveryIns'],
     );
   }
 }
