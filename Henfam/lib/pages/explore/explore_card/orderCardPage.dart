@@ -96,6 +96,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
       padding: EdgeInsets.fromLTRB(10, 5, 0, 10),
       child: ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(), //TODO: test this out
           itemCount: order.basket.length,
           itemBuilder: (BuildContext context, int index) {
             return ExpansionTile(
@@ -152,6 +153,30 @@ class _OrderCardPageState extends State<OrderCardPage> {
         ],
       ),
     );
+  }
+
+  Widget _getDeliveryInstructions(Order order) {
+    if (order.deliveryIns != "") {
+      return Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Delivery Instructions:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
+          child: Text(
+            order.deliveryIns,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        )
+      ]);
+    } else {
+      return Container();
+    }
   }
 
   Widget _getOrderInformation(Order order) {
@@ -281,6 +306,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
                 order.isAccepted) //TODO: test these conditions
               _callPhoneNumber(order, context),
             _getDeliveryInformation(order),
+            _getDeliveryInstructions(order),
             MediumTextSection("Order Information"),
             _getOrderInformation(order),
             _controlButtons(order, context),
