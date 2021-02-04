@@ -80,6 +80,7 @@ class DeliveryCardPage extends StatelessWidget {
           ),
         ),
         _getRequesterName(order),
+        _getDeliveryInstructions(order),
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
           child: Text(
@@ -115,6 +116,30 @@ class DeliveryCardPage extends StatelessWidget {
         style: TextStyle(fontSize: fontSize),
       ),
     );
+  }
+
+  Widget _getDeliveryInstructions(Order order) {
+    if (order.deliveryIns != "") {
+      return Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Delivery Instructions:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
+          child: Text(
+            order.deliveryIns,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        )
+      ]);
+    } else {
+      return Container();
+    }
   }
 
   List<Widget> _getAddOns(List<dynamic> addOns) {
