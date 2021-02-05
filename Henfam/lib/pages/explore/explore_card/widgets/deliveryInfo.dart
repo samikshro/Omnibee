@@ -103,7 +103,7 @@ class DeliveryInfo extends StatelessWidget {
                 TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: _getStatus(order),
           )
         ],

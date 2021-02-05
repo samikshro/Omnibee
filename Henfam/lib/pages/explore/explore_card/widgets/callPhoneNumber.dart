@@ -5,10 +5,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CallPhoneNumber extends StatelessWidget {
   final Order order;
-  final double boldFontSize;
+  final double fontSize;
   final bool isRunner;
 
-  CallPhoneNumber(this.order, this.boldFontSize, this.isRunner);
+  CallPhoneNumber(this.order, this.fontSize, this.isRunner);
 
   static void launchURL(String s) async {
     String url = s;
@@ -24,14 +24,14 @@ class CallPhoneNumber extends StatelessWidget {
     String buttonTxt = isRunner ? "Call Requester" : "Call Errand Runner";
     return Center(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
         child: CupertinoButton(
           color: Theme.of(context).primaryColor,
           child: Text(
             buttonTxt,
             style: TextStyle(
-              fontSize: boldFontSize,
-              fontWeight: FontWeight.bold,
+              fontSize: fontSize,
+              fontWeight: FontWeight.normal,
             ),
           ),
           onPressed: () {

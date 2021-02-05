@@ -25,7 +25,7 @@ class DeliveryCardPage extends StatelessWidget {
             "Mark Delivered",
             style: TextStyle(
               fontSize: fontSize,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
             ),
           ),
           onPressed: () {
@@ -105,7 +105,7 @@ class DeliveryCardPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             MediumTextSection('Delivery Information'),
-            CallPhoneNumber(order, boldFontSize, true),
+            if (!order.isReceived) CallPhoneNumber(order, fontSize, true),
             DeliveryInfo(order, fontSize, boldFontSize),
             MediumTextSection('Order Information'),
             _getOrderInformation(order),

@@ -78,8 +78,8 @@ class _OrderCardPageState extends State<OrderCardPage> {
             child: Text(
               "Cancel Order",
               style: TextStyle(
-                fontSize: boldFontSize,
-                fontWeight: FontWeight.bold,
+                fontSize: fontSize,
+                fontWeight: FontWeight.normal,
               ),
             ),
             onPressed: () {
@@ -116,7 +116,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
             MediumTextSection("Delivery Information"),
             if (!order.isExpired() &&
                 order.isAccepted) //TODO: test these conditions
-              CallPhoneNumber(order, boldFontSize, false),
+              CallPhoneNumber(order, fontSize, false),
             DeliveryInfo(order, fontSize, boldFontSize),
             DeliveryInstructions(order, fontSize, boldFontSize),
             MediumTextSection("Order Information"),
