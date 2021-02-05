@@ -132,10 +132,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor)),
                           onPressed: () {
-                            //if (_sufficientModifiersChosen())
                             _formKey.currentState.save();
 
                             MenuItem item = state3.menuItem;
+                            print("this is now special request: " + sRequests);
                             item.specialRequests = sRequests;
                             BlocProvider.of<BasketBloc>(context2)
                                 .add(MenuItemAdded(item));

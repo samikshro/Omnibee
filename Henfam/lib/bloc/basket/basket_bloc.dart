@@ -47,6 +47,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         event.menuItem.modifiers,
         modifiersChosen:
             List<ModifierItem>.from(event.menuItem.modifiersChosen),
+        specialRequests: event.menuItem.specialRequests,
       );
 
       final List<MenuItem> updatedMenuItems =
@@ -99,7 +100,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     return {
       'name': menuItem.name,
       'price': _getPrice(menuItem),
-      'add_ons': _addOnsToStringList(menuItem)
+      'add_ons': _addOnsToStringList(menuItem),
+      's_requests': menuItem.specialRequests,
     };
   }
 
@@ -119,11 +121,6 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   List<String> _addOnsToStringList(MenuItem menuItem) {
     List<String> addOnsStringList = [];
-
-    menuItem.modifiers.forEach((modifierName) {
-      print("Modifier name is $modifierName");
-      // addOnsStringList.add(modifierName);
-    });
 
     menuItem.modifiersChosen.forEach((modifier) {
       addOnsStringList.add(modifier.name);
