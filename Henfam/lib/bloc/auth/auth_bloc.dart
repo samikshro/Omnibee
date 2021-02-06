@@ -32,10 +32,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapSignedInToState(event);
     } else if (event is SignedUp) {
       yield* _mapSignedUpToState(event);
-    } else if (event is WasStripeSetupCompleted) {
-      yield* _mapWasStripeSetupCompletedToState();
     } else if (event is UserUpdated) {
       yield* _mapUserUpdatedToState(event);
+    } else if (event is UserEarningsUpdated) {
+      yield* _mapUserEarningsUpdatedToState(event);
+    } else if (event is WasStripeSetupCompleted) {
+      yield* _mapWasStripeSetupCompletedToState();
     }
   }
 
@@ -62,10 +64,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapWasAuthenticatedToState(WasAuthenticated event) async* {
-    yield Authenticated(event.user);
-  }
-
-  Stream<AuthState> _mapUserUpdatedToState(UserUpdated event) async* {
     yield Authenticated(event.user);
   }
 
@@ -110,6 +108,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield ErrorState("Invalid signup. Please try again.");
       }
     }
+  }
+
+  Stream<AuthState> _mapUserUpdatedToState(UserUpdated event) async* {
+    yield Authenticated(event.user);
+  }
+
+  Stream<AuthState> _mapUserEarningsUpdatedToState(
+    UserEarningsUpdated event,
+  ) async* {
+    _userRepository.incrementEarnings(event.user, event.newEarnings);
+    add(UserUpdated(event.user));
   }
 
   Stream<AuthState> _mapWasStripeSetupCompletedToState() async* {

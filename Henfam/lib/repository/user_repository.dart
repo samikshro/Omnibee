@@ -11,6 +11,8 @@ abstract class UserRepository {
 
   Future<void> signOut();
 
+  Future<void> incrementEarnings(User user, double amount);
+
   Future<String> getUserId();
 
   Future<User> getUser();

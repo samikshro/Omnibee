@@ -1,6 +1,8 @@
+import 'package:Henfam/bloc/auth/auth_bloc.dart';
 import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderCard extends StatelessWidget {
   final Order order;
@@ -74,7 +76,7 @@ class OrderCardButtonBar extends StatelessWidget {
     }
   }
 
-  void _markOrderComplete(Order order, BuildContext context) {
+  void _markOrderComplete(Order order, User user, BuildContext context) {
     final snackBar = SnackBar(
       content: Text('Confirming delivery, please wait one moment....'),
     );
@@ -86,11 +88,11 @@ class OrderCardButtonBar extends StatelessWidget {
     print(
         "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
 
-    PaymentService.paymentTransfer(order, context, pCharge, applicationFee,
-        order.paymentMethodId, order.stripeAccountId);
+    PaymentService.paymentTransfer(order, user, context, pCharge,
+        applicationFee, order.paymentMethodId, order.stripeAccountId);
   }
 
-  List<Widget> _getButtons(BuildContext context) {
+  List<Widget> _getButtons(BuildContext context, User user) {
     List<Widget> buttons = [
       FlatButton(
         child: const Text(
@@ -116,7 +118,7 @@ class OrderCardButtonBar extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () {
-              _markOrderComplete(order, context);
+              _markOrderComplete(order, user, context);
             },
           ));
     }
@@ -126,9 +128,11 @@ class OrderCardButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ButtonBar(
-      alignment: _getAlignment(),
-      children: _getButtons(context),
-    );
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return ButtonBar(
+        alignment: _getAlignment(),
+        children: _getButtons(context, (state as Authenticated).user),
+      );
+    });
   }
 }

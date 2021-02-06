@@ -31,6 +31,22 @@ class UserUpdated extends AuthEvent {
   String toString() => 'UserUpdated { User: $user }';
 }
 
+class UserEarningsUpdated extends AuthEvent {
+  final User user;
+  final double newEarnings;
+
+  UserEarningsUpdated({
+    @required this.user,
+    @required this.newEarnings,
+  });
+
+  @override
+  List<Object> get props => [user, newEarnings];
+
+  @override
+  String toString() => 'UserUpdated { User: $user, newEarnings: $newEarnings }';
+}
+
 class WasStripeSetupCompleted extends AuthEvent {
   @override
   List<Object> get props => [];

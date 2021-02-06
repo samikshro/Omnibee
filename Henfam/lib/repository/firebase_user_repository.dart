@@ -64,6 +64,14 @@ class FirebaseUserRepository implements UserRepository {
   }
 
   @override
+  Future<void> incrementEarnings(User user, double newEarnings) {
+    double currentEarnings = user.earnings + newEarnings;
+    return userCollection.document(user.uid).updateData({
+      'earnings': currentEarnings,
+    });
+  }
+
+  @override
   Future<String> getUserId() async {
     return (await _firebaseAuth.currentUser()).uid;
   }
@@ -80,6 +88,7 @@ class FirebaseUserRepository implements UserRepository {
     return user;
   }
 
+  @override
   Future<User> getUserWUID(String uid) async {
     User user = await userCollection
         .document(uid)
@@ -104,13 +113,6 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Stream<User> user(String uid) {
-    /* return userCollection.snapshots().map((snapshot) {
-      return snapshot.documents
-          .map((doc) => User.fromEntity(UserEntity.fromSnapshot(doc)))
-          .toList()
-          .firstWhere((user) => user.uid == uid);
-    }); */
-
     return userCollection
         .document(uid)
         .snapshots()

@@ -1,7 +1,9 @@
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
+import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +38,7 @@ class _ProfileState extends State<Profile> {
 
   Future<String> _getBalance(String accId) async {
     if (accId == "") {
-      return "\nN/A";
+      return "\$0.00";
     }
 
     double bal = 0;
@@ -55,11 +57,15 @@ class _ProfileState extends State<Profile> {
       if (state is Authenticated) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Your Profile'),
+            title: Text('Profile'),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              ProfileHeader(state.user.name),
               Padding(
                 padding: EdgeInsets.all(10),
               ),
@@ -68,15 +74,49 @@ class _ProfileState extends State<Profile> {
                 builder: (BuildContext context, AsyncSnapshot<String> balance) {
                   if (!balance.hasData)
                     return Center(child: Text('Loading...'));
-                  return LargeTextSection(
-                    "Balance to be Transferred: ${balance.data}",
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Reimbursement: ${balance.data}",
+                          style: TextStyle(fontSize: 19),
+                        ),
+                        InfoButton(
+                          titleMessage: "Reimbursements",
+                          bodyMessage:
+                              "This is the total amount your account will be reimbursed for past deliveries. It includes the cost of food and your earnings.\n\nReimbursements will be paid out 2 days after the errand was completed.",
+                          buttonMessage: "Okay",
+                          buttonSize: 25,
+                        ),
+                      ],
+                    ),
                   );
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Total Earnings: \$${state.user.earnings.toStringAsFixed(2)}",
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    InfoButton(
+                      titleMessage: "Total Earnings",
+                      bodyMessage:
+                          "This is your total lifetime earnings on Omnibee. It is the sum of all earnings from previous deliveries.",
+                      buttonMessage: "Okay",
+                      buttonSize: 25,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    ProfileHeader(state.user.name),
                     Divider(),
                     ProfileContact(signOut),
                   ],
