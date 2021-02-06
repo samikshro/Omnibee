@@ -53,7 +53,7 @@ class FirebaseUserRepository implements UserRepository {
       'stripeAccountId': "",
       'phone': phone,
       'token': "",
-      "externalAccountId": "",
+      "external_acc_id": "",
     });
 
     return [email, password];

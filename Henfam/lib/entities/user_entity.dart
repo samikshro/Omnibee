@@ -102,7 +102,7 @@ class UserEntity extends Equatable {
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
       "phone": phone,
-      "externalAccountId": externalAccountId,
+      "external_acc_id": externalAccountId,
     };
   }
 
@@ -120,7 +120,7 @@ class UserEntity extends Equatable {
       snap.data["token"],
       snap.data["stripe_setup_complete"],
       snap.data["phone"],
-      snap.data["externalAccountId"],
+      snap.data["external_acc_id"],
     );
   }
 }
