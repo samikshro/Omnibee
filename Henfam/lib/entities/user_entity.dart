@@ -14,6 +14,7 @@ class UserEntity extends Equatable {
   final String token;
   final bool stripeSetupComplete;
   final String phone;
+  final String externalAccountId;
 
   const UserEntity(
       this.uid,
@@ -27,7 +28,8 @@ class UserEntity extends Equatable {
       this.stripeAccountId,
       this.token,
       this.stripeSetupComplete,
-      this.phone);
+      this.phone,
+      this.externalAccountId);
 
   Map<String, Object> toJson() {
     return {
@@ -43,6 +45,7 @@ class UserEntity extends Equatable {
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
       "phone": phone,
+      "external_acc_id": externalAccountId,
     };
   }
 
@@ -60,11 +63,12 @@ class UserEntity extends Equatable {
         token,
         stripeSetupComplete,
         phone,
+        externalAccountId,
       ];
 
   @override
   String toString() {
-    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone }';
+    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, externalAccountId: $externalAccountId }';
   }
 
   static UserEntity fromJson(Map<String, Object> json) {
@@ -81,6 +85,7 @@ class UserEntity extends Equatable {
       json["token"] as String,
       json["stripe_setup_complete"] as bool,
       json["phone"] as String,
+      json["external_acc_id"] as String,
     );
   }
 
@@ -97,6 +102,7 @@ class UserEntity extends Equatable {
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
       "phone": phone,
+      "externalAccountId": externalAccountId,
     };
   }
 
@@ -114,6 +120,7 @@ class UserEntity extends Equatable {
       snap.data["token"],
       snap.data["stripe_setup_complete"],
       snap.data["phone"],
+      snap.data["externalAccountId"],
     );
   }
 }

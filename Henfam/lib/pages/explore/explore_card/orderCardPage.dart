@@ -105,7 +105,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Your Order'),
+        title: Text('Order'),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),

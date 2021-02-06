@@ -16,6 +16,7 @@ class User {
   final String token;
   final bool stripeSetupComplete;
   final String phone;
+  final String externalAccountId;
 
   User(
     this.uid,
@@ -30,6 +31,7 @@ class User {
     this.token,
     this.stripeSetupComplete,
     this.phone,
+    this.externalAccountId,
   );
 
   User copyWith(
@@ -44,7 +46,8 @@ class User {
       String stripeAccountId,
       String token,
       bool stripeSetupComplete,
-      String phone}) {
+      String phone,
+      String externalAccountId}) {
     return User(
       uid,
       boosters,
@@ -58,6 +61,7 @@ class User {
       token,
       stripeSetupComplete,
       phone,
+      externalAccountId,
     );
   }
 
@@ -74,7 +78,8 @@ class User {
       stripeAccountId.hashCode ^
       token.hashCode ^
       stripeSetupComplete.hashCode ^
-      phone.hashCode;
+      phone.hashCode ^
+      externalAccountId.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -91,11 +96,12 @@ class User {
           stripeAccountId == other.stripeAccountId &&
           token == other.token &&
           stripeSetupComplete == other.stripeSetupComplete &&
-          phone == other.phone;
+          phone == other.phone &&
+          externalAccountId == other.externalAccountId;
 
   @override
   String toString() {
-    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone }';
+    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, externalAccountId: $externalAccountId }';
   }
 
   UserEntity toEntity() {
@@ -112,6 +118,7 @@ class User {
       token,
       stripeSetupComplete,
       phone,
+      externalAccountId,
     );
   }
 
@@ -129,6 +136,7 @@ class User {
       entity.token,
       entity.stripeSetupComplete,
       entity.phone,
+      entity.externalAccountId,
     );
   }
 }

@@ -95,7 +95,7 @@ class DeliveryCardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Your Delivery',
+          'Delivery',
           style: TextStyle(fontSize: fontSize),
         ),
       ),
