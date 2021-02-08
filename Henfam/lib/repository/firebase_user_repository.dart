@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Henfam/services/paymentService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'repositories.dart';
@@ -53,7 +54,7 @@ class FirebaseUserRepository implements UserRepository {
       'stripeAccountId': "",
       'phone': phone,
       'token': "",
-      "externalAccountId": "",
+      "reimbursement": "",
     });
 
     return [email, password];
@@ -65,11 +66,23 @@ class FirebaseUserRepository implements UserRepository {
   }
 
   @override
-  Future<void> incrementEarnings(User user, double newEarnings) {
+  Future<void> incrementEarnings(
+      User user, double newEarnings) async {
     double currentEarnings = user.earnings + newEarnings;
-    return userCollection.document(user.uid).updateData({
-      'earnings': currentEarnings,
+
+    double balance =
+        await PaymentService.retrieveAccountBalance(user.stripeAccountId)
+            .then((response) {
+      double balance = 0;
+      List<dynamic> z = response.data["pending"] as List<dynamic>;
+      for (int i = 0; i < z.length; i++) {
+        balance += z[i]["amount"];
+      }
+      return balance / 100;
     });
+    return userCollection
+        .document(user.uid)
+        .updateData({'earnings': currentEarnings, 'reimbursement': balance});
   }
 
   @override

@@ -36,21 +36,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  Future<String> _getBalance(String accId) async {
-    if (accId == "") {
-      return "\$0.00";
-    }
-
-    double bal = 0;
-    await PaymentService.retrieveAccountBalance(accId).then((response) {
-      List<dynamic> z = response.data["pending"] as List<dynamic>;
-      for (int i = 0; i < z.length; i++) {
-        bal += z[i]["amount"];
-      }
-    });
-    return "\$${(bal / 100).toStringAsFixed(2)}";
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
@@ -69,31 +54,24 @@ class _ProfileState extends State<Profile> {
               Padding(
                 padding: EdgeInsets.all(10),
               ),
-              FutureBuilder<String>(
-                future: _getBalance(state.user.stripeAccountId),
-                builder: (BuildContext context, AsyncSnapshot<String> balance) {
-                  if (!balance.hasData)
-                    return Center(child: Text('Loading...'));
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Reimbursement: ${balance.data}",
-                          style: TextStyle(fontSize: 19),
-                        ),
-                        InfoButton(
-                          titleMessage: "Reimbursements",
-                          bodyMessage:
-                              "This is the total amount your account will be reimbursed for past deliveries. It includes the cost of food and your earnings.\n\nReimbursements will be paid out 2 days after the errand was completed.",
-                          buttonMessage: "Okay",
-                          buttonSize: 25,
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Reimbursements: \$${state.user.reimbursement.toStringAsFixed(2)}",
+                      style: TextStyle(fontSize: 19),
                     ),
-                  );
-                },
+                    InfoButton(
+                      titleMessage: "Reimbursements",
+                      bodyMessage:
+                          "This is the total amount your account will be reimbursed for past deliveries. It includes the cost of food and your earnings.\n\nReimbursements will be paid out 2 days after the errand was completed.",
+                      buttonMessage: "Okay",
+                      buttonSize: 25,
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),

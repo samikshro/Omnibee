@@ -170,6 +170,7 @@ class PaymentService {
         user: user,
         newEarnings: order.minEarnings,
       ));
+
       _printSuccess(context);
     });
   }

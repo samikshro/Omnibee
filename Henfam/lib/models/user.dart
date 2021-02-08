@@ -16,7 +16,7 @@ class User {
   final String token;
   final bool stripeSetupComplete;
   final String phone;
-  final String externalAccountId;
+  final double reimbursement;
 
   User(
     this.uid,
@@ -31,7 +31,7 @@ class User {
     this.token,
     this.stripeSetupComplete,
     this.phone,
-    this.externalAccountId,
+    this.reimbursement,
   );
 
   User copyWith(
@@ -47,7 +47,7 @@ class User {
       String token,
       bool stripeSetupComplete,
       String phone,
-      String externalAccountId}) {
+      double reimbursement}) {
     return User(
       uid,
       boosters,
@@ -61,7 +61,7 @@ class User {
       token,
       stripeSetupComplete,
       phone,
-      externalAccountId,
+      reimbursement,
     );
   }
 
@@ -79,7 +79,7 @@ class User {
       token.hashCode ^
       stripeSetupComplete.hashCode ^
       phone.hashCode ^
-      externalAccountId.hashCode;
+      reimbursement.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -97,11 +97,11 @@ class User {
           token == other.token &&
           stripeSetupComplete == other.stripeSetupComplete &&
           phone == other.phone &&
-          externalAccountId == other.externalAccountId;
+          reimbursement == other.reimbursement;
 
   @override
   String toString() {
-    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, externalAccountId: $externalAccountId }';
+    return 'User { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, reimbursement: $reimbursement }';
   }
 
   UserEntity toEntity() {
@@ -118,7 +118,7 @@ class User {
       token,
       stripeSetupComplete,
       phone,
-      externalAccountId,
+      reimbursement,
     );
   }
 
@@ -136,7 +136,7 @@ class User {
       entity.token,
       entity.stripeSetupComplete,
       entity.phone,
-      entity.externalAccountId,
+      entity.reimbursement,
     );
   }
 }

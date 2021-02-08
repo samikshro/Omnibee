@@ -14,7 +14,7 @@ class UserEntity extends Equatable {
   final String token;
   final bool stripeSetupComplete;
   final String phone;
-  final String externalAccountId;
+  final double reimbursement;
 
   const UserEntity(
       this.uid,
@@ -29,7 +29,7 @@ class UserEntity extends Equatable {
       this.token,
       this.stripeSetupComplete,
       this.phone,
-      this.externalAccountId);
+      this.reimbursement);
 
   Map<String, Object> toJson() {
     return {
@@ -45,7 +45,7 @@ class UserEntity extends Equatable {
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
       "phone": phone,
-      "external_acc_id": externalAccountId,
+      "reimbursement": reimbursement,
     };
   }
 
@@ -63,12 +63,12 @@ class UserEntity extends Equatable {
         token,
         stripeSetupComplete,
         phone,
-        externalAccountId,
+        reimbursement,
       ];
 
   @override
   String toString() {
-    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, externalAccountId: $externalAccountId }';
+    return 'UserEntity { uid: $uid, boosters: $boosters, earnings: $earnings, email: $email, name: $name, points: $points, requests: $requests, runs: $runs, stripeAccountId: $stripeAccountId, token: $token, stripeSetupComplete: $stripeSetupComplete, phone: $phone, reimbursement: $reimbursement }';
   }
 
   static UserEntity fromJson(Map<String, Object> json) {
@@ -85,7 +85,7 @@ class UserEntity extends Equatable {
       json["token"] as String,
       json["stripe_setup_complete"] as bool,
       json["phone"] as String,
-      json["external_acc_id"] as String,
+      json["reimbursement"] as double,
     );
   }
 
@@ -102,7 +102,7 @@ class UserEntity extends Equatable {
       "token": token,
       "stripe_setup_complete": stripeSetupComplete,
       "phone": phone,
-      "externalAccountId": externalAccountId,
+      "reimbursement": reimbursement,
     };
   }
 
@@ -120,7 +120,7 @@ class UserEntity extends Equatable {
       snap.data["token"],
       snap.data["stripe_setup_complete"],
       snap.data["phone"],
-      snap.data["externalAccountId"],
+      snap.data["reimbursement"],
     );
   }
 }
