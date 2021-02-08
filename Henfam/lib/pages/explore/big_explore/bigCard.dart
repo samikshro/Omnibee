@@ -123,11 +123,21 @@ class _BigCardState extends State<BigCard> {
                               return Column(
                                 children: [
                                   //TODO: try circular progress indicator
-                                  Text(
-                                      'Setup a payment account to get paid after your delivery!'),
-                                  Text(
-                                      'Please wait up to 10 seconds for the form to load.',
-                                      style: TextStyle(fontSize: 18)),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        15, 10, 15, 10),
+                                    child: Text(
+                                      'Setup a payment account to get paid after your delivery!',
+                                      style: TextStyle(fontSize: 19),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        15, 10, 15, 10),
+                                    child: Text(
+                                        'Please wait up to 10 seconds for the form to load.',
+                                        style: TextStyle(fontSize: 19)),
+                                  ),
                                   CupertinoButton(
                                       color: Theme.of(context).primaryColor,
                                       child: _setUpButtonChild(),

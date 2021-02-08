@@ -66,8 +66,7 @@ class FirebaseUserRepository implements UserRepository {
   }
 
   @override
-  Future<void> incrementEarnings(
-      User user, double newEarnings) async {
+  Future<void> incrementEarnings(User user, double newEarnings) async {
     double currentEarnings = user.earnings + newEarnings;
 
     double balance =

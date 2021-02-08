@@ -17,7 +17,7 @@ class ShowPhoneInput extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isLoginForm) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(0.0, 10, 0.0, 0.0),
         child: new TextFormField(
           maxLines: 1,
           keyboardType: TextInputType.phone,
