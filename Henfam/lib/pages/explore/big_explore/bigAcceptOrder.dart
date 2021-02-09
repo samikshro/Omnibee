@@ -63,6 +63,9 @@ class _AcceptOrderState extends State<AcceptOrder> {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       print("Building accept order again");
       return Scaffold(
+          appBar: AppBar(
+            title: Text("${order.restaurantName} Errand"),
+          ),
           key: _scaffoldKey,
           bottomNavigationBar: SizedBox(
             width: double.infinity,
@@ -89,6 +92,17 @@ class _AcceptOrderState extends State<AcceptOrder> {
               child: Column(
             children: <Widget>[
               Padding(padding: const EdgeInsets.only(top: 50)),
+              /* Stack(
+                children: <Widget>[
+                  CustomMap(orderList, selectedList),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: BackButton(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
+              ), */
               ExpansionTile(
                 title: Text(_getNumRequests(orderList)),
                 onExpansionChanged: _onExpand,
