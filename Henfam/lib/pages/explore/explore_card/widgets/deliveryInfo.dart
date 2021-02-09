@@ -1,13 +1,23 @@
+import 'dart:io';
+
 import 'package:Henfam/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:map_launcher/map_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryInfo extends StatelessWidget {
   final Order order;
   final double fontSize;
   final double boldFontSize;
+  final int isDeliveryPage;
 
-  DeliveryInfo(this.order, this.fontSize, this.boldFontSize);
+  DeliveryInfo(
+    this.order,
+    this.fontSize,
+    this.boldFontSize,
+    this.isDeliveryPage,
+  );
 
   String _getDeliveryLocation(Order order) {
     String location = order.location;
@@ -70,8 +80,73 @@ class DeliveryInfo extends StatelessWidget {
     }
   }
 
+  void _launchMap(BuildContext context, lat, lng) async {
+    var urlGoogleMaps =
+        "https://www.google.com/maps/search/?api=1&query=$lat,$lng";
+    var urlAppleMaps = 'https://maps.apple.com/?q=$lat,$lng';
+
+    if (Platform.isAndroid) {
+      if (await canLaunch(urlGoogleMaps)) {
+        await launch(urlGoogleMaps);
+      } else {
+        throw 'Could not launch $urlGoogleMaps';
+      }
+    } else {
+      urlGoogleMaps =
+          "comgooglemaps://?saddr=&daddr=$lat,$lng&directionsmode=walking";
+      if (await canLaunch(urlAppleMaps)) {
+        await launch(urlAppleMaps);
+      } else if (await canLaunch(urlGoogleMaps)) {
+        await launch(urlGoogleMaps);
+      } else {
+        throw 'Could not launch map on iOS';
+      }
+    }
+  }
+
+  Widget _getLocationWidget(
+    BuildContext context,
+    String location,
+    Order order,
+    int isDeliveryPage,
+  ) {
+    if (isDeliveryPage == 1) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+        child: ListTile(
+            title: Text(
+              location,
+              style: TextStyle(fontSize: fontSize),
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.explore,
+                size: 35,
+                color: Theme.of(context).primaryColor,
+              ),
+              onPressed: () async {
+                double latitude = order.userCoordinates.x;
+                double longitude = order.userCoordinates.y;
+                _launchMap(context, latitude, longitude);
+              },
+            )),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+        child: ListTile(
+          title: Text(
+            location,
+            style: TextStyle(fontSize: fontSize),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String location = _getDeliveryLocation(order);
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
@@ -82,11 +157,7 @@ class DeliveryInfo extends StatelessWidget {
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-            child: Text(_getDeliveryLocation(order),
-                style: TextStyle(fontSize: fontSize)),
-          ),
+          _getLocationWidget(context, location, order),
           Text(
             'Delivery Window:',
             style:

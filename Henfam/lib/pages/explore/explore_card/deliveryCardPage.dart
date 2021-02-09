@@ -91,6 +91,7 @@ class DeliveryCardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int isDeliveryPage = 1;
     final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
@@ -106,7 +107,7 @@ class DeliveryCardPage extends StatelessWidget {
           children: <Widget>[
             MediumTextSection('Delivery Information'),
             if (!order.isReceived) CallPhoneNumber(order, fontSize, true),
-            DeliveryInfo(order, fontSize, boldFontSize),
+            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage),
             MediumTextSection('Order Information'),
             _getOrderInformation(order),
             Padding(

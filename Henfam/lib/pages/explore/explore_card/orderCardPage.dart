@@ -101,6 +101,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final int isDeliveryPage = 0;
     final Order order = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       key: _scaffoldKey,
@@ -117,7 +118,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
             if (!order.isExpired() &&
                 order.isAccepted) //TODO: test these conditions
               CallPhoneNumber(order, fontSize, false),
-            DeliveryInfo(order, fontSize, boldFontSize),
+            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage),
             DeliveryInstructions(order, fontSize, boldFontSize),
             MediumTextSection("Order Information"),
             _getOrderInformation(order),
