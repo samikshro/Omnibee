@@ -24,7 +24,7 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (order.isComplete()) return Container();
+    // if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -88,10 +88,12 @@ class DeliveryCardButtonBar extends StatelessWidget {
 
     if (order.isDelivered) {
       buttons.removeAt(0);
-      buttons.insert(
-        0,
-        Text('Waiting for confirmation...'),
-      );
+      if (!order.isReceived) {
+        buttons.insert(
+          0,
+          Text('Waiting for confirmation...'),
+        );
+      }
     }
 
     return buttons;
@@ -101,7 +103,9 @@ class DeliveryCardButtonBar extends StatelessWidget {
   Widget build(BuildContext context) {
     print("Order isDelivered: ${order.isDelivered}");
     return ButtonBar(
-      alignment: MainAxisAlignment.spaceAround,
+      alignment: order.isReceived
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.spaceAround,
       children: _getButtons(),
     );
   }

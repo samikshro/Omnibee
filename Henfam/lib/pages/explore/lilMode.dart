@@ -19,13 +19,13 @@ class LilMode extends StatelessWidget {
         ErrandSelectionRow(),
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: LargeTextSection("Your Current Errands"),
+          child: LargeTextSection("Current Errands"),
         ),
         CurrentOrders(),
         //TODO: fix PreviousOrders to actually connect with expired requests
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: LargeTextSection("Your Previous Errands"),
+          child: LargeTextSection("Previous Errands"),
         ),
         PreviousOrders(),
       ],

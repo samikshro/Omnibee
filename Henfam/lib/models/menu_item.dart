@@ -7,9 +7,10 @@ class MenuItem extends Equatable {
   final double price;
   final List<String> modifiers;
   final List<ModifierItem> modifiersChosen;
+  String specialRequests;
 
   MenuItem(this.name, this.description, this.price, this.modifiers,
-      {this.modifiersChosen});
+      {this.modifiersChosen, this.specialRequests});
 
   @override
   List<Object> get props => [

@@ -1,6 +1,8 @@
+import 'package:Henfam/bloc/auth/auth_bloc.dart';
 import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:Henfam/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderCard extends StatelessWidget {
   final Order order;
@@ -20,9 +22,18 @@ class OrderCard extends StatelessWidget {
     return children;
   }
 
+  Widget _getIcon(Order order) {
+    if (order.isReceived) {
+      return Icon(Icons.check_circle, color: Colors.green, size: 45);
+    } else if (order.isExpired()) {
+      return Icon(Icons.cancel, color: Colors.red, size: 45);
+    } else {
+      return Icon(Icons.fastfood, size: 45);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -35,13 +46,9 @@ class OrderCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ExpansionTile(
-                leading: Icon(Icons.fastfood),
+                leading: _getIcon(order),
                 title: Text(order.name + ": " + order.restaurantName),
-                subtitle: Text(order.restaurantName +
-                    ": " +
-                    order.startTime +
-                    "-" +
-                    order.endTime),
+                subtitle: Text("${order.getDeliveryWindow()}"),
                 children: _itemsToOrder(order)),
             Image(
               image: AssetImage("assets/oishii_bowl_pic1.png"),
@@ -62,14 +69,14 @@ class OrderCardButtonBar extends StatelessWidget {
   OrderCardButtonBar(this.order, this.context);
 
   MainAxisAlignment _getAlignment() {
-    if (order.isDelivered != true) {
-      return MainAxisAlignment.end;
-    } else {
+    if (order.isAccepted && order.isDelivered && !order.isReceived) {
       return MainAxisAlignment.spaceAround;
+    } else {
+      return MainAxisAlignment.end;
     }
   }
 
-  void _markOrderComplete(Order order, BuildContext context) {
+  void _markOrderComplete(Order order, User user, BuildContext context) {
     final snackBar = SnackBar(
       content: Text('Confirming delivery, please wait one moment....'),
     );
@@ -81,16 +88,11 @@ class OrderCardButtonBar extends StatelessWidget {
     print(
         "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
 
-    PaymentService.paymentTransfer(order, context, pCharge, applicationFee,
-        order.paymentMethodId, order.stripeAccountId);
+    PaymentService.paymentTransfer(order, user, context, pCharge,
+        applicationFee, order.paymentMethodId, order.stripeAccountId);
   }
 
-  bool _isNotExpired(Order order) {
-    return order.expirationTime.millisecondsSinceEpoch >
-        DateTime.now().millisecondsSinceEpoch;
-  }
-
-  List<Widget> _getButtons(BuildContext context) {
+  List<Widget> _getButtons(BuildContext context, User user) {
     List<Widget> buttons = [
       FlatButton(
         child: const Text(
@@ -103,7 +105,7 @@ class OrderCardButtonBar extends StatelessWidget {
       ),
     ];
 
-    if (order.isDelivered == true && _isNotExpired(order)) {
+    if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
       buttons.insert(
           0,
           RaisedButton(
@@ -116,7 +118,7 @@ class OrderCardButtonBar extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () {
-              _markOrderComplete(order, context);
+              _markOrderComplete(order, user, context);
             },
           ));
     }
@@ -126,9 +128,11 @@ class OrderCardButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ButtonBar(
-      alignment: _getAlignment(),
-      children: _getButtons(context),
-    );
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return ButtonBar(
+        alignment: _getAlignment(),
+        children: _getButtons(context, (state as Authenticated).user),
+      );
+    });
   }
 }

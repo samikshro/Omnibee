@@ -28,18 +28,29 @@ class _MenuState extends State<Menu> {
     return modifiers;
   }
 
+  Function _getOnPressed(BuildContext context, BasketLoadSuccess state) {
+    if (state.menuItems.length == 0)
+      return null;
+    else {
+      return () {
+        BlocProvider.of<BasketBloc>(context).add(MenuItemDeleted(null));
+        Navigator.pushNamed(
+          context,
+          '/basket_form',
+        );
+      };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RestaurantBloc, RestaurantState>(
-        builder: (context, state) {
-      return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
-          builder: (context1, state1) {
-        return (state is RestaurantLoadSuccess)
-            ? WillPopScope(
-                onWillPop: () async {
-                  return true;
-                },
-                child: Scaffold(
+    return BlocBuilder<BasketBloc, BasketState>(builder: (bcontext, bstate) {
+      return BlocBuilder<RestaurantBloc, RestaurantState>(
+          builder: (context, state) {
+        return BlocBuilder<MenuOrderFormBloc, MenuOrderFormState>(
+            builder: (context1, state1) {
+          return (state is RestaurantLoadSuccess && bstate is BasketLoadSuccess)
+              ? Scaffold(
                   bottomNavigationBar: SizedBox(
                     width: double.infinity,
                     height: 60,
@@ -49,14 +60,7 @@ class _MenuState extends State<Menu> {
                               fontSize: 20.0,
                               color:
                                   Theme.of(context).scaffoldBackgroundColor)),
-                      onPressed: () {
-                        BlocProvider.of<BasketBloc>(context)
-                            .add(MenuItemDeleted(null));
-                        Navigator.pushNamed(
-                          context,
-                          '/basket_form',
-                        );
-                      },
+                      onPressed: _getOnPressed(context, bstate),
                     ),
                   ),
                   body: CustomScrollView(
@@ -151,9 +155,9 @@ class _MenuState extends State<Menu> {
                       ),
                     ],
                   ),
-                ),
-              )
-            : Container();
+                )
+              : Container();
+        });
       });
     });
   }

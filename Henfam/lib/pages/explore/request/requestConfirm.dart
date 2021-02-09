@@ -17,9 +17,18 @@ class RequestConfirm extends StatelessWidget {
   final Position locCoords;
   final String name;
   final String pmID;
+  final String deliveryIns;
 
-  RequestConfirm(this.date, this.endDate, this.uid, this.loc, this.locCoords,
-      this.name, this.pmID);
+  RequestConfirm(
+    this.date,
+    this.endDate,
+    this.uid,
+    this.loc,
+    this.locCoords,
+    this.name,
+    this.pmID,
+    this.deliveryIns,
+  );
 
   String getDay(DateTime date) {
     final today = DateTime.now();
@@ -107,6 +116,7 @@ class RequestConfirm extends StatelessWidget {
                                   null,
                                   "",
                                   (state as Authenticated).user.phone,
+                                  deliveryIns,
                                 ),
                               ),
                             );

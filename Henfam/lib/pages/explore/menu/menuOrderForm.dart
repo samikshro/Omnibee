@@ -2,8 +2,8 @@ import 'package:Henfam/bloc/basket/basket_bloc.dart';
 import 'package:Henfam/bloc/menu_order_form/menu_order_form_bloc.dart';
 import 'package:Henfam/models/menu_modifier.dart';
 import 'package:Henfam/models/models.dart';
-import 'package:flutter/material.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FoodInfo {
@@ -43,6 +43,8 @@ List<String> selectedAddons = [];
 
 class _MenuOrderFormState extends State<MenuOrderForm> {
   List<ModifierItem> selectedItems = [];
+  final _formKey = new GlobalKey<FormState>();
+  String sRequests = '';
 
   Widget _buildModifierList(MenuModifier modifier, int index) {
     return modifier == null
@@ -130,9 +132,13 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor)),
                           onPressed: () {
-                            //if (_sufficientModifiersChosen())
+                            _formKey.currentState.save();
+
+                            MenuItem item = state3.menuItem;
+                            print("this is now special request: " + sRequests);
+                            item.specialRequests = sRequests;
                             BlocProvider.of<BasketBloc>(context2)
-                                .add(MenuItemAdded(state3.menuItem));
+                                .add(MenuItemAdded(item));
                             BlocProvider.of<MenuOrderFormBloc>(context2)
                                 .add(ModifierReset());
                             setState(() {
@@ -178,11 +184,17 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                 child: LargeTextSection("Special Requests")),
                             SliverToBoxAdapter(
                               child: Container(
-                                  child: TextField(
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Requests',
+                                  child: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  obscureText: false,
+                                  onSaved: (text) => setState(() {
+                                    sRequests = text;
+                                  }),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Requests',
+                                  ),
                                 ),
                               )),
                             ),

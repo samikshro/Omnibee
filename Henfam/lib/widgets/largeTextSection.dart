@@ -8,7 +8,6 @@ class LargeTextSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
       child: Text(
         caption,

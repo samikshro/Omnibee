@@ -6,7 +6,7 @@ void main() {
     double orderPrice = 9.99;
     test('standard pcharge test', () {
       double pCharge = PaymentService.getPCharge(orderPrice);
-      expect(pCharge, 14.43);
+      expect(pCharge, 14.20);
     });
 
     test('standard omnibeeFee test', () {
@@ -16,12 +16,19 @@ void main() {
 
     test('standard totalfees test', () {
       double totalFees = PaymentService.getTotalFees(orderPrice);
-      expect(totalFees, 3.42);
+      expect(totalFees, 3.41);
     });
 
     test('standard stripe fee test', () {
       double stripeFee = PaymentService.getStripeFee(orderPrice);
-      expect(stripeFee, 0.72);
+      expect(stripeFee, 0.71);
+    });
+
+    test('basket form displayed prices', () {
+      double tax = PaymentService.getTaxedPrice(orderPrice) - orderPrice;
+      double fees = PaymentService.getTotalFees(orderPrice);
+      double totalPrice = orderPrice + tax + fees;
+      expect(totalPrice, 14.20);
     });
   });
 }

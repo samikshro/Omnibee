@@ -15,7 +15,7 @@ class PreviousOrders extends StatelessWidget {
           children: <Widget>[
             ExpansionTile(
               title: Text(
-                'Your Orders',
+                'Orders',
                 style: TextStyle(fontSize: 18),
               ),
               children: state
@@ -28,7 +28,7 @@ class PreviousOrders extends StatelessWidget {
             ),
             ExpansionTile(
               title: Text(
-                'Your Deliveries',
+                'Deliveries',
                 style: TextStyle(fontSize: 18),
               ),
               children: state

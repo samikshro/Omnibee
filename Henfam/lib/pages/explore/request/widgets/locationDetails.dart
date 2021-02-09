@@ -1,3 +1,4 @@
+import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/miniHeader.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +9,14 @@ import 'package:google_maps_webservice/places.dart';
 
 class LocationDetails extends StatefulWidget {
   final Function setLocation;
+  final Function setDeliveryIns;
+  final GlobalKey formKey;
 
-  LocationDetails(this.setLocation);
+  LocationDetails(
+    this.setLocation,
+    this.setDeliveryIns,
+    this.formKey,
+  );
 
   static final kGoogleApiKey = "AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o";
 
@@ -21,6 +28,7 @@ class _LocationDetailsState extends State<LocationDetails> {
   final kGoogleApiKey = "AIzaSyB7KROHRO-PGbEc6EOnsBU2rsNIfxVNU1o";
   String findAddressText = "Find address";
   bool _isDisposed = false;
+  final myController = TextEditingController();
 
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: LocationDetails.kGoogleApiKey);
@@ -43,6 +51,8 @@ class _LocationDetailsState extends State<LocationDetails> {
 
   @override
   void dispose() {
+    myController.dispose();
+
     super.dispose();
     _isDisposed = true;
   }
@@ -54,10 +64,20 @@ class _LocationDetailsState extends State<LocationDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MediumTextSection('Drop-off Location'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Text('Where will you be located?'),
+          Row(
+            children: [
+              SizedBox(
+                width: 240,
+                child: MediumTextSection('Drop-off Location'),
+              ),
+              InfoButton(
+                titleMessage: "Drop-off Location",
+                bodyMessage:
+                    "Choose where you want the food to be dropped off.",
+                buttonMessage: "Okay",
+                buttonSize: 25,
+              ),
+            ],
           ),
           Divider(),
           Padding(
@@ -87,15 +107,24 @@ class _LocationDetailsState extends State<LocationDetails> {
           ),
           Container(
             margin: EdgeInsets.all(15),
-            child: TextFormField(
-              textInputAction: TextInputAction.done,
-              maxLines: 3,
-              decoration: InputDecoration(
-                hintText: "e.g. Apt 4G, Leave next to door outside.",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    style: BorderStyle.solid,
+            child: Form(
+              key: widget.formKey,
+              child: TextFormField(
+                maxLines: 3,
+                autofocus: false,
+                /* controller: myController,
+                key: widget.formKey, */
+                onSaved: (deliveryIns) {
+                  print("\n\n DELIVERY INS are $deliveryIns");
+                  widget.setDeliveryIns(deliveryIns);
+                },
+                decoration: InputDecoration(
+                  hintText: "e.g. Apt 4G, Leave next to door outside.",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      style: BorderStyle.solid,
+                    ),
                   ),
                 ),
               ),

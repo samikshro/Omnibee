@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:Henfam/bloc/blocs.dart';
+import 'package:Henfam/models/models.dart';
 import 'package:Henfam/models/order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +41,9 @@ class PaymentService {
   }
 
   static double getStripeFee(double price) {
-    double deliveryFee = getDeliveryFee(price);
-    double goalPrice = getTaxedPrice(price + deliveryFee);
+    double taxedPrice = getTaxedPrice(price); //trying to match customer receipt
+    double deliveryFee = getDeliveryFee(price); //now our fees
+    double goalPrice = taxedPrice + deliveryFee;
 
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
@@ -54,8 +58,10 @@ class PaymentService {
   }
 
   static double getPCharge(double price) {
-    double deliveryFee = getDeliveryFee(price);
-    double goalPrice = getTaxedPrice(price + deliveryFee);
+    double taxedPrice = getTaxedPrice(price); //trying to match customer receipt
+    double deliveryFee = getDeliveryFee(price); //now our fees
+    double goalPrice = taxedPrice + deliveryFee;
+
     double pCharge =
         _round((goalPrice + 0.3) / 0.971); //adds on Stripe fee to goalPrice
 
@@ -96,8 +102,18 @@ class PaymentService {
     functionName: 'payments-retrieveBalance',
   );
 
+  static final HttpsCallable retrievePrevTransfers =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-retrievePrevTransfers',
+  );
+
+  static final HttpsCallable retrieveAccountInfo =
+      CloudFunctions.instance.getHttpsCallable(
+    functionName: 'payments-retrieveAccountInfo',
+  );
+
+  // TODO: add payment details to firestore
   static void _printSuccess(BuildContext context) {
-    // addPaymentDetailsToFirestore(); //Function to add Payment details to firestore
     final snackBar = SnackBar(
       content: Text('Removed order card'),
     );
@@ -129,12 +145,16 @@ class PaymentService {
     }
   }
 
-  static void _confirmPayment(Order order, BuildContext context, String sec,
-      String paymentMethodID) async {
+  static void _confirmPayment(
+    Order order,
+    User user,
+    BuildContext context,
+    String sec,
+    String paymentMethodID,
+  ) async {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethodID),
     ).then((val) {
-      // addPaymentDetailsToFirestore(); //Function to add Payment details to firestore
       final snackBar = SnackBar(
         content: Text('Payment Successful'),
       );
@@ -145,18 +165,26 @@ class PaymentService {
       _paymentCallback(order, val.status);
     }).catchError((error, stackTrace) {
       print("error!");
-    }).whenComplete(() => _printSuccess(context));
+    }).whenComplete(() {
+      BlocProvider.of<AuthBloc>(context).add(UserEarningsUpdated(
+        user: user,
+        newEarnings: order.minEarnings,
+      ));
+
+      _printSuccess(context);
+    });
   }
 
   static void paymentTransfer(
       Order order,
+      User user,
       BuildContext context,
       double dollars,
       double applicationFee,
       String paymentMethodID,
       String delivererAccountId) async {
     int amount = (dollars * 100).toInt();
-    double appFeeAmount = applicationFee * 100;
+    int appFeeAmount = (applicationFee * 100).toInt();
     paymentIntentTransfer.call(<String, dynamic>{
       'amount': amount,
       'currency': 'usd',
@@ -164,9 +192,13 @@ class PaymentService {
       'fee_amount': appFeeAmount,
       'transfer_dest': delivererAccountId,
     }).then((response) async {
-      // _confirmDialog(context, response.data["client_secret"], paymentMethod);
-      _confirmPayment(order, context, response.data["client_secret"],
-          paymentMethodID); //function for confirmation for payment
+      _confirmPayment(
+        order,
+        user,
+        context,
+        response.data["client_secret"],
+        paymentMethodID,
+      ); //function for confirmation for payment
     });
   }
 
