@@ -1,3 +1,4 @@
+import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,19 +27,30 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: fix font sizes on smaller iphones if needed
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MediumTextSection('Delivery Window'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Text('In what time range do you want your food?'),
+          Row(
+            children: [
+              SizedBox(
+                width: 230,
+                child: MediumTextSection('Delivery Window'),
+              ),
+              InfoButton(
+                titleMessage: "Delivery Window",
+                bodyMessage:
+                    "Choose a time range for receiving your food.\n\nThe request will expire if no one accepts it before the expiration time (20 min before the end of the time range).",
+                buttonMessage: "Okay",
+                buttonSize: 25,
+              ),
+            ],
           ),
           Container(
               width: double.infinity,
-              margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
+              margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
               child: expiration),
           Divider(),
           TimeRange(
@@ -53,8 +65,8 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             titlePadding: 20,
             textStyle:
                 TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
-            activeTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            activeTextStyle: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white),
             borderColor: Colors.black54,
             backgroundColor: Colors.transparent,
             activeBackgroundColor: Theme.of(context).buttonColor,
@@ -72,24 +84,12 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
               final expiretime = endtime.subtract(new Duration(minutes: 20));
               setState(() => expiration = RichText(
                     text: TextSpan(
-                        text: 'Note: Your request will ',
+                        text: 'Request will expire at ',
                         style: TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.normal),
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
                         children: <TextSpan>[
-                          TextSpan(
-                            text: 'expire ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: 'if no one accepts it at ',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                // fontSize: 20,
-                                fontWeight: FontWeight.normal),
-                          ),
                           TextSpan(
                             text: DateFormat('h:mm aa MM/dd/yy')
                                 .format(expiretime),
@@ -97,13 +97,6 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
                                 color: Colors.grey,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: ' (20m before final delivery time).',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                // fontSize: 20,
-                                fontWeight: FontWeight.normal),
                           ),
                         ]),
                   ));

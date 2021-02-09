@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Henfam/services/paymentService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'repositories.dart';
@@ -53,6 +54,7 @@ class FirebaseUserRepository implements UserRepository {
       'stripeAccountId': "",
       'phone': phone,
       'token': "",
+      "reimbursement": "",
     });
 
     return [email, password];
@@ -61,6 +63,25 @@ class FirebaseUserRepository implements UserRepository {
   @override
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<void> incrementEarnings(User user, double newEarnings) async {
+    double currentEarnings = user.earnings + newEarnings;
+
+    double balance =
+        await PaymentService.retrieveAccountBalance(user.stripeAccountId)
+            .then((response) {
+      double balance = 0;
+      List<dynamic> z = response.data["pending"] as List<dynamic>;
+      for (int i = 0; i < z.length; i++) {
+        balance += z[i]["amount"];
+      }
+      return balance / 100;
+    });
+    return userCollection
+        .document(user.uid)
+        .updateData({'earnings': currentEarnings, 'reimbursement': balance});
   }
 
   @override
@@ -80,6 +101,7 @@ class FirebaseUserRepository implements UserRepository {
     return user;
   }
 
+  @override
   Future<User> getUserWUID(String uid) async {
     User user = await userCollection
         .document(uid)
@@ -104,13 +126,6 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Stream<User> user(String uid) {
-    /* return userCollection.snapshots().map((snapshot) {
-      return snapshot.documents
-          .map((doc) => User.fromEntity(UserEntity.fromSnapshot(doc)))
-          .toList()
-          .firstWhere((user) => user.uid == uid);
-    }); */
-
     return userCollection
         .document(uid)
         .snapshots()

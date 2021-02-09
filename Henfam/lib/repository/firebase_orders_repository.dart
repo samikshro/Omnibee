@@ -34,11 +34,11 @@ class FirebaseOrdersRepository implements OrdersRepository {
   @override
   Future<void> markOrderAccepted(Order order, User runner) {
     return orderCollection.document(order.docID).updateData({
-      'user_id.is_accepted': true,
-      'user_id.runner': runner.uid,
-      'user_id.runner_name': runner.name,
+      'is_accepted': true,
+      'runner': runner.uid,
+      'runner_name': runner.name,
       'stripeAccountId': runner.stripeAccountId,
-      'user_id.runner_phone': runner.phone,
+      'runner_phone': runner.phone,
     });
   }
 

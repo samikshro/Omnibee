@@ -54,78 +54,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
     });
   }
 
-  Widget _setUpButtonChild() {
-    if (_loading == 0) {
-      return Text("Set Up Payments");
-    } else if (_loading == 1) {
-      return CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-      );
-    } else {
-      return Icon(Icons.check, color: Colors.white);
-    }
-  }
-
-  /// [_isStripeSetup] checks if stripe setup has been approved and payouts have
-  /// been enabled. If payouts are enabled, the order is accepted. If payouts
-  /// are not enabled, the user is asked to setup a payment account.
-  void _isStripeSetup(List<Order> orderList, User user) async {
-    if (user.stripeSetupComplete == true) {
-      _markOrdersAccepted(orderList, user);
-      final snackBar = SnackBar(
-        content: Text('Accepted errand!'),
-      );
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-      Timer(Duration(seconds: 2), () {
-        Navigator.popUntil(
-            context, ModalRoute.withName(Navigator.defaultRouteName));
-      });
-    } else {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Column(
-            children: [
-              //TODO: try circular progress indicator
-              Text('Setup a payment account to get paid after your delivery!'),
-              Text('Please wait up to 10 seconds for the form to load.',
-                  style: TextStyle(fontSize: 18)),
-              CupertinoButton(
-                  color: Theme.of(context).primaryColor,
-                  child: _setUpButtonChild(),
-                  onPressed: () {
-                    if (user != null) {
-                      setState(() {
-                        _loading = 1;
-                      });
-
-                      user.stripeAccountId == ""
-                          ? _setupStripeAccount(user)
-                          : _updateStripeAccount(user.stripeAccountId);
-                    }
-                    setState(() {
-                      _loading = 0;
-                    });
-                  }),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  void _setupStripeAccount(User user) {
-    PaymentService.createAccount(user.email);
-  }
-
-  void _updateStripeAccount(String accountId) {
-    bool updateEnabled = false;
-    if (updateEnabled)
-      PaymentService.updateAccountLink(accountId);
-    else
-      PaymentService.createAccountLink(accountId);
-  }
-
   @override
   Widget build(BuildContext context) {
     final Order order = ModalRoute.of(context).settings.arguments;
@@ -148,27 +76,22 @@ class _AcceptOrderState extends State<AcceptOrder> {
                       fontSize: 20.0,
                       color: Theme.of(context).scaffoldBackgroundColor)),
               onPressed: () {
-                print("hello , at is stripe setup");
-                // BlocProvider.of<AuthBloc>(context)
-                //     .add(WasStripeSetupCompleted());
-                print((state as Authenticated).user);
-                
-                Firestore.instance.collection('users')
+                Firestore.instance
+                    .collection('users')
                     .document((state as Authenticated).user.uid)
                     .get()
                     .then((DocumentSnapshot document) {
-                  User user = User.fromEntity(UserEntity.fromSnapshot(document));
-                  _isStripeSetup(orderList, user);
+                  User user =
+                      User.fromEntity(UserEntity.fromSnapshot(document));
+                  _markOrdersAccepted(orderList, user);
                 });
-
-                
-                print("after isStripeSetup");
               },
             ),
           ),
           body: SingleChildScrollView(
               child: Column(
             children: <Widget>[
+              Padding(padding: const EdgeInsets.only(top: 50)),
               /* Stack(
                 children: <Widget>[
                   CustomMap(orderList, selectedList),
@@ -180,7 +103,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
                   ),
                 ],
               ), */
-              // Padding(padding: const EdgeInsets.only(top: 50)),
               ExpansionTile(
                 title: Text(_getNumRequests(orderList)),
                 onExpansionChanged: _onExpand,

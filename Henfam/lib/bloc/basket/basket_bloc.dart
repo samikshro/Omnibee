@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:collection/collection.dart';
 
 import 'package:Henfam/models/menu_item.dart';
@@ -42,10 +43,11 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       MenuItem item = MenuItem(
         event.menuItem.name,
         event.menuItem.description,
-        event.menuItem.price,
+        _round(event.menuItem.price),
         event.menuItem.modifiers,
         modifiersChosen:
             List<ModifierItem>.from(event.menuItem.modifiersChosen),
+        specialRequests: event.menuItem.specialRequests,
       );
 
       final List<MenuItem> updatedMenuItems =
@@ -98,7 +100,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     return {
       'name': menuItem.name,
       'price': _getPrice(menuItem),
-      'add_ons': _addOnsToStringList(menuItem)
+      'add_ons': _addOnsToStringList(menuItem),
+      's_requests': menuItem.specialRequests,
     };
   }
 
@@ -111,13 +114,13 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     return price;
   }
 
+  double _round(double val) {
+    double mod = pow(10.0, 2);
+    return ((val * mod).round().toDouble() / mod);
+  }
+
   List<String> _addOnsToStringList(MenuItem menuItem) {
     List<String> addOnsStringList = [];
-
-    menuItem.modifiers.forEach((modifierName) {
-      print("Modifier name is $modifierName");
-      addOnsStringList.add(modifierName);
-    });
 
     menuItem.modifiersChosen.forEach((modifier) {
       addOnsStringList.add(modifier.name);

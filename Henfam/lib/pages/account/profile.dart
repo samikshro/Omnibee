@@ -1,7 +1,9 @@
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
+import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
+import 'package:Henfam/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,28 +36,13 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  Future<String> _getBalance(String accId) async {
-    if (accId == "") {
-      return "\nN/A";
-    }
-
-    double bal = 0;
-    await PaymentService.retrieveAccountBalance(accId).then((response) {
-      List<dynamic> z = response.data["pending"] as List<dynamic>;
-      for (int i = 0; i < z.length; i++) {
-        bal += z[i]["amount"];
-      }
-    });
-    return "\$${(bal / 100).toStringAsFixed(2)}";
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       if (state is Authenticated) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Your Profile'),
+            title: Text('Profile'),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,20 +50,51 @@ class _ProfileState extends State<Profile> {
               Padding(
                 padding: EdgeInsets.all(10),
               ),
-              FutureBuilder<String>(
-                future: _getBalance(state.user.stripeAccountId),
-                builder: (BuildContext context, AsyncSnapshot<String> balance) {
-                  if (!balance.hasData)
-                    return Center(child: Text('Loading...'));
-                  return LargeTextSection(
-                    "Balance to be Transferred: ${balance.data}",
-                  );
-                },
+              ProfileHeader(state.user.name),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Reimbursements: \$${state.user.reimbursement.toStringAsFixed(2)}",
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    InfoButton(
+                      titleMessage: "Reimbursements",
+                      bodyMessage:
+                          "This is the total amount your account will be reimbursed for past deliveries. It includes the cost of food and your earnings.\n\nReimbursements will be paid out 2 days after the errand was completed.",
+                      buttonMessage: "Okay",
+                      buttonSize: 25,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Total Earnings: \$${state.user.earnings.toStringAsFixed(2)}",
+                      style: TextStyle(fontSize: 19),
+                    ),
+                    InfoButton(
+                      titleMessage: "Total Earnings",
+                      bodyMessage:
+                          "This is your total lifetime earnings on Omnibee. It is the sum of all earnings from previous deliveries.",
+                      buttonMessage: "Okay",
+                      buttonSize: 25,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    ProfileHeader(state.user.name),
                     Divider(),
                     ProfileContact(signOut),
                   ],

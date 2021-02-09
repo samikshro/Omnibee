@@ -9,6 +9,7 @@ abstract class OrderState extends Equatable {
 
 class OrderLoadInProgress extends OrderState {}
 
+//TODO: update definitions of expired. Change names
 class OrderStateLoadSuccess extends OrderState {
   final List<Order> orders;
   final User user;
@@ -26,8 +27,7 @@ class OrderStateLoadSuccess extends OrderState {
 
   List<Order> getUserOrders() {
     List<Order> userOrders = orders
-        .where(
-            (order) => (order.uid == user.uid && (_isOrderNotExpired(order))))
+        .where((order) => (order.uid == user.uid && !(order.isExpired())))
         .toList();
 
     return userOrders;
@@ -35,37 +35,27 @@ class OrderStateLoadSuccess extends OrderState {
 
   List<Order> getUserDeliveries() {
     return orders
-        .where((order) =>
-            ((order.runnerUid == user.uid) && (_isOrderNotExpired(order))))
+        .where((order) => ((order.runnerUid == user.uid) &&
+            (!order.isExpired() && !order.isReceived)))
         .toList();
-  }
-
-  bool _isOrderNotExpired(Order order) {
-    return DateTime.now().millisecondsSinceEpoch <
-        order.expirationTime.millisecondsSinceEpoch;
   }
 
   // TODO: Fix previous orders & deliveries, need to change cards and card pages
   List<Order> getPrevUserOrders() {
-    return [];
-    /* return orders
-        .where((order) =>
-            ((order.uid == user.uid) && _isExpiredAndAccepted(order)))
-        .toList(); */
+    return orders
+        .where((order) => ((order.uid == user.uid) && (order.isExpired())))
+        .toList();
   }
 
   List<Order> getPrevUserDeliveries() {
-    return [];
-    /*return orders
-        .where((order) =>
-            ((order.runnerUid == user.uid) && _isExpiredAndAccepted(order)))
-        .toList(); */
+    return orders
+        .where((order) => ((order.runnerUid == user.uid) && order.isReceived))
+        .toList();
   }
 
   List<Order> getRunnableDeliveries() {
     return orders
-        .where(
-            (order) => (order.runnerUid == null) && _isOrderNotExpired(order))
+        .where((order) => (order.runnerUid == null) && !order.isExpired())
         .toList();
   }
 }

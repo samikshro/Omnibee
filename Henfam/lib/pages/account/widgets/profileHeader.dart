@@ -12,13 +12,13 @@ class ProfileHeader extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(25, 20, 0, 0),
+            padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  name,
-                  style: TextStyle(fontSize: 22),
+                  "Hello, $name",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
