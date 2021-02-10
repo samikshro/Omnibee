@@ -54,7 +54,7 @@ class FirebaseUserRepository implements UserRepository {
       'stripeAccountId': "",
       'phone': phone,
       'token': "",
-      "reimbursement": "",
+      "reimbursement": 0.00,
     });
 
     return [email, password];

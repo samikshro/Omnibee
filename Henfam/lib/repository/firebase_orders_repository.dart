@@ -45,6 +45,7 @@ class FirebaseOrdersRepository implements OrdersRepository {
   @override
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
+      print("getting orders");
       return snapshot.documents
           .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
           .toList();
