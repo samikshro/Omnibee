@@ -40,16 +40,19 @@ class OrderStateLoadSuccess extends OrderState {
         .toList();
   }
 
-  // TODO: Fix previous orders & deliveries, need to change cards and card pages
   List<Order> getPrevUserOrders() {
     return orders
         .where((order) => ((order.uid == user.uid) && (order.isExpired())))
+        .toList()
+        .reversed
         .toList();
   }
 
   List<Order> getPrevUserDeliveries() {
     return orders
         .where((order) => ((order.runnerUid == user.uid) && order.isReceived))
+        .toList()
+        .reversed
         .toList();
   }
 

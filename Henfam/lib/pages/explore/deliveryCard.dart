@@ -101,7 +101,6 @@ class DeliveryCardButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Order isDelivered: ${order.isDelivered}");
     return ButtonBar(
       alignment: order.isReceived
           ? MainAxisAlignment.end
