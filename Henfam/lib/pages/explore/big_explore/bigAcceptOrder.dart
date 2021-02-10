@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/entities/entities.dart';
 import 'package:Henfam/models/models.dart';
@@ -9,7 +8,6 @@ import 'package:Henfam/pages/explore/big_explore/bigAcceptOrder_widgets/minEarni
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:Henfam/services/paymentService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AcceptOrder extends StatefulWidget {
@@ -91,7 +89,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           body: SingleChildScrollView(
               child: Column(
             children: <Widget>[
-              Padding(padding: const EdgeInsets.only(top: 50)),
+              Padding(padding: const EdgeInsets.only(top: 10)),
               /* Stack(
                 children: <Widget>[
                   CustomMap(orderList, selectedList),
@@ -103,17 +101,17 @@ class _AcceptOrderState extends State<AcceptOrder> {
                   ),
                 ],
               ), */
-              ExpansionTile(
-                title: Text(_getNumRequests(orderList)),
-                onExpansionChanged: _onExpand,
-                trailing: Text(
-                  'DECOUPLE',
-                  style: TextStyle(color: Colors.cyan),
-                ),
-                children: <Widget>[
-                  ExpandedDecouple(orderList, selectedList, _changeCheckBox),
-                ],
-              ),
+              // ExpansionTile(
+              //   title: Text(_getNumRequests(orderList)),
+              //   onExpansionChanged: _onExpand,
+              //   trailing: Text(
+              //     'DECOUPLE',
+              //     style: TextStyle(color: Colors.cyan),
+              //   ),
+              //   children: <Widget>[
+              //     ExpandedDecouple(orderList, selectedList, _changeCheckBox),
+              //   ],
+              // ),
               DisplaySmallUsers(isExpanded, orderList, selectedList),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
