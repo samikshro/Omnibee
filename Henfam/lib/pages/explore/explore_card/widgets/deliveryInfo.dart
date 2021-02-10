@@ -157,7 +157,7 @@ class DeliveryInfo extends StatelessWidget {
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
           ),
-          _getLocationWidget(context, location, order),
+          _getLocationWidget(context, location, order, isDeliveryPage),
           Text(
             'Delivery Window:',
             style:
