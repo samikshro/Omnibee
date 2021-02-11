@@ -39,11 +39,7 @@ class DeliveryCard extends StatelessWidget {
             ExpansionTile(
                 leading: Icon(Icons.fastfood),
                 title: Text(order.name + ": " + order.restaurantName),
-                subtitle: Text(order.restaurantName +
-                    ": " +
-                    order.startTime +
-                    "-" +
-                    order.endTime +
+                subtitle: Text(order.getDeliveryWindow() +
                     "\nEarnings: \$${order.minEarnings}"),
                 children: _itemsToOrder(order)),
             DeliveryCardButtonBar(order, context),
