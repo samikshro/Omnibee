@@ -42,13 +42,20 @@ class FirebaseOrdersRepository implements OrdersRepository {
     });
   }
 
+  int orderComparator(Order order1, Order order2) {
+    bool isBefore = order1.expirationTime.isBefore(order2.expirationTime);
+    return (isBefore) ? -1 : 1;
+  }
+
   @override
   Stream<List<Order>> orders() {
     return orderCollection.snapshots().map((snapshot) {
       print("getting orders");
-      return snapshot.documents
+      List<Order> orders = snapshot.documents
           .map((doc) => Order.fromEntity(OrderEntity.fromSnapshot(doc)))
           .toList();
+      orders.sort(orderComparator);
+      return orders;
     });
   }
 }
