@@ -36,26 +36,28 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Card(
-        margin: EdgeInsets.all(10.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        elevation: 2.0,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ExpansionTile(
-                leading: _getIcon(order),
-                title: Text(order.name + ": " + order.restaurantName),
-                subtitle: Text("${order.getDeliveryWindow()}"),
-                children: _itemsToOrder(order)),
-            Image(
-              image: AssetImage("assets/oishii_bowl_pic1.png"),
-              fit: BoxFit.cover,
-            ),
-            OrderCardButtonBar(order, context),
-          ],
+      child: SizedBox(
+        child: Card(
+          margin: EdgeInsets.all(10.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 2.0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ExpansionTile(
+                  leading: _getIcon(order),
+                  title: Text(order.name + ": " + order.restaurantName),
+                  subtitle: Text("${order.getDeliveryWindow()}"),
+                  children: _itemsToOrder(order)),
+              Image(
+                image: AssetImage(order.restaurantImage),
+                fit: BoxFit.none,
+              ),
+              OrderCardButtonBar(order, context),
+            ],
+          ),
         ),
       ),
     );
