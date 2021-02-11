@@ -1,6 +1,7 @@
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/pages/account/widgets/profileContact.dart';
 import 'package:Henfam/pages/account/widgets/profileHeader.dart';
+import 'package:Henfam/pages/explore/previousOrders.dart';
 import 'package:Henfam/widgets/infoButton.dart';
 import 'package:Henfam/widgets/largeTextSection.dart';
 import 'package:Henfam/widgets/mediumTextSection.dart';
@@ -95,6 +96,11 @@ class _ProfileState extends State<Profile> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: LargeTextSection("Previous Errands"),
+                    ),
+                    PreviousOrders(),
                     Divider(),
                     ProfileContact(signOut),
                   ],
