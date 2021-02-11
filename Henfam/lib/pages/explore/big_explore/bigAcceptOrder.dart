@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Henfam/bloc/blocs.dart';
 import 'package:Henfam/entities/entities.dart';
 import 'package:Henfam/models/models.dart';
@@ -83,6 +85,14 @@ class _AcceptOrderState extends State<AcceptOrder> {
                       User.fromEntity(UserEntity.fromSnapshot(document));
                   _markOrdersAccepted(orderList, user);
                 });
+                final snackBar = SnackBar(
+                  content: Text('Accepted errand!'),
+                );
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+                Timer(Duration(seconds: 2), () {
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(Navigator.defaultRouteName));
+                });
               },
             ),
           ),
@@ -101,17 +111,17 @@ class _AcceptOrderState extends State<AcceptOrder> {
                   ),
                 ],
               ), */
-              // ExpansionTile(
-              //   title: Text(_getNumRequests(orderList)),
-              //   onExpansionChanged: _onExpand,
-              //   trailing: Text(
-              //     'DECOUPLE',
-              //     style: TextStyle(color: Colors.cyan),
-              //   ),
-              //   children: <Widget>[
-              //     ExpandedDecouple(orderList, selectedList, _changeCheckBox),
-              //   ],
-              // ),
+              /* ExpansionTile(
+                title: Text(_getNumRequests(orderList)),
+                onExpansionChanged: _onExpand,
+                trailing: Text(
+                  'DECOUPLE',
+                  style: TextStyle(color: Colors.cyan),
+                ),
+                children: <Widget>[
+                  ExpandedDecouple(orderList, selectedList, _changeCheckBox),
+                ],
+              ), */
               DisplaySmallUsers(isExpanded, orderList, selectedList),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
