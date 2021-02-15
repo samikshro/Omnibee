@@ -39,8 +39,6 @@ class MenuOrderForm extends StatefulWidget {
   _MenuOrderFormState createState() => _MenuOrderFormState();
 }
 
-List<String> selectedAddons = [];
-
 class _MenuOrderFormState extends State<MenuOrderForm> {
   List<ModifierItem> selectedItems = [];
   final _formKey = new GlobalKey<FormState>();
@@ -59,6 +57,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                   itemBuilder: (BuildContext context2, int index2) {
                     ModifierItem item = modifier.modifierItems[index2];
                     return ListTile(
+                        onTap: () {
+                          bool isSelected = selectedItems.contains(item);
+                          _selectModifier(!isSelected, item, modifier);
+                        },
                         title: Text(item.name),
                         subtitle: _getPrice(item.price),
                         trailing: SizedBox(
@@ -70,7 +72,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                     value: selectedItems.contains(item),
                                     onChanged: (bool isSelected) {
                                       _selectModifier(
-                                          isSelected, item, modifier);
+                                        isSelected,
+                                        item,
+                                        modifier,
+                                      );
                                     },
                                   )
                                 : Container();
@@ -82,7 +87,10 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
   }
 
   void _selectModifier(
-      bool isSelected, ModifierItem item, MenuModifier modifier) {
+    bool isSelected,
+    ModifierItem item,
+    MenuModifier modifier,
+  ) {
     bool isNotAlreadySelected = !selectedItems.contains(item);
     bool canSelectMore = _canSelectMore(item, modifier);
 
