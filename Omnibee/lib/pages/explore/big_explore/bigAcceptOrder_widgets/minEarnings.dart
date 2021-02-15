@@ -1,4 +1,5 @@
 import 'package:Omnibee/models/order.dart';
+import 'package:Omnibee/widgets/infoButton.dart';
 import 'package:flutter/material.dart';
 
 class MinEarnings extends StatelessWidget {
@@ -33,9 +34,12 @@ class MinEarnings extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.info),
-                onPressed: () {},
+              InfoButton(
+                titleMessage: "Minimum Earnings",
+                bodyMessage:
+                    "This is the minimum amount you can expect to earn by completing this errand. It does not take into account any potential tips.",
+                buttonMessage: "Okay",
+                buttonSize: 25,
               ),
             ],
           ),
