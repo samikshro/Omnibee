@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:Henfam/services/paymentService.dart';
+import 'package:Omnibee/services/paymentService.dart';
 
 void main() {
   group('Payments', () {
