@@ -6,14 +6,24 @@ import 'package:Omnibee/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Basket extends StatelessWidget {
-  Widget _buildTile(List<MenuItem> menuItems, int index) {
+  Widget _buildTile(
+    List<MenuItem> menuItems,
+    int index,
+    double modifiersWidth,
+  ) {
     return ListTile(
       onTap: () {},
       trailing: _getTrailing(menuItems[index]),
-      title: Text(menuItems[index].name),
+      title: Text(
+        menuItems[index].name,
+        style: TextStyle(
+          fontSize: 19,
+        ),
+      ),
       subtitle: Wrap(
         direction: Axis.vertical,
-        children: _getModifiersList(menuItems[index]),
+        children: _getModifiersListAndSpecialRequest(
+            menuItems[index], modifiersWidth),
       ),
       isThreeLine: true,
     );
@@ -23,12 +33,18 @@ class Basket extends StatelessWidget {
     return BlocBuilder<BasketBloc, BasketState>(builder: (context, state) {
       return Column(
         children: <Widget>[
-          Text(_getItemsPrice([menuItem])),
+          Text(
+            _getItemsPrice([menuItem]),
+            style: TextStyle(
+              fontSize: 19,
+            ),
+          ),
           Expanded(
             child: FlatButton(
               child: Icon(
                 Icons.remove_circle,
                 size: 20,
+                color: Colors.red,
               ),
               onPressed: () {
                 BlocProvider.of<BasketBloc>(context)
@@ -44,12 +60,23 @@ class Basket extends StatelessWidget {
     });
   }
 
-  List<Widget> _getModifiersList(MenuItem item) {
-    List<Widget> modifiers = [];
+  List<Widget> _getModifiersListAndSpecialRequest(MenuItem item, double width) {
+    List<Widget> modifiersAndSpecialRequest = [];
     item.modifiersChosen.forEach((modifier) {
-      modifiers.add(Text(modifier.name));
+      modifiersAndSpecialRequest.add(Text('\n${modifier.name}'));
     });
-    return modifiers;
+
+    if (item.specialRequests != "") {
+      modifiersAndSpecialRequest.add(SizedBox(
+        width: width,
+        child: Text(
+          '\nSpecial Request: ${item.specialRequests}\n',
+          overflow: TextOverflow.clip,
+        ),
+      ));
+    }
+
+    return modifiersAndSpecialRequest;
   }
 
   // TODO: put modifier prices inside of order, not just display
@@ -109,7 +136,11 @@ class Basket extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: state.menuItems.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _buildTile(state.menuItems, index);
+                      return _buildTile(
+                        state.menuItems,
+                        index,
+                        (MediaQuery.of(context).size.width / 3) * 2,
+                      );
                     },
                   ),
                   ListTile(
