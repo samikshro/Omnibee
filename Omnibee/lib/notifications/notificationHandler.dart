@@ -53,12 +53,11 @@ class _NotificationHandlerState extends State<NotificationHandler> {
             builder: (context) {
               return AlertDialog(
                 content: ListTile(
-                  title: Text(message['notification']['title']),
-                  subtitle: Text(message['notification']['body']),
-                  // TODO: Uncomment out this code for testflight
-                  /* title: Text(message['aps']['alert']['title']),
-                  subtitle: Text(message['aps']['acd ilert']['body']) */
-                ),
+                    // title: Text(message['notification']['title']),
+                    // subtitle: Text(message['notification']['body']),
+                    // TODO: Uncomment out this code for testflight
+                    title: Text(message['aps']['alert']['title']),
+                    subtitle: Text(message['aps']['acd ilert']['body'])),
                 actions: <Widget>[
                   FlatButton(
                     child: Text('Okay'),
