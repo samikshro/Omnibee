@@ -60,6 +60,62 @@ class _RequestState extends State<Request> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       return Scaffold(
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: RaisedButton(
+              child: Text(
+                'Place Request',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).scaffoldBackgroundColor),
+              ),
+              onPressed: () {
+                _formKey.currentState.save();
+                if (infoAdded.containsValue(false)) {
+                  //TODO: make this look better
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Column(children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            child: Text(
+                                'Please fill out the delivery time range and location fields!',
+                                style: TextStyle(fontSize: 18)),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10),
+                          ),
+                          CupertinoButton(
+                              color: Theme.of(context).primaryColor,
+                              child: Text("Close"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }),
+                        ]);
+                      });
+                } else {
+                  PaymentService.paymentRequestWithCardForm()
+                      .then((paymentMethod) {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => RequestConfirm(
+                        _deliveryDate,
+                        _endDeliveryDate,
+                        (state as Authenticated).user.uid,
+                        _location,
+                        _locationCoordinates,
+                        (state as Authenticated).user.name,
+                        paymentMethod.id,
+                        _deliveryIns,
+                      ),
+                    );
+                  });
+                }
+              }),
+        ),
         appBar: AppBar(
           title: Text(
             'Your Request',
@@ -84,69 +140,6 @@ class _RequestState extends State<Request> {
                   ],
                 ),
               ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                fillOverscroll: true,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: RaisedButton(
-                        child: Text(
-                          'Place Request',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                        ),
-                        onPressed: () {
-                          _formKey.currentState.save();
-                          if (infoAdded.containsValue(false)) {
-                            //TODO: make this look better
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return Column(children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 10),
-                                      child: Text(
-                                          'Please fill out the delivery time range and location fields!',
-                                          style: TextStyle(fontSize: 18)),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                    ),
-                                    CupertinoButton(
-                                        color: Theme.of(context).primaryColor,
-                                        child: Text("Close"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        }),
-                                  ]);
-                                });
-                          } else {
-                            PaymentService.paymentRequestWithCardForm()
-                                .then((paymentMethod) {
-                              showCupertinoModalPopup(
-                                context: context,
-                                builder: (context) => RequestConfirm(
-                                  _deliveryDate,
-                                  _endDeliveryDate,
-                                  (state as Authenticated).user.uid,
-                                  _location,
-                                  _locationCoordinates,
-                                  (state as Authenticated).user.name,
-                                  paymentMethod.id,
-                                  _deliveryIns,
-                                ),
-                              );
-                            });
-                          }
-                        }),
-                  ),
-                ),
-              )
             ],
           ),
         ),
