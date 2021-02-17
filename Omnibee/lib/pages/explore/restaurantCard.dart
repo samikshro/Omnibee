@@ -14,7 +14,7 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // check for pokelava cuz it's not done
-    if (document['restaurant_name'] == 'PokeLava') {
+    if (document['restaurant_name'] == "Jack's Grill") {
       return Container();
     }
 
@@ -61,7 +61,7 @@ class RestaurantCard extends StatelessWidget {
                 ),
               ),
               Flexible(
-                flex: 2,
+                flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Column(
