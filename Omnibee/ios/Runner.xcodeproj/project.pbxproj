@@ -52,7 +52,11 @@
 		AE160140E35030E49D659B20 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		B46B6E07FC2FD3FDB57B108A /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		D6F124E42E9071D7F01FFBC5 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+<<<<<<< HEAD
 		E5C49DA325E84F8B00705AF9 /* Omnibee-Config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Omnibee-Config"; path = "../../../Desktop/Omnibee-Config"; sourceTree = "<group>"; };
+=======
+		E5BAA29B25DD7D9F0039C643 /* Omnibee-Config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Omnibee-Config"; path = "../../../Desktop/Omnibee-Config"; sourceTree = "<group>"; };
+>>>>>>> a1b8a1a133955f7d81c75adab6846ab4230968fd
 		EF8A1A2ADAE59848E0BADE7D /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		F31551C4CB45063EA69D09F8 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,7 +111,11 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				E5C49DA325E84F8B00705AF9 /* Omnibee-Config */,
+=======
+				E5BAA29B25DD7D9F0039C643 /* Omnibee-Config */,
+>>>>>>> a1b8a1a133955f7d81c75adab6846ab4230968fd
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
