@@ -13,11 +13,6 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // check for pokelava cuz it's not done
-    if (document['restaurant_name'] == 'PokeLava') {
-      return Container();
-    }
-
     return BlocBuilder<RestaurantBloc, RestaurantState>(
         builder: (context, state) {
       return GestureDetector(
