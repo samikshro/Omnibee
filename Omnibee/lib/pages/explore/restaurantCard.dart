@@ -56,7 +56,7 @@ class RestaurantCard extends StatelessWidget {
                 ),
               ),
               Flexible(
-                flex: 2,
+                flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Column(
