@@ -12,6 +12,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository _userRepository;
   StreamSubscription _userSubscription;
+  StreamSubscription _authSubscription;
 
   AuthBloc({@required UserRepository userRepository})
       : assert(userRepository != null),
@@ -52,11 +53,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print("before call to to getUserId");
       final user = await _userRepository.getUser();
       print("userId is ${user.uid}");
+
+      _authSubscription?.cancel();
+      _authSubscription = _userRepository.authStatus().listen((value) {
+        if (!value) {
+          add(WasUnauthenticated());
+        }
+      });
+
       _userSubscription?.cancel();
       _userSubscription = _userRepository.user(user.uid).listen((updatedUser) {
-        print("Adding wasAuthenticated event");
         add(UserUpdated(updatedUser));
       });
+
       yield Authenticated(user);
     } catch (_) {
       yield Unauthenticated();

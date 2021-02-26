@@ -131,4 +131,15 @@ class FirebaseUserRepository implements UserRepository {
         .snapshots()
         .map((doc) => User.fromEntity(UserEntity.fromSnapshot(doc)));
   }
+
+  @override
+  Stream<bool> authStatus() {
+    return _firebaseAuth.onAuthStateChanged.asyncMap((user) {
+      if (user == null) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }
 }

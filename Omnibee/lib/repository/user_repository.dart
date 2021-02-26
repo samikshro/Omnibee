@@ -24,4 +24,6 @@ abstract class UserRepository {
   Future<bool> isEmailVerified();
 
   Stream<User> user(String uid);
+
+  Stream<bool> authStatus();
 }
