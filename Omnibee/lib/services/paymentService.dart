@@ -115,7 +115,7 @@ class PaymentService {
   // TODO: add payment details to firestore
   static void _printSuccess(BuildContext context) {
     final snackBar = SnackBar(
-      content: Text('Removed order card'),
+      content: Text('Moved order card to previous errands'),
     );
     Scaffold.of(context).showSnackBar(snackBar);
   }
