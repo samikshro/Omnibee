@@ -112,6 +112,8 @@ class _LocationDetailsState extends State<LocationDetails> {
               child: TextFormField(
                 maxLines: 3,
                 autofocus: false,
+                keyboardType: TextInputType.text,
+
                 /* controller: myController,
                 key: widget.formKey, */
                 onSaved: (deliveryIns) {

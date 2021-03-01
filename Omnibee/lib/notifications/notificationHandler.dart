@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'dart:io';
-import 'package:Omnibee/bloc/auth/auth_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationHandler extends StatefulWidget {
   NotificationHandler({this.child, this.uid});
