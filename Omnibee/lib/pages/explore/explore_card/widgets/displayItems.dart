@@ -22,7 +22,7 @@ class DisplayItems extends StatelessWidget {
         );
       });
     }
-    if (sRequest != null) {
+    if (sRequest.length >= 1) {
       print("SRequests in displayItems: $sRequest");
       output.add(
         Padding(
@@ -54,7 +54,7 @@ class DisplayItems extends StatelessWidget {
               title: Text(order.basket[index]['name'],
                   style: TextStyle(fontSize: fontSize)),
               subtitle: Text(
-                '\$${order.basket[index]['price']}',
+                '\$${order.basket[index]['price'].toStringAsFixed(2)}',
                 // style: TextStyle(fontSize: fontSize),
               ),
               trailing: Icon(Icons.arrow_drop_down),

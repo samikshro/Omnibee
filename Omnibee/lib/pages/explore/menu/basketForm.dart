@@ -6,26 +6,32 @@ import 'package:Omnibee/widgets/largeTextSection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Basket extends StatelessWidget {
+  final double itemFontSize = 19;
   Widget _buildTile(
     List<MenuItem> menuItems,
     int index,
     double modifiersWidth,
   ) {
-    return ListTile(
-      onTap: () {},
-      trailing: _getTrailing(menuItems[index]),
-      title: Text(
-        menuItems[index].name,
-        style: TextStyle(
-          fontSize: 19,
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 10,
+      ),
+      child: ListTile(
+        onTap: () {},
+        trailing: _getTrailing(menuItems[index]),
+        title: Text(
+          menuItems[index].name,
+          style: TextStyle(
+            fontSize: itemFontSize,
+          ),
         ),
+        subtitle: Wrap(
+          direction: Axis.vertical,
+          children: _getModifiersListAndSpecialRequest(
+              menuItems[index], modifiersWidth),
+        ),
+        isThreeLine: true,
       ),
-      subtitle: Wrap(
-        direction: Axis.vertical,
-        children: _getModifiersListAndSpecialRequest(
-            menuItems[index], modifiersWidth),
-      ),
-      isThreeLine: true,
     );
   }
 
@@ -66,7 +72,7 @@ class Basket extends StatelessWidget {
       modifiersAndSpecialRequest.add(Text('\n${modifier.name}'));
     });
 
-    if (item.specialRequests != "") {
+    if (item.specialRequests.length >= 1) {
       modifiersAndSpecialRequest.add(SizedBox(
         width: width,
         child: Text(
@@ -143,16 +149,26 @@ class Basket extends StatelessWidget {
                       );
                     },
                   ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
                   ListTile(
-                    title: Text("Delivery Fee"),
+                    title: Text(
+                      "Delivery Fee",
+                      style: TextStyle(fontSize: itemFontSize),
+                    ),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[0]),
                   ),
                   ListTile(
-                    title: Text("Tax"),
+                    title: Text(
+                      "Tax",
+                      style: TextStyle(fontSize: itemFontSize),
+                    ),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[1]),
                   ),
                   ListTile(
-                    title: Text("Total"),
+                    title: Text(
+                      "Total",
+                      style: TextStyle(fontSize: itemFontSize),
+                    ),
                     trailing: Text(_getDeliveryFeeAndTax(state.menuItems)[2]),
                   ),
                 ],
