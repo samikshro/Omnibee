@@ -68,7 +68,7 @@ class _MenuState extends State<Menu> {
                     slivers: <Widget>[
                       SliverPersistentHeader(
                         pinned: false,
-                        floating: true,
+                        floating: false,
                         delegate: MenuPageHeader(
                           restaurant: state.restaurant,
                           minExtent: 150.0,
