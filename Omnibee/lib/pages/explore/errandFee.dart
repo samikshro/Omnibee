@@ -57,7 +57,7 @@ class ErrandFee extends StatelessWidget {
                           Container(
                             width: 170,
                             padding: EdgeInsets.all(8),
-                            child: Text("\$0.50 per 3-min walk*"),
+                            child: Text("\$1.00 flat fee"),
                           ),
                         ],
                       ),
@@ -92,14 +92,7 @@ class ErrandFee extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    '*A 3-min walk equates to 0.15 miles',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
+                  padding: EdgeInsets.only(bottom: 15),
                 ),
               ],
             ),
