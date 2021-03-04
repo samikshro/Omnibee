@@ -61,7 +61,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
       order,
     ];
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      print("Building accept order again");
       return Scaffold(
           appBar: AppBar(
             title: Text("${order.restaurantName} Errand"),

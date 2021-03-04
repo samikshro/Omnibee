@@ -52,6 +52,8 @@ class _NotificationHandlerState extends State<NotificationHandler> {
                 content: ListTile(
                   title: Text(message['notification']['title']),
                   subtitle: Text(message['notification']['body']),
+                  /* title: Text(message['aps']['alert']['title']),
+                  subtitle: Text(message['aps']['alert']['body']), */
                 ),
                 actions: <Widget>[
                   FlatButton(

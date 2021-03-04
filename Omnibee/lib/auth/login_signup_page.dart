@@ -7,8 +7,10 @@ import 'package:Omnibee/auth/widgets/phoneInput.dart';
 import 'package:Omnibee/auth/widgets/primaryButton.dart';
 import 'package:Omnibee/auth/widgets/secondaryButton.dart';
 import 'package:Omnibee/bloc/auth/auth_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginSignupPage extends StatefulWidget {
   //LoginSignupPage({this.auth});
@@ -69,19 +71,78 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   void validateAndSubmit() async {
-    setState(() {
-      _isLoading = true;
-    });
     if (validateAndSave()) {
       if (_isLoginForm) {
+        setState(() {
+          _isLoading = true;
+        });
         BlocProvider.of<AuthBloc>(context).add(SignedIn(_email, _password));
       } else {
-        BlocProvider.of<AuthBloc>(context)
-            .add(SignedUp(_name, _email, _password, _phone));
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            bool _hasAcceptedTermsAndCond = false;
+
+            return StatefulBuilder(
+              builder: (BuildContext context, setState) => Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+                        child: GestureDetector(
+                          onTap: () => launch('https://omnibee.io/terms'),
+                          child: Text(
+                            'Please view the terms and conditions here.',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.lightBlue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: CheckboxListTile(
+                            title: Text(
+                              'I agree to the terms and conditions.',
+                            ),
+                            value: _hasAcceptedTermsAndCond,
+                            onChanged: (value) {
+                              setState(() {
+                                _hasAcceptedTermsAndCond = value;
+                              });
+                            }),
+                      ),
+                      Center(
+                        child: CupertinoButton(
+                          color: Theme.of(context).primaryColor,
+                          child: Text("Continue"),
+                          onPressed: !_hasAcceptedTermsAndCond
+                              ? null
+                              : () {
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                    SignedUp(
+                                      _name,
+                                      _email,
+                                      _password,
+                                      _phone,
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       }
-      /* setState(() {
-          _isLoading = false;
-        }); */
     }
   }
 

@@ -62,6 +62,7 @@ class _BigCardState extends State<BigCard> {
       return Container();
     }
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      print("Rebuilt");
       return GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, '/accept_order',
@@ -122,7 +123,6 @@ class _BigCardState extends State<BigCard> {
                             builder: (context) {
                               return Column(
                                 children: [
-                                  //TODO: try circular progress indicator
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         15, 10, 15, 10),
@@ -144,6 +144,7 @@ class _BigCardState extends State<BigCard> {
                                       onPressed: () {
                                         if (user != null) {
                                           setState(() {
+                                            print("start loading");
                                             _loading = 1;
                                           });
 
@@ -152,7 +153,9 @@ class _BigCardState extends State<BigCard> {
                                               : _updateStripeAccount(
                                                   user.stripeAccountId);
                                         }
+
                                         setState(() {
+                                          print("done loading");
                                           _loading = 0;
                                         });
                                       }),
