@@ -97,47 +97,65 @@ class _RequestState extends State<Request> {
                         ]);
                       });
                 } else {
-                  showModalBottomSheet(
+                  PaymentService.paymentRequestWithCardForm()
+                      .then((paymentMethod) {
+                    showCupertinoModalPopup(
                       context: context,
-                      builder: (context) {
-                        return Column(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 30),
-                            child: Center(
-                              child: Text(
-                                  'NOTE: Your money is only sent if you get your food!',
-                                  style: TextStyle(fontSize: 18)),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 10),
-                          ),
-                          CupertinoButton(
-                              color: Theme.of(context).primaryColor,
-                              child: Text("Okay"),
-                              onPressed: () {
-                                PaymentService.paymentRequestWithCardForm()
-                                    .then((paymentMethod) {
-                                  showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (context) => RequestConfirm(
-                                      _deliveryDate,
-                                      _endDeliveryDate,
-                                      (state as Authenticated).user.uid,
-                                      _location,
-                                      _locationCoordinates,
-                                      (state as Authenticated).user.name,
-                                      paymentMethod.id,
-                                      _deliveryIns,
-                                    ),
-                                  );
-                                });
-                                // Navigator.pop(context);
-                              }),
-                        ]);
-                      });
+                      builder: (context) => RequestConfirm(
+                        _deliveryDate,
+                        _endDeliveryDate,
+                        (state as Authenticated).user.uid,
+                        _location,
+                        _locationCoordinates,
+                        (state as Authenticated).user.name,
+                        paymentMethod.id,
+                        _deliveryIns,
+                      ),
+                    );
+                  });
+                  // Navigator.pop(context);
                 }
+                //   showModalBottomSheet(
+                //       context: context,
+                //       builder: (context) {
+                //         return Column(children: [
+                //           Padding(
+                //             padding: EdgeInsets.symmetric(
+                //                 horizontal: 20, vertical: 30),
+                //             child: Center(
+                //               child: Text(
+                //                   'NOTE: Your money is only sent if you get your food!',
+                //                   style: TextStyle(fontSize: 18)),
+                //             ),
+                //           ),
+                //           Padding(
+                //             padding: EdgeInsets.only(top: 10),
+                //           ),
+                //           CupertinoButton(
+                //               color: Theme.of(context).primaryColor,
+                //               child: Text("Okay"),
+                //               onPressed: () {
+                //                 PaymentService.paymentRequestWithCardForm()
+                //                     .then((paymentMethod) {
+                //                   showCupertinoModalPopup(
+                //                     context: context,
+                //                     builder: (context) => RequestConfirm(
+                //                       _deliveryDate,
+                //                       _endDeliveryDate,
+                //                       (state as Authenticated).user.uid,
+                //                       _location,
+                //                       _locationCoordinates,
+                //                       (state as Authenticated).user.name,
+                //                       paymentMethod.id,
+                //                       _deliveryIns,
+                //                     ),
+                //                   );
+                //                 });
+                //                 // Navigator.pop(context);
+                //               }),
+                //         ]);
+                //       });
+                // }
               }),
         ),
         appBar: AppBar(

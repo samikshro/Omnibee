@@ -54,6 +54,11 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(15, 0, 10, 10),
+            child: Text('NOTE: Your money is only sent if you get your food!',
+                style: TextStyle(fontSize: 18)),
+          ),
           Row(
             children: [
               SizedBox(
