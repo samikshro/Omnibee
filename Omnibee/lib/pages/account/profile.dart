@@ -45,7 +45,6 @@ class _ProfileState extends State<Profile> {
           ),
           body: ListView(
             shrinkWrap: true,
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(10),

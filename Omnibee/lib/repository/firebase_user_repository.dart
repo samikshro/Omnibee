@@ -126,6 +126,7 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Stream<User> user(String uid) {
+    print("BUILDING USER STREAM");
     return userCollection
         .document(uid)
         .snapshots()
