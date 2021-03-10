@@ -78,7 +78,7 @@ class OrderCardButtonBar extends StatelessWidget {
     }
   }
 
-  void _markOrderComplete(Order order, User user, BuildContext context) {
+  void _markOrderComplete(Order order, BuildContext context) {
     final snackBar = SnackBar(
       content: Text('Confirming delivery, please wait one moment....'),
     );
@@ -90,8 +90,14 @@ class OrderCardButtonBar extends StatelessWidget {
     print(
         "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
 
-    PaymentService.paymentTransfer(order, user, context, pCharge,
-        applicationFee, order.paymentMethodId, order.stripeAccountId);
+    PaymentService.paymentTransfer(
+      order,
+      context,
+      pCharge,
+      applicationFee,
+      order.paymentMethodId,
+      order.stripeAccountId,
+    );
   }
 
   List<Widget> _getButtons(BuildContext context, User user) {
@@ -120,7 +126,7 @@ class OrderCardButtonBar extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () {
-              _markOrderComplete(order, user, context);
+              _markOrderComplete(order, context);
             },
           ));
     }

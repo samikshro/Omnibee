@@ -34,7 +34,6 @@ class _RootPageState extends State<RootPage> {
       } else if (state is Authenticated) {
         print(state.user.name + " has logged in.");
         BlocProvider.of<AuthBloc>(context).add(AppStarted());
-
         return new LandingPage();
       } else {
         print("About to build waiting screen (in else)");

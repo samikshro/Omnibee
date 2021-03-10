@@ -141,25 +141,27 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                       .scaffoldBackgroundColor)),
                           onPressed: () {
                             _formKey.currentState.save();
-
                             MenuItem item = state3.menuItem;
-                            print("this is now special request: " + sRequests);
                             item.specialRequests = sRequests;
+
                             BlocProvider.of<BasketBloc>(context2)
                                 .add(MenuItemAdded(item));
                             BlocProvider.of<MenuOrderFormBloc>(context2)
                                 .add(ModifierReset());
+
                             setState(() {
                               selectedItems = [];
                             });
+
                             Navigator.pop(context);
                           },
                         ),
                       ),
                       appBar: AppBar(
-                          title: Text(
-                        state3.menuItem.name,
-                      )),
+                        title: Text(
+                          state3.menuItem.name,
+                        ),
+                      ),
                       body: SafeArea(
                         child: CustomScrollView(
                           slivers: <Widget>[
@@ -168,7 +170,6 @@ class _MenuOrderFormState extends State<MenuOrderForm> {
                                 padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
                                 child: Text(
                                   state3.menuItem.description,
-                                  //args.desc,
                                   style: TextStyle(
                                       fontSize: 20.0,
                                       fontStyle: FontStyle.italic),

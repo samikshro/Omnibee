@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Omnibee/bloc/blocs.dart';
+import 'package:Omnibee/entities/entities.dart';
 import 'package:Omnibee/models/models.dart';
 import 'package:Omnibee/models/order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -147,7 +148,6 @@ class PaymentService {
 
   static void _confirmPayment(
     Order order,
-    User user,
     BuildContext context,
     String sec,
     String paymentMethodID,
@@ -165,9 +165,17 @@ class PaymentService {
       _paymentCallback(order, val.status);
     }).catchError((error, stackTrace) {
       print("error!");
-    }).whenComplete(() {
+    }).whenComplete(() async {
+      User runner = await Firestore.instance
+          .collection('users')
+          .document(order.runnerUid)
+          .get()
+          .then((DocumentSnapshot document) {
+        return User.fromEntity(UserEntity.fromSnapshot(document));
+      });
+
       BlocProvider.of<AuthBloc>(context).add(UserEarningsUpdated(
-        user: user,
+        user: runner,
         newEarnings: order.minEarnings,
       ));
 
@@ -177,7 +185,6 @@ class PaymentService {
 
   static void paymentTransfer(
       Order order,
-      User user,
       BuildContext context,
       double dollars,
       double applicationFee,
@@ -194,7 +201,6 @@ class PaymentService {
     }).then((response) async {
       _confirmPayment(
         order,
-        user,
         context,
         response.data["client_secret"],
         paymentMethodID,

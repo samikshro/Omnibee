@@ -4,10 +4,17 @@ import 'package:Omnibee/models/models.dart';
 abstract class UserRepository {
   Future<bool> isAuthenticated();
 
-  Future<User> signIn(String email, String password);
+  Future<User> signIn(
+    String email,
+    String password,
+  );
 
   Future<List<String>> signUp(
-      String name, String email, String password, String phone);
+    String name,
+    String email,
+    String password,
+    String phone,
+  );
 
   Future<void> signOut();
 
