@@ -10,12 +10,14 @@ class DeliveryInfo extends StatelessWidget {
   final double fontSize;
   final double boldFontSize;
   final int isDeliveryPage;
+  final bool isRunner;
 
   DeliveryInfo(
     this.order,
     this.fontSize,
     this.boldFontSize,
     this.isDeliveryPage,
+    this.isRunner,
   );
 
   String _getDeliveryLocation(Order order) {
@@ -77,6 +79,30 @@ class DeliveryInfo extends StatelessWidget {
         ],
       );
     }
+  }
+
+  Widget _getRunnerName(Order order) {
+    if (order.isAccepted) {
+      return Container(
+          child: Text(
+        order.runnerName,
+        style: TextStyle(fontSize: fontSize),
+      ));
+    } else {
+      return Container(
+          child: Text(
+        'Order not been accepted by anyone.',
+        style: TextStyle(fontSize: fontSize),
+      ));
+    }
+  }
+
+  Widget _getRequesterName(Order order) {
+    return Container(
+        child: Text(
+      order.name,
+      style: TextStyle(fontSize: fontSize),
+    ));
   }
 
   void _launchMap(BuildContext context, lat, lng) async {
@@ -146,11 +172,21 @@ class DeliveryInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String location = _getDeliveryLocation(order);
+    String nameTitle = isRunner ? "Requester Name" : "Runner Name";
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Text(
+            nameTitle,
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child:
+                  isRunner ? _getRequesterName(order) : _getRunnerName(order)),
           Text(
             'Drop-off Location:',
             style:
