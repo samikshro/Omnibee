@@ -154,18 +154,13 @@ class PaymentService {
   ) async {
     StripePayment.confirmPaymentIntent(
       PaymentIntent(clientSecret: sec, paymentMethodId: paymentMethodID),
-    ).then((val) {
+    ).then((val) async {
       final snackBar = SnackBar(
         content: Text('Payment Successful'),
       );
       Scaffold.of(context).showSnackBar(snackBar);
 
       print("status: " + val.status);
-
-      _paymentCallback(order, val.status);
-    }).catchError((error, stackTrace) {
-      print("error!");
-    }).whenComplete(() async {
       User runner = await Firestore.instance
           .collection('users')
           .document(order.runnerUid)
@@ -174,11 +169,16 @@ class PaymentService {
         return User.fromEntity(UserEntity.fromSnapshot(document));
       });
 
+      print("Runner name is ${runner.name}");
+
       BlocProvider.of<AuthBloc>(context).add(UserEarningsUpdated(
         user: runner,
         newEarnings: order.minEarnings,
       ));
-
+      _paymentCallback(order, val.status);
+    }).catchError((error, stackTrace) {
+      print("error!");
+    }).whenComplete(() async {
       _printSuccess(context);
     });
   }
