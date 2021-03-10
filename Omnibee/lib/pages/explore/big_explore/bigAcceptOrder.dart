@@ -70,30 +70,37 @@ class _AcceptOrderState extends State<AcceptOrder> {
             width: double.infinity,
             height: 60,
             child: RaisedButton(
-              child: Text('Accept Errand',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Theme.of(context).scaffoldBackgroundColor)),
-              onPressed: () {
-                Firestore.instance
-                    .collection('users')
-                    .document((state as Authenticated).user.uid)
-                    .get()
-                    .then((DocumentSnapshot document) {
-                  User user =
-                      User.fromEntity(UserEntity.fromSnapshot(document));
-                  _markOrdersAccepted(orderList, user);
-                });
-                final snackBar = SnackBar(
-                  content: Text('Accepted errand!'),
-                );
-                _scaffoldKey.currentState.showSnackBar(snackBar);
-                Timer(Duration(seconds: 2), () {
-                  Navigator.popUntil(
-                      context, ModalRoute.withName(Navigator.defaultRouteName));
-                });
-              },
-            ),
+                child: Text('Accept Errand',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).scaffoldBackgroundColor)),
+                onPressed: () {
+                  Firestore.instance
+                      .collection('users')
+                      .document((state as Authenticated).user.uid)
+                      .get()
+                      .then((DocumentSnapshot document) {
+                    User user =
+                        User.fromEntity(UserEntity.fromSnapshot(document));
+                    //TODO: TO DEBUG, COMMENT OUT IF AND ELSE STATEMENT
+                    if (order.uid != user.uid) {
+                      _markOrdersAccepted(orderList, user);
+                      final snackBar = SnackBar(
+                        content: Text('Accepted errand!'),
+                      );
+                      _scaffoldKey.currentState.showSnackBar(snackBar);
+                      Timer(Duration(seconds: 2), () {
+                        Navigator.popUntil(context,
+                            ModalRoute.withName(Navigator.defaultRouteName));
+                      });
+                    } else {
+                      final snackBar = SnackBar(
+                        content: Text('Cannot accept your own errand!'),
+                      );
+                      _scaffoldKey.currentState.showSnackBar(snackBar);
+                    }
+                  });
+                }),
           ),
           body: SingleChildScrollView(
               child: Column(
