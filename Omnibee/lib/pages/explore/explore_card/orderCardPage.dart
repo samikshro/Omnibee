@@ -22,7 +22,8 @@ class _OrderCardPageState extends State<OrderCardPage> {
   double boldFontSize = 22;
 
   Widget _getOrderInformation(Order order) {
-    double subtotal = order.getSubtotal();
+    double subtotal =
+        order.getSubtotal(); //TODO ss: fix to get 2 decimal places
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Column(
@@ -118,7 +119,7 @@ class _OrderCardPageState extends State<OrderCardPage> {
             if (!order.isExpired() &&
                 order.isAccepted) //TODO: test these conditions
               CallPhoneNumber(order, fontSize, false),
-            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage),
+            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage, false),
             DeliveryInstructions(order, fontSize, boldFontSize),
             MediumTextSection("Order Information"),
             _getOrderInformation(order),

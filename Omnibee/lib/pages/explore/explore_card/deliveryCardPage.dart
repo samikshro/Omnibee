@@ -107,7 +107,7 @@ class DeliveryCardPage extends StatelessWidget {
           children: <Widget>[
             MediumTextSection('Delivery Information'),
             if (!order.isReceived) CallPhoneNumber(order, fontSize, true),
-            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage),
+            DeliveryInfo(order, fontSize, boldFontSize, isDeliveryPage, true),
             MediumTextSection('Order Information'),
             _getOrderInformation(order),
             Padding(
