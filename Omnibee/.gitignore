@@ -9,6 +9,7 @@
 .history
 .svn/
 project.pbxproj
+ios/Runner/Assets.xcassets/
 
 # IntelliJ related
 *.iml
