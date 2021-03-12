@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+project.pbxproj
+Runner/Assets.xcassets
 
 # IntelliJ related
 *.iml
