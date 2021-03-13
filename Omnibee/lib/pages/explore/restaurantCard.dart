@@ -6,10 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Omnibee/factory/factory.dart';
 
 class RestaurantCard extends StatelessWidget {
-  // final MenuModel restaurant;
   final DocumentSnapshot document;
 
   RestaurantCard(BuildContext context, {this.document}); //this.restaurant);
+
+  String _getTimeRange(DocumentSnapshot doc) {
+    int index = DateTime.now().weekday - 1;
+    String startTime = document["new_hours"][index]["start_time"];
+    String endTime = document["new_hours"][index]["end_time"];
+    return "Open from $startTime - $endTime";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +30,11 @@ class RestaurantCard extends StatelessWidget {
           // parse cuisine types
           List<String> cuisineTypes = List<String>.from(document['type_food']);
 
+          int index = DateTime.now().weekday - 1;
           // parse hours
           Map<String, String> hours = {
-            'start_time': document['hours']['start_time'],
-            'end_time': document['hours']['end_time'],
+            'start_time': document['new_hours'][index]['start_time'],
+            'end_time': document['new_hours'][index]['end_time'],
           };
 
           Restaurant selectedRestaurant = Restaurant(
@@ -47,7 +54,6 @@ class RestaurantCard extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Row(
             children: <Widget>[
-              //restaurant.smallPhoto,
               Flexible(
                 flex: 1,
                 child: Image(
@@ -68,7 +74,7 @@ class RestaurantCard extends StatelessWidget {
                       Text(document['type_food'].join(', ')),
                       Padding(padding: EdgeInsets.only(bottom: 7)),
                       Text(
-                        "Open until " + document['hours']['end_time'],
+                        _getTimeRange(document),
                       ),
                     ],
                   ),
