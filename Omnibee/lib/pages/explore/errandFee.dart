@@ -84,7 +84,7 @@ class ErrandFee extends StatelessWidget {
                           Container(
                             width: 170,
                             padding: EdgeInsets.all(8),
-                            child: Text("15% price of food"),
+                            child: Text("17.5% price of food"),
                           ),
                         ],
                       ),
