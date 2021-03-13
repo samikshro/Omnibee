@@ -51,6 +51,16 @@ class RequestConfirm extends StatelessWidget {
     return lst;
   }
 
+  // "$startTime to $endTime ${expirationTime.timeZoneName} on ${expirationTime.month}/${expirationTime.day}/${expirationTime.year}"
+
+  String _getDeliveryWindow(DateTime date, DateTime endDate) {
+    final formatter = DateFormat.jm();
+    final startTime = formatter.format(date);
+    final endTime = formatter.format(endDate);
+
+    return "$startTime to $endTime ${endDate.timeZoneName} on ${endDate.month}/${endDate.day}/${endDate.year}";
+  }
+
   DateTime _getExpirationDate(DateTime date, DateTime endDate) {
     var difference = endDate.difference(date);
     final expirationInterval = Duration(minutes: difference.inMinutes - 20);
@@ -71,9 +81,7 @@ class RequestConfirm extends StatelessWidget {
                           style: TextStyle(fontSize: 22.0)),
                       message: Text(
                           "Delivery Window: " +
-                              _getTimeInfo(date, endDate)[0] +
-                              " - " +
-                              _getTimeInfo(date, endDate)[1] +
+                              _getDeliveryWindow(date, endDate) +
                               ". Your order will EXPIRE at " +
                               _getTimeInfo(date, endDate)[2],
                           style: TextStyle(fontSize: 20.0)),
