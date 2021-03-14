@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+ios/Runner.xcodeproj/project.pbxproj
+ios/Runner/Assets.xcassets/
 
 # IntelliJ related
 *.iml
