@@ -77,9 +77,11 @@ class _MenuState extends State<Menu> {
                       ),
                       SliverList(
                         delegate: SliverChildListDelegate([
-                          ExpansionTile(
-                              title: Text('Open until ' +
-                                  state.restaurant.hours['end_time'])),
+                          ListTile(
+                            title: Text(
+                              "Open from ${state.restaurant.hours['start_time']} - ${state.restaurant.hours['end_time']}",
+                            ),
+                          ),
                           ListView.separated(
                               physics: NeverScrollableScrollPhysics(),
                               separatorBuilder: (context, index) {

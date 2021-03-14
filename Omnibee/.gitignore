@@ -8,7 +8,7 @@
 .buildlog/
 .history
 .svn/
-project.pbxproj
+ios/Runner.xcodeproj/project.pbxproj
 ios/Runner/Assets.xcassets/
 
 # IntelliJ related
