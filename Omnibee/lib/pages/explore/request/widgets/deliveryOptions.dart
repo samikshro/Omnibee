@@ -115,7 +115,11 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           ? TimeOfDay(hour: elevenAM.hour, minute: elevenAM.minute)
           : TimeOfDay(
               hour: currentRoundedTime.hour, minute: currentRoundedTime.minute);
-      return [startTime, TimeOfDay(hour: twoPM.hour, minute: twoPM.minute)];
+      return [
+        startTime,
+        TimeOfDay(hour: twoPM.hour, minute: twoPM.minute),
+        true
+      ];
     } else if (currentTimeToday.isAfter(onePM) &&
         currentTimeToday.isBefore(eightPM)) {
       // dinner period
@@ -123,7 +127,11 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
           ? TimeOfDay(hour: sixPM.hour, minute: sixPM.minute)
           : TimeOfDay(
               hour: currentRoundedTime.hour, minute: currentRoundedTime.minute);
-      return [startTime, TimeOfDay(hour: ninePM.hour, minute: ninePM.minute)];
+      return [
+        startTime,
+        TimeOfDay(hour: ninePM.hour, minute: ninePM.minute),
+        true
+      ];
     } else {
       DateTime tomorrowElevenAM = elevenAM.add(new Duration(days: 1));
       TimeOfDay startTime = TimeOfDay(
@@ -131,7 +139,7 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
       DateTime tomorrowTwoPM = twoPM.add(new Duration(days: 1));
       TimeOfDay endTime =
           TimeOfDay(hour: tomorrowTwoPM.hour, minute: tomorrowTwoPM.minute);
-      return [startTime, endTime];
+      return [startTime, endTime, false];
     }
   }
 
@@ -199,7 +207,12 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             timeBlock: 30,
             onRangeCompleted: (range) {
               try {
-                final now = new DateTime.now();
+                //TODO: do next day boolean
+                bool sameDay = timeRange[2];
+
+                final now = sameDay
+                    ? new DateTime.now()
+                    : new DateTime.now().add(Duration(days: 1));
                 final endtime = DateTime(now.year, now.month, now.day,
                     range.end.hour, range.end.minute);
                 setGlobalDate(DateTime(now.year, now.month, now.day,
