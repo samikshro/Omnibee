@@ -143,21 +143,11 @@ class _BigCardState extends State<BigCard> {
                                       child: _setUpButtonChild(),
                                       onPressed: () {
                                         if (user != null) {
-                                          setState(() {
-                                            print("start loading");
-                                            _loading = 1;
-                                          });
-
                                           user.stripeAccountId == ""
                                               ? _setupStripeAccount(user)
                                               : _updateStripeAccount(
                                                   user.stripeAccountId);
                                         }
-
-                                        setState(() {
-                                          print("done loading");
-                                          _loading = 0;
-                                        });
                                       }),
                                 ],
                               );
