@@ -35,11 +35,11 @@ class ProfileContact extends StatelessWidget {
                       style: new TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     new TextSpan(
-                      text: 'here.',
+                      text: 'here. ',
                       style: new TextStyle(color: Colors.blue, fontSize: 18),
                       recognizer: new TapGestureRecognizer()
                         ..onTap = () {
-                          launch('https://omnibee.io/faq');
+                          launch('https://omnibee.io/faqs');
                         },
                     ),
                     new TextSpan(
@@ -111,7 +111,7 @@ class ProfileContact extends StatelessWidget {
                   _showSetupInfo(context, user);
                 } else {
                   final snackBar = SnackBar(
-                    content: Text('Stripe setup already complete!'),
+                    content: Text('Runner setup already complete!'),
                   );
                   Scaffold.of(context).showSnackBar(snackBar);
                 }
@@ -123,7 +123,7 @@ class ProfileContact extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(
-                    "Set up payments",
+                    "Become a Runner",
                     style: TextStyle(fontSize: 18),
                   ),
                   trailing: Icon(Icons.arrow_right),

@@ -5,7 +5,6 @@ import 'package:Omnibee/entities/entities.dart';
 import 'package:Omnibee/models/models.dart';
 import 'package:Omnibee/pages/explore/big_explore/bigAcceptOrder_widgets/bigAcceptOrderInfo.dart';
 import 'package:Omnibee/pages/explore/big_explore/bigAcceptOrder_widgets/bigDisplaySmallUsers.dart';
-import 'package:Omnibee/pages/explore/big_explore/bigAcceptOrder_widgets/expandedDecouple.dart';
 import 'package:Omnibee/pages/explore/big_explore/bigAcceptOrder_widgets/minEarnings.dart';
 import 'package:Omnibee/services/paymentService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,29 +24,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
   var selectedList = [
     true,
   ];
-
-  void _changeCheckBox(int index, bool modifiedVal) {
-    setState(() {
-      selectedList[index] = modifiedVal;
-    });
-  }
-
-  void _onExpand(bool isExpanded) {
-    setState(() {
-      isExpanded = isExpanded;
-    });
-  }
-
-  String _getNumRequests(List<Order> orderList) {
-    int numRequests = 0;
-    for (int i = 0; i < orderList.length; i++) {
-      if (selectedList[i] == true) {
-        numRequests += orderList[i].basket.length;
-      }
-    }
-
-    return "${numRequests.toString()} items";
-  }
 
   Widget _setUpButtonChild() {
     if (_loading == 0) {
@@ -179,28 +155,6 @@ class _AcceptOrderState extends State<AcceptOrder> {
               child: Column(
             children: <Widget>[
               Padding(padding: const EdgeInsets.only(top: 10)),
-              /* Stack(
-                children: <Widget>[
-                  CustomMap(orderList, selectedList),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: BackButton(
-                      color: Colors.blue,
-                    ),
-                  ),
-                ],
-              ), */
-              /* ExpansionTile(
-                title: Text(_getNumRequests(orderList)),
-                onExpansionChanged: _onExpand,
-                trailing: Text(
-                  'DECOUPLE',
-                  style: TextStyle(color: Colors.cyan),
-                ),
-                children: <Widget>[
-                  ExpandedDecouple(orderList, selectedList, _changeCheckBox),
-                ],
-              ), */
               DisplaySmallUsers(isExpanded, orderList, selectedList),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
