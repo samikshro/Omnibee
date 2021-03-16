@@ -32,30 +32,6 @@ class _BigCardState extends State<BigCard> {
     return children;
   }
 
-  Widget _setUpButtonChild() {
-    if (_loading == 0) {
-      return Text("Set Up Payments");
-    } else if (_loading == 1) {
-      return CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-      );
-    } else {
-      return Icon(Icons.check, color: Colors.white);
-    }
-  }
-
-  void _setupStripeAccount(User user) {
-    PaymentService.createAccount(user.email);
-  }
-
-  void _updateStripeAccount(String accountId) {
-    bool updateEnabled = false;
-    if (updateEnabled)
-      PaymentService.updateAccountLink(accountId);
-    else
-      PaymentService.createAccountLink(accountId);
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.order.isAccepted == true) {
@@ -107,64 +83,8 @@ class _BigCardState extends State<BigCard> {
                       style: TextStyle(fontSize: 18),
                     ),
                     onPressed: () {
-                      Firestore.instance
-                          .collection('users')
-                          .document((state as Authenticated).user.uid)
-                          .get()
-                          .then((DocumentSnapshot document) {
-                        User user =
-                            User.fromEntity(UserEntity.fromSnapshot(document));
-                        if (user.stripeSetupComplete) {
-                          Navigator.pushNamed(context, '/accept_order',
-                              arguments: widget.order);
-                        } else {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        15, 10, 15, 10),
-                                    child: Text(
-                                      'Setup a payment account to get paid after your delivery!',
-                                      style: TextStyle(fontSize: 19),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        15, 10, 15, 10),
-                                    child: Text(
-                                        'Please wait up to 10 seconds for the form to load.',
-                                        style: TextStyle(fontSize: 19)),
-                                  ),
-                                  CupertinoButton(
-                                      color: Theme.of(context).primaryColor,
-                                      child: _setUpButtonChild(),
-                                      onPressed: () {
-                                        if (user != null) {
-                                          setState(() {
-                                            print("start loading");
-                                            _loading = 1;
-                                          });
-
-                                          user.stripeAccountId == ""
-                                              ? _setupStripeAccount(user)
-                                              : _updateStripeAccount(
-                                                  user.stripeAccountId);
-                                        }
-
-                                        setState(() {
-                                          print("done loading");
-                                          _loading = 0;
-                                        });
-                                      }),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      });
+                      Navigator.pushNamed(context, '/accept_order',
+                          arguments: widget.order);
                     },
                   ),
                 ],
