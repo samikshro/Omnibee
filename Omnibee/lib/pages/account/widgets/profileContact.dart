@@ -30,7 +30,7 @@ class ProfileContact extends StatelessWidget {
                       style: new TextStyle(color: Colors.blue),
                       recognizer: new TapGestureRecognizer()
                         ..onTap = () {
-                          launch('omnibee.io/faq');
+                          launch('https://omnibee.io/faq');
                         },
                     ),
                   ])
