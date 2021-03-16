@@ -33,11 +33,17 @@ class TinyIconAndName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Image.asset('assets/beeperson.png'),
+        Text(
+          "Delivering to",
+          style: TextStyle(fontSize: 19),
+        ),
         Padding(
           padding: EdgeInsets.only(right: 5),
         ),
-        Text(order.name),
+        Text(
+          order.name,
+          style: TextStyle(fontSize: 19),
+        ),
         Padding(
           padding: EdgeInsets.only(right: 10),
         ),
