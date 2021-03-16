@@ -45,7 +45,106 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
         hour: currentTimeToday.hour, minute: currentTimeToday.minute);
   }
 
-  final TimeOfDay startTime = _roundTimeOfDay(TimeOfDay.now().add(minutes: 10));
+  static List _chooseTimeRange(TimeOfDay currentTime) {
+    final today = DateTime.now();
+    DateTime currentTimeToday = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      currentTime.hour,
+      currentTime.minute,
+    );
+
+    DateTime elevenAM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      11,
+      0,
+    );
+
+    DateTime onePM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      13,
+      0,
+    );
+
+    DateTime twoPM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      14,
+      0,
+    );
+
+    DateTime sixPM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      18,
+      0,
+    );
+
+    DateTime eightPM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      20,
+      0,
+    );
+
+    DateTime ninePM = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      21,
+      0,
+    );
+
+    final int currentMs = currentTimeToday.millisecondsSinceEpoch;
+    final int tenMinInMs = Duration(minutes: 10).inMilliseconds;
+
+    DateTime currentRoundedTime = DateTime.fromMillisecondsSinceEpoch(
+        currentMs + (tenMinInMs - (currentMs % tenMinInMs)));
+
+    if (currentTimeToday.isBefore(onePM)) {
+      // lunch period
+      TimeOfDay startTime = (currentRoundedTime.isBefore(elevenAM))
+          ? TimeOfDay(hour: elevenAM.hour, minute: elevenAM.minute)
+          : TimeOfDay(
+              hour: currentRoundedTime.hour, minute: currentRoundedTime.minute);
+      return [
+        startTime,
+        TimeOfDay(hour: twoPM.hour, minute: twoPM.minute),
+        true
+      ];
+    } else if (currentTimeToday.isAfter(onePM) &&
+        currentTimeToday.isBefore(eightPM)) {
+      // dinner period
+      TimeOfDay startTime = (currentRoundedTime.isBefore(sixPM))
+          ? TimeOfDay(hour: sixPM.hour, minute: sixPM.minute)
+          : TimeOfDay(
+              hour: currentRoundedTime.hour, minute: currentRoundedTime.minute);
+      return [
+        startTime,
+        TimeOfDay(hour: ninePM.hour, minute: ninePM.minute),
+        true
+      ];
+    } else {
+      DateTime tomorrowElevenAM = elevenAM.add(new Duration(days: 1));
+      TimeOfDay startTime = TimeOfDay(
+          hour: tomorrowElevenAM.hour, minute: tomorrowElevenAM.minute);
+      DateTime tomorrowTwoPM = twoPM.add(new Duration(days: 1));
+      TimeOfDay endTime =
+          TimeOfDay(hour: tomorrowTwoPM.hour, minute: tomorrowTwoPM.minute);
+      return [startTime, endTime, false];
+    }
+  }
+
+  // final TimeOfDay startTime = _roundTimeOfDay(TimeOfDay.now().add(minutes: 10));
+  final List timeRange = _chooseTimeRange(TimeOfDay.now().add(minutes: 10));
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +201,18 @@ class _DeliveryOptionsState extends State<DeliveryOptions> {
             borderColor: Colors.black54,
             backgroundColor: Colors.transparent,
             activeBackgroundColor: Theme.of(context).buttonColor,
-            firstTime: startTime,
-            lastTime: TimeOfDay(hour: 23, minute: 59),
+            firstTime: timeRange[0], //start time
+            lastTime: timeRange[1], //end time
             timeStep: 10,
             timeBlock: 30,
             onRangeCompleted: (range) {
               try {
-                final now = new DateTime.now();
+                //TODO: do next day boolean
+                bool sameDay = timeRange[2];
+
+                final now = sameDay
+                    ? new DateTime.now()
+                    : new DateTime.now().add(Duration(days: 1));
                 final endtime = DateTime(now.year, now.month, now.day,
                     range.end.hour, range.end.minute);
                 setGlobalDate(DateTime(now.year, now.month, now.day,
