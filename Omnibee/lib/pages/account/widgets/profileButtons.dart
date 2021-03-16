@@ -30,25 +30,24 @@ class ProfileContact extends StatelessWidget {
                   child: RichText(
                       text: TextSpan(children: [
                     new TextSpan(
-                      text: 'This is no Link, ',
-                      style: new TextStyle(color: Colors.black),
+                      text:
+                          'You can view a list of frequently asked questions ',
+                      style: new TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     new TextSpan(
-                      text: 'but this is',
-                      style: new TextStyle(color: Colors.blue),
+                      text: 'here.',
+                      style: new TextStyle(color: Colors.blue, fontSize: 18),
                       recognizer: new TapGestureRecognizer()
                         ..onTap = () {
                           launch('https://omnibee.io/faq');
                         },
                     ),
-                  ])
-
-                      //  Text(
-                      //     "You can view a list of frequently asked questions <link to faq>here</link>. If you need more help, please contact us by phone or email. \n\nhello@omnibee.io\n(607)269-8901 (Urgent enquiries)",
-                      //     // 'For errors and feedback, please contact us by phone or email:\n\nhello@omnibee.io\n(607)269-8901',
-                      //     style: TextStyle(fontSize: 18)),
-
-                      )),
+                    new TextSpan(
+                      text:
+                          'If you need more help, please contact us by phone or email. \n\nhello@omnibee.io\n(607)269-8901 (Urgent) ',
+                      style: new TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                  ]))),
               Center(
                 child: CupertinoButton(
                     color: Theme.of(context).primaryColor,
