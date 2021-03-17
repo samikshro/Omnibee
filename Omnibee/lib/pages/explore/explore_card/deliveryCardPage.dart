@@ -5,10 +5,12 @@ import 'package:Omnibee/pages/explore/explore_card/widgets/deliveryInstructions.
 import 'package:Omnibee/pages/explore/explore_card/widgets/deliveryInfo.dart';
 import 'package:Omnibee/pages/explore/explore_card/widgets/displayItems.dart';
 import 'package:Omnibee/services/paymentService.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Omnibee/widgets/mediumTextSection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryCardPage extends StatelessWidget {
   final double fontSize = 19;
@@ -52,6 +54,32 @@ class DeliveryCardPage extends StatelessWidget {
         ),
         _getRequesterName(order),
         DeliveryInstructions(order, fontSize, boldFontSize),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+          child: Text(
+            'Change Order:',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: boldFontSize),
+          ),
+        ),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(30, 5, 0, 10),
+            child: RichText(
+                text: TextSpan(children: [
+              new TextSpan(
+                text:
+                    'If the item(s) the requester asked for are sold out, please call the requester. Ask if they want to cancel or change the order, and then fill out this ',
+                style: new TextStyle(color: Colors.black, fontSize: 13),
+              ),
+              new TextSpan(
+                text: 'form. ',
+                style: new TextStyle(color: Colors.blue, fontSize: 13),
+                recognizer: new TapGestureRecognizer()
+                  ..onTap = () {
+                    launch('https://runnerhelp.omnibee.io');
+                  },
+              ),
+            ]))),
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
           child: Text(

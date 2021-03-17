@@ -1,5 +1,5 @@
 import 'package:Omnibee/bloc/blocs.dart';
-import 'package:Omnibee/pages/account/widgets/profileContact.dart';
+import 'package:Omnibee/pages/account/widgets/profileButtons.dart';
 import 'package:Omnibee/pages/account/widgets/profileHeader.dart';
 import 'package:Omnibee/pages/explore/previousOrders.dart';
 import 'package:Omnibee/widgets/infoButton.dart';
