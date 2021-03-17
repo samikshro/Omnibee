@@ -76,8 +76,7 @@ class DeliveryCardPage extends StatelessWidget {
                 style: new TextStyle(color: Colors.blue, fontSize: 13),
                 recognizer: new TapGestureRecognizer()
                   ..onTap = () {
-                    //TODO: change to actual order change/cancellation link
-                    launch('https://omnibee.io/faq');
+                    launch('https://runnerhelp.omnibee.io');
                   },
               ),
             ]))),

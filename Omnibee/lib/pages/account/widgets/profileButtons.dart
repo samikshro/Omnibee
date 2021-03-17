@@ -134,8 +134,7 @@ class ProfileContact extends StatelessWidget {
             CustomTile(
                 label: 'Feedback',
                 onTap: () {
-                  //TODO: change to feedback form
-                  launch('https://omnibee.io/faq');
+                  launch('https://feedback.omnibee.io/');
                 }),
             CustomTile(label: 'Log out', onTap: signOut),
           ],
