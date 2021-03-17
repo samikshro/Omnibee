@@ -39,7 +39,7 @@ class ProfileContact extends StatelessWidget {
                       style: new TextStyle(color: Colors.blue, fontSize: 18),
                       recognizer: new TapGestureRecognizer()
                         ..onTap = () {
-                          launch('https://omnibee.io/faqs');
+                          launch('https://omnibee.io/faq');
                         },
                     ),
                     new TextSpan(
@@ -131,6 +131,12 @@ class ProfileContact extends StatelessWidget {
               ),
             ),
             CustomTile(label: 'Help', onTap: _showHelpInfo(context)),
+            CustomTile(
+                label: 'Feedback',
+                onTap: () {
+                  //TODO: change to feedback form
+                  launch('https://omnibee.io/faq');
+                }),
             CustomTile(label: 'Log out', onTap: signOut),
           ],
         ),
