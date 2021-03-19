@@ -49,7 +49,12 @@ class _BigCardState extends State<BigCard> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ExpansionTile(
-                leading: Icon(Icons.fastfood),
+                leading: Image(
+                  image: AssetImage((widget.order.smallRestaurantImage != null)
+                      ? widget.order.smallRestaurantImage
+                      : "assets/default_restaurant_small.png"),
+                  fit: BoxFit.cover,
+                ),
                 title: Text(
                   "${widget.order.restaurantName} to ${widget.order.location}",
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -66,10 +71,10 @@ class _BigCardState extends State<BigCard> {
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
                 textAlign: TextAlign.left,
               ),
-              Image(
+              /* Image(
                 image: AssetImage(widget.order.restaurantImage),
                 fit: BoxFit.cover,
-              ),
+              ), */
               ButtonBar(
                 children: <Widget>[
                   FlatButton(

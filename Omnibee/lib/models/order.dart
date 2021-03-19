@@ -23,7 +23,8 @@ class Order {
   final double price;
   final double applicationFee;
   final double minEarnings;
-  final String restaurantImage;
+  final String bigRestaurantImage;
+  final String smallRestaurantImage;
   final String paymentMethodId;
   final String stripeAccountId;
   final String docID;
@@ -50,7 +51,8 @@ class Order {
     this.price,
     this.applicationFee,
     this.minEarnings,
-    this.restaurantImage,
+    this.bigRestaurantImage,
+    this.smallRestaurantImage,
     this.paymentMethodId,
     this.stripeAccountId,
     this.docID,
@@ -78,7 +80,8 @@ class Order {
     double price,
     double applicationFee,
     double minEarnings,
-    String restaurantImage,
+    String bigRestaurantImage,
+    String smallRestaurantImage,
     String paymentMethodId,
     String stripeAccountId,
     String docID,
@@ -105,7 +108,8 @@ class Order {
       price,
       applicationFee,
       minEarnings,
-      restaurantImage,
+      bigRestaurantImage,
+      smallRestaurantImage,
       paymentMethodId,
       stripeAccountId,
       docID,
@@ -135,7 +139,8 @@ class Order {
       price.hashCode ^
       applicationFee.hashCode ^
       minEarnings.hashCode ^
-      restaurantImage.hashCode ^
+      bigRestaurantImage.hashCode ^
+      smallRestaurantImage.hashCode ^
       paymentMethodId.hashCode ^
       stripeAccountId.hashCode ^
       docID.hashCode ^
@@ -166,7 +171,8 @@ class Order {
           price == other.price &&
           applicationFee == other.applicationFee &&
           minEarnings == other.minEarnings &&
-          restaurantImage == other.restaurantImage &&
+          bigRestaurantImage == other.bigRestaurantImage &&
+          smallRestaurantImage == other.smallRestaurantImage &&
           paymentMethodId == other.paymentMethodId &&
           stripeAccountId == other.stripeAccountId &&
           docID == other.docID &&
@@ -176,7 +182,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, restaurantImage: $restaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId, runnerPhone: $runnerPhone, phone: $phone, deliveryIns $deliveryIns }';
+    return 'Order { name: $name, uid: $uid, userCoordinates: $userCoordinates, restaurantName: $restaurantName, restaurantCoordinates: $restaurantCoordinates, basket: $basket, location: $location, startTime: $startTime, endTime: $endTime, expirationTime: $expirationTime, isAccepted: $isAccepted, isDelivered $isDelivered, isReceived $isReceived, runner: $runnerUid, runnerName: $runnerName, price: $price, applicationFee $applicationFee, minEarnings: $minEarnings, bigRestaurantImage: $bigRestaurantImage, smallRestaurantImage: $smallRestaurantImage, paymentMethodId: $paymentMethodId, stripeAccountId: $stripeAccountId, runnerPhone: $runnerPhone, phone: $phone, deliveryIns $deliveryIns }';
   }
 
   OrderEntity toEntity() {
@@ -199,7 +205,8 @@ class Order {
       price,
       applicationFee,
       minEarnings,
-      restaurantImage,
+      bigRestaurantImage,
+      smallRestaurantImage,
       paymentMethodId,
       stripeAccountId,
       docID,
@@ -229,7 +236,8 @@ class Order {
       entity.price,
       entity.applicationFee,
       entity.minEarnings,
-      entity.restaurantImage,
+      entity.bigRestaurantImage,
+      entity.smallRestaurantImage,
       entity.paymentMethodID,
       entity.stripeAccountId,
       entity.docID,
