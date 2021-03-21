@@ -38,8 +38,7 @@ class _BigModeState extends State<BigMode> {
                       child: SizedBox(
                         width: 300,
                         child: Text(
-                          //'No errands are requested in your area now. Please check back later!',
-                          'Beta testing will start on Monday, 3/22/21. Please check back later!',
+                          'No errands are requested in your area now. Please check back later!',
                           style: TextStyle(
                             fontSize: 18,
                           ),
