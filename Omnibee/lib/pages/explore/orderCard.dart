@@ -52,7 +52,7 @@ class OrderCard extends StatelessWidget {
                   subtitle: Text("${order.getDeliveryWindow()}"),
                   children: _itemsToOrder(order)),
               Image(
-                image: AssetImage(order.restaurantImage),
+                image: AssetImage(order.bigRestaurantImage),
                 fit: BoxFit.none,
               ),
               OrderCardButtonBar(order, context),
