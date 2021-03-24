@@ -19,7 +19,7 @@ class PaymentService {
   }
 
   static double getTaxedPrice(double price) {
-    double taxRate = 0.08;
+    double taxRate = 0.1255; //0.08;
     return _round((taxRate * price) + price);
   }
 
