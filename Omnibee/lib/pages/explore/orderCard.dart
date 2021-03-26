@@ -112,24 +112,24 @@ class OrderCardButtonBar extends StatelessWidget {
         },
       ),
     ];
-
-    if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
-      buttons.insert(
-          0,
-          RaisedButton(
-            color: Color(0xffFD9827),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-            child: const Text(
-              'CONFIRM DELIVERY',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () {
-              _markOrderComplete(order, context);
-            },
-          ));
-    }
+    //TODO: remove once tested
+    // if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
+    //   buttons.insert(
+    //       0,
+    //       RaisedButton(
+    //         color: Color(0xffFD9827),
+    //         shape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(18.0),
+    //         ),
+    //         child: const Text(
+    //           'CONFIRM DELIVERY',
+    //           style: TextStyle(fontSize: 18, color: Colors.white),
+    //         ),
+    //         onPressed: () {
+    //           _markOrderComplete(order, context);
+    //         },
+    //       ));
+    // }
 
     return buttons;
   }
