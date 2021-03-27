@@ -154,7 +154,12 @@ class _AcceptOrderState extends State<AcceptOrder> {
           body: SingleChildScrollView(
               child: Column(
             children: <Widget>[
-              Padding(padding: const EdgeInsets.only(top: 10)),
+              Padding(padding: const EdgeInsets.only(top: 30)),
+              Text(
+                  "Reminder: Runners must order requested food from the restaurant.",
+                  style: TextStyle(
+                    fontSize: 18,
+                  )),
               DisplaySmallUsers(isExpanded, orderList, selectedList),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
