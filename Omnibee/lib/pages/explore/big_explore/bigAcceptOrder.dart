@@ -123,69 +123,56 @@ class _AcceptOrderState extends State<AcceptOrder> {
                                   style: TextStyle(fontSize: 19),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          15, 10, 15, 10),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.contacts, size: 40),
-                                            Padding(padding: EdgeInsets.all(5)),
-                                            Flexible(
-                                              child: Text(
-                                                'You must be a U.S. Citizen.',
-                                                style: TextStyle(fontSize: 18),
-                                                softWrap: true,
-                                              ),
-                                            )
-                                          ]),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          15, 10, 15, 10),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.fastfood, size: 40),
-                                            Padding(padding: EdgeInsets.all(5)),
-                                            Flexible(
-                                              child: Text(
-                                                'You must order the food. Omnibee currently does not automatically place the order.',
-                                                style: TextStyle(fontSize: 18),
-                                                softWrap: true,
-                                              ),
-                                            )
-                                          ]),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          15, 10, 15, 10),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.credit_card, size: 40),
-                                            Padding(padding: EdgeInsets.all(5)),
-                                            Flexible(
-                                              child: Text(
-                                                'You must pay with your own card, and Omnibee will reimburse you within 2-4 business days.',
-                                                style: TextStyle(fontSize: 18),
-                                                softWrap: true,
-                                              ),
-                                            )
-                                          ]),
-                                    ),
-                                  ),
-                                ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.contacts),
+                                      Padding(padding: EdgeInsets.all(5)),
+                                      Flexible(
+                                        child: Text(
+                                          'You must be a U.S. Citizen.',
+                                          style: TextStyle(fontSize: 18),
+                                          softWrap: true,
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.fastfood),
+                                      Padding(padding: EdgeInsets.all(5)),
+                                      Flexible(
+                                        child: Text(
+                                          'You must order the food. Omnibee currently does not automatically place the order.',
+                                          style: TextStyle(fontSize: 18),
+                                          softWrap: true,
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.credit_card),
+                                      Padding(padding: EdgeInsets.all(5)),
+                                      Flexible(
+                                        child: Text(
+                                          'You must pay with your own card, and Omnibee will reimburse you within 2-4 business days.',
+                                          style: TextStyle(fontSize: 18),
+                                          softWrap: true,
+                                        ),
+                                      )
+                                    ]),
                               ),
                               Padding(
                                 padding:
@@ -226,12 +213,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
           body: SingleChildScrollView(
               child: Column(
             children: <Widget>[
-              Padding(padding: const EdgeInsets.only(top: 30)),
-              Text(
-                  "Reminder: Runners must order requested food from the restaurant.",
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
+              Padding(padding: const EdgeInsets.only(top: 10)),
               DisplaySmallUsers(isExpanded, orderList, selectedList),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
