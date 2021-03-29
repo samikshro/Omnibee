@@ -79,6 +79,71 @@ class ProfileContact extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child: Text(
+                'As a Runner, please remember:',
+                style: TextStyle(fontSize: 19),
+              ),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.contacts, size: 40),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Flexible(
+                            child: Text(
+                              'You must be a U.S. Citizen.',
+                              style: TextStyle(fontSize: 18),
+                              softWrap: true,
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.fastfood, size: 40),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Flexible(
+                            child: Text(
+                              'You must order the food. Omnibee currently does not automatically place the order.',
+                              style: TextStyle(fontSize: 18),
+                              softWrap: true,
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.credit_card, size: 40),
+                          Padding(padding: EdgeInsets.all(5)),
+                          Flexible(
+                            child: Text(
+                              'You must pay with your own card, and Omnibee will reimburse you within 2-4 business days.',
+                              style: TextStyle(fontSize: 18),
+                              softWrap: true,
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
               child: Text('Please wait up to 10 seconds for the form to load.',
                   style: TextStyle(fontSize: 19)),
             ),
