@@ -67,77 +67,87 @@ class ProfileContact extends StatelessWidget {
     print("Showing bottom sheet");
     showModalBottomSheet(
       context: context,
+      isScrollControlled: false,
       builder: (context) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Text(
-                'Setup a payment account to get paid after your delivery!',
-                style: TextStyle(fontSize: 19),
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Text(
+                  'Setup a payment account to get paid after your delivery!',
+                  style: TextStyle(fontSize: 19),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Text(
-                'As a Runner, please remember:',
-                style: TextStyle(fontSize: 19),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Text(
+                  'As a Runner, please remember:',
+                  style: TextStyle(fontSize: 19),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.contacts),
-                Padding(padding: EdgeInsets.all(5)),
-                Flexible(
-                  child: Text(
-                    'You must be a U.S. Citizen.',
-                    style: TextStyle(fontSize: 18),
-                    softWrap: true,
-                  ),
-                )
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.fastfood),
-                Padding(padding: EdgeInsets.all(5)),
-                Flexible(
-                  child: Text(
-                    'You must order the food. Omnibee currently does not automatically place the order.',
-                    style: TextStyle(fontSize: 18),
-                    softWrap: true,
-                  ),
-                )
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Icon(Icons.credit_card),
-                Padding(padding: EdgeInsets.all(5)),
-                Flexible(
-                  child: Text(
-                    'You must pay with your own card, and Omnibee will reimburse you within 2-4 business days.',
-                    style: TextStyle(fontSize: 18),
-                    softWrap: true,
-                  ),
-                )
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Text('Please wait up to 10 seconds for the form to load.',
-                  style: TextStyle(fontSize: 19)),
-            ),
-            CupertinoButton(
-                color: Theme.of(context).primaryColor,
-                child: Text("Set Up Payments"),
-                onPressed: () {
-                  _performSetup(user);
-                }),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Icon(Icons.contacts),
+                  Padding(padding: EdgeInsets.all(5)),
+                  Flexible(
+                    child: Text(
+                      'You must be a U.S. Citizen.',
+                      style: TextStyle(fontSize: 14),
+                      softWrap: true,
+                    ),
+                  )
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Icon(Icons.fastfood),
+                  Padding(padding: EdgeInsets.all(5)),
+                  Flexible(
+                    child: Text(
+                      'You must order the food. Omnibee currently does not automatically place the order.',
+                      style: TextStyle(fontSize: 14),
+                      softWrap: true,
+                    ),
+                  )
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Icon(Icons.credit_card),
+                  Padding(padding: EdgeInsets.all(5)),
+                  Flexible(
+                    child: Text(
+                      'You must pay with your own card, and Omnibee will reimburse you within 2-4 business days.',
+                      style: TextStyle(fontSize: 14),
+                      softWrap: true,
+                    ),
+                  )
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Text(
+                    'Please wait up to 10 seconds for the form to load.',
+                    style: TextStyle(fontSize: 14)),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: CupertinoButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text("Set Up Payments"),
+                    onPressed: () {
+                      _performSetup(user);
+                    }),
+              ),
+            ],
+          ),
         );
       },
     );
