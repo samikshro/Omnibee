@@ -1,3 +1,5 @@
+import 'package:Omnibee/pages/explore/customCardIcon.dart';
+import 'package:Omnibee/services/paymentService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Omnibee/models/models.dart';
@@ -24,7 +26,6 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -37,7 +38,7 @@ class DeliveryCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ExpansionTile(
-                leading: Icon(Icons.fastfood),
+                leading: CustomCardIcon(order),
                 title: Text(order.name + ": " + order.restaurantName),
                 subtitle: Text(order.getDeliveryWindow() +
                     "\nEarnings: \$${order.minEarnings.toStringAsFixed(2)}"),
@@ -56,6 +57,28 @@ class DeliveryCardButtonBar extends StatelessWidget {
 
   DeliveryCardButtonBar(this.order, this.context);
 
+  void _markOrderComplete(Order order, BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Confirming delivery, please wait one moment....'),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+
+    double pCharge = order.price;
+    double applicationFee = order.applicationFee;
+
+    print(
+        "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
+
+    PaymentService.paymentTransfer(
+      order,
+      context,
+      pCharge,
+      applicationFee,
+      order.paymentMethodId,
+      order.stripeAccountId,
+    );
+  }
+
   List<Widget> _getButtons() {
     List<Widget> buttons = [
       RaisedButton(
@@ -69,6 +92,7 @@ class DeliveryCardButtonBar extends StatelessWidget {
         ),
         onPressed: () {
           BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
+          _markOrderComplete(order, context);
         },
       ),
       FlatButton(
@@ -76,12 +100,19 @@ class DeliveryCardButtonBar extends StatelessWidget {
           'VIEW DETAILS',
           style: TextStyle(fontSize: 18),
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/delivery_card_page', arguments: order);
+        onPressed: () async {
+          final deliveredOrder = await Navigator.pushNamed(
+              context, '/delivery_card_page',
+              arguments: order);
+          if (deliveredOrder != null) {
+            BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
+            _markOrderComplete(order, context);
+          }
         },
       ),
     ];
 
+    //TODO: keep here for testing purposes and then remove
     if (order.isDelivered) {
       buttons.removeAt(0);
       if (!order.isReceived) {

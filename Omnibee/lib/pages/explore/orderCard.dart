@@ -1,4 +1,5 @@
 import 'package:Omnibee/bloc/auth/auth_bloc.dart';
+import 'package:Omnibee/pages/explore/customCardIcon.dart';
 import 'package:Omnibee/services/paymentService.dart';
 import 'package:flutter/material.dart';
 import 'package:Omnibee/models/models.dart';
@@ -22,16 +23,6 @@ class OrderCard extends StatelessWidget {
     return children;
   }
 
-  Widget _getIcon(Order order) {
-    if (order.isReceived) {
-      return Icon(Icons.check_circle, color: Colors.green, size: 45);
-    } else if (order.isExpired()) {
-      return Icon(Icons.cancel, color: Colors.red, size: 45);
-    } else {
-      return Icon(Icons.fastfood, size: 45);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -47,14 +38,10 @@ class OrderCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ExpansionTile(
-                  leading: _getIcon(order),
+                  leading: CustomCardIcon(order),
                   title: Text(order.name + ": " + order.restaurantName),
                   subtitle: Text("${order.getDeliveryWindow()}"),
                   children: _itemsToOrder(order)),
-              Image(
-                image: AssetImage(order.bigRestaurantImage),
-                fit: BoxFit.none,
-              ),
               OrderCardButtonBar(order, context),
             ],
           ),
@@ -112,24 +99,24 @@ class OrderCardButtonBar extends StatelessWidget {
         },
       ),
     ];
-
-    if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
-      buttons.insert(
-          0,
-          RaisedButton(
-            color: Color(0xffFD9827),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-            child: const Text(
-              'CONFIRM DELIVERY',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () {
-              _markOrderComplete(order, context);
-            },
-          ));
-    }
+    //TODO: remove once tested
+    // if (order.isDelivered == true && !order.isExpired() && !order.isReceived) {
+    //   buttons.insert(
+    //       0,
+    //       RaisedButton(
+    //         color: Color(0xffFD9827),
+    //         shape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(18.0),
+    //         ),
+    //         child: const Text(
+    //           'CONFIRM DELIVERY',
+    //           style: TextStyle(fontSize: 18, color: Colors.white),
+    //         ),
+    //         onPressed: () {
+    //           _markOrderComplete(order, context);
+    //         },
+    //       ));
+    // }
 
     return buttons;
   }
