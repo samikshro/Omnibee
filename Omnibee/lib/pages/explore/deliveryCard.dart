@@ -1,3 +1,4 @@
+import 'package:Omnibee/pages/explore/customCardIcon.dart';
 import 'package:Omnibee/services/paymentService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,6 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (order.isComplete()) return Container();
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -38,7 +38,7 @@ class DeliveryCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ExpansionTile(
-                leading: Icon(Icons.fastfood),
+                leading: CustomCardIcon(order),
                 title: Text(order.name + ": " + order.restaurantName),
                 subtitle: Text(order.getDeliveryWindow() +
                     "\nEarnings: \$${order.minEarnings.toStringAsFixed(2)}"),
@@ -100,8 +100,14 @@ class DeliveryCardButtonBar extends StatelessWidget {
           'VIEW DETAILS',
           style: TextStyle(fontSize: 18),
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/delivery_card_page', arguments: order);
+        onPressed: () async {
+          final deliveredOrder = await Navigator.pushNamed(
+              context, '/delivery_card_page',
+              arguments: order);
+          if (deliveredOrder != null) {
+            BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
+            _markOrderComplete(order, context);
+          }
         },
       ),
     ];

@@ -19,7 +19,7 @@ class PaymentService {
   }
 
   static double getTaxedPrice(double price) {
-    double taxRate = 0.1255; //0.08;
+    double taxRate = 0.08; //0.08;
     return _round((taxRate * price) + price);
   }
 
@@ -177,7 +177,7 @@ class PaymentService {
       ));
       _paymentCallback(order, val.status);
     }).catchError((error, stackTrace) {
-      print("error!");
+      print("error: $error");
     }).whenComplete(() async {
       _printSuccess(context);
     });
