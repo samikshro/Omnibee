@@ -16,6 +16,28 @@ class DeliveryCardPage extends StatelessWidget {
   final double fontSize = 19;
   final double boldFontSize = 22;
 
+  void _markOrderComplete(Order order, BuildContext context) {
+    /* final snackBar = SnackBar(
+      content: Text('Confirming delivery, please wait one moment....'),
+    );
+    Scaffold.of(context).showSnackBar(snackBar); */
+
+    double pCharge = order.price;
+    double applicationFee = order.applicationFee;
+
+    print(
+        "MarkOrderComplete: pcharge is $pCharge and applicationFee is $applicationFee");
+
+    PaymentService.paymentTransfer(
+      order,
+      context,
+      pCharge,
+      applicationFee,
+      order.paymentMethodId,
+      order.stripeAccountId,
+    );
+  }
+
   Widget _controlButtons(Order order, BuildContext context) {
     if (order.isDelivered) {
       return Container();
@@ -31,8 +53,9 @@ class DeliveryCardPage extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
-            Navigator.pop(context);
+            //BlocProvider.of<OrderBloc>(context).add(OrderMarkDelivered(order));
+            //_markOrderComplete(order, context);
+            Navigator.pop(context, true);
           },
         ),
       );

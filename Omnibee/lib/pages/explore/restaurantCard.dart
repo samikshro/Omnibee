@@ -44,7 +44,7 @@ class RestaurantCard extends StatelessWidget {
             hours: hours,
             menu: MenuFactory.constructMenu(document),
             bigImagePath: document['big_photo'],
-            smallImagePath: document['big_photo'],
+            smallImagePath: document['small_photo'],
           );
           BlocProvider.of<RestaurantBloc>(context)
               .add(RestaurantUpdated(selectedRestaurant));

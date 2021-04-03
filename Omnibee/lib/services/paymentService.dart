@@ -177,7 +177,7 @@ class PaymentService {
       ));
       _paymentCallback(order, val.status);
     }).catchError((error, stackTrace) {
-      print("error!");
+      print("error: $error");
     }).whenComplete(() async {
       _printSuccess(context);
     });

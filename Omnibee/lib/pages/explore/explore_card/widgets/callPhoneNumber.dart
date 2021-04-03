@@ -21,26 +21,51 @@ class CallPhoneNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String buttonTxt = isRunner ? "Call Requester" : "Call Errand Runner";
+    String callbuttonTxt = isRunner ? "Call Requester" : "Call Errand Runner";
+    String textbuttonTxt = isRunner ? "Text Requester" : "Text Errand Runner";
     return Center(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-        child: CupertinoButton(
-          color: Theme.of(context).primaryColor,
-          child: Text(
-            buttonTxt,
-            style: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.normal,
+        child: Column(
+          children: [
+            CupertinoButton(
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                callbuttonTxt,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              onPressed: () {
+                if (isRunner) {
+                  launchURL("tel:${order.phone}");
+                } else {
+                  launchURL("tel:${order.runnerPhone}");
+                }
+              },
             ),
-          ),
-          onPressed: () {
-            if (isRunner) {
-              launchURL("tel:${order.phone}");
-            } else {
-              launchURL("tel:${order.runnerPhone}");
-            }
-          },
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: CupertinoButton(
+                color: Theme.of(context).primaryColor,
+                child: Text(
+                  textbuttonTxt,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                onPressed: () {
+                  if (isRunner) {
+                    launchURL("sms:${order.phone}");
+                  } else {
+                    launchURL("sms:${order.runnerPhone}");
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

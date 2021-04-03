@@ -59,6 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
       yield Authenticated(user);
     } catch (_) {
+      print("_mapAppStartedToState inside catch");
       yield Unauthenticated();
     }
   }

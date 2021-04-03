@@ -60,7 +60,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Text(
                       "Reimbursements: \$${state.user.reimbursement.toStringAsFixed(2)}",
-                      style: TextStyle(fontSize: 19),
+                      style: TextStyle(fontSize: 16),
                     ),
                     InfoButton(
                       titleMessage: "Reimbursements",
@@ -79,7 +79,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Text(
                       "Total Earnings: \$${state.user.earnings.toStringAsFixed(2)}",
-                      style: TextStyle(fontSize: 19),
+                      style: TextStyle(fontSize: 16),
                     ),
                     InfoButton(
                       titleMessage: "Total Earnings",
