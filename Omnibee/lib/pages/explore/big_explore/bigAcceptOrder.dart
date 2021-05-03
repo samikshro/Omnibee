@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Omnibee/bloc/blocs.dart';
 import 'package:Omnibee/entities/entities.dart';
@@ -11,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AcceptOrder extends StatefulWidget {
   @override
@@ -53,6 +55,63 @@ class _AcceptOrderState extends State<AcceptOrder> {
     orderList.forEach((order) {
       BlocProvider.of<OrderBloc>(context).add(OrderMarkAccepted(order, runner));
     });
+  }
+
+  String _getDeliveryLocation(Order order) {
+    String location = order.location;
+    List<String> wordList = location.split(',');
+    return wordList[0];
+  }
+
+  void _launchMap(BuildContext context, lat, lng) async {
+    var urlGoogleMaps =
+        "https://www.google.com/maps/search/?api=1&query=$lat,$lng";
+    var urlAppleMaps = 'https://maps.apple.com/?q=$lat,$lng';
+
+    if (Platform.isAndroid) {
+      if (await canLaunch(urlGoogleMaps)) {
+        await launch(urlGoogleMaps);
+      } else {
+        throw 'Could not launch $urlGoogleMaps';
+      }
+    } else {
+      urlGoogleMaps =
+          "comgooglemaps://?saddr=&daddr=$lat,$lng&directionsmode=walking";
+      if (await canLaunch(urlAppleMaps)) {
+        await launch(urlAppleMaps);
+      } else if (await canLaunch(urlGoogleMaps)) {
+        await launch(urlGoogleMaps);
+      } else {
+        throw 'Could not launch map on iOS';
+      }
+    }
+  }
+
+  Widget _getLocationWidget(
+    BuildContext context,
+    String location,
+    Order order,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
+      child: ListTile(
+          title: Text(
+            "Drop off at " + location,
+            style: TextStyle(fontSize: 18),
+          ),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.explore,
+              size: 35,
+              color: Theme.of(context).primaryColor,
+            ),
+            onPressed: () async {
+              double latitude = order.userCoordinates.x;
+              double longitude = order.userCoordinates.y;
+              _launchMap(context, latitude, longitude);
+            },
+          )),
+    );
   }
 
   @override
@@ -229,6 +288,7 @@ class _AcceptOrderState extends State<AcceptOrder> {
                     fontSize: 18,
                   )),
               DisplaySmallUsers(isExpanded, orderList, selectedList),
+              _getLocationWidget(context, _getDeliveryLocation(order), order),
               MinEarnings(orderList, selectedList),
               AcceptOrderInfo(orderList, selectedList),
             ],
